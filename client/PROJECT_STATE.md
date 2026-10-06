@@ -12,12 +12,13 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 0. Mise en place du projet
 
-- [ ] Créer `client/` (Vite + React + TypeScript)
-- [ ] Configurer Tailwind avec les tokens de couleur/typo définis dans `DESIGN.md`
-- [ ] Créer `.env.example` (avec `VITE_API_BASE_URL`)
-- [ ] Mettre en place le client API de base (`src/api/client.ts`) avec gestion du token JWT
-- [ ] Configurer Playwright dans `client/e2e/`
-- [ ] Premier commit : squelette de projet fonctionnel (appel réussi vers l'endpoint `/api/v1/health/` du backend)
+- [x] Créer `client/` (Vite + React + TypeScript)
+- [x] Configurer Tailwind avec les tokens de couleur/typo définis dans `DESIGN.md`
+- [x] Créer `.env.example` (avec `VITE_API_BASE_URL`)
+- [x] Mettre en place le client API de base (`src/api/client.ts`) avec gestion du token JWT
+- [x] Configurer Playwright dans `client/e2e/`
+- [x] Premier commit : squelette de projet fonctionnel (appel vers l'endpoint `/api/v1/health/` du backend)
+
 
 ---
 
@@ -95,16 +96,35 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 ---
 
 ## 9. Journal des actions (log)
+ 
+ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
+ 
+ ```
+ ### AAAA-MM-JJ — Titre court de la tâche
+ - Ce qui a été fait : ...
+ - Fichiers/dossiers touchés : ...
+ - Cases cochées : section X, tâche Y
+ - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
+ - Points restés ouverts ou à valider avec l'utilisateur : ...
+ ```
+ 
++### 2026-10-06 — Initialisation du projet client (Section 0)
++- Ce qui a été fait :
++  - Échafaudage de l'application Vite + React 18+ + TypeScript.
++  - Installation et configuration de Tailwind CSS avec les tokens stricts de `DESIGN.md` (règle 60/30/10 : vert postal `#0F3D2E`, gris ardoise `#1E2530`, doré `#C9962C`, mode sombre calibré sans inversion automatique, polices Fraunces et Public Sans).
++  - Création de `.env.example` et `.env` configurés avec `VITE_API_BASE_URL`.
++  - Implémentation du client API de base (`src/api/client.ts`) avec support Bearer JWT, intercepteur 401 pour rafraîchissement automatique de token, et types partagés dans `src/types/index.ts`.
++  - Implémentation de `ThemeContext` (attribut `data-theme` et persistance `localStorage`).
++  - Création de la page d'accueil de démarrage avec contrôle de santé vers `/api/v1/health/` du backend Django.
++  - Configuration de Playwright dans `playwright.config.ts` et test e2e de validation dans `e2e/health.spec.ts` (exécuté et passé avec succès).
++- Fichiers/dossiers touchés :
++  - `package.json`, `tailwind.config.ts`, `postcss.config.js`, `index.html`, `.env.example`, `.gitignore`
++  - `src/styles/globals.css`, `src/types/index.ts`, `src/api/client.ts`, `src/api/health.ts`
++  - `src/contexts/ThemeContext.tsx`, `src/App.tsx`, `src/main.tsx`
++  - `playwright.config.ts`, `e2e/health.spec.ts`
++- Cases cochées : section 0 (toutes les tâches)
++- Dépendance à un endpoint backend : `/api/v1/health/` (implémenté dans `API_CONTRACT.md`)
++- Points restés ouverts ou à valider avec l'utilisateur : Néant.
++
+ <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
 
-Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
-
-```
-### AAAA-MM-JJ — Titre court de la tâche
-- Ce qui a été fait : ...
-- Fichiers/dossiers touchés : ...
-- Cases cochées : section X, tâche Y
-- Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
-- Points restés ouverts ou à valider avec l'utilisateur : ...
-```
-
-<!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->

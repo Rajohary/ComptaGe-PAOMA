@@ -12,13 +12,13 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 0. Mise en place du projet
 
-- [ ] Créer `server/` (Django + DRF), structure de dossiers conforme à `ARCHITECTURE.md`
-- [ ] Configurer PostgreSQL en local (base de dev) et connexion Django
-- [ ] Mettre en place `django-cors-headers` (origine du client React autorisée en dev)
-- [ ] Créer `.env.example`
-- [ ] Choisir et configurer l'outil de tests unitaires (`pytest-django` ou `TestCase` natif — trancher ici, pas en cours de route)
-- [ ] Premier commit : squelette Django fonctionnel (endpoint de healthcheck `/api/v1/health/` qui répond 200)
-- [ ] Déclarer l'endpoint de healthcheck dans `../API_CONTRACT.md`
+- [x] Créer `server/` (Django + DRF), structure de dossiers conforme à `ARCHITECTURE.md`
+- [x] Configurer PostgreSQL en local (base de dev `comptage_dev`, user `comptage_user`) et connexion Django
+- [x] Mettre en place `django-cors-headers` (origine du client React autorisée en dev)
+- [x] Créer `.env.example`
+- [x] Choisir et configurer l'outil de tests unitaires (`pytest-django` configuré avec pytest.ini)
+- [x] Squelette Django fonctionnel (endpoint de healthcheck `/api/v1/health/` qui répond 200)
+- [x] Déclarer l'endpoint de healthcheck dans `../API_CONTRACT.md`
 
 ---
 
@@ -120,5 +120,19 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-06 — Initialisation du projet et squelette backend (Section 0)
+- Ce qui a été fait :
+  - Création de l'arborescence complète de `server/` (config/settings modulaire, apps: accounts, referentiel, comptabilite, audit, stock, scripts).
+  - Installation de l'ensemble des dépendances (Django 5.1, DRF 3.17, SimpleJWT 5.5, django-cors-headers, psycopg 3.3, dj-database-url, python-dotenv, pytest, pytest-django).
+  - Création de `requirements.txt`, `.env.example`, `.env`, `.gitignore` et `pytest.ini`.
+  - Configuration de base Django avec support CORS pour le client Vite (http://localhost:5173).
+  - Implémentation de l'endpoint de healthcheck `/api/v1/health/` retournant 200 avec status, service et version.
+  - Écriture et passage du test unitaire pytest (`tests/test_healthcheck.py`).
+  - Déclaration et documentation de `/api/v1/health/` avec exemple de payload dans `../API_CONTRACT.md`.
+- Fichiers/dossiers touchés : `requirements.txt`, `.env.example`, `.env`, `.gitignore`, `pytest.ini`, `manage.py`, `config/`, `apps/`, `tests/test_healthcheck.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 0 (100% complétée).
+- API_CONTRACT.md mis à jour : oui (/api/v1/health/ ajouté dans le registre et les exemples).
+- Points restés ouverts ou à valider avec l'utilisateur : Base PostgreSQL locale connectée et validée (`comptage_dev`, utilisateur `comptage_user`). Prêt pour la section 1 (Authentification & RBAC).
 
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->

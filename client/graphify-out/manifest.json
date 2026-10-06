@@ -1,0 +1,26 @@
+{
+  "AGENT.md": {
+    "mtime": 1791275991.0,
+    "seen": 1791279017.065167,
+    "ast_hash": "f5d79c75763cf62eec57c555ed717f5d",
+    "semantic_hash": ""
+  },
+  "ARCHITECTURE.md": {
+    "mtime": 1791276018.0,
+    "seen": 1791279017.0651724,
+    "ast_hash": "87dd24db332b028d6691d9bb8e015a0f",
+    "semantic_hash": ""
+  },
+  "DESIGN.md": {
+    "mtime": 1791276068.0,
+    "seen": 1791279017.065175,
+    "ast_hash": "691c523e11bc9de260f295b920692935",
+    "semantic_hash": ""
+  },
+  "PROJECT_STATE.md": {
+    "mtime": 1791276088.0,
+    "seen": 1791279017.0651762,
+    "ast_hash": "2aa72c9a194ff8d330a8c9db83270512",
+    "semantic_hash": ""
+  }
+}

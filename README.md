@@ -35,35 +35,35 @@ Copie aussi le CDC du projet (le PDF qu'on a généré/mis à jour ensemble) à 
 Tu es sous **CachyOS** (Arch-based), donc `pacman` et `yay`/`paru` sont tes amis.
 
 ### 2.1 Outils de base
-- [ ] **Git** : `sudo pacman -S git`
-- [ ] **Node.js (LTS, 20+) et npm** : `sudo pacman -S nodejs npm` — vérifie avec `node -v`
-- [ ] **Python 3.12+** : `sudo pacman -S python` — vérifie avec `python --version`
-- [ ] **pip** : normalement inclus, sinon `sudo pacman -S python-pip`
+- [X] **Git** : `sudo pacman -S git`
+- [X] **Node.js (LTS, 20+) et npm** : `sudo pacman -S nodejs npm` — vérifie avec `node -v`
+- [X] **Python 3.12+** : `sudo pacman -S python` — vérifie avec `python --version`
+- [X] **pip** : normalement inclus, sinon `sudo pacman -S python-pip`
 
 ### 2.2 Base de données
-- [ ] **PostgreSQL 16** : `sudo pacman -S postgresql`
-- [ ] Initialiser le cluster si besoin :
+- [X] **PostgreSQL 16** : `sudo pacman -S postgresql`
+- [X] Initialiser le cluster si besoin :
   ```bash
   sudo -iu postgres initdb -D /var/lib/postgres/data
   sudo systemctl enable --now postgresql
   ```
-- [ ] Créer l'utilisateur et la base :
+- [X] Créer l'utilisateur et la base :
   ```bash
   sudo -iu postgres psql
-  CREATE USER comptage_user WITH PASSWORD 'choisis_un_mot_de_passe';
+  CREATE USER comptage_user WITH PASSWORD '12345678';
   CREATE DATABASE comptage_dev OWNER comptage_user;
   \q
   ```
-- [ ] Note ces identifiants — tu en auras besoin pour `server/.env`.
+- [X] Note ces identifiants — tu en auras besoin pour `server/.env`.
 
 ### 2.3 Environnement Python (isolation du projet)
-- [ ] Une fois `server/` initialisé par Agy :
+- [X] Une fois `server/` initialisé par Agy :
   ```bash
   cd server
   python -m venv venv
   source venv/bin/activate
   ```
-- [ ] Ne jamais installer de paquets Python globalement — toujours dans le venv actif.
+- [X] Ne jamais installer de paquets Python globalement — toujours dans le venv actif.
 
 ### 2.4 Outils déjà installés par toi (rappel, rien à faire)
 - `.agents/awesome-design-skills`
@@ -85,11 +85,11 @@ Sur CachyOS/Arch, `--with-deps` est pensé pour Debian/Ubuntu à la base — si 
 
 ## 3. Vérifications avant la première session avec Agy
 
-- [ ] `node -v` retourne une version 20+
-- [ ] `python --version` retourne 3.12+
-- [ ] `sudo systemctl status postgresql` indique que le service tourne
-- [ ] Connexion réussie avec `psql -U comptage_user -d comptage_dev -h localhost`
-- [ ] Le dossier `ComptaGeWeb/` contient bien `.agents/`, `README.md`, `API_CONTRACT.md`, `client/` (4 fichiers .md) et `server/` (3 fichiers .md)
+- [X] `node -v` retourne une version 20+
+- [X] `python --version` retourne 3.12+
+- [X] `sudo systemctl status postgresql` indique que le service tourne
+- [X] Connexion réussie avec `psql -U comptage_user -d comptage_dev -h localhost`
+- [X] Le dossier `ComptaGeWeb/` contient bien `.agents/`, `README.md`, `API_CONTRACT.md`, `client/` (4 fichiers .md) et `server/` (3 fichiers .md)
 
 ---
 

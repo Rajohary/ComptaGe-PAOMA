@@ -1,0 +1,41 @@
+{
+  "communities": {
+    "0": [
+      "agent_md",
+      "project_state_md"
+    ],
+    "1": [
+      "architecture_md",
+      "design_md"
+    ],
+    "2": [
+      "comptageweb_concept"
+    ],
+    "3": [
+      "journal_g58_concept"
+    ]
+  },
+  "cohesion": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0
+  },
+  "gods": [
+    {
+      "id": "comptageweb_concept",
+      "label": "ComptaGeWeb",
+      "degree": 0
+    },
+    {
+      "id": "journal_g58_concept",
+      "label": "Journal G58",
+      "degree": 0
+    }
+  ],
+  "surprises": [],
+  "tokens": {
+    "input": 10038,
+    "output": 2042
+  }
+}

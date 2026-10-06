@@ -35,6 +35,7 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 
 | Endpoint | Méthode | Rôles autorisés | État | Description courte |
 |---|---|---|---|---|
+| `/api/v1/health/` | GET | Public | implémenté | Contrôle de santé de l'API (status, service, version) |
 | `/api/v1/auth/login/` | POST | Public | planifié | Authentification, retourne access + refresh token |
 | `/api/v1/auth/refresh/` | POST | Public (avec refresh token) | planifié | Renouvellement du token d'accès |
 | `/api/v1/auth/me/` | GET | Authentifié | planifié | Infos de l'utilisateur courant (dont le rôle) |
@@ -53,7 +54,15 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 
 ## 4. Exemples de payloads (à enrichir au fil de l'implémentation)
 
-Cette section reste vide au départ. Dès qu'un endpoint est stabilisé, ajouter ici un exemple de requête et de réponse réel (pas un schéma abstrait) — c'est ce qui évite le plus d'allers-retours d'interprétation entre les deux côtés.
+### GET /api/v1/health/
+Réponse 200 :
+```json
+{
+  "status": "healthy",
+  "service": "ComptaGeWeb Backend",
+  "version": "1.0.0"
+}
+```
 
 ```
 <!-- Exemple de structure à suivre :

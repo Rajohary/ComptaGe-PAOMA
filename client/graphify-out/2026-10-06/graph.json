@@ -1,0 +1,129 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "frontend_governance",
+        "label": "Frontend Governance Documents",
+        "nodes": [
+          "agent_md",
+          "architecture_md",
+          "design_md",
+          "project_state_md"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "AGENT.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "agent_md",
+      "label": "AGENT.md",
+      "community": 0,
+      "file_type": "document",
+      "norm_label": "agent.md",
+      "rationale": "Entry point for agents working on the frontend; defines scope and mandatory reading order.",
+      "source_file": "AGENT.md"
+    },
+    {
+      "id": "project_state_md",
+      "label": "PROJECT_STATE.md",
+      "community": 0,
+      "file_type": "document",
+      "norm_label": "project_state.md",
+      "rationale": "Living task list and action log for the frontend project.",
+      "source_file": "PROJECT_STATE.md"
+    },
+    {
+      "id": "architecture_md",
+      "label": "ARCHITECTURE.md",
+      "community": 1,
+      "file_type": "document",
+      "norm_label": "architecture.md",
+      "rationale": "Defines technical stack, folder structure, and architectural principles for the React frontend.",
+      "source_file": "ARCHITECTURE.md"
+    },
+    {
+      "id": "design_md",
+      "label": "DESIGN.md",
+      "community": 1,
+      "file_type": "document",
+      "norm_label": "design.md",
+      "rationale": "Binding reference for visual interface, colors (60/30/10 rule), typography, and accessibility.",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "id": "comptageweb_concept",
+      "label": "ComptaGeWeb",
+      "community": 2,
+      "file_type": "concept",
+      "norm_label": "comptageweb",
+      "rationale": "Modern web rewrite of a legacy VB6 accounting application for Paositra Malagasy.",
+      "source_file": "AGENT.md"
+    },
+    {
+      "id": "journal_g58_concept",
+      "label": "Journal G58",
+      "community": 3,
+      "file_type": "concept",
+      "norm_label": "journal g58",
+      "rationale": "Core accounting document involving sections A-E, cash tracking, and inspector audits.",
+      "source_file": "AGENT.md"
+    }
+  ],
+  "links": [
+    {
+      "source": "agent_md",
+      "target": "architecture_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENT.md"
+    },
+    {
+      "source": "agent_md",
+      "target": "design_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENT.md"
+    },
+    {
+      "source": "agent_md",
+      "target": "project_state_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENT.md"
+    },
+    {
+      "source": "architecture_md",
+      "target": "design_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "ARCHITECTURE.md"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "frontend_governance",
+      "label": "Frontend Governance Documents",
+      "nodes": [
+        "agent_md",
+        "architecture_md",
+        "design_md",
+        "project_state_md"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENT.md"
+    }
+  ],
+  "built_at_commit": "75b4f08a29ed77d16403f0c47b17c57c64daf182"
+}

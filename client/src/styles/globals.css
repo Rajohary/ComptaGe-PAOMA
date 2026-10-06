@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+[data-theme="light"] {
+  /* Mode clair */
+  --color-brand: #0F3D2E;             /* Vert postal profond */
+  --color-surface-primary: #F4F7F5;   /* Fond de page très clair */
+  --color-surface-card: #FFFFFF;      /* Fond de carte / panneau */
+  --color-surface-secondary: #E8ECE9; /* Surface secondaire */
+  --color-text-primary: #1E2530;      /* Texte principal gris ardoise */
+  --color-text-secondary: #5B6472;    /* Texte secondaire */
+  --color-border: #D8DDE3;            /* Bordures et séparateurs */
+  --color-accent: #C9962C;            /* Doré/ocre institutionnel */
+  --color-status-success: #1C7C4E;    /* Succès / validé */
+  --color-status-alert: #B5451B;      /* Alerte / écart détecté */
+  --color-status-info: #2B6CA3;       /* Information neutre */
+}
+
+[data-theme="dark"] {
+  /* Mode sombre (recalibré selon DESIGN.md 2.2) */
+  --color-brand: #1C7C4E;             /* Vert postal visible en sombre */
+  --color-surface-primary: #101512;   /* Fond de page sombre */
+  --color-surface-card: #171D1A;      /* Surface de carte / panneau */
+  --color-surface-secondary: #1F2723; /* Surface secondaire sombre */
+  --color-text-primary: #E7EAE8;      /* Texte principal clair */
+  --color-text-secondary: #9AA5A0;    /* Texte secondaire atténué */
+  --color-border: #2A3330;            /* Bordures / séparateurs sombres */
+  --color-accent: #D9AD52;            /* Doré légèrement éclairci */
+  --color-status-success: #3FA873;    /* Succès */
+  --color-status-alert: #D96A3E;      /* Alerte */
+  --color-status-info: #5A9BD1;       /* Information */
+}
+
+/* Règle obligatoire pour les montants comptables */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

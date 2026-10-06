@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Variables d'environnement secrètes
+.env
+.env.local
+
+# Base de données locales de test
+*.sqlite3
+*.db
+
+# Tests et couvertures
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# Outils de dev et IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# Graphify build outputs
+graphify-out/
