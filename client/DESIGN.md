@@ -1,8 +1,8 @@
-# DESIGN.md — ComptaGeWeb
+# DESIGN.md — ComptaGeWeb · Frontend (client/)
 
 Ce document est la référence unique et contraignante pour tout ce qui touche à l'interface visuelle du projet. Il prime sur toute préférence esthétique par défaut d'un framework ou d'une bibliothèque de composants. En cas de doute entre « ce qui est joli par défaut » et « ce qui est écrit ici », ce document gagne toujours.
 
-À consulter en complément de la skill `awesome-design-skills` et `web-design-guidelines` avant toute création ou modification de composant visuel.
+À consulter en complément de la skill `awesome-design-skills` et `web-design-guidelines` avant toute création ou modification de composant visuel. Voir `ARCHITECTURE.md` (ce dossier) pour où placer physiquement les composants dans le code.
 
 ---
 
@@ -53,10 +53,10 @@ Le mode sombre n'est **pas** une simple inversion automatique — les valeurs so
 
 ### 2.3 Implémentation technique
 
-- Les couleurs sont définies comme **variables CSS (custom properties)** dans `client/src/styles/globals.css`, jamais codées en dur dans les composants.
+- Les couleurs sont définies comme **variables CSS (custom properties)** dans `src/styles/globals.css`, jamais codées en dur dans les composants.
 - Nommage sémantique, pas littéral : `--color-surface-primary`, `--color-text-secondary`, `--color-accent`, **pas** `--green-dark`, `--gray-500`.
 - Tailwind est configuré pour consommer ces variables via `tailwind.config.ts` (extension du thème), pas via sa palette de couleurs par défaut (`slate`, `emerald`, etc. de Tailwind sont interdits en usage direct dans le code applicatif).
-- Le changement de thème (clair/sombre) se fait via un attribut `data-theme` sur `<html>`, piloté par `ThemeContext`, avec persistance du choix utilisateur (stockage local).
+- Le changement de thème (clair/sombre) se fait via un attribut `data-theme` sur `<html>`, piloté par `ThemeContext` (voir `ARCHITECTURE.md`, dossier `src/contexts/`), avec persistance du choix utilisateur (stockage local).
 
 ---
 
@@ -114,7 +114,7 @@ Les animations servent exclusivement à **clarifier un changement d'état**, jam
 
 - Durée courte et cohérente : 150-200ms pour les micro-interactions (survol, focus, ouverture de menu), 250-300ms maximum pour les transitions de page ou l'apparition de panneaux.
 - Easing : `ease-out` pour les apparitions, `ease-in` pour les disparitions — jamais de rebond (`bounce`), de ressort exagéré ou d'effet ludique.
-- Les changements de valeur dans les totaux calculés en temps réel peuvent avoir une transition douce (fondu ou léger changement de couleur momentané) pour signaler visuellement qu'un recalcul vient d'avoir lieu — c'est fonctionnel, pas décoratif.
+- Les changements de valeur dans les totaux calculés en temps réel (voir `TotauxLive` dans `ARCHITECTURE.md`) peuvent avoir une transition douce (fondu ou léger changement de couleur momentané) pour signaler visuellement qu'un recalcul vient d'avoir lieu — c'est fonctionnel, pas décoratif.
 - Aucune animation d'entrée systématique sur le chargement de page (pas de fade-in général de toute la page, pas d'éléments qui « glissent » un par un à l'ouverture d'un tableau).
 
 ---
@@ -127,7 +127,7 @@ Ces règles sont non négociables et s'appliquent quel que soit l'avis ponctuel 
 2. **Esthétique néon interdite** : pas de couleurs saturées fluorescentes, pas d'effets de lueur (`glow`/`box-shadow` coloré diffus), pas de dégradés multicolores agressifs. La palette définie en section 2 est fermée.
 3. **Superposition d'éléments interdite** : pas d'éléments qui se chevauchent visuellement de façon non intentionnelle (cartes empilées avec ombre façon « pile de papiers » décorative, éléments qui débordent les uns sur les autres pour un effet de profondeur artificiel). La hiérarchie visuelle se fait par la couleur, la taille et l'espacement — pas par la superposition.
 4. **Sections « Hero » centrées interdites** : ce n'est pas un site vitrine. Aucun écran de l'application ne doit avoir de grand bloc centré avec titre géant + sous-titre + bouton, façon landing page marketing. Tout écran commence par un contexte de travail (fil d'Ariane, titre de page aligné à gauche, actions).
-5. **Métriques arbitraires interdites** : ne jamais afficher de chiffre décoratif non justifié par une donnée réelle (ex. pas de « +99% de satisfaction » ou de compteurs animés cosmétiques). Toute métrique affichée dans un dashboard doit être une donnée réelle et vérifiable issue de la base.
+5. **Métriques arbitraires interdites** : ne jamais afficher de chiffre décoratif non justifié par une donnée réelle (ex. pas de « +99% de satisfaction » ou de compteurs animés cosmétiques). Toute métrique affichée dans un dashboard doit être une donnée réelle et vérifiable issue de l'API (voir `../API_CONTRACT.md`).
 6. **Esthétique « IA » interdite** : pas de dégradés violet/bleu génériques façon « produit IA générique de 2024 », pas d'icônes d'étincelles/sparkles comme ornement, pas de glassmorphism par défaut non justifié. Rien dans l'interface ne doit laisser penser que l'app a été stylée par un thème par défaut de générateur IA.
 7. **Pas de composant de bibliothèque UI utilisé sans restyling.** Si une librairie de composants est utilisée en base technique, ses styles par défaut (couleurs, ombres, rayons de bordure) doivent être surchargés pour se conformer à ce document — jamais laissés tels quels « pour aller vite ».
 
