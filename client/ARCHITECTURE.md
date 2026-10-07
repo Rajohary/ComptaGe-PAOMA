@@ -40,7 +40,7 @@ client/
     ├── styles/
     │   └── globals.css           # Tokens de couleur/typo issus de DESIGN.md
     ├── api/                       # Client API + hooks React Query par domaine
-    │   ├── client.ts              # Instance fetch/axios de base, gestion du token JWT
+    │   ├── client.ts              # Instance axios de base, gestion du token JWT
     │   ├── auth.ts
     │   ├── referentiel.ts
     │   ├── comptabilite.ts
@@ -83,7 +83,7 @@ client/
 
 ## 4. Consommation de l'API backend
 
-- Toute la logique d'appel réseau passe par `src/api/` — jamais de `fetch`/`axios` directement dans un composant ou une page.
+- Toute la logique d'appel réseau passe par `src/api/` — jamais d'appel HTTP direct dans un composant ou une page.
 - Le client API de base (`src/api/client.ts`) gère l'ajout automatique du header `Authorization: Bearer <token>` et le rafraîchissement du token en cas d'expiration (401).
 - Les hooks React Query par domaine (`useBureaux`, `useMouvements`, etc.) encapsulent la forme exacte décrite dans `../API_CONTRACT.md` — un composant ne doit jamais connaître l'URL brute d'un endpoint, seulement appeler le hook correspondant.
 - **Si un endpoint nécessaire n'existe pas encore côté backend** (statut `planifié` dans `../API_CONTRACT.md`), ne pas improviser sa forme : soit attendre son implémentation, soit créer un hook avec des données mockées clairement indiquées comme telles (`// TODO: mock en attendant /api/v1/xxx/`), jamais une supposition silencieuse qui sera difficile à retrouver plus tard.

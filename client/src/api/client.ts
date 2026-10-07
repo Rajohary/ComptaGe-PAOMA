@@ -1,9 +1,11 @@
+import axios, { type AxiosRequestConfig } from 'axios';
 import type { ApiError } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-interface RequestOptions extends RequestInit {
+interface RequestOptions extends Omit<AxiosRequestConfig, 'url' | 'baseURL' | 'headers'> {
   requiresAuth?: boolean;
+  headers?: Record<string, string>;
 }
 
 export class ApiClientError extends Error {
@@ -53,10 +55,15 @@ export const apiClient = async <T>(
 
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
 
-  let response = await fetch(url, {
-    ...rest,
-    headers: requestHeaders,
-  });
+  const makeRequest = () =>
+    axios.request<T>({
+      ...rest,
+      url,
+      headers: requestHeaders,
+      validateStatus: () => true,
+    });
+
+  let response = await makeRequest();
 
   // Handle 401 Unauthorized & Token Refresh
   if (response.status === 401 && requiresAuth) {
@@ -71,21 +78,23 @@ export const apiClient = async <T>(
     if (!isRefreshing) {
       isRefreshing = true;
       try {
-        const refreshResponse = await fetch(`${API_BASE_URL}/api/v1/auth/refresh/`, {
+        const refreshResponse = await axios.request<{ access: string; refresh?: string }>({
           method: 'POST',
+          url: `${API_BASE_URL}/api/v1/auth/refresh/`,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ refresh: refreshToken }),
+          data: { refresh: refreshToken },
+          validateStatus: () => true,
         });
 
-        if (refreshResponse.ok) {
-          const data = await refreshResponse.json();
+        if (refreshResponse.status >= 200 && refreshResponse.status < 300) {
+          const data = refreshResponse.data;
           localStorage.setItem('access_token', data.access);
           if (data.refresh) {
             localStorage.setItem('refresh_token', data.refresh);
           }
           processQueue(null, data.access);
           requestHeaders['Authorization'] = `Bearer ${data.access}`;
-          response = await fetch(url, { ...rest, headers: requestHeaders });
+          response = await makeRequest();
         } else {
           processQueue(new Error('Refresh failed'), null);
           localStorage.removeItem('access_token');
@@ -107,18 +116,16 @@ export const apiClient = async <T>(
       const newToken = localStorage.getItem('access_token');
       if (newToken) {
         requestHeaders['Authorization'] = `Bearer ${newToken}`;
-        response = await fetch(url, { ...rest, headers: requestHeaders });
+        response = await makeRequest();
       }
     }
   }
 
-  if (!response.ok) {
-    let errorData: ApiError;
-    try {
-      errorData = await response.json();
-    } catch {
-      errorData = { detail: response.statusText || 'Erreur réseau inconnue' };
-    }
+  if (response.status < 200 || response.status >= 300) {
+    const errorData =
+      response.data && typeof response.data === 'object'
+        ? (response.data as ApiError)
+        : { detail: response.statusText || 'Erreur réseau inconnue' };
     throw new ApiClientError(response.status, errorData);
   }
 
@@ -126,5 +133,5 @@ export const apiClient = async <T>(
     return {} as T;
   }
 
-  return response.json();
+  return response.data;
 };
