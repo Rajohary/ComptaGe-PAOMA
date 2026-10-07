@@ -146,3 +146,138 @@ Ces règles sont non négociables et s'appliquent quel que soit l'avis ponctuel 
 - Contraste minimum AA (WCAG 2.1) sur tout texte, dans les deux thèmes clair et sombre — à vérifier explicitement pour la couleur d'accentuation dorée sur fond clair, qui est la plus à risque de la palette.
 - Toute action réalisable à la souris doit être réalisable au clavier (navigation formulaire, validation, annulation).
 - Les messages d'erreur de formulaire sont associés programmatiquement à leur champ (pas seulement une couleur de bordure rouge).
+
+---
+
+## 9. Charte Graphique & Extrait Visuel (Portail Officiel `paositramalagasy.mg`)
+
+Cette section consigne l'extraction technique de la charte graphique et du design system du site institutionnel en production [paositramalagasy.mg](https://paositramalagasy.mg/). Elle sert de référence d'alignement pour l'identité de marque institutionnelle (PAOMA) tout en maintenant les règles d'ergonomie et de sobriété spécifiques au logiciel comptable ComptaGeWeb.
+
+### 9.1 Palette de couleurs extraite du portail
+
+#### Couleurs de marque & Identité PAOMA
+- **Bleu Institutionnel PAOMA (Primary)** :
+  `![#004387](https://via.placeholder.com/15/004387/FFFFFF?text=+)` `#004387` (`rgb(0, 67, 135)`)
+  - Déclinaisons en production :
+    - Hover / Dark variant : `![#00356F](https://via.placeholder.com/15/00356F/FFFFFF?text=+)` `#00356F`
+    - Subtils / Conteneurs légers : `#0043870D` (opacité 5%), `#00438733` (opacité 20%), `#00438766` (opacité 40%), `#004387CC` (opacité 80%)
+- **Jaune Postal PAOMA (Secondary / Accent)** :
+  `![#FFD500](https://via.placeholder.com/15/FFD500/000000?text=+)` `#FFD500` (`rgb(255, 213, 0)`)
+  - Déclinaisons en production :
+    - Fond hover doré / doux : `![#FDF8E4](https://via.placeholder.com/15/FDF8E4/000000?text=+)` `#FDF8E4`
+    - Subtils / Badges / Glows : `#FFD5001A` (opacité 10%), `#FFD50033` (opacité 20%), `#FFD500E6` (opacité 90%)
+- **Rouge Postal Malagasy (Tertiaire / Énergie / Sceau)** :
+  `![#E3161B](https://via.placeholder.com/15/E3161B/FFFFFF?text=+)` `#E3161B` / `#E31618` (`rgb(227, 22, 27)`)
+  - Subtils : `#E3161B0D` (5%), `#E3161B33` (20%)
+- **Vert Historique / Validation** :
+  `![#00A544](https://via.placeholder.com/15/00A544/FFFFFF?text=+)` `#00A544`
+
+#### Couleurs neutres & de surface
+- **Fond de page & cartes** :
+  - Blanc pur : `![#FFFFFF](https://via.placeholder.com/15/FFFFFF/000000?text=+)` `#FFFFFF`
+  - Gris très clair (Background) : `![#F9FAFB](https://via.placeholder.com/15/F9FAFB/000000?text=+)` `#F9FAFB` (`gray-50`)
+  - Gris de séparation : `![#F3F4F6](https://via.placeholder.com/15/F3F4F6/000000?text=+)` `#F3F4F6` (`gray-100`) / `![#E5E7EB](https://via.placeholder.com/15/E5E7EB/000000?text=+)` `#E5E7EB` (`gray-200`)
+- **Typographie neutre** :
+  - Texte principal foncé : `![#101828](https://via.placeholder.com/15/101828/FFFFFF?text=+)` `#101828` / `![#1E2939](https://via.placeholder.com/15/1E2939/FFFFFF?text=+)` `#1E2939`
+  - Texte secondaire / atténué : `![#4A5565](https://via.placeholder.com/15/4A5565/FFFFFF?text=+)` `#4A5565` / `![#6A7282](https://via.placeholder.com/15/6A7282/FFFFFF?text=+)` `#6A7282`
+  - Bordures discrètes : `![#D1D5DC](https://via.placeholder.com/15/D1D5DC/000000?text=+)` `#D1D5DC`
+
+#### Couleurs d'état
+- **Succès** : `![#00A544](https://via.placeholder.com/15/00A544/FFFFFF?text=+)` `#00A544` / `lab(59.1% -58.7 41.3)` (`color-green-600`)
+- **Avertissement / Info dorée** : `![#FFD500](https://via.placeholder.com/15/FFD500/000000?text=+)` `#FFD500` / `![#EDB200](https://via.placeholder.com/15/EDB200/000000?text=+)` `#EDB200`
+- **Erreur / Alerte** : `![#E3161B](https://via.placeholder.com/15/E3161B/FFFFFF?text=+)` `#E3161B` / `![#E40014](https://via.placeholder.com/15/E40014/FFFFFF?text=+)` `#E40014` (`color-red-600`)
+- **Information** : `![#004387](https://via.placeholder.com/15/004387/FFFFFF?text=+)` `#004387` / `![#3080FF](https://via.placeholder.com/15/3080FF/FFFFFF?text=+)` `#3080FF`
+
+---
+
+### 9.2 Typographie du portail
+- **Police principale (Corps & Titres)** : `Geist` (Sans-serif géométrique moderne avec fallback `Arial` / `system-ui`)
+- **Police monospace (Code / Données)** : `Geist Mono`
+- **Graisses usuelles observées** :
+  - `font-medium` (500) : labels de formulaires, navigation, boutons
+  - `font-semibold` (600) : sous-titres, cartes, badges
+  - `font-bold` (700) : titres de sections et H1-H2
+- **Échelle modulaire des titres** :
+  - H1 : `3xl` à `4xl` (1.875rem - 2.25rem), `font-bold`, couleur `#004387` ou `#101828`
+  - H2 : `2xl` (1.5rem), `font-semibold`
+  - H3 / Cartes : `xl` (1.25rem), `font-semibold`
+  - Corps / Body : `base` (1rem / 16px), line-height détendu
+
+*(Rappel ComptaGeWeb : Pour l'application métier de gestion comptable, la direction artistique définie en section 3 reste applicable : **Fraunces** pour les titres d'autorité institutionnelle et **Public Sans** pour la lisibilité tabulaire haute densité).*
+
+---
+
+### 9.3 Composants & Design System du portail
+- **Boutons & Actions** :
+  - **Bouton Primaire Bleu** : fond `bg-[#004387]`, texte `text-white`, survol `hover:bg-[#00356F]`, rayon `rounded-xl` ou `rounded-full`, padding `px-4 py-2` à `px-6 py-3`, transition `transition-all duration-300`.
+  - **Bouton Accent Doré** : fond `bg-[#FFD500]`, texte `text-[#101828]`, survol avec ombre portée accentuée `hover:shadow-lg`.
+  - **Bouton Alerte / Rouge** : fond `bg-[#E3161B]`, texte `text-white`, survol assombri.
+  - **Bouton Flottant / Pill** : rayon `rounded-full`, icônes centrées.
+- **Rayons de courbure (Border Radius)** :
+  - Conteneurs & cartes : `rounded-xl` (12px) et `rounded-2xl` (16px).
+  - Badges & pills d'action : `rounded-full`.
+- **Ombres (Box-shadows)** :
+  - Standard : `0 1px 3px 0 rgba(0, 0, 0, 0.1)` (`shadow-sm`)
+  - Cartes et blocs interactifs : `0 4px 6px -1px rgba(0, 0, 0, 0.1)` (`shadow-md`)
+  - Élévation au survol : `hover:shadow-xl` et `hover:shadow-2xl` (`0 20px 25px -5px rgba(0, 0, 0, 0.1)`)
+- **Conteneurs & Effets** :
+  - Arrière-plans subtils : `bg-[#004387]/5`, `bg-[#FFD500]/10`, `bg-[#E3161B]/5`
+  - Effets de surface : `backdrop-blur-lg` avec `border border-gray-200`
+- **Support des thèmes** : Le site public est orienté thème clair (`light`) avec utilisation de classes utilitaires Tailwind `dark:text-gray-100` pour la compatibilité avec les préférences système.
+
+---
+
+### 9.4 Exemple de variables CSS et configuration Tailwind prêtes à l'emploi
+
+#### Définition CSS (`:root`)
+```css
+:root {
+  /* Identité officielle Paositra Malagasy */
+  --paoma-blue-primary: #004387;
+  --paoma-blue-dark: #00356F;
+  --paoma-yellow: #FFD500;
+  --paoma-yellow-light: #FDF8E4;
+  --paoma-red: #E3161B;
+  --paoma-green-history: #00A544;
+
+  /* Surfaces & Neutres */
+  --paoma-bg: #F9FAFB;
+  --paoma-surface: #FFFFFF;
+  --paoma-border: #E5E7EB;
+  --paoma-text-primary: #101828;
+  --paoma-text-secondary: #4A5565;
+}
+```
+
+#### Exemple d'extension `tailwind.config.ts`
+```typescript
+// Extrait d'intégration des couleurs PAOMA
+export default {
+  theme: {
+    extend: {
+      colors: {
+        paoma: {
+          blue: {
+            DEFAULT: '#004387',
+            dark: '#00356F',
+            subtle: 'rgba(0, 67, 135, 0.05)',
+          },
+          yellow: {
+            DEFAULT: '#FFD500',
+            light: '#FDF8E4',
+            subtle: 'rgba(255, 213, 0, 0.1)',
+          },
+          red: {
+            DEFAULT: '#E3161B',
+            subtle: 'rgba(227, 22, 27, 0.05)',
+          },
+          green: '#00A544',
+        },
+      },
+      borderRadius: {
+        'card': '0.75rem', /* 12px / rounded-xl */
+      },
+    },
+  },
+}
+```
