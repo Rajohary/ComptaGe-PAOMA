@@ -10,7 +10,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
 
-  const fetchHealth = async () => {
+  const loadHealth = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -28,7 +28,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchHealth();
+    loadHealth();
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export default function App() {
               État de connexion au serveur backend (Django)
             </h2>
             <button
-              onClick={fetchHealth}
+              onClick={loadHealth}
               disabled={loading}
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-sans rounded bg-surface-secondary hover:bg-border-subtle text-text-primary transition-colors disabled:opacity-50"
             >
@@ -116,7 +116,7 @@ export default function App() {
           <ul className="list-disc list-inside space-y-1">
             <li>Tokens graphiques calibrés selon <code className="font-mono text-xs">DESIGN.md</code> (60/30/10 avec vert postal, gris ardoise, ocre doré).</li>
             <li>Typographie conforme : Titres en <strong>Fraunces</strong>, corps de texte et tableaux en <strong>Public Sans</strong>.</li>
-            <li>Client API modulaire dans <code className="font-mono text-xs">src/api/client.ts</code> avec gestion automatique du JWT et rafraîchissement.</li>
+            <li>Client API modulaire basé sur Axios dans <code className="font-mono text-xs">src/api/client.ts</code> avec gestion automatique du JWT et rafraîchissement.</li>
             <li>Structure par features initialisée dans <code className="font-mono text-xs">src/features/</code>.</li>
           </ul>
         </div>
