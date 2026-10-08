@@ -1,6 +1,6 @@
 # AGENT.md — ComptaGeWeb · Backend (server/)
 
-Ce fichier est le point d'entrée obligatoire pour tout agent (Antigravity / Agy) travaillant dans ce dossier `server/`. Lis-le en entier avant toute action, à chaque nouvelle tâche.
+Ce fichier est le point d'entrée obligatoire pour tout agent travaillant dans ce dossier `server/`. Lis-le en entier avant toute action, à chaque nouvelle tâche.
 
 Ce dossier contient **uniquement le backend**. Le frontend (React) vit dans `../client/`, dans un dossier séparé avec sa propre documentation — ne modifie jamais de fichier dans `../client/` depuis une session ouverte ici. Le seul fichier partagé entre les deux côtés est `../API_CONTRACT.md`, à la racine du repo.
 

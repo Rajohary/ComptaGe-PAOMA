@@ -36,9 +36,10 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | Endpoint | Méthode | Rôles autorisés | État | Description courte |
 |---|---|---|---|---|
 | `/api/v1/health/` | GET | Public | implémenté | Contrôle de santé de l'API (status, service, version) |
-| `/api/v1/auth/login/` | POST | Public | planifié | Authentification, retourne access + refresh token |
-| `/api/v1/auth/refresh/` | POST | Public (avec refresh token) | planifié | Renouvellement du token d'accès |
-| `/api/v1/auth/me/` | GET | Authentifié | planifié | Infos de l'utilisateur courant (dont le rôle) |
+| `/api/v1/auth/login/` | POST | Public | implémenté | Authentification, retourne access + refresh token + objet user |
+| `/api/v1/auth/refresh/` | POST | Public (avec refresh token) | implémenté | Renouvellement du token d'accès |
+| `/api/v1/auth/logout/` | POST | Authentifié | implémenté | Déconnexion côté client, réponse 200 |
+| `/api/v1/auth/me/` | GET | Authentifié | implémenté | Infos de l'utilisateur courant (dont le rôle) |
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | planifié | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, DELETE | Admin | planifié | Détail / modification / suppression d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | planifié | Ouverture d'une période de gestion |
@@ -61,6 +62,76 @@ Réponse 200 :
   "status": "healthy",
   "service": "ComptaGeWeb Backend",
   "version": "1.0.0"
+}
+```
+
+### POST /api/v1/auth/login/
+Requête :
+```json
+{
+  "username": "receveur1",
+  "password": "StrongPass123!"
+}
+```
+
+Réponse 200 :
+```json
+{
+  "refresh": "<refresh_token>",
+  "access": "<access_token>",
+  "user": {
+    "id": 1,
+    "username": "receveur1",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "role": "RECEVEUR",
+    "syst_fonc": "",
+    "bureau_code": 101
+  }
+}
+```
+
+### POST /api/v1/auth/refresh/
+Requête :
+```json
+{
+  "refresh": "<refresh_token>"
+}
+```
+
+Réponse 200 :
+```json
+{
+  "access": "<new_access_token>"
+}
+```
+
+### POST /api/v1/auth/logout/
+Requête :
+```json
+{}
+```
+
+Réponse 200 :
+```json
+{
+  "detail": "Déconnexion effectuée."
+}
+```
+
+### GET /api/v1/auth/me/
+Réponse 200 :
+```json
+{
+  "id": 1,
+  "username": "receveur1",
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "role": "RECEVEUR",
+  "syst_fonc": "",
+  "bureau_code": 101
 }
 ```
 
