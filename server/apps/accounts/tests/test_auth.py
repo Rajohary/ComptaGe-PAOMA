@@ -104,3 +104,50 @@ def test_expired_token_is_rejected():
     response = client.get("/api/v1/auth/me/")
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_register_user_hashes_password_and_requires_admin():
+    admin = User.objects.create_superuser(username="adm-register", password="1234")
+    admin_client = APIClient()
+    admin_login = admin_client.post(
+        "/api/v1/auth/login/",
+        {"username": "adm-register", "password": "1234"},
+        format="json",
+    )
+    admin_client.credentials(HTTP_AUTHORIZATION=f"Bearer {admin_login.data['access']}")
+
+    response = admin_client.post(
+        "/api/v1/auth/register/",
+        {
+            "username": "nouveau01",
+            "password": "StrongPass123!",
+            "first_name": "Nouveau",
+            "last_name": "Compte",
+            "email": "nouveau01@comptage.local",
+            "role": User.Role.AGENT_SAISIE,
+            "syst_fonc": "02",
+            "bureau_code": 101,
+        },
+        format="json",
+    )
+
+    assert response.status_code == status.HTTP_201_CREATED
+    created_user = User.objects.get(username="nouveau01")
+    assert created_user.check_password("StrongPass123!") is True
+    assert created_user.role == User.Role.AGENT_SAISIE
+
+    public_client = APIClient()
+    forbidden_response = public_client.post(
+        "/api/v1/auth/register/",
+        {
+            "username": "nouveau02",
+            "password": "StrongPass123!",
+            "role": User.Role.AGENT_SAISIE,
+            "syst_fonc": "02",
+            "bureau_code": 101,
+        },
+        format="json",
+    )
+
+    assert forbidden_response.status_code in (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN)

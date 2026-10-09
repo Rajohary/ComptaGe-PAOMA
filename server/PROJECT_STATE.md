@@ -25,6 +25,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 ## 1. Authentification & RBAC
 
 - [x] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
+- [x] Endpoint d'inscription `User` avec hash du mot de passe via Django (`/api/v1/auth/register/`)
 - [x] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
 - [x] Classes de permission DRF par rôle (`accounts/permissions.py`)
 - [x] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
@@ -146,5 +147,15 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - Cases cochées : section 1, tâches 1 à 4.
 - API_CONTRACT.md mis à jour : oui.
 - Points restés ouverts ou à valider avec l'utilisateur : la règle métier exacte de blacklist/révocation au logout n'est pas encore branchée côté serveur ; la déconnexion est pour l'instant gérée côté client en supprimant les jetons.
+
+### 2026-10-09 — Endpoint d'inscription utilisateur
+- Ce qui a été fait :
+  - Ajout de l'endpoint `POST /api/v1/auth/register/` pour créer un utilisateur avec hachage du mot de passe via `User.objects.create_user()`.
+  - Protection de l'inscription par le rôle `ADMIN`.
+  - Ajout d'un test vérifiant la création d'un compte, le hachage du mot de passe et le refus pour un appel non authentifié.
+- Fichiers/dossiers touchés : `server/apps/accounts/serializers.py`, `server/apps/accounts/views.py`, `server/apps/accounts/urls.py`, `server/apps/accounts/tests/test_auth.py`, `API_CONTRACT.md`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâche ajoutée inscription utilisateur.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : rien de bloquant ; l'inscription est volontairement réservée à l'admin pour rester cohérente avec le RBAC du projet.
 
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->

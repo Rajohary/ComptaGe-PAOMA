@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .permissions import IsAdmin, IsAgentSaisie, IsInspecteur, IsReceveur
-from .serializers import LoginSerializer, UserSerializer
+from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
 
 
 class LoginView(TokenObtainPairView):
@@ -36,3 +36,8 @@ class AdminOnlyPingView(APIView):
 
     def get(self, request, *args, **kwargs):
         return Response({"detail": "admin"})
+
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [IsAdmin]

@@ -36,6 +36,7 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | Endpoint | Méthode | Rôles autorisés | État | Description courte |
 |---|---|---|---|---|
 | `/api/v1/health/` | GET | Public | implémenté | Contrôle de santé de l'API (status, service, version) |
+| `/api/v1/auth/register/` | POST | Admin | implémenté | Création d'un utilisateur, mot de passe haché côté Django |
 | `/api/v1/auth/login/` | POST | Public | implémenté | Authentification, retourne access + refresh token + objet user |
 | `/api/v1/auth/refresh/` | POST | Public (avec refresh token) | implémenté | Renouvellement du token d'accès |
 | `/api/v1/auth/logout/` | POST | Authentifié | implémenté | Déconnexion côté client, réponse 200 |
@@ -89,6 +90,35 @@ Réponse 200 :
     "syst_fonc": "",
     "bureau_code": 101
   }
+}
+```
+
+### POST /api/v1/auth/register/
+Requête :
+```json
+{
+  "username": "nouveau01",
+  "password": "StrongPass123!",
+  "first_name": "Nouveau",
+  "last_name": "Compte",
+  "email": "nouveau01@comptage.local",
+  "role": "AGENT_SAISIE",
+  "syst_fonc": "02",
+  "bureau_code": 101
+}
+```
+
+Réponse 201 :
+```json
+{
+  "id": 5,
+  "username": "nouveau01",
+  "first_name": "Nouveau",
+  "last_name": "Compte",
+  "email": "nouveau01@comptage.local",
+  "role": "AGENT_SAISIE",
+  "syst_fonc": "02",
+  "bureau_code": 101
 }
 ```
 
@@ -167,5 +197,9 @@ Réponse 201 :
 ## 5. Changements majeurs (journal court)
 
 Si un changement casse la compatibilité (renommage de champ, changement de format, suppression d'un endpoint), le noter ici brièvement avec la date — ça évite qu'un agent travaillant sur l'autre côté du projet découvre la casse par un bug plutôt que par la documentation.
+
+### 2026-10-09 — Inscription utilisateur ajoutée
+- Endpoint ajouté : `POST /api/v1/auth/register/`
+- Détails : création d'un utilisateur avec hachage du mot de passe côté Django, accès réservé à `ADMIN`.
 
 <!-- Nouvelles entrées au-dessus de cette ligne -->
