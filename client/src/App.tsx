@@ -4,6 +4,10 @@ import UnauthorizedPage from './features/auth/pages/UnauthorizedPage';
 import RequireAuth from './features/auth/components/RequireAuth';
 import AppShell from './components/layout/AppShell';
 import DashboardPage from './features/dashboard/pages/DashboardPage';
+import { AppLayout } from './components/layout/AppLayout';
+import { BureauxPage } from './features/bureaux/BureauxPage';
+import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
+import { HealthPage } from './features/dashboard/HealthPage';
 
 export default function App() {
   return (
@@ -101,5 +105,13 @@ function PlaceholderPage({ title, module }: { title: string; module: string }) {
         </p>
       </div>
     </div>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Navigate to="/bureaux" replace />} />
+          <Route path="/bureaux" element={<BureauxPage />} />
+          <Route path="/periodes-gestion" element={<PeriodesGestionPage />} />
+          <Route path="/sante" element={<HealthPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }

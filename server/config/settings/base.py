@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # Applications métier ComptaGeWeb
     # (activées au fur et à mesure des étapes)
     "apps.accounts",
+    "apps.referentiel.apps.ReferentielConfig",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

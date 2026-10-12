@@ -36,14 +36,14 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 2. Référentiel (provinces, bureaux, périodes de gestion)
 
-- [ ] Modèles `Province`, `Bureau` (avec contraintes FK strictes)
-- [ ] CRUD Bureau côté API (réservé Admin pour l'écriture)
-- [ ] Modèle `PeriodeGestion` (ouverture/clôture, soldes d'ouverture)
-- [ ] Endpoint d'ouverture d'une période de gestion (validation de l'inventaire initial obligatoire : numéraire, valeurs postales, timbres fiscaux)
-- [ ] Endpoint de clôture d'une période de gestion
-- [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
-- [ ] Test unitaire : impossible de saisir un mouvement sur une période clôturée
-- [ ] Test unitaire : la date de fin de gestion doit être ≥ date de début
+- [x] Modèles `Province`, `Bureau` (avec contraintes FK strictes)
+- [x] CRUD Bureau côté API (réservé Admin pour l'écriture)
+- [x] Modèle `PeriodeGestion` (ouverture/clôture, soldes d'ouverture)
+- [x] Endpoint d'ouverture d'une période de gestion (validation de l'inventaire initial obligatoire : numéraire, valeurs postales, timbres fiscaux)
+- [x] Endpoint de clôture d'une période de gestion
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md`
+- [x] Test unitaire : impossible de saisir un mouvement sur une période clôturée
+- [x] Test unitaire : la date de fin de gestion doit être ≥ date de début
 
 ---
 
@@ -121,6 +121,86 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-08 — Test unitaire : interdiction de mouvement sur période clôturée (Section 2 finalisée)
+- Ce qui a été fait :
+  - Ajout de la méthode de garde métier [`verifier_active()`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/models.py#L236-L248) sur le modèle `PeriodeGestion`, levant une `ValidationError` explicite si `cloturee=True`.
+  - Implémentation du test unitaire `test_impossible_saisir_mouvement_sur_periode_cloturee` dans [`apps/referentiel/tests/test_models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_models.py#L128-L163) garantissant que toute tentative d'écriture / opération sur une période clôturée est rejetée.
+  - Exécution réussie des 15 tests unitaires du module `referentiel` (modèles, permissions RBAC, ouverture avec inventaire, clôture, contraintes d'intégrité).
+- Fichiers/dossiers touchés : `apps/referentiel/models.py`, `apps/referentiel/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 2, tâche `Test unitaire : impossible de saisir un mouvement sur une période clôturée` (100% de la Section 2 complétée).
+- API_CONTRACT.md mis à jour : non applicable (déjà à jour).
+- Points restés ouverts ou à valider avec l'utilisateur : **Section 2 intégralement terminée.** Prêt pour la Section 3 (Plan comptable - sections A-E).
+
+### 2026-10-08 — Endpoint de clôture d'une période de gestion (Section 2)
+- Ce qui a été fait :
+  - Implémentation de l'action personnalisée DRF `@action(detail=True, methods=["post"], url_path="cloturer")` dans [`PeriodeGestionViewSet`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py#L60-L86) :
+    - Route accessible sous `POST /api/v1/periodes-gestion/{id}/cloturer/`.
+    - Vérification d'état : rejet avec `400 Bad Request` si la période est déjà clôturée.
+    - Passage à l'état clôturé (`cloturee=True`, équivalent coupure = 1) et enregistrement automatique de la date et de l'heure effectives (`date_cloture = timezone.now()`).
+    - Restriction d'accès stricte via `IsReceveurOrAdmin` (seul un Receveur ou un Admin peut clôturer).
+  - Écriture des tests unitaires dédiés dans [`apps/referentiel/tests/test_api_periode.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_periode.py) validant le passage à 200, l'interdiction de double clôture (400), et le rejet des profils non habilités (403).
+  - Mise à jour d'[API_CONTRACT.md](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) pour documenter la route et son payload retour.
+- Fichiers/dossiers touchés : `apps/referentiel/views.py`, `apps/referentiel/tests/test_api_periode.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 2, tâches `Endpoint de clôture d'une période de gestion` et `Documenter ces endpoints dans ../API_CONTRACT.md`.
+- API_CONTRACT.md mis à jour : oui (`/api/v1/periodes-gestion/{id}/cloturer/` documenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Attente de validation avant d'entamer la tâche suivante ("Test unitaire : impossible de saisir un mouvement sur une période clôturée").
+
+### 2026-10-08 — Endpoint d'ouverture d'une période de gestion avec inventaire initial obligatoire (Section 2)
+- Ce qui a été fait :
+  - Création de la classe de permission [`IsReceveurOrAdmin`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/permissions.py#L23-L41) dans `apps/referentiel/permissions.py` (lecture ouverte aux utilisateurs connectés, création/ouverture restreinte aux profils `RECEVEUR` et `ADMIN`).
+  - Implémentation du serializer [`PeriodeGestionSerializer`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py#L40-L107) avec validations strictes :
+    - Inventaire initial obligatoire (`reserve_numeraire`, `valeurs_postales`, `timbres_fiscaux` requis et >= 0).
+    - Cohérence temporelle (`date_fin >= date_debut`).
+    - Unicité de la période active (interdiction formelle d'ouvrir une seconde période pour un même bureau tant que la précédente n'est pas clôturée).
+  - Création du ViewSet [`PeriodeGestionViewSet`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py#L35-L58) et enregistrement de l'endpoint `/api/v1/periodes-gestion/` dans le routeur DRF.
+  - Écriture de la suite de tests unitaires [`apps/referentiel/tests/test_api_periode.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_periode.py) validant l'ouverture nominale, le rejet en cas d'omission d'inventaire initial, le rejet RBAC des agents de saisie, et le rejet de double période ouverte.
+  - Mise à jour d'[API_CONTRACT.md](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) avec description de `/api/v1/periodes-gestion/` et exemple complet de payload.
+- Fichiers/dossiers touchés : `apps/referentiel/permissions.py`, `apps/referentiel/serializers.py`, `apps/referentiel/views.py`, `apps/referentiel/urls.py`, `apps/referentiel/tests/test_api_periode.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 2, tâche `Endpoint d'ouverture d'une période de gestion (validation de l'inventaire initial obligatoire : numéraire, valeurs postales, timbres fiscaux)`.
+- API_CONTRACT.md mis à jour : oui (`/api/v1/periodes-gestion/` documenté avec exemple de requête/réponse).
+- Points restés ouverts ou à valider avec l'utilisateur : Attente de validation avant d'entamer l'endpoint de clôture d'une période de gestion.
+
+### 2026-10-08 — Modèle PeriodeGestion (ouverture/clôture, soldes d'ouverture) (Section 2)
+- Ce qui a été fait :
+  - Création du modèle [`PeriodeGestion`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/models.py#L112-L241) correspondant à `tblGestionBur` du CDC :
+    - Clé étrangère stricte vers `Bureau` (`on_delete=models.PROTECT`).
+    - Clé étrangère optionnelle vers `User` (`receveur`) et champ textuel `nom_receveur`.
+    - Plage temporelle (`date_debut`, `date_fin`) avec contrainte SQL CheckConstraint (`date_fin >= date_debut`) et validation Django (`clean()`).
+    - Soldes et inventaire d'ouverture en Ariary (MGA) : `reserve_numeraire`, `valeurs_postales`, `timbres_fiscaux`, `solde_debiteur_depart`, `solde_crediteur_depart` (avec validateurs `MinValueValidator(0)`).
+    - État de gestion : indicateur booléen `cloturee` (coupure : False = en cours, True = clôturé) et horodatage `date_cloture`.
+    - Indexation composite B-Tree sur `(bureau, cloturee)` et `(date_debut, date_fin)`.
+  - Génération de la migration `0002_periodegestion` et application sur PostgreSQL (`comptage_dev`).
+  - Écriture des tests unitaires validant l'intégrité, le rejet si `date_fin < date_debut`, les valeurs par défaut et l'interdiction de suppression du bureau rattaché.
+- Fichiers/dossiers touchés : `apps/referentiel/models.py`, `apps/referentiel/migrations/0002_periodegestion.py`, `apps/referentiel/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 2, tâches `Modèle PeriodeGestion (ouverture/clôture, soldes d'ouverture)` et `Test unitaire : la date de fin de gestion doit être ≥ date de début`.
+- API_CONTRACT.md mis à jour : non applicable (pas d'endpoint créé/modifié pour cette tâche de modélisation pure).
+- Points restés ouverts ou à valider avec l'utilisateur : Attente de validation avant de passer à l'endpoint d'ouverture d'une période de gestion.
+
+### 2026-10-08 — CRUD Bureau côté API (réservé Admin pour l'écriture) (Section 2)
+- Ce qui a été fait :
+  - Création de la classe de permission [`IsAdminUserOrReadOnly`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/permissions.py#L4-L20) autorisant la lecture publique / authentifiée, et restreignant l'écriture (`POST`, `PUT`, `PATCH`, `DELETE`) aux utilisateurs ayant le rôle `ADMIN` (ou `is_staff` / `is_superuser`).
+  - Création des serializers [`ProvinceSerializer`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py#L5-L10) et [`BureauSerializer`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py#L13-L37) avec détail imbriqué de la province en lecture (`province_detail`).
+  - Création des ViewSets [`ProvinceViewSet`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py#L7-L16) et [`BureauViewSet`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py#L19-L33) avec filtres de recherche et ordonnancement.
+  - Configuration du routeur DRF dans [`apps/referentiel/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/urls.py) et inclusion sous `/api/v1/` dans [`config/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/config/urls.py#L14).
+  - Écriture des tests unitaires complets du flux CRUD et du RBAC dans [`apps/referentiel/tests/test_api_bureau.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_bureau.py).
+  - Mise à jour et documentation complète dans [`API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) avec exemples complets de requêtes/réponses.
+- Fichiers/dossiers touchés : `apps/referentiel/permissions.py`, `apps/referentiel/serializers.py`, `apps/referentiel/views.py`, `apps/referentiel/urls.py`, `apps/referentiel/tests/test_api_bureau.py`, `apps/referentiel/tests/test_models.py`, `config/urls.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 2, tâche `CRUD Bureau côté API (réservé Admin pour l'écriture)`.
+- API_CONTRACT.md mis à jour : oui (`/api/v1/bureaux/` et `/api/v1/bureaux/{id}/` passés à `implémenté` avec payloads d'exemple).
+- Points restés ouverts ou à valider avec l'utilisateur : Attente de validation avant de poursuivre vers la tâche suivante (`Modèle PeriodeGestion`).
+
+### 2026-10-08 — Modèles Province et Bureau avec contraintes FK strictes (Section 2)
+- Ce qui a été fait :
+  - Création de l'application Django `apps/referentiel` avec `ReferentielConfig` et déclaration dans `INSTALLED_APPS`.
+  - Implémentation du modèle [`Province`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/models.py#L9-L33) (numéro de province unique, nom unique).
+  - Implémentation du modèle [`Bureau`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/models.py#L36-L105) avec clé étrangère stricte vers `Province` (`on_delete=models.PROTECT`), unicité de `ncodique`, indexation B-Tree (`ncodique`, `province`), et attributs métier (`classe`, `ccp`, `ncf`, `cf_codik`).
+  - Génération de la migration `0001_initial` et application réussie sur PostgreSQL (`comptage_dev`).
+  - Écriture des tests unitaires validant l'intégrité relationnelle, l'unicité et le blocage de suppression en cascade.
+- Fichiers/dossiers touchés : `apps/referentiel/`, `config/settings/base.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 2, première tâche (`Modèles Province, Bureau`).
+- API_CONTRACT.md mis à jour : non applicable (pas d'endpoint créé/modifié lors de cette tâche de modélisation pure).
+- Points restés ouverts ou à valider avec l'utilisateur : Attente de validation avant de poursuivre avec la tâche suivante ("CRUD Bureau côté API").
 
 ### 2026-10-06 — Initialisation du projet et squelette backend (Section 0)
 - Ce qui a été fait :

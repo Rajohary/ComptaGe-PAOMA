@@ -35,10 +35,10 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 2. Référentiel (provinces, bureaux, périodes de gestion)
 
-- [ ] Écran de gestion des bureaux (liste, création, modification) — réservé Admin
-- [ ] Écran d'ouverture d'une période de gestion (saisie de l'inventaire initial : numéraire, valeurs postales, timbres fiscaux)
-- [ ] Écran de clôture d'une période de gestion
-- [ ] Gestion des erreurs de validation renvoyées par le backend (affichage associé au bon champ de formulaire)
+- [x] Écran de gestion des bureaux (liste, création, modification) — réservé Admin
+- [x] Écran d'ouverture d'une période de gestion (saisie de l'inventaire initial : numéraire, valeurs postales, timbres fiscaux)
+- [x] Écran de clôture d'une période de gestion
+- [x] Gestion des erreurs de validation renvoyées par le backend (affichage associé au bon champ de formulaire)
 
 ---
 
@@ -107,6 +107,79 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
  - Points restés ouverts ou à valider avec l'utilisateur : ...
  ```
+
+### 2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4)
+- Ce qui a été fait :
+  - Création de l'utilitaire générique [src/lib/formErrors.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/lib/formErrors.ts) (`applyServerValidationErrors`) pour mapper automatiquement les réponses DRF (`{ field: ["message", ...] }`) vers React Hook Form (`setError`), en évitant les erreurs orphelines et en distinguant les erreurs de champ des erreurs globales `detail`.
+  - Intégration de cette fonction dans les formulaires du référentiel : [BureauFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/components/BureauFormModal.tsx) et [PeriodeGestionFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx).
+  - Liaison programmatique et accessible des messages d'erreur aux champs correspondants via `aria-describedby` et `aria-invalid` dans [Input.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Input.tsx) et [Select.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Select.tsx).
+  - Ajout et exécution des tests e2e Playwright dédiés dans [e2e/bureaux.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/bureaux.spec.ts) et [e2e/periodes-gestion.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/periodes-gestion.spec.ts) vérifiant que les erreurs 400 DRF (ex. unicité codique, cohérence dates, montants négatifs) apparaissent sous leurs champs respectifs.
+- Fichiers/dossiers touchés :
+  - `src/lib/formErrors.ts`
+  - `src/features/bureaux/components/BureauFormModal.tsx`
+  - `src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx`
+  - `e2e/bureaux.spec.ts`, `e2e/periodes-gestion.spec.ts`
+- Cases cochées : section 2, tâche 4 (« Gestion des erreurs de validation renvoyées par le backend (affichage associé au bon champ de formulaire) »)
+- Dépendance à un endpoint backend : implémenté (format DRF standard documenté dans `API_CONTRACT.md`)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+
+### 2026-10-12 — Écran de clôture d'une période de gestion (Section 2, Tâche 3)
+- Ce qui a été fait :
+  - Création du composant modal [ClotureModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/components/ClotureModal.tsx) présentant un avertissement institutionnel clair, le récapitulatif complet de la période (bureau, dates, receveur, montants initiaux en Ariary), la confirmation sécurisée et l'affichage des erreurs serveur.
+  - Intégration du bouton d'action « Clôturer » dans la table des périodes sur [PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx) (visible uniquement pour les périodes encore ouvertes « En cours », badge « Verrouillée » pour les périodes déjà clôturées).
+  - Branchement de l'appel API `POST /api/v1/periodes-gestion/{id}/cloturer/` et rafraîchissement réactif de la liste.
+  - Test e2e Playwright dans [e2e/periodes-gestion.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/periodes-gestion.spec.ts) validant l'ouverture de la boîte de dialogue de clôture, le récapitulatif solennel et la confirmation réussie de la clôture (8/8 tests passés au vert).
+- Fichiers/dossiers touchés :
+  - `src/features/periodes-gestion/components/ClotureModal.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `e2e/periodes-gestion.spec.ts`
+- Cases cochées : section 2, tâche 3 (« Écran de clôture d'une période de gestion »)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/{id}/cloturer/` (implémenté dans `API_CONTRACT.md`)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-12 — Écran d'ouverture d'une période de gestion (Section 2, Tâche 2)
+- Ce qui a été fait :
+  - Définition des types TypeScript `PeriodeGestion` et `PeriodeGestionFormData` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Ajout des fonctions API `getPeriodesGestion`, `createPeriodeGestion` et `cloturerPeriodeGestion` dans [src/api/referentiel.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/referentiel.ts) pour consommer `/api/v1/periodes-gestion/`.
+  - Implémentation du formulaire modal [PeriodeGestionFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx) avec saisie de l'inventaire initial obligatoire (numéraire, valeurs postales, timbres fiscaux), validation Zod (montants positifs ou nuls, cohérence date fin >= date début), calcul instantané et affichage dynamique du total de l'inventaire initial, et mapping des erreurs serveur.
+  - Implémentation de la page [PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx) avec listing des périodes, indicateurs d'inventaire initial, statut (en cours / clôturée), recherche filtrante instantanée et modale d'ouverture.
+  - Intégration de la navigation dans [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx) et de la route `/periodes-gestion` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx).
+  - Rédaction et exécution du test e2e Playwright dans [e2e/periodes-gestion.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/periodes-gestion.spec.ts) (vérification du listing, du calcul live du total d'inventaire initial et de la soumission du formulaire).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/referentiel.ts`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`, `src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/App.tsx`
+  - `e2e/periodes-gestion.spec.ts`
+- Cases cochées : section 2, tâche 2 (« Écran d'ouverture d'une période de gestion (saisie de l'inventaire initial : numéraire, valeurs postales, timbres fiscaux) »)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/` (implémenté dans `API_CONTRACT.md`)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-12 — Écran de gestion des bureaux (Section 2, Tâche 1)
+- Ce qui a été fait :
+  - Définition des types TypeScript `Province`, `Bureau`, `BureauFormData`, `PaginatedResponse` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Création des fonctions API dans [src/api/referentiel.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/referentiel.ts) pour consommer `/api/v1/bureaux/` (GET, POST, PATCH, DELETE) et `/api/v1/provinces/` (GET).
+  - Création des composants d'interface réutilisables selon `DESIGN.md` : [Button.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Button.tsx), [Input.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Input.tsx), [Select.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Select.tsx), [Modal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/ui/Modal.tsx).
+  - Création du layout applicatif avec navigation persistante [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx), [Topbar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Topbar.tsx) et [AppLayout.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/AppLayout.tsx).
+  - Implémentation du formulaire modal [BureauFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/components/BureauFormModal.tsx) avec React Hook Form et validation Zod, ainsi que le mapping des erreurs API du backend sur les champs.
+  - Implémentation complète de [BureauxPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/BureauxPage.tsx) avec liste des bureaux, recherche avec debounce, modal de création/édition, modal de confirmation de suppression, et états de chargement / erreur / vide explicites.
+  - Configuration du routage dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) avec redirection vers `/bureaux`.
+  - Ajout et exécution avec succès du test e2e Playwright dans [e2e/bureaux.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/bureaux.spec.ts).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/referentiel.ts`
+  - `src/components/ui/Button.tsx`, `Input.tsx`, `Select.tsx`, `Modal.tsx`
+  - `src/components/layout/Sidebar.tsx`, `Topbar.tsx`, `AppLayout.tsx`
+  - `src/features/bureaux/BureauxPage.tsx`, `src/features/bureaux/components/BureauFormModal.tsx`
+  - `src/features/dashboard/HealthPage.tsx`
+  - `src/App.tsx`
+  - `e2e/bureaux.spec.ts`, `e2e/health.spec.ts`
+- Cases cochées : section 2, tâche 1 (« Écran de gestion des bureaux (liste, création, modification) — réservé Admin »)
+- Dépendance à un endpoint backend : `/api/v1/bureaux/` et `/api/v1/provinces/` (implémentés)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
  
 +### 2026-10-06 — Initialisation du projet client (Section 0)
 +- Ce qui a été fait :
