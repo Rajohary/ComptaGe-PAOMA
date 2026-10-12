@@ -39,9 +39,10 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/auth/login/` | POST | Public | planifié | Authentification, retourne access + refresh token |
 | `/api/v1/auth/refresh/` | POST | Public (avec refresh token) | planifié | Renouvellement du token d'accès |
 | `/api/v1/auth/me/` | GET | Authentifié | planifié | Infos de l'utilisateur courant (dont le rôle) |
-| `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | planifié | Liste / création des bureaux de poste |
-| `/api/v1/bureaux/{id}/` | GET, PUT, DELETE | Admin | planifié | Détail / modification / suppression d'un bureau |
-| `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | planifié | Ouverture d'une période de gestion |
+| `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
+| `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
+| `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
+| `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
 | `/api/v1/lignes-comptables/` | GET | Authentifié | planifié | Recherche dans le plan comptable (remplace le TreeView legacy) |
 | `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | planifié | Création/consultation des mouvements G58 |
 | `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
@@ -64,32 +65,164 @@ Réponse 200 :
 }
 ```
 
-```
-<!-- Exemple de structure à suivre :
-
-### POST /api/v1/mouvements/
-Requête :
+### GET /api/v1/bureaux/
+Réponse 200 (liste paginée avec `province_detail` inclus) :
+```json
 {
-  "ligne_comptable": 42,
-  "periode_gestion": 7,
-  "montant": 134353.80,
-  "date_operation": "2026-06-15"
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "province": 1,
+      "province_detail": {
+        "id": 1,
+        "nprovince": 1,
+        "nom": "Antananarivo"
+      },
+      "nbur": 1,
+      "codeclasse": 1,
+      "ncodique": 10101,
+      "nom_bureau": "Antaninarenina",
+      "classe": "R1",
+      "ccp": "10020",
+      "ncf": 1,
+      "cf_codik": 10101,
+      "created_at": "2026-10-08T15:55:33Z",
+      "updated_at": "2026-10-08T15:55:33Z"
+    }
+  ]
 }
+```
+
+### POST /api/v1/bureaux/ (Réservé Admin)
+Requête :
+```json
+{
+  "province": 1,
+  "ncodique": 10101,
+  "nom_bureau": "Antaninarenina",
+  "classe": "R1",
+  "ccp": "10020",
+  "nbur": 1,
+  "codeclasse": 1,
+  "ncf": 1,
+  "cf_codik": 10101
+}
+```
+Réponse 201 :
+```json
+{
+  "id": 1,
+  "province": 1,
+  "province_detail": {
+    "id": 1,
+    "nprovince": 1,
+    "nom": "Antananarivo"
+  },
+  "nbur": 1,
+  "codeclasse": 1,
+  "ncodique": 10101,
+  "nom_bureau": "Antaninarenina",
+  "classe": "R1",
+  "ccp": "10020",
+  "ncf": 1,
+  "cf_codik": 10101,
+  "created_at": "2026-10-08T15:55:33Z",
+  "updated_at": "2026-10-08T15:55:33Z"
+}
+```
+
+### GET /api/v1/bureaux/{id}/
+Réponse 200 : même structure qu'un élément du tableau ci-dessus.
+
+### PUT / PATCH /api/v1/bureaux/{id}/ (Réservé Admin)
+Requête (PATCH) :
+```json
+{
+  "classe": "HC"
+}
+```
+Réponse 200 : objet mis à jour.
+
+### DELETE /api/v1/bureaux/{id}/ (Réservé Admin)
+Réponse 204 No Content.
+
+### POST /api/v1/periodes-gestion/ (Ouverture d'une période de gestion — Receveur ou Admin)
+Requête :
+```json
+{
+  "bureau": 1,
+  "nom_receveur": "Rakoto Jean",
+  "date_debut": "2026-06-01",
+  "date_fin": "2026-06-30",
+  "reserve_numeraire": "500000.00",
+  "valeurs_postales": "250000.00",
+  "timbres_fiscaux": "100000.00",
+  "solde_debiteur_depart": "0.00",
+  "solde_crediteur_depart": "0.00"
+}
+```
+*Note : `reserve_numeraire`, `valeurs_postales` et `timbres_fiscaux` sont obligatoires (inventaire d'ouverture).*
 
 Réponse 201 :
+```json
 {
-  "id": 1023,
-  "ligne_comptable": 42,
-  "periode_gestion": 7,
-  "montant": "134353.80",
-  "montant_rectifie": "134353.80",
-  "augmentation": "0.00",
-  "diminution": "0.00",
-  "date_operation": "2026-06-15",
-  "saisi_par": "receveur_tananbava"
+  "id": 1,
+  "bureau": 1,
+  "bureau_detail": {
+    "id": 1,
+    "ncodique": 10101,
+    "nom_bureau": "Antaninarenina",
+    "classe": "R1"
+  },
+  "receveur": 2,
+  "nom_receveur": "Rakoto Jean",
+  "date_debut": "2026-06-01",
+  "date_fin": "2026-06-30",
+  "reserve_numeraire": "500000.00",
+  "valeurs_postales": "250000.00",
+  "timbres_fiscaux": "100000.00",
+  "solde_debiteur_depart": "0.00",
+  "solde_crediteur_depart": "0.00",
+  "cloturee": false,
+  "date_cloture": null,
+  "created_at": "2026-10-08T16:15:00Z",
+  "updated_at": "2026-10-08T16:15:00Z"
 }
--->
 ```
+
+### POST /api/v1/periodes-gestion/{id}/cloturer/ (Clôture d'une période — Receveur ou Admin)
+Requête : aucun body requis (ou `{}`).
+
+Réponse 200 :
+```json
+{
+  "id": 1,
+  "bureau": 1,
+  "bureau_detail": {
+    "id": 1,
+    "ncodique": 10101,
+    "nom_bureau": "Antaninarenina",
+    "classe": "R1"
+  },
+  "receveur": 2,
+  "nom_receveur": "Rakoto Jean",
+  "date_debut": "2026-06-01",
+  "date_fin": "2026-06-30",
+  "reserve_numeraire": "500000.00",
+  "valeurs_postales": "250000.00",
+  "timbres_fiscaux": "100000.00",
+  "solde_debiteur_depart": "0.00",
+  "solde_crediteur_depart": "0.00",
+  "cloturee": true,
+  "date_cloture": "2026-06-30T17:00:00Z",
+  "created_at": "2026-10-08T16:15:00Z",
+  "updated_at": "2026-10-08T16:22:00Z"
+}
+```
+*En cas de tentative de re-clôture d'une période déjà clôturée : 400 Bad Request `{ "detail": "Cette période de gestion est déjà clôturée." }`.*
 
 ---
 

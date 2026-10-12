@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     # Applications métier ComptaGeWeb
-    # (activées au fur et à mesure des étapes)
+    "apps.referentiel.apps.ReferentielConfig",
 ]
 
 MIDDLEWARE = [
