@@ -24,11 +24,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 1. Authentification & RBAC
 
-- [ ] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
-- [ ] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
-- [ ] Classes de permission DRF par rôle (`accounts/permissions.py`)
-- [ ] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
-- [ ] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
+- [x] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
+- [x] Endpoint d'inscription `User` avec hash du mot de passe via Django (`/api/v1/auth/register/`)
+- [x] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
+- [x] Classes de permission DRF par rôle (`accounts/permissions.py`)
+- [x] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
+- [x] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
 - [ ] Test unitaire : un token expiré est bien rejeté par les endpoints protégés
 
 ---
@@ -134,5 +135,27 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - Cases cochées : section 0 (100% complétée).
 - API_CONTRACT.md mis à jour : oui (/api/v1/health/ ajouté dans le registre et les exemples).
 - Points restés ouverts ou à valider avec l'utilisateur : Base PostgreSQL locale connectée et validée (`comptage_dev`, utilisateur `comptage_user`). Prêt pour la section 1 (Authentification & RBAC).
+
+### 2026-10-08 — Module authentification et RBAC
+- Ce qui a été fait :
+  - Création de l'app `apps.accounts` avec un `User` custom basé sur `AbstractUser` et les rôles `ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`.
+  - Ajout des endpoints JWT `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/` et `/api/v1/auth/me/`.
+  - Mise en place des permissions `IsAdmin`, `IsReceveur`, `IsAgentSaisie`, `IsInspecteur` et d'un helper de rattachement au bureau `IsSameBureau`.
+  - Ajout d'une migration initiale pour le modèle utilisateur.
+  - Écriture de tests pour le flux login / me / logout et pour les permissions par rôle / bureau.
+- Fichiers/dossiers touchés : `server/apps/accounts/`, `server/config/settings/base.py`, `server/config/urls.py`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâches 1 à 4.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : la règle métier exacte de blacklist/révocation au logout n'est pas encore branchée côté serveur ; la déconnexion est pour l'instant gérée côté client en supprimant les jetons.
+
+### 2026-10-09 — Endpoint d'inscription utilisateur
+- Ce qui a été fait :
+  - Ajout de l'endpoint `POST /api/v1/auth/register/` pour créer un utilisateur avec hachage du mot de passe via `User.objects.create_user()`.
+  - Protection de l'inscription par le rôle `ADMIN`.
+  - Ajout d'un test vérifiant la création d'un compte, le hachage du mot de passe et le refus pour un appel non authentifié.
+- Fichiers/dossiers touchés : `server/apps/accounts/serializers.py`, `server/apps/accounts/views.py`, `server/apps/accounts/urls.py`, `server/apps/accounts/tests/test_auth.py`, `API_CONTRACT.md`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâche ajoutée inscription utilisateur.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : rien de bloquant ; l'inscription est volontairement réservée à l'admin pour rester cohérente avec le RBAC du projet.
 
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
