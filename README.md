@@ -101,7 +101,7 @@ Comme front et back sont séparés, tu peux travailler les deux en parallèle (d
    > « Lis AGENT.md, ARCHITECTURE.md et PROJECT_STATE.md, ainsi que API_CONTRACT.md à la racine du projet. Initialise le projet selon la section 0 de PROJECT_STATE.md. »
 
 2. **Session côté frontend**, ouvre `antigravity-cli` dans `ComptaGeWeb/client/` et commence par :
-   > « Lis AGENT.md, ARCHITECTURE.md, DESIGN.md et PROJECT_STATE.md, ainsi que API_CONTRACT.md à la racine du projet. Initialise le projet selon la section 0 de PROJECT_STATE.md. »
+   > «  »
 
 3. **Ordre conseillé** : avance toujours un peu en avance côté backend avant le frontend correspondant (créer l'endpoint avant de coder l'appel React qui le consomme), pour que `API_CONTRACT.md` soit à jour avec la réalité au moment où le frontend en a besoin. Ce n'est pas une règle absolue — tu peux aussi stubber un endpoint `planifié` côté front en attendant — mais c'est le flux le plus fluide.
 
