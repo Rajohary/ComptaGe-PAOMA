@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     # Applications métier ComptaGeWeb
-    # (activées au fur et à mesure des étapes)
     "apps.accounts",
     "apps.referentiel.apps.ReferentielConfig",
+    "apps.comptabilite.apps.ComptabiliteConfig",
+    "apps.audit.apps.AuditConfig",
+    "apps.stock.apps.StockConfig",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
