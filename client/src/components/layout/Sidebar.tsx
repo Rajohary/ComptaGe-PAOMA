@@ -1,10 +1,7 @@
+import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Building2, Activity, CalendarDays } from 'lucide-react';
-
 import type { UserRole } from '../../types';
 import {
   LayoutDashboard,
@@ -13,13 +10,14 @@ import {
   Building2,
   ShieldCheck,
   Package,
+  CalendarDays,
+  Activity,
   LogOut,
   Sun,
   Moon,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { useState } from 'react';
 
 interface NavItem {
   label: string;
@@ -54,6 +52,12 @@ const NAV_ITEMS: NavItem[] = [
     roles: ['ADMIN'],
   },
   {
+    label: 'Périodes de gestion',
+    to: '/periodes-gestion',
+    icon: <CalendarDays className="w-5 h-5" />,
+    roles: ['RECEVEUR', 'ADMIN'],
+  },
+  {
     label: 'Audit & Écarts',
     to: '/audit',
     icon: <ShieldCheck className="w-5 h-5" />,
@@ -64,6 +68,11 @@ const NAV_ITEMS: NavItem[] = [
     to: '/stock',
     icon: <Package className="w-5 h-5" />,
     roles: ['RECEVEUR', 'AGENT_SAISIE', 'ADMIN'],
+  },
+  {
+    label: 'Santé système',
+    to: '/sante',
+    icon: <Activity className="w-5 h-5" />,
   },
 ];
 
@@ -104,21 +113,26 @@ export default function Sidebar() {
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded hover:bg-surface-secondary text-text-secondary hover:text-text-primary transition-colors flex-shrink-0"
-          aria-label={collapsed ? 'Étendre la barre latérale' : 'Réduire la barre latérale'}
+          className="p-1 rounded hover:bg-surface-secondary text-text-secondary hover:text-text-primary transition-colors duration-150"
+          aria-label={collapsed ? 'Agrandir la barre latérale' : 'Réduire la barre latérale'}
+          title={collapsed ? 'Agrandir' : 'Réduire'}
         >
-          {collapsed
-            ? <ChevronRight className="w-4 h-4" />
-            : <ChevronLeft className="w-4 h-4" />}
+          {collapsed ? (
+            <ChevronRight className="w-4 h-4" />
+          ) : (
+            <ChevronLeft className="w-4 h-4" />
+          )}
         </button>
       </div>
 
       {/* Navigation principale */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2" aria-label="Navigation principale">
-        <ul className="space-y-0.5">
+      <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Navigation principale">
+        <ul className="space-y-1">
           {visibleItems.map((item) => {
-            const isActive = location.pathname === item.to ||
-              (item.to !== '/' && location.pathname.startsWith(item.to));
+            const isActive =
+              item.to === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(item.to);
 
             return (
               <li key={item.to}>
@@ -126,16 +140,28 @@ export default function Sidebar() {
                   to={item.to}
                   className={`
                     flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-sans
-                    transition-colors duration-150
-                    ${isActive
-                      ? 'bg-brand/10 text-brand font-medium'
-                      : 'text-text-secondary hover:bg-surface-secondary hover:text-text-primary'}
+                    transition-colors duration-150 relative
+                    ${
+                      isActive
+                        ? 'bg-surface-secondary text-text-primary font-medium'
+                        : 'text-text-secondary hover:bg-surface-secondary/60 hover:text-text-primary'
+                    }
                     ${collapsed ? 'justify-center px-0' : ''}
                   `}
                   title={collapsed ? item.label : undefined}
-                  aria-current={isActive ? 'page' : undefined}
                 >
-                  <span className={`flex-shrink-0 ${isActive ? 'text-brand' : ''}`}>
+                  {/* Indicateur doré pour le lien actif */}
+                  {isActive && (
+                    <span
+                      className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-accent rounded-r"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span
+                    className={`flex-shrink-0 ${
+                      isActive ? 'text-accent' : 'text-text-secondary'
+                    }`}
+                  >
                     {item.icon}
                   </span>
                   {!collapsed && <span className="truncate">{item.label}</span>}
@@ -202,67 +228,4 @@ export default function Sidebar() {
   );
 }
 
-export const Sidebar: React.FC = () => {
-  const navItems = [
-    {
-      to: '/bureaux',
-      label: 'Bureaux de poste',
-      icon: Building2,
-    },
-    {
-      to: '/periodes-gestion',
-      label: 'Périodes de gestion',
-      icon: CalendarDays,
-    },
-    {
-      to: '/sante',
-      label: 'Santé système',
-      icon: Activity,
-    },
-  ];
-
-  return (
-    <aside className="w-64 bg-surface-card border-r border-border-subtle flex flex-col h-screen sticky top-0">
-      {/* Brand header */}
-      <div className="p-6 border-b border-border-subtle">
-        <div className="text-xs font-sans text-text-secondary uppercase tracking-wider">
-          Paositra Malagasy
-        </div>
-        <div className="text-xl font-heading font-bold text-text-primary mt-0.5">
-          ComptaGeWeb
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
-        <div className="px-3 py-2 text-xs font-sans font-semibold text-text-secondary uppercase tracking-wider">
-          Référentiel
-        </div>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded text-sm font-sans font-medium transition-colors ${
-                  isActive
-                    ? 'bg-surface-secondary text-text-primary border-l-4 border-accent font-semibold'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-secondary/50'
-                }`
-              }
-            >
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      {/* Footer info */}
-      <div className="p-4 border-t border-border-subtle text-xs text-text-secondary font-sans">
-        Version 1.0.0 • Module Référentiel
-      </div>
-    </aside>
-  );
-};
+export { Sidebar };

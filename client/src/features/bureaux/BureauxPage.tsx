@@ -135,7 +135,7 @@ export const BureauxPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
       {/* En-tête contextuel */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-subtle pb-5">
         <div>
