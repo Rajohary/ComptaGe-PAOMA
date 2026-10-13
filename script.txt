@@ -1,0 +1,17 @@
+from apps.accounts.models import User                                                      
+    from apps.referentiel.models import Province, Bureau                                       
+                                                                                               
+    # 1. Création des Provinces officielles de Madagascar (si pas encore créées)               
+    provinces_data = [                                                                         
+        (1, "Antananarivo"),                                                                   
+        (2, "Fianarantsoa"),                                                                   
+        (3, "Toamasina"),                                                                      
+        (4, "Mahajanga"),                                                                      
+        (5, "Toliara"),                                                                        
+        (6, "Antsiranana"),                                                                    
+    ]                                                                                          
+    provinces = {}                                                                             
+    for nprov, nom in provinces_data:                                                          
+        p, _ = Province.objects.get_or_create(nprovince=nprov, defaults={"nom": nom})          
+        provinces[nprov] = p                                                                   
+    print("Provinces prêtes !")
