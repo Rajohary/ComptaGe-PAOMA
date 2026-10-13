@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import paomaLogo from '../../assets/Paoma-logo.png';
 
 interface NavItem {
   label: string;
@@ -99,21 +100,31 @@ export default function Sidebar() {
         ${collapsed ? 'w-16' : 'w-60'}
       `}
     >
-      {/* En-tête sidebar */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-border-subtle">
-        {!collapsed && (
-          <div className="min-w-0">
-            <div className="text-[10px] font-sans text-text-secondary uppercase tracking-[0.15em]">
-              Paositra Malagasy
+      {/* En-tête sidebar avec Logo Paositra Malagasy & Titre */}
+      <div className="flex items-center justify-between px-3.5 py-3.5 border-b border-border-subtle gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img
+            src={paomaLogo}
+            alt="Logo Paositra Malagasy"
+            className="w-9 h-9 object-contain flex-shrink-0"
+          />
+          {!collapsed && (
+            <div className="min-w-0">
+              <div className="text-[10px] font-sans font-semibold text-paoma-blue uppercase tracking-wider">
+                Paositra Malagasy
+              </div>
+              <div
+                className="text-xs font-heading font-bold text-text-primary leading-tight line-clamp-2"
+                title="Comptabilité mensuelle de bureau de Poste"
+              >
+                Comptabilité mensuelle de bureau de Poste
+              </div>
             </div>
-            <div className="text-sm font-heading font-bold text-text-primary truncate">
-              ComptaGeWeb
-            </div>
-          </div>
-        )}
+          )}
+        </div>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded hover:bg-surface-secondary text-text-secondary hover:text-text-primary transition-colors duration-150"
+          className="p-1 rounded hover:bg-surface-secondary text-text-secondary hover:text-text-primary transition-colors duration-150 flex-shrink-0"
           aria-label={collapsed ? 'Agrandir la barre latérale' : 'Réduire la barre latérale'}
           title={collapsed ? 'Agrandir' : 'Réduire'}
         >

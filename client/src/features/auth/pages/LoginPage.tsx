@@ -5,6 +5,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LogIn, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import paomaLogo from '../../../assets/Paoma-logo.png';
 
 const loginSchema = z.object({
   username: z.string().min(1, "Le nom d'utilisateur est requis."),
@@ -63,11 +64,18 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* En-tête institutionnel */}
         <div className="text-center mb-8">
-          <div className="text-xs font-sans text-text-secondary uppercase tracking-[0.2em] mb-2">
+          <div className="flex justify-center mb-3">
+            <img
+              src={paomaLogo}
+              alt="Logo Paositra Malagasy"
+              className="w-16 h-16 object-contain drop-shadow-sm"
+            />
+          </div>
+          <div className="text-xs font-sans font-semibold text-paoma-blue uppercase tracking-[0.2em] mb-2">
             Paositra Malagasy
           </div>
-          <h1 className="text-3xl font-heading font-bold text-text-primary">
-            ComptaGeWeb
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-text-primary">
+            Comptabilité mensuelle de bureau de Poste
           </h1>
           <p className="text-sm font-sans text-text-secondary mt-2">
             Gestion comptable des bureaux de poste
