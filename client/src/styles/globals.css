@@ -4,33 +4,39 @@
 
 :root,
 [data-theme="light"] {
-  /* Mode clair */
-  --color-brand: #0F3D2E;             /* Vert postal profond */
-  --color-surface-primary: #F4F7F5;   /* Fond de page très clair */
+  /* Mode clair — Couleurs officielles du logo Paositra Malagasy */
+  --color-brand: #004387;             /* Bleu institutionnel PAOMA (logo) */
+  --color-brand-hover: #00356F;
+  --color-surface-primary: #F8FAFC;   /* Fond de page très clair */
   --color-surface-card: #FFFFFF;      /* Fond de carte / panneau */
-  --color-surface-secondary: #E8ECE9; /* Surface secondaire */
-  --color-text-primary: #1E2530;      /* Texte principal gris ardoise */
-  --color-text-secondary: #5B6472;    /* Texte secondaire */
-  --color-border: #D8DDE3;            /* Bordures et séparateurs */
-  --color-accent: #C9962C;            /* Doré/ocre institutionnel */
-  --color-status-success: #1C7C4E;    /* Succès / validé */
-  --color-status-alert: #B5451B;      /* Alerte / écart détecté */
-  --color-status-info: #2B6CA3;       /* Information neutre */
+  --color-surface-secondary: #EDF2F7; /* Surface secondaire */
+  --color-text-primary: #0F172A;      /* Texte principal ardoise foncée */
+  --color-text-secondary: #475569;    /* Texte secondaire */
+  --color-border: #CBD5E1;            /* Bordures et séparateurs */
+  --color-accent: #FFD600;            /* Jaune d'or postal PAOMA (logo) */
+  --color-accent-hover: #E5C000;      /* Jaune postal légèrement assombri */
+  --color-accent-soft: rgba(255, 214, 0, 0.15); /* Halos / reflets */
+  --color-status-success: #00A544;    /* Succès / validé */
+  --color-status-alert: #E3161B;      /* Rouge PAOMA (alerte / écart / logo) */
+  --color-status-info: #004387;       /* Bleu PAOMA info */
 }
 
 [data-theme="dark"] {
-  /* Mode sombre (recalibré selon DESIGN.md 2.2) */
-  --color-brand: #1C7C4E;             /* Vert postal visible en sombre */
-  --color-surface-primary: #101512;   /* Fond de page sombre */
-  --color-surface-card: #171D1A;      /* Surface de carte / panneau */
-  --color-surface-secondary: #1F2723; /* Surface secondaire sombre */
-  --color-text-primary: #E7EAE8;      /* Texte principal clair */
-  --color-text-secondary: #9AA5A0;    /* Texte secondaire atténué */
-  --color-border: #2A3330;            /* Bordures / séparateurs sombres */
-  --color-accent: #D9AD52;            /* Doré légèrement éclairci */
-  --color-status-success: #3FA873;    /* Succès */
-  --color-status-alert: #D96A3E;      /* Alerte */
-  --color-status-info: #5A9BD1;       /* Information */
+  /* Mode sombre recalibré avec accents logo PAOMA */
+  --color-brand: #3B82F6;             /* Bleu lumineux pour le mode sombre */
+  --color-brand-hover: #60A5FA;
+  --color-surface-primary: #0B111E;   /* Fond de page bleu nuit profond */
+  --color-surface-card: #131D2E;      /* Surface de carte nuit */
+  --color-surface-secondary: #1E293B; /* Surface secondaire sombre */
+  --color-text-primary: #F1F5F9;      /* Texte principal clair */
+  --color-text-secondary: #94A3B8;    /* Texte secondaire atténué */
+  --color-border: #243247;            /* Bordures / séparateurs sombres */
+  --color-accent: #FFD600;            /* Jaune d'or PAOMA */
+  --color-accent-hover: #FFE033;
+  --color-accent-soft: rgba(255, 214, 0, 0.2);
+  --color-status-success: #22C55E;    /* Succès */
+  --color-status-alert: #EF4444;      /* Alerte */
+  --color-status-info: #38BDF8;       /* Information */
 }
 
 /* Règle obligatoire pour les montants comptables */
