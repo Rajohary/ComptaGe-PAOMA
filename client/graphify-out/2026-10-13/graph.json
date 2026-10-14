@@ -1,0 +1,289 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "g58_saisie_flow",
+        "label": "G58 Saisie Core Flow",
+        "nodes": [
+          "src_features_saisie_g58_lignecomptablesearch",
+          "src_features_saisie_g58_totauxlive",
+          "client_e2e_saisie_g58_spec",
+          "concept_g58_journal"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 0.95,
+        "source_file": "client/ARCHITECTURE.md"
+      },
+      {
+        "id": "frontend_governance",
+        "label": "Frontend Governance Documents",
+        "nodes": [
+          "client_agent_md",
+          "client_architecture_md",
+          "client_design_md",
+          "client_project_state_md"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "client/AGENT.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "src_api_client",
+      "label": "API Client",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "code",
+      "norm_label": "api client",
+      "rationale": "Base fetch/axios instance managing JWT tokens and 401 refreshes.",
+      "source_file": "client/src/api/client.ts"
+    },
+    {
+      "id": "skill_graphify",
+      "label": "Graphify Skill",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "concept",
+      "norm_label": "graphify skill",
+      "rationale": "Mandatory tool for dependency analysis before modifying existing features.",
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "id": "api_contract_md",
+      "label": "API_CONTRACT.md",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "document",
+      "norm_label": "api_contract.md",
+      "rationale": "Shared contract between frontend and backend; source of truth for data shapes and endpoints.",
+      "source_file": "API_CONTRACT.md"
+    },
+    {
+      "id": "client_agent_md",
+      "label": "AGENT.md",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "document",
+      "norm_label": "agent.md",
+      "rationale": "Entry point for agents working on the frontend; defines scope and mandatory reading order.",
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "id": "client_architecture_md",
+      "label": "ARCHITECTURE.md",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "document",
+      "norm_label": "architecture.md",
+      "rationale": "Defines the technical stack, folder structure, and architectural principles for the React frontend.",
+      "source_file": "client/ARCHITECTURE.md"
+    },
+    {
+      "id": "client_project_state_md",
+      "label": "PROJECT_STATE.md",
+      "community": 0,
+      "community_name": "Project Architecture & Documentation",
+      "file_type": "document",
+      "norm_label": "project_state.md",
+      "rationale": "Living task list and action log; must be updated after every task.",
+      "source_file": "client/PROJECT_STATE.md"
+    },
+    {
+      "id": "client_e2e_saisie_g58_spec",
+      "label": "Saisie G58 E2E Test",
+      "community": 1,
+      "community_name": "G58 Accounting Entry Workflow",
+      "file_type": "code",
+      "norm_label": "saisie g58 e2e test",
+      "rationale": "Mandatory Playwright test for the core G58 entry flow.",
+      "source_file": "client/e2e/saisie-g58.spec.ts"
+    },
+    {
+      "id": "src_features_saisie_g58_lignecomptablesearch",
+      "label": "LigneComptableSearch",
+      "community": 1,
+      "community_name": "G58 Accounting Entry Workflow",
+      "file_type": "code",
+      "norm_label": "lignecomptablesearch",
+      "rationale": "Critical component replacing the legacy TreeView; focuses on UX and real-time search.",
+      "source_file": "client/src/features/saisie-g58/components/LigneComptableSearch.tsx"
+    },
+    {
+      "id": "src_features_saisie_g58_totauxlive",
+      "label": "TotauxLive",
+      "community": 1,
+      "community_name": "G58 Accounting Entry Workflow",
+      "file_type": "code",
+      "norm_label": "totauxlive",
+      "rationale": "Component for real-time total calculations during data entry.",
+      "source_file": "client/src/features/saisie-g58/components/TotauxLive.tsx"
+    },
+    {
+      "id": "concept_g58_journal",
+      "label": "Journal G58",
+      "community": 1,
+      "community_name": "G58 Accounting Entry Workflow",
+      "file_type": "concept",
+      "norm_label": "journal g58",
+      "rationale": "The core business entity: a monthly accounting slip for post offices.",
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "id": "src_styles_globals",
+      "label": "Global Styles",
+      "community": 2,
+      "community_name": "Design System & Styling",
+      "file_type": "code",
+      "norm_label": "global styles",
+      "rationale": "Implements CSS variables for colors and typography defined in DESIGN.md.",
+      "source_file": "client/src/styles/globals.css"
+    },
+    {
+      "id": "client_design_md",
+      "label": "DESIGN.md",
+      "community": 2,
+      "community_name": "Design System & Styling",
+      "file_type": "document",
+      "norm_label": "design.md",
+      "rationale": "Binding reference for UI/UX, including color systems (60/30/10), typography (Fraunces/Public Sans), and anti-patterns.",
+      "source_file": "client/DESIGN.md"
+    },
+    {
+      "id": "src_contexts_authcontext",
+      "label": "AuthContext",
+      "community": 3,
+      "community_name": "Authentication Context",
+      "file_type": "code",
+      "norm_label": "authcontext",
+      "rationale": "Manages global auth state, roles, and tokens.",
+      "source_file": "client/src/contexts/AuthContext.tsx"
+    }
+  ],
+  "links": [
+    {
+      "source": "client_agent_md",
+      "target": "skill_graphify",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "source": "src_features_saisie_g58_lignecomptablesearch",
+      "target": "concept_g58_journal",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/ARCHITECTURE.md"
+    },
+    {
+      "source": "src_features_saisie_g58_totauxlive",
+      "target": "concept_g58_journal",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/ARCHITECTURE.md"
+    },
+    {
+      "source": "src_styles_globals",
+      "target": "client_design_md",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/DESIGN.md"
+    },
+    {
+      "source": "client_agent_md",
+      "target": "api_contract_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "source": "client_agent_md",
+      "target": "client_architecture_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "source": "client_agent_md",
+      "target": "client_design_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "source": "client_agent_md",
+      "target": "client_project_state_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    },
+    {
+      "source": "client_architecture_md",
+      "target": "api_contract_md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/ARCHITECTURE.md"
+    },
+    {
+      "source": "client_e2e_saisie_g58_spec",
+      "target": "src_features_saisie_g58_totauxlive",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "client/PROJECT_STATE.md"
+    },
+    {
+      "source": "src_api_client",
+      "target": "api_contract_md",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "client/ARCHITECTURE.md"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "g58_saisie_flow",
+      "label": "G58 Saisie Core Flow",
+      "nodes": [
+        "src_features_saisie_g58_lignecomptablesearch",
+        "src_features_saisie_g58_totauxlive",
+        "client_e2e_saisie_g58_spec",
+        "concept_g58_journal"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": "client/ARCHITECTURE.md"
+    },
+    {
+      "id": "frontend_governance",
+      "label": "Frontend Governance Documents",
+      "nodes": [
+        "client_agent_md",
+        "client_architecture_md",
+        "client_design_md",
+        "client_project_state_md"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/AGENT.md"
+    }
+  ],
+  "built_at_commit": "75b4f08a29ed77d16403f0c47b17c57c64daf182"
+}

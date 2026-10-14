@@ -3,6 +3,7 @@ Modèles pour l'application Référentiel Postal.
 Conforme à ARCHITECTURE.md, CDC_ComptaGe.md et GLOSSAIRE_METIER_COMPTAGEWEB.md.
 """
 
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator
 
@@ -123,7 +124,7 @@ class PeriodeGestion(models.Model):
         help_text="Bureau de poste rattaché à la période de gestion"
     )
     receveur = models.ForeignKey(
-        "auth.User",
+        settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
         related_name="periodes_gestion",
         null=True,

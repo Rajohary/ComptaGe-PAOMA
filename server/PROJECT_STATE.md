@@ -24,11 +24,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 1. Authentification & RBAC
 
-- [ ] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
-- [ ] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
-- [ ] Classes de permission DRF par rôle (`accounts/permissions.py`)
-- [ ] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
-- [ ] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
+- [x] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
+- [x] Endpoint d'inscription `User` avec hash du mot de passe via Django (`/api/v1/auth/register/`)
+- [x] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
+- [x] Classes de permission DRF par rôle (`accounts/permissions.py`)
+- [x] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
+- [x] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
 - [ ] Test unitaire : un token expiré est bien rejeté par les endpoints protégés
 
 ---
@@ -48,7 +49,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Plan comptable (sections A-E)
 
-- [ ] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
+- [x] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
 - [ ] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
 - [ ] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
 - [ ] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
@@ -57,12 +58,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
-- [ ] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
+- [x] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
 - [ ] Logique de validation dans `services.py` : période active, `montant_rectifie` initialisé = `montant` à la création
 - [ ] Endpoint de création/modification d'un mouvement
 - [ ] Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans `services.py`, testée unitairement
 - [ ] Test unitaire : `montant_rectifie = montant + augmentation - diminution` est vérifié et rejeté si incohérent
-- [ ] Modèle `MouvementEncaisse` + endpoint associé
+- [~] Modèle `MouvementEncaisse` + endpoint associé (modèle créé — endpoint restant)
 - [ ] Endpoint « Situation comptable » avec report automatique du solde du mois précédent
 - [ ] Test unitaire : le report de solde d'un mois sur l'autre est correct
 - [ ] Documenter tous ces endpoints dans `../API_CONTRACT.md`
@@ -73,7 +74,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 - [ ] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
 - [ ] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
-- [ ] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
+- [x] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
 - [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
 - [ ] Test unitaire : une rectification sans motif est rejetée
 - [ ] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
@@ -91,7 +92,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 7. Stock de valeurs postales
 
-- [ ] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
+- [x] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
 - [ ] Endpoints de saisie/consultation du stock par bureau et par mois
 - [ ] Documenter dans `../API_CONTRACT.md`
 
@@ -215,4 +216,54 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui (/api/v1/health/ ajouté dans le registre et les exemples).
 - Points restés ouverts ou à valider avec l'utilisateur : Base PostgreSQL locale connectée et validée (`comptage_dev`, utilisateur `comptage_user`). Prêt pour la section 1 (Authentification & RBAC).
 
+### 2026-10-08 — Module authentification et RBAC
+- Ce qui a été fait :
+  - Création de l'app `apps.accounts` avec un `User` custom basé sur `AbstractUser` et les rôles `ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`.
+  - Ajout des endpoints JWT `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/` et `/api/v1/auth/me/`.
+  - Mise en place des permissions `IsAdmin`, `IsReceveur`, `IsAgentSaisie`, `IsInspecteur` et d'un helper de rattachement au bureau `IsSameBureau`.
+  - Ajout d'une migration initiale pour le modèle utilisateur.
+  - Écriture de tests pour le flux login / me / logout et pour les permissions par rôle / bureau.
+- Fichiers/dossiers touchés : `server/apps/accounts/`, `server/config/settings/base.py`, `server/config/urls.py`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâches 1 à 4.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : la règle métier exacte de blacklist/révocation au logout n'est pas encore branchée côté serveur ; la déconnexion est pour l'instant gérée côté client en supprimant les jetons.
+
+### 2026-10-09 — Endpoint d'inscription utilisateur
+- Ce qui a été fait :
+  - Ajout de l'endpoint `POST /api/v1/auth/register/` pour créer un utilisateur avec hachage du mot de passe via `User.objects.create_user()`.
+  - Protection de l'inscription par le rôle `ADMIN`.
+  - Ajout d'un test vérifiant la création d'un compte, le hachage du mot de passe et le refus pour un appel non authentifié.
+- Fichiers/dossiers touchés : `server/apps/accounts/serializers.py`, `server/apps/accounts/views.py`, `server/apps/accounts/urls.py`, `server/apps/accounts/tests/test_auth.py`, `API_CONTRACT.md`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâche ajoutée inscription utilisateur.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : rien de bloquant ; l'inscription est volontairement réservée à l'admin pour rester cohérente avec le RBAC du projet.
+
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
+
+### 2026-10-13 — Création de tous les modèles Django (apps comptabilite, audit, stock)
+- Ce qui a été fait :
+  - Création des apps Django `apps.comptabilite`, `apps.audit` et `apps.stock` via `manage.py startapp`.
+  - **`apps/comptabilite/models.py`** : 6 modèles conformes au CDC § 2 et ARCHITECTURE.md :
+    - [`SectionComptable`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMenuParent` / `tblClasse` (code, libelle, sens Débit/Crédit, actif, ordre)
+    - [`LigneComptable`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMenuSub` (menu_sub, compte, libelle, FK Section + FK parent hiérarchique pour B1-B4)
+    - [`RubriqueEncaisseParent`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblEncaisseParent`
+    - [`RubriqueEncaisse`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblEncaisse` (TR, SF, CR…)
+    - [`Mouvement`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMvt` (montant, augmentation, diminution, montant_rectifie, motif_rectification, saisi_par, rectifie_par, date_operation)
+    - [`MouvementEncaisse`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMvtEncaisse` (sens, montant, date, saisi_par)
+  - **`apps/audit/models.py`** : 1 modèle :
+    - [`AuditLogEntry`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/models.py) — table immuable (append-only) répondant à CDC § 6.2 (auteur, action, objet, detail JSON, created_at)
+  - **`apps/stock/models.py`** : 2 modèles :
+    - [`ProduitPostal`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/stock/models.py) → `Products` / `Categories` simplifié (TextChoices VP, TF, MA, IF, CO, AU)
+    - [`StockValeurPostale`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/stock/models.py) → Tableau A G58 (quantite/valeur initial-reçu-vendu-final, UniqueConstraint bureau+periode+produit)
+  - Enregistrement dans `INSTALLED_APPS` (base.py).
+  - `manage.py check` → 0 erreur.
+  - `makemigrations comptabilite audit stock` → 3 migrations `0001_initial` générées.
+  - `manage.py migrate` → toutes appliquées sur PostgreSQL (`comptage_dev`).
+- Fichiers/dossiers touchés :
+  - `apps/comptabilite/` (créé), `apps/audit/` (créé), `apps/stock/` (créé)
+  - `config/settings/base.py` (INSTALLED_APPS mis à jour)
+  - `PROJECT_STATE.md`
+- Cases cochées : aucune case de PROJECT_STATE.md directement (Section 3-7 restent `[ ]` — cette entrée prépare le terrain pour la Section 3).
+- API_CONTRACT.md mis à jour : non applicable (modèles uniquement, pas d'endpoint).
+- Points restés ouverts ou à valider : Prêt pour Section 3 (SectionComptable + LigneComptable seed + endpoint de recherche), puis Section 4 (vues/serializers Mouvement).
+

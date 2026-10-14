@@ -49,7 +49,7 @@ export const apiClient = async <T>(
     ...(headers as Record<string, string>),
   };
 
-  if (requiresAuth && token) {
+  if (token && (requiresAuth || requiresAuth === false)) {
     requestHeaders['Authorization'] = `Bearer ${token}`;
   }
 
