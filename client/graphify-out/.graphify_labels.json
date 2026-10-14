@@ -1,5 +1,5 @@
 {
-  "0": "PeriodeGestionFormModal.tsx",
+  "0": "StockValeurFormModal.tsx",
   "1": "package.json",
   "2": "App.tsx",
   "3": "AuthContext.tsx",
@@ -15,7 +15,7 @@
   "13": "compilerOptions",
   "14": "Flat Design System Skill (Antigravity)",
   "15": "PROJECT_STATE.md — État du projet · Frontend (client/)",
-  "16": "devDependencies",
+  "16": "ARCHITECTURE.md — ComptaGeWeb · Frontend (client/)",
   "17": "@playwright/test",
   "18": "index.ts",
   "19": "AGENT.md — ComptaGeWeb · Frontend (client/)",
