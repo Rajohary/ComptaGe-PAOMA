@@ -240,17 +240,50 @@ class Command(BaseCommand):
                 },
             )
 
+        # -------------------------------------------------------------------
+        # 7. Rubriques d'encaisse et trésorerie (tblEncaisseParent & tblEncaisse)
+        # -------------------------------------------------------------------
+        from apps.comptabilite.models import RubriqueEncaisseParent, RubriqueEncaisse
+
+        parent_encaisse, _ = RubriqueEncaisseParent.objects.get_or_create(
+            id_encaisse=1,
+            defaults={"libelle": "ENCAISSE ET VALEURS"},
+        )
+        parent_flux, _ = RubriqueEncaisseParent.objects.get_or_create(
+            id_encaisse=2,
+            defaults={"libelle": "DEBIT/CREDIT"},
+        )
+
+        rubriques_encaisse_data = [
+            {"id_encaisse": parent_encaisse, "menu_sub": 1, "compte": "TR", "libelle": "Trésorerie et espèces physiques (billets et pièces)"},
+            {"id_encaisse": parent_encaisse, "menu_sub": 2, "compte": "SF", "libelle": "Stock final de timbres et valeurs postales"},
+            {"id_encaisse": parent_encaisse, "menu_sub": 3, "compte": "CR", "libelle": "Créances et avances temporaires"},
+            {"id_encaisse": parent_flux, "menu_sub": 4, "compte": "AP", "libelle": "Approvisionnement et reversement de fonds"},
+            {"id_encaisse": parent_flux, "menu_sub": 5, "compte": "VD", "libelle": "Versements et dégagements bancaires/CCP"},
+        ]
+        for r_item in rubriques_encaisse_data:
+            RubriqueEncaisse.objects.get_or_create(
+                menu_sub=r_item["menu_sub"],
+                defaults={
+                    "rubrique_parent": r_item["id_encaisse"],
+                    "compte": r_item["compte"],
+                    "libelle": r_item["libelle"],
+                },
+            )
+
         # Rapport d'exécution
         nb_sections = SectionComptable.objects.count()
         nb_lignes = LigneComptable.objects.count()
         nb_racines = LigneComptable.objects.filter(parent__isnull=True).count()
         nb_enfants = LigneComptable.objects.filter(parent__isnull=False).count()
+        nb_encaisses = RubriqueEncaisse.objects.count()
 
         self.stdout.write(
             self.style.SUCCESS(
                 f"\nInitialisation du Plan Comptable terminée avec succès !\n"
                 f"  - Sections créées / actives : {nb_sections}\n"
                 f"  - Total lignes comptables   : {nb_lignes} (dont {nb_enfants} sous-rubriques filles, {nb_racines} rubriques principales)\n"
-                f"  - Couverture complète : Section A, B (B1-B4), C, D, E."
+                f"  - Rubriques d'encaisse      : {nb_encaisses}\n"
+                f"  - Couverture complète : Section A, B (B1-B4), C, D, E et Encaisse."
             )
         )

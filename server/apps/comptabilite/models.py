@@ -316,6 +316,35 @@ class Mouvement(models.Model):
         """Retourne True si montant_rectifie ≠ montant (équivalent vue DIF du legacy)."""
         return self.montant_rectifie != self.montant
 
+    def clean(self):
+        super().clean()
+        from decimal import Decimal
+        from django.core.exceptions import ValidationError
+
+        m = Decimal(str(self.montant or 0))
+        aug = Decimal(str(self.augmentation or 0))
+        dim = Decimal(str(self.diminution or 0))
+        rectif = Decimal(str(self.montant_rectifie if self.montant_rectifie is not None else (m + aug - dim)))
+
+        calcule = m + aug - dim
+        if calcule < 0:
+            raise ValidationError(
+                {"diminution": f"La diminution ({dim}) ne peut excéder le montant initial + augmentation ({m + aug})."}
+            )
+        if rectif != calcule:
+            raise ValidationError(
+                {
+                    "montant_rectifie": (
+                        f"Incohérence : montant_rectifie ({rectif}) doit être égal à "
+                        f"montant ({m}) + augmentation ({aug}) - diminution ({dim}) = {calcule}."
+                    )
+                }
+            )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return (
             f"[{self.date_operation}] {self.ligne_comptable} "

@@ -131,3 +131,133 @@ class PlanComptableModelsTestCase(unittest.TestCase):
         )
         with self.assertRaises(ProtectedError):
             parent.delete()
+
+
+class MouvementModelTestCase(unittest.TestCase):
+    def setUp(self):
+        from apps.referentiel.models import Province, Bureau, PeriodeGestion
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+
+        self.uid = uuid.uuid4().hex[:6].upper()
+        self.province = Province.objects.create(
+            nprovince=90 + (int(self.uid, 16) % 10),
+            nom=f"Province Mvt {self.uid}",
+        )
+        self.bureau = Bureau.objects.create(
+            province=self.province,
+            ncodique=90100 + (int(self.uid, 16) % 800),
+            nom_bureau=f"Bureau Mvt {self.uid}",
+            classe="R1",
+        )
+        self.periode = PeriodeGestion.objects.create(
+            bureau=self.bureau,
+            nom_receveur="Receveur Mvt Test",
+            date_debut="2026-06-01",
+            date_fin="2026-06-30",
+            reserve_numeraire=100000,
+            valeurs_postales=50000,
+            timbres_fiscaux=20000,
+            cloturee=False,
+        )
+        self.user = User.objects.create_user(
+            username=f"user_mvt_{self.uid}",
+            password="StrongPass123!",
+            role="AGENT_SAISIE",
+        )
+        self.sec = SectionComptable.objects.create(
+            code=f"SM_{self.uid}",
+            libelle="Section Mvt Test",
+            sens=SectionComptable.Sens.DEBIT,
+        )
+        self.ligne = LigneComptable.objects.create(
+            section=self.sec,
+            menu_sub=int(f"70{self.sec.id % 1000:03d}1"),
+            compte="MD01",
+            libelle="Ligne Mvt Test",
+        )
+
+    def tearDown(self):
+        from apps.comptabilite.models import Mouvement
+        Mouvement.objects.filter(periode_gestion=self.periode).delete()
+        self.ligne.delete()
+        self.sec.delete()
+        self.periode.delete()
+        self.bureau.delete()
+        self.province.delete()
+        self.user.delete()
+
+    def test_mouvement_creation_and_ecart(self):
+        from apps.comptabilite.models import Mouvement
+        from decimal import Decimal
+
+        mvt = Mouvement.objects.create(
+            periode_gestion=self.periode,
+            ligne_comptable=self.ligne,
+            saisi_par=self.user,
+            date_operation="2026-06-15",
+            montant=Decimal("15000.00"),
+            augmentation=Decimal("0.00"),
+            diminution=Decimal("0.00"),
+            montant_rectifie=Decimal("15000.00"),
+        )
+        self.assertIsNotNone(mvt.pk)
+        self.assertFalse(mvt.a_ecart())
+        self.assertEqual(str(mvt), f"[2026-06-15] MD01 — Ligne Mvt Test — 15000.00 MGA (période {self.periode.id})")
+
+        # Test détection écart via augmentation cohérente
+        mvt.augmentation = Decimal("3000.00")
+        mvt.montant_rectifie = Decimal("18000.00")
+        mvt.save()
+        self.assertTrue(mvt.a_ecart())
+
+    def test_montant_rectifie_incoherent_rejected(self):
+        """
+        Test unitaire spécifique de la tâche 5 :
+        montant_rectifie = montant + augmentation - diminution est vérifié et rejeté si incohérent.
+        """
+        from apps.comptabilite.models import Mouvement
+        from decimal import Decimal
+        from django.core.exceptions import ValidationError
+
+        # 1. Tentative d'enregistrement avec montant_rectifie incohérent (19000 au lieu de 15000 + 2000 - 0 = 17000)
+        with self.assertRaises(ValidationError) as ctx:
+            Mouvement.objects.create(
+                periode_gestion=self.periode,
+                ligne_comptable=self.ligne,
+                saisi_par=self.user,
+                date_operation="2026-06-15",
+                montant=Decimal("15000.00"),
+                augmentation=Decimal("2000.00"),
+                diminution=Decimal("0.00"),
+                montant_rectifie=Decimal("19000.00"),
+            )
+        self.assertIn("montant_rectifie", ctx.exception.message_dict)
+
+        # 2. Diminution supérieure à montant + augmentation
+        with self.assertRaises(ValidationError) as ctx2:
+            Mouvement.objects.create(
+                periode_gestion=self.periode,
+                ligne_comptable=self.ligne,
+                saisi_par=self.user,
+                date_operation="2026-06-15",
+                montant=Decimal("10000.00"),
+                augmentation=Decimal("0.00"),
+                diminution=Decimal("12000.00"),
+                montant_rectifie=Decimal("-2000.00"),
+            )
+        self.assertIn("diminution", ctx2.exception.message_dict)
+
+        # 3. Enregistrement valide respectant l'équation
+        mvt_valide = Mouvement.objects.create(
+            periode_gestion=self.periode,
+            ligne_comptable=self.ligne,
+            saisi_par=self.user,
+            date_operation="2026-06-15",
+            montant=Decimal("15000.00"),
+            augmentation=Decimal("2000.00"),
+            diminution=Decimal("1000.00"),
+            montant_rectifie=Decimal("16000.00"),
+        )
+        self.assertIsNotNone(mvt_valide.pk)
+        self.assertEqual(mvt_valide.montant_rectifie, Decimal("16000.00"))
