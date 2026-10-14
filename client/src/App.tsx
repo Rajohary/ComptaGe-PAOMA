@@ -6,6 +6,7 @@ import AppShell from './components/layout/AppShell';
 import DashboardPage from './features/dashboard/pages/DashboardPage';
 import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
+import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
 import { HealthPage } from './features/dashboard/HealthPage';
 
 /**
@@ -60,12 +61,12 @@ export default function App() {
             }
           />
 
-          {/* Plan comptable — Receveur, Agent de saisie, Inspecteur */}
+          {/* Plan comptable — Receveur, Agent de saisie, Inspecteur, Admin */}
           <Route
             path="plan-comptable"
             element={
-              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR']}>
-                <PlaceholderPage title="Plan comptable" module="3" />
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <PlanComptablePage />
               </RequireAuth>
             }
           />
