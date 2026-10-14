@@ -49,10 +49,10 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Plan comptable (sections A-E)
 
-- [ ] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
-- [ ] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
-- [ ] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
-- [ ] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
+- [x] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
+- [x] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
+- [x] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
+- [x] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
 
 ---
 
@@ -121,6 +121,51 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-14 — Endpoint de recherche instantanée dans les lignes comptables (Section 3, Tâches 3 & 4)
+- Ce qui a été fait :
+  - Création des serializers [`apps/comptabilite/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py) :
+    - `SectionComptableSerializer` : exposition des champs code, libelle, sens, sens_libelle, ordre, actif.
+    - `LigneComptableSerializer` : enrichissement relationnel avec `section_code`, `section_libelle`, `sens`, `sens_libelle` et `parent_detail` imbriqué (code, compte, libellé).
+  - Création des vues DRF dans [`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py) :
+    - `LigneComptableViewSet` (`ReadOnlyModelViewSet`) : endpoint `GET /api/v1/lignes-comptables/` optimisé via `select_related("section", "parent")`.
+    - Recherche instantanée textuelle insensible à la casse sur `compte`, `libelle`, `section__code`, `section__libelle` via le paramètre `?search=`.
+    - Filtrage multi-critères : `section` (code ou id), `sens` (1=Débit, 2=Crédit), `parent` (id ou `null`), `feuille=true` (uniquement les lignes imputables n'ayant pas de sous-lignes), et `actif` (par défaut `true`).
+    - `SectionComptableViewSet` (`ReadOnlyModelViewSet`) : endpoint `GET /api/v1/sections-comptables/` pour lister le référentiel des sections A à E.
+  - Configuration du routage dans [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py) et intégration dans [`config/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/config/urls.py).
+  - Rédaction et exécution de la suite de tests unitaires [`apps/comptabilite/tests/test_api_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_plan_comptable.py) (6 tests passés avec succès : contrôle RBAC/401, recherche instantanée par libellé et par compte, enrichissement parent_detail, filtrage par sens comptable et filtre feuille).
+  - Documentation exhaustive dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) (registre mis à jour, paramètres d'URL, payloads JSON d'exemple pour le frontend).
+- Fichiers/dossiers touchés : `apps/comptabilite/serializers.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `config/urls.py`, `apps/comptabilite/tests/test_api_plan_comptable.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 3, tâches `Endpoint de recherche instantanée dans les lignes comptables` et `Documenter cet endpoint dans ../API_CONTRACT.md`.
+- API_CONTRACT.md mis à jour : oui (tableau §3, exemples payloads §4, journal §5).
+- Points restés ouverts ou à valider avec l'utilisateur : Section 3 entièrement complétée ! Prochaine étape : Section 4 (Saisie du Journal G58 — cœur fonctionnel : calculs automatiques, création/consultation des mouvements, alerte écart DIF).
+
+### 2026-10-14 — Script de seed des lignes comptables réelles (Section 3, Tâche 2)
+- Ce qui a été fait :
+  - Création de la commande de gestion Django [`apps/comptabilite/management/commands/seed_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/management/commands/seed_plan_comptable.py) exécutable via `python manage.py seed_plan_comptable [--reset]`.
+  - Insertion idempotente et transactionnelle des sections et lignes comptables réelles conformes au CDC ComptaGe et au Journal G58 :
+    - **5 Sections principales** : Section A (Opérations d'ordre postal et financier, Débit), Section B (Correspondances et objets, Crédit), Section C (Mouvements de fonds et trésorerie, Débit), Section D (Dépenses budgétaires et rémunérations, Crédit), Section E (Régularisations et opérations d'ordre).
+    - **Hiérarchie Section B** : création des 4 sous-opérations intermédiaires (`B1` Émissions/versements mandats, `B2` Paiements mandats, `B3` Chèques postaux CCP et épargne, `B4` Services pour compte de tiers) et de leurs lignes de produits feuilles respectives.
+    - **45 lignes comptables réelles créées** avec préfixes de compte (`AD01`-`AD10`, `B101`-`B105`, `B201`-`B204`, `B301`-`B304`, `B401`-`B404`, `CD01`-`CD04`, `DD01`-`DD06`, `ED01`-`ED04`) et codes d'imputation uniques `menu_sub`.
+  - Exécution réussie de la commande et validation de son idempotence (exécutions répétées sans duplication).
+  - Validation de la cohabitation des tests unitaires `test_models.py` avec les données pré-chargées.
+- Fichiers/dossiers touchés : `apps/comptabilite/management/`, `apps/comptabilite/management/commands/seed_plan_comptable.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 3, tâche `Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)`.
+- API_CONTRACT.md mis à jour : non applicable (commande de seed CLI, pas d'endpoint).
+- Points restés ouverts ou à valider avec l'utilisateur : Prêt pour la tâche suivante : `Endpoint de recherche instantanée dans les lignes comptables` et sa documentation dans `API_CONTRACT.md`.
+
+### 2026-10-14 — Modélisation SectionComptable / LigneComptable (Section 3, Tâche 1)
+- Ce qui a été fait :
+  - Validation et finalisation des modèles [`SectionComptable`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L25-L73) et [`LigneComptable`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L74-L132) dans `apps/comptabilite/models.py` :
+    - `SectionComptable` : code unique (A, B, C, D, E), libelle, sens comptable (`Sens.DEBIT`, `Sens.CREDIT`, `Sens.NON_APPLICABLE`), statut actif et ordre d'affichage.
+    - `LigneComptable` : FK vers `SectionComptable`, FK récursive optionnelle `parent` pour la hiérarchie à sous-niveaux (ex. sous-opérations B1 à B4), code `menu_sub` unique (code produit d'imputation), préfixe `compte` (ex: AD, BD, CD) et libellé de rubrique.
+    - Contraintes d'intégrité relationnelle strictes (`on_delete=models.PROTECT`) interdisant la suppression orpheline d'une section ou d'une ligne parente.
+  - Application effective de la migration `0001_initial` de l'application `comptabilite` sur la base PostgreSQL locale.
+  - Rédaction et exécution complète de la suite de tests unitaires [`apps/comptabilite/tests/test_models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_models.py) (7/7 tests passés au vert : création, unicité du code, hiérarchie section -> sous-opération -> produit, unicité de `menu_sub`, et protection contre les suppressions en cascade).
+- Fichiers/dossiers touchés : `apps/comptabilite/models.py`, `apps/comptabilite/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 3, tâche `Modélisation SectionComptable / LigneComptable (hiérarchie section → sous-opération → produit)`.
+- API_CONTRACT.md mis à jour : non applicable (étape de modélisation ORM pure, aucun endpoint exposé).
+- Points restés ouverts ou à valider avec l'utilisateur : Prêt pour la tâche suivante de la section 3 : `Script de seed des lignes comptables réelles (sections A, B avec B1-B4, D en priorité)`.
 
 ### 2026-10-08 — Test unitaire : interdiction de mouvement sur période clôturée (Section 2 finalisée)
 - Ce qui a été fait :

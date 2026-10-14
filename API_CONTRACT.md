@@ -50,8 +50,8 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
-| `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
-| `/api/v1/lignes-comptables/` | GET | Authentifié | planifié | Recherche dans le plan comptable (remplace le TreeView legacy) |
+| `/api/v1/lignes-comptables/` | GET | Authentifié | implémenté (voir §4) | Recherche instantanée et référentiel du plan comptable (remplace TreeView legacy) |
+| `/api/v1/sections-comptables/` | GET | Authentifié | implémenté (voir §4) | Référentiel des sections macro-comptables (A à E) |
 | `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | planifié | Création/consultation des mouvements G58 |
 | `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
 | `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | planifié | Liste des mouvements en écart (équivalent vue DIF) |
@@ -331,11 +331,104 @@ Réponse 200 :
 ```
 *En cas de tentative de re-clôture d'une période déjà clôturée : 400 Bad Request `{ "detail": "Cette période de gestion est déjà clôturée." }`.*
 
+### GET /api/v1/sections-comptables/
+Réponse 200 (liste paginée des sections A à E) :
+```json
+{
+  "count": 5,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "code": "A",
+      "libelle": "Opérations d'ordre postal et financier",
+      "sens": 1,
+      "sens_libelle": "Débit",
+      "actif": true,
+      "ordre": 1
+    },
+    {
+      "id": 2,
+      "code": "B",
+      "libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "actif": true,
+      "ordre": 2
+    }
+  ]
+}
+```
+
+### GET /api/v1/lignes-comptables/ (Recherche instantanée plan comptable)
+Endpoint consommé par le composant frontend de recherche / sélection rapide (remplace le TreeView legacy).
+- **Accès :** Tout utilisateur authentifié (`RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`).
+- **Paramètres de requête (query params) :**
+  - `search` : recherche textuelle instantanée (insensible à la casse) sur le préfixe de compte (ex: `B101`, `AD`), le libellé (ex: `mandat`, `timbres`), le code de section (`A`), ou le libellé de section.
+  - `section` : filtre par code de section (`A`, `B`, `C`, `D`, `E`) ou par identifiant ID de section.
+  - `sens` : filtre par sens comptable de la section (`1` = Débit, `2` = Crédit).
+  - `parent` : ID de la ligne parente, ou `null` pour récupérer uniquement les lignes racines/groupes.
+  - `feuille` : `true` pour ne récupérer que les lignes imputables (lignes terminales n'ayant pas de sous-lignes).
+  - `actif` : `true` (par défaut), `false`, ou `all`.
+
+Exemple de requête : `GET /api/v1/lignes-comptables/?search=mandat`
+
+Réponse 200 :
+```json
+{
+  "count": 9,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 22,
+      "menu_sub": 200,
+      "compte": "B1",
+      "libelle": "Sous-section B1 — Émissions et versements mandats",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": null,
+      "parent_detail": null,
+      "actif": true
+    },
+    {
+      "id": 23,
+      "menu_sub": 201,
+      "compte": "B101",
+      "libelle": "Mandats ordinaires émis en numéraire",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": 22,
+      "parent_detail": {
+        "id": 22,
+        "menu_sub": 200,
+        "compte": "B1",
+        "libelle": "Sous-section B1 — Émissions et versements mandats"
+      },
+      "actif": true
+    }
+  ]
+}
+```
+
 ---
 
 ## 5. Changements majeurs (journal court)
 
 Si un changement casse la compatibilité (renommage de champ, changement de format, suppression d'un endpoint), le noter ici brièvement avec la date — ça évite qu'un agent travaillant sur l'autre côté du projet découvre la casse par un bug plutôt que par la documentation.
+
+### 2026-10-14 — Endpoints Plan comptable ajoutés
+- Endpoints ajoutés :
+  - `GET /api/v1/lignes-comptables/` : recherche instantanée avec filtrage multi-critères (`search`, `section`, `sens`, `parent`, `feuille`, `actif`) et enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
+  - `GET /api/v1/sections-comptables/` : référentiel macro-comptable (sections A à E).
+- Rôles autorisés : tout utilisateur authentifié.
 
 ### 2026-10-09 — Inscription utilisateur ajoutée
 - Endpoint ajouté : `POST /api/v1/auth/register/`

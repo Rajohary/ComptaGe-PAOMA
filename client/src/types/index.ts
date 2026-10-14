@@ -114,4 +114,47 @@ export interface PeriodeGestionFormData {
   solde_crediteur_depart?: string;
 }
 
+export interface SectionComptable {
+  id: number;
+  code: string;
+  libelle: string;
+  sens: number; // 1 = Débit, 2 = Crédit
+  sens_libelle: string; // 'Débit' | 'Crédit'
+  actif: boolean;
+  ordre: number;
+}
+
+export interface LigneComptableParentDetail {
+  id: number;
+  menu_sub: number;
+  compte: string;
+  libelle: string;
+}
+
+export interface LigneComptable {
+  id: number;
+  menu_sub: number;
+  compte: string;
+  libelle: string;
+  section: number;
+  section_code: string;
+  section_libelle: string;
+  sens: number;
+  sens_libelle: string;
+  parent: number | null;
+  parent_detail: LigneComptableParentDetail | null;
+  actif: boolean;
+  is_leaf?: boolean;
+}
+
+export interface LigneComptableSearchParams {
+  search?: string;
+  section?: string | number;
+  sens?: number;
+  parent?: number | null;
+  feuille?: boolean;
+  actif?: boolean | 'all';
+  page?: number;
+}
+
 

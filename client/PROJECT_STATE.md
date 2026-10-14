@@ -44,13 +44,15 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Recherche dans le plan comptable (remplace le TreeView legacy)
 
-- [ ] Composant `LigneComptableSearch` — recherche instantanée (debounce), résultats groupés par section
-- [ ] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
-- [ ] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
+- [x] Composant `LigneComptableSearch` — recherche instantanée (debounce), résultats groupés par section
+- [x] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
+- [x] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
 
 ---
 
+
 ## 4. Saisie du Journal G58 — cœur fonctionnel
+
 
 - [ ] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
 - [ ] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
@@ -107,6 +109,55 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
  - Points restés ouverts ou à valider avec l'utilisateur : ...
  ```
+
+### 2026-10-14 — Traitement explicite des états vide et chargement (Section 3, Tâche 3)
+- Ce qui a été fait :
+  - Consolidation et vérification de la gestion des états visuels dans [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) pour éradiquer le problème de l'application legacy (qui affichait un écran gris vide déconcertant) :
+    - État de chargement explicite : spinner animé avec message explicatif (`Recherche dans le plan comptable en cours…`) et `data-testid="plan-loading-state"`.
+    - État vide explicite : illustration avec icône livre, message contextuel indiquant les termes ou critères recherchés, proposition d'action claire avec bouton `Réinitialiser les filtres` et `data-testid="plan-empty-state"`.
+    - État d'erreur serveur : bannière d'alerte rouge avec bouton `Réessayer` (`fetchLignes`) et `data-testid="plan-error-state"`.
+  - Ajout du test e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) validant spécifiquement l'affichage du spinner de chargement lors d'un délai réseau et la transition fluide vers l'état vide.
+  - Validation de la suite Playwright complète (6/6 tests plan comptable passés, 23/23 tests globaux passés).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 3, tâche 3 (« Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement »)
+- Dépendance à un endpoint backend : `GET /api/v1/lignes-comptables/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Historique des lignes récentes par bureau (Section 3, Tâche 2)
+- Ce qui a été fait :
+  - Validation avec l'utilisateur du mode de stockage retenu : persistance locale par bureau (`localStorage` sous clé partitionnée `comptage_recent_lignes_{bureauCode}`) garantissant une réactivité immédiate et une résilience complète sans dépendance réseau.
+  - Vérification et consolidation du mécanisme dans [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) : enregistrement des écritures sélectionnées, affichage des 5 dernières lignes utilisées, bouton d'effacement de l'historique et accessibilité au clavier.
+  - Enrichissement des tests e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) pour couvrir la persistance par bureau, l'ajout dynamique lors de la sélection d'une ligne et le bouton d'effacement.
+  - Validation complète de la suite e2e Playwright (5/5 tests plan comptable passés).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 3, tâche 2 (« Historique des lignes récemment utilisées par le bureau »)
+- Dépendance à un endpoint backend : non applicable (stockage local partitionné par bureau validé).
+- Points restés ouverts ou à valider avec l'utilisateur : Aucun (choix validé et implémenté).
+
+### 2026-10-14 — Composant LigneComptableSearch (Section 3, Tâche 1)
+- Ce qui a été fait :
+  - Définition des types TypeScript `SectionComptable`, `LigneComptable`, `LigneComptableParentDetail`, `LigneComptableSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) conformément à `API_CONTRACT.md`.
+  - Implémentation du client API [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) avec `getSectionsComptables` et `getLignesComptables` prenant en charge la recherche textuelle instantanée, le filtrage par section, sens et pagination.
+  - Création du composant [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) avec saisie debouncée (300ms), sélecteur de section A-E, sélecteur de sens (Débit / Crédit), groupement visuel des résultats par section macro-comptable, et ré-export dans `src/features/saisie-g58/components/LigneComptableSearch.tsx` pour réutilisation dans le journal G58.
+  - Création de la page [PlanComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/PlanComptablePage.tsx) et branchement de la route `/plan-comptable` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) et [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) (4/4 tests passés, 21/21 suite globale passée).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `src/features/plan-comptable/PlanComptablePage.tsx`
+  - `src/features/saisie-g58/components/LigneComptableSearch.tsx`
+  - `src/App.tsx`, `src/components/layout/Sidebar.tsx`
+  - `e2e/plan-comptable.spec.ts`
+- Cases cochées : section 3, tâche 1 (« Composant LigneComptableSearch — recherche instantanée (debounce), résultats groupés par section »)
+- Dépendance à un endpoint backend : `GET /api/v1/sections-comptables/` et `GET /api/v1/lignes-comptables/` (implémentés)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
 ### 2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4)
 - Ce qui a été fait :

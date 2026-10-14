@@ -44,7 +44,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Plan comptable',
     to: '/plan-comptable',
     icon: <Search className="w-5 h-5" />,
-    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR'],
+    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN'],
   },
   {
     label: 'Bureaux',

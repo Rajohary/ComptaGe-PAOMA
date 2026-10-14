@@ -10,7 +10,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "apiclienterror",
       "source_file": "src/api/client.ts",
@@ -23,7 +23,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "requestoptions",
       "source_file": "src/api/client.ts",
@@ -36,7 +36,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "buttonprops",
       "source_file": "src/components/ui/Button.tsx",
@@ -49,7 +49,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "inputprops",
       "source_file": "src/components/ui/Input.tsx",
@@ -62,7 +62,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "modalprops",
       "source_file": "src/components/ui/Modal.tsx",
@@ -75,7 +75,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "selectprops",
       "source_file": "src/components/ui/Select.tsx",
@@ -88,7 +88,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauforminput",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
@@ -101,7 +101,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauformmodalprops",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
@@ -114,7 +114,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauformoutput",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
@@ -127,7 +127,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "cloturemodalprops",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
@@ -140,7 +140,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionforminput",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -153,7 +153,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionformmodalprops",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -166,7 +166,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionformoutput",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -179,7 +179,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "apierror",
       "source_file": "src/types/index.ts",
@@ -192,7 +192,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureau",
       "source_file": "src/types/index.ts",
@@ -205,37 +205,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauformdata",
       "source_file": "src/types/index.ts",
       "source_location": "L69"
-    },
-    {
-      "id": "src_types_index_healthresponse",
-      "label": "HealthResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "healthresponse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L29"
-    },
-    {
-      "id": "src_types_index_paginatedresponse",
-      "label": "PaginatedResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "paginatedresponse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L40"
     },
     {
       "id": "src_types_index_periodegestion",
@@ -244,7 +218,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestion",
       "source_file": "src/types/index.ts",
@@ -257,7 +231,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionformdata",
       "source_file": "src/types/index.ts",
@@ -270,11 +244,102 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "province",
       "source_file": "src/types/index.ts",
       "source_location": "L47"
+    },
+    {
+      "id": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearchprops",
+      "label": "LigneComptableSearchProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptablesearchprops",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_types_index_healthresponse",
+      "label": "HealthResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthresponse",
+      "source_file": "src/types/index.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "src_types_index_lignecomptable",
+      "label": "LigneComptable",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptable",
+      "source_file": "src/types/index.ts",
+      "source_location": "L134"
+    },
+    {
+      "id": "src_types_index_lignecomptableparentdetail",
+      "label": "LigneComptableParentDetail",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptableparentdetail",
+      "source_file": "src/types/index.ts",
+      "source_location": "L127"
+    },
+    {
+      "id": "src_types_index_lignecomptablesearchparams",
+      "label": "LigneComptableSearchParams",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptablesearchparams",
+      "source_file": "src/types/index.ts",
+      "source_location": "L150"
+    },
+    {
+      "id": "src_types_index_paginatedresponse",
+      "label": "PaginatedResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "paginatedresponse",
+      "source_file": "src/types/index.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "src_types_index_sectioncomptable",
+      "label": "SectionComptable",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "sectioncomptable",
+      "source_file": "src/types/index.ts",
+      "source_location": "L117"
     },
     {
       "id": "src_components_layout_sidebar_navitem",
@@ -316,19 +381,6 @@
       "source_location": "L5"
     },
     {
-      "id": "src_features_auth_components_requireauth_requireauthprops",
-      "label": "RequireAuthProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "requireauthprops",
-      "source_file": "src/features/auth/components/RequireAuth.tsx",
-      "source_location": "L6"
-    },
-    {
       "id": "src_features_auth_pages_loginpage_loginformdata",
       "label": "LoginFormData",
       "_callable": true,
@@ -342,19 +394,6 @@
       "source_location": "L15"
     },
     {
-      "id": "src_types_index_userrole",
-      "label": "UserRole",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "userrole",
-      "source_file": "src/types/index.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "src_contexts_authcontext_authcontexttype",
       "label": "AuthContextType",
       "_callable": true,
@@ -365,6 +404,19 @@
       "file_type": "code",
       "norm_label": "authcontexttype",
       "source_file": "src/contexts/AuthContext.tsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_features_auth_components_requireauth_requireauthprops",
+      "label": "RequireAuthProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "AuthContext.tsx",
+      "file_type": "code",
+      "norm_label": "requireauthprops",
+      "source_file": "src/features/auth/components/RequireAuth.tsx",
       "source_location": "L6"
     },
     {
@@ -420,12 +472,25 @@
       "source_location": "L3"
     },
     {
+      "id": "src_types_index_userrole",
+      "label": "UserRole",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "AuthContext.tsx",
+      "file_type": "code",
+      "norm_label": "userrole",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "src_api_client_apiclient",
       "label": "apiClient()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "apiclient()",
       "source_file": "src/api/client.ts",
@@ -437,7 +502,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "src/api/client.ts",
@@ -449,23 +514,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "processqueue()",
       "source_file": "src/api/client.ts",
       "source_location": "L29"
-    },
-    {
-      "id": "src_api_health_gethealth",
-      "label": "getHealth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "gethealth()",
-      "source_file": "src/api/health.ts",
-      "source_location": "L4"
     },
     {
       "id": "src_api_referentiel_cloturerperiodegestion",
@@ -473,7 +526,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "cloturerperiodegestion()",
       "source_file": "src/api/referentiel.ts",
@@ -485,7 +538,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "createbureau()",
       "source_file": "src/api/referentiel.ts",
@@ -497,7 +550,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "createperiodegestion()",
       "source_file": "src/api/referentiel.ts",
@@ -509,7 +562,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "deletebureau()",
       "source_file": "src/api/referentiel.ts",
@@ -521,7 +574,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "getbureau()",
       "source_file": "src/api/referentiel.ts",
@@ -533,7 +586,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "getbureaux()",
       "source_file": "src/api/referentiel.ts",
@@ -545,7 +598,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "getperiodesgestion()",
       "source_file": "src/api/referentiel.ts",
@@ -557,7 +610,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "getprovinces()",
       "source_file": "src/api/referentiel.ts",
@@ -569,7 +622,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "updatebureau()",
       "source_file": "src/api/referentiel.ts",
@@ -581,7 +634,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "button()",
       "source_file": "src/components/ui/Button.tsx",
@@ -593,7 +646,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "modal()",
       "source_file": "src/components/ui/Modal.tsx",
@@ -605,7 +658,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauxpage()",
       "source_file": "src/features/bureaux/BureauxPage.tsx",
@@ -617,23 +670,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauformmodal()",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
       "source_location": "L35"
-    },
-    {
-      "id": "src_features_dashboard_healthpage_healthpage",
-      "label": "HealthPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "healthpage()",
-      "source_file": "src/features/dashboard/HealthPage.tsx",
-      "source_location": "L6"
     },
     {
       "id": "src_features_periodes_gestion_components_cloturemodal_cloturemodal",
@@ -641,7 +682,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "cloturemodal()",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
@@ -653,7 +694,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionformmodal()",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -665,7 +706,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodesgestionpage()",
       "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
@@ -677,11 +718,71 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "applyservervalidationerrors()",
       "source_file": "src/lib/formErrors.ts",
       "source_location": "L13"
+    },
+    {
+      "id": "src_api_comptabilite_getlignescomptables",
+      "label": "getLignesComptables()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "getlignescomptables()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "src_api_comptabilite_getsectionscomptables",
+      "label": "getSectionsComptables()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "getsectionscomptables()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_api_health_gethealth",
+      "label": "getHealth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "gethealth()",
+      "source_file": "src/api/health.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_features_dashboard_healthpage_healthpage",
+      "label": "HealthPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthpage()",
+      "source_file": "src/features/dashboard/HealthPage.tsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "label": "LigneComptableSearch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptablesearch()",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L31"
     },
     {
       "id": "src_app_app",
@@ -693,7 +794,7 @@
       "file_type": "code",
       "norm_label": "app()",
       "source_file": "src/App.tsx",
-      "source_location": "L33"
+      "source_location": "L34"
     },
     {
       "id": "src_app_placeholderpage",
@@ -705,7 +806,7 @@
       "file_type": "code",
       "norm_label": "placeholderpage()",
       "source_file": "src/App.tsx",
-      "source_location": "L15"
+      "source_location": "L16"
     },
     {
       "id": "src_components_layout_applayout_applayout",
@@ -852,6 +953,18 @@
       "source_location": "L9"
     },
     {
+      "id": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
+      "label": "PlanComptablePage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.tsx",
+      "file_type": "code",
+      "norm_label": "plancomptablepage()",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L6"
+    },
+    {
       "id": "src_api_auth_getme",
       "label": "getMe()",
       "_callable": true,
@@ -916,7 +1029,7 @@
       "label": "client.ts",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "client.ts",
       "source_file": "src/api/client.ts",
@@ -927,29 +1040,18 @@
       "label": "failedQueue",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "failedqueue",
       "source_file": "src/api/client.ts",
       "source_location": "L24"
     },
     {
-      "id": "src_api_health",
-      "label": "health.ts",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "health.ts",
-      "source_file": "src/api/health.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "src_api_referentiel",
       "label": "referentiel.ts",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "referentiel.ts",
       "source_file": "src/api/referentiel.ts",
@@ -960,7 +1062,7 @@
       "label": "Button.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "button.tsx",
       "source_file": "src/components/ui/Button.tsx",
@@ -971,7 +1073,7 @@
       "label": "Input.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "input.tsx",
       "source_file": "src/components/ui/Input.tsx",
@@ -982,7 +1084,7 @@
       "label": "Input",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "input",
       "source_file": "src/components/ui/Input.tsx",
@@ -993,7 +1095,7 @@
       "label": "Modal.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "modal.tsx",
       "source_file": "src/components/ui/Modal.tsx",
@@ -1004,7 +1106,7 @@
       "label": "Select.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "select.tsx",
       "source_file": "src/components/ui/Select.tsx",
@@ -1015,7 +1117,7 @@
       "label": "Select",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "select",
       "source_file": "src/components/ui/Select.tsx",
@@ -1026,7 +1128,7 @@
       "label": "BureauxPage.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauxpage.tsx",
       "source_file": "src/features/bureaux/BureauxPage.tsx",
@@ -1037,7 +1139,7 @@
       "label": "BureauFormModal.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauformmodal.tsx",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
@@ -1048,29 +1150,18 @@
       "label": "bureauSchema",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "bureauschema",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
       "source_location": "L11"
     },
     {
-      "id": "src_features_dashboard_healthpage",
-      "label": "HealthPage.tsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "healthpage.tsx",
-      "source_file": "src/features/dashboard/HealthPage.tsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_features_periodes_gestion_components_cloturemodal",
       "label": "ClotureModal.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "cloturemodal.tsx",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
@@ -1081,7 +1172,7 @@
       "label": "PeriodeGestionFormModal.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionformmodal.tsx",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -1092,7 +1183,7 @@
       "label": "basePeriodeGestionSchema",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "baseperiodegestionschema",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -1103,7 +1194,7 @@
       "label": "periodeGestionSchema",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodegestionschema",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
@@ -1114,7 +1205,7 @@
       "label": "PeriodesGestionPage.tsx",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "periodesgestionpage.tsx",
       "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
@@ -1125,51 +1216,40 @@
       "label": "formErrors.ts",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "code",
       "norm_label": "formerrors.ts",
       "source_file": "src/lib/formErrors.ts",
       "source_location": "L1"
     },
     {
-      "id": "src_types_index",
-      "label": "index.ts",
+      "id": "ref_axios",
+      "label": "axios",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "index.ts",
-      "source_file": "src/types/index.ts",
-      "source_location": "L1"
+      "community_name": "PeriodeGestionFormModal.tsx",
+      "file_type": "concept",
+      "norm_label": "axios",
+      "source_file": "package.json",
+      "source_location": "L15"
     },
     {
       "id": "ref_hookform_resolvers",
       "label": "@hookform/resolvers",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "concept",
       "norm_label": "@hookform/resolvers",
       "source_file": "package.json",
       "source_location": "L13"
     },
     {
-      "id": "ref_lucide_react",
-      "label": "lucide-react",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "index.ts",
-      "file_type": "concept",
-      "norm_label": "lucide-react",
-      "source_file": "package.json",
-      "source_location": "L16"
-    },
-    {
       "id": "ref_react",
       "label": "react",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "concept",
       "norm_label": "react",
       "source_file": "package.json",
@@ -1180,7 +1260,7 @@
       "label": "react-hook-form",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "concept",
       "norm_label": "react-hook-form",
       "source_file": "package.json",
@@ -1191,7 +1271,7 @@
       "label": "zod",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "concept",
       "norm_label": "zod",
       "source_file": "package.json",
@@ -1202,90 +1282,24 @@
       "label": "2026-10-12 \u2014 \u00c9cran d'ouverture d'une p\u00e9riode de gestion (Section 2, T\u00e2che 2)",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 ecran d'ouverture d'une periode de gestion (section 2, tache 2)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L141"
+      "source_location": "L192"
     },
     {
       "id": "project_state_2026_10_12_\u00e9cran_de_gestion_des_bureaux_section_2_t\u00e2che_1",
       "label": "2026-10-12 \u2014 \u00c9cran de gestion des bureaux (Section 2, T\u00e2che 1)",
       "_origin": "ast",
       "community": 0,
-      "community_name": "index.ts",
+      "community_name": "PeriodeGestionFormModal.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 ecran de gestion des bureaux (section 2, tache 1)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L160"
-    },
-    {
-      "id": "e2e_auth_spec",
-      "label": "auth.spec.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "auth.spec.ts",
-      "source_file": "e2e/auth.spec.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "e2e_auth_spec_admin_user",
-      "label": "ADMIN_USER",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "admin_user",
-      "source_file": "e2e/auth.spec.ts",
-      "source_location": "L19"
-    },
-    {
-      "id": "e2e_auth_spec_receveur_user",
-      "label": "RECEVEUR_USER",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "receveur_user",
-      "source_file": "e2e/auth.spec.ts",
-      "source_location": "L8"
-    },
-    {
-      "id": "e2e_bureaux_spec",
-      "label": "bureaux.spec.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "bureaux.spec.ts",
-      "source_file": "e2e/bureaux.spec.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "e2e_health_spec",
-      "label": "health.spec.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "health.spec.ts",
-      "source_file": "e2e/health.spec.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "e2e_periodes_gestion_spec",
-      "label": "periodes-gestion.spec.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "periodes-gestion.spec.ts",
-      "source_file": "e2e/periodes-gestion.spec.ts",
-      "source_location": "L1"
+      "source_location": "L211"
     },
     {
       "id": "package",
@@ -1299,136 +1313,125 @@
       "source_location": "L1"
     },
     {
-      "id": "package_devdependencies",
-      "label": "devDependencies",
+      "id": "package_dependencies",
+      "label": "dependencies",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "devdependencies",
+      "norm_label": "dependencies",
       "source_file": "package.json",
-      "source_location": "L24"
+      "source_location": "L12"
     },
     {
-      "id": "package_devdependencies_autoprefixer",
-      "label": "autoprefixer",
+      "id": "package_dependencies_axios",
+      "label": "axios",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "autoprefixer",
+      "norm_label": "axios",
       "source_file": "package.json",
-      "source_location": "L30"
+      "source_location": "L15"
     },
     {
-      "id": "package_devdependencies_oxlint",
-      "label": "oxlint",
+      "id": "package_dependencies_hookform_resolvers",
+      "label": "@hookform/resolvers",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "oxlint",
+      "norm_label": "@hookform/resolvers",
       "source_file": "package.json",
-      "source_location": "L31"
+      "source_location": "L13"
     },
     {
-      "id": "package_devdependencies_playwright_test",
-      "label": "@playwright/test",
+      "id": "package_dependencies_lucide_react",
+      "label": "lucide-react",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "@playwright/test",
+      "norm_label": "lucide-react",
       "source_file": "package.json",
-      "source_location": "L25"
+      "source_location": "L16"
     },
     {
-      "id": "package_devdependencies_postcss",
-      "label": "postcss",
+      "id": "package_dependencies_react",
+      "label": "react",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "postcss",
+      "norm_label": "react",
       "source_file": "package.json",
-      "source_location": "L32"
+      "source_location": "L17"
     },
     {
-      "id": "package_devdependencies_tailwindcss",
-      "label": "tailwindcss",
+      "id": "package_dependencies_react_dom",
+      "label": "react-dom",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "tailwindcss",
+      "norm_label": "react-dom",
       "source_file": "package.json",
-      "source_location": "L33"
+      "source_location": "L18"
     },
     {
-      "id": "package_devdependencies_types_node",
-      "label": "@types/node",
+      "id": "package_dependencies_react_hook_form",
+      "label": "react-hook-form",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "@types/node",
+      "norm_label": "react-hook-form",
       "source_file": "package.json",
-      "source_location": "L26"
+      "source_location": "L19"
     },
     {
-      "id": "package_devdependencies_types_react",
-      "label": "@types/react",
+      "id": "package_dependencies_react_router_dom",
+      "label": "react-router-dom",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "@types/react",
+      "norm_label": "react-router-dom",
       "source_file": "package.json",
-      "source_location": "L27"
+      "source_location": "L20"
     },
     {
-      "id": "package_devdependencies_types_react_dom",
-      "label": "@types/react-dom",
+      "id": "package_dependencies_tanstack_react_query",
+      "label": "@tanstack/react-query",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "@types/react-dom",
+      "norm_label": "@tanstack/react-query",
       "source_file": "package.json",
-      "source_location": "L28"
+      "source_location": "L14"
     },
     {
-      "id": "package_devdependencies_typescript",
-      "label": "typescript",
+      "id": "package_dependencies_zod",
+      "label": "zod",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "typescript",
+      "norm_label": "zod",
       "source_file": "package.json",
-      "source_location": "L34"
+      "source_location": "L21"
     },
     {
-      "id": "package_devdependencies_vite",
-      "label": "vite",
+      "id": "package_dependencies_zustand",
+      "label": "zustand",
       "_origin": "ast",
       "community": 1,
       "community_name": "package.json",
       "file_type": "code",
-      "norm_label": "vite",
+      "norm_label": "zustand",
       "source_file": "package.json",
-      "source_location": "L35"
-    },
-    {
-      "id": "package_devdependencies_vitejs_plugin_react",
-      "label": "@vitejs/plugin-react",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "@vitejs/plugin-react",
-      "source_file": "package.json",
-      "source_location": "L29"
+      "source_location": "L22"
     },
     {
       "id": "package_name",
@@ -1530,17 +1533,6 @@
       "source_location": "L4"
     },
     {
-      "id": "playwright_config",
-      "label": "playwright.config.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "playwright.config.ts",
-      "source_file": "playwright.config.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "tailwind_config",
       "label": "tailwind.config.ts",
       "_origin": "ast",
@@ -1574,17 +1566,6 @@
       "source_location": "L30"
     },
     {
-      "id": "ref_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "axios",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
       "id": "ref_oxlint",
       "label": "oxlint",
       "_origin": "ast",
@@ -1594,17 +1575,6 @@
       "norm_label": "oxlint",
       "source_file": "package.json",
       "source_location": "L31"
-    },
-    {
-      "id": "ref_playwright_test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "@playwright/test",
-      "source_file": "package.json",
-      "source_location": "L25"
     },
     {
       "id": "ref_postcss",
@@ -2798,7 +2768,7 @@
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 correction des anomalies de build, finalisation & validation e2e module 1 (auth & rbac)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L202"
+      "source_location": "L253"
     },
     {
       "id": "project_state_2026_10_12_gestion_des_erreurs_de_validation_renvoy\u00e9es_par_le_backend_section_2_t\u00e2che_4",
@@ -2810,7 +2780,7 @@
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 gestion des erreurs de validation renvoyees par le backend (section 2, tache 4)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L111"
+      "source_location": "L162"
     },
     {
       "id": "project_state_2026_10_12_\u00e9cran_de_cl\u00f4ture_d_une_p\u00e9riode_de_gestion_section_2_t\u00e2che_3",
@@ -2822,7 +2792,31 @@
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 ecran de cloture d'une periode de gestion (section 2, tache 3)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L127"
+      "source_location": "L178"
+    },
+    {
+      "id": "project_state_2026_10_14_historique_des_lignes_r\u00e9centes_par_bureau_section_3_t\u00e2che_2",
+      "label": "2026-10-14 \u2014 Historique des lignes r\u00e9centes par bureau (Section 3, T\u00e2che 2)",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "PROJECT_STATE.md \u2014 \u00c9tat du projet \u00b7 Frontend (client/)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-14 \u2014 historique des lignes recentes par bureau (section 3, tache 2)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L129"
+    },
+    {
+      "id": "project_state_2026_10_14_traitement_explicite_des_\u00e9tats_vide_et_chargement_section_3_t\u00e2che_3",
+      "label": "2026-10-14 \u2014 Traitement explicite des \u00e9tats vide et chargement (Section 3, T\u00e2che 3)",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "PROJECT_STATE.md \u2014 \u00c9tat du projet \u00b7 Frontend (client/)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-14 \u2014 traitement explicite des etats vide et chargement (section 3, tache 3)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L113"
     },
     {
       "id": "project_state_2_r\u00e9f\u00e9rentiel_provinces_bureaux_p\u00e9riodes_de_gestion",
@@ -2858,7 +2852,7 @@
       "node_kind": "heading",
       "norm_label": "4. saisie du journal g58 \u2014 c\u0153ur fonctionnel",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L53"
+      "source_location": "L54"
     },
     {
       "id": "project_state_5_audit_et_d\u00e9tection_d_\u00e9carts",
@@ -2870,7 +2864,7 @@
       "node_kind": "heading",
       "norm_label": "5. audit et detection d'ecarts",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L64"
+      "source_location": "L66"
     },
     {
       "id": "project_state_6_tableaux_de_bord",
@@ -2882,7 +2876,7 @@
       "node_kind": "heading",
       "norm_label": "6. tableaux de bord",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L72"
+      "source_location": "L74"
     },
     {
       "id": "project_state_7_stock_de_valeurs_postales",
@@ -2894,7 +2888,7 @@
       "node_kind": "heading",
       "norm_label": "7. stock de valeurs postales",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L80"
+      "source_location": "L82"
     },
     {
       "id": "project_state_8_fonctionnalit\u00e9s_compl\u00e9mentaires_backlog_ouvert_\u00e0_prioriser_au_fil_de_l_eau_avec_l_utilisateur",
@@ -2906,7 +2900,7 @@
       "node_kind": "heading",
       "norm_label": "8. fonctionnalites complementaires (backlog ouvert \u2014 a prioriser au fil de l'eau avec l'utilisateur)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L86"
+      "source_location": "L88"
     },
     {
       "id": "project_state_9_journal_des_actions_log",
@@ -2918,7 +2912,7 @@
       "node_kind": "heading",
       "norm_label": "9. journal des actions (log)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L98"
+      "source_location": "L100"
     },
     {
       "id": "project_state_project_state_md_\u00e9tat_du_projet_frontend_client",
@@ -2933,244 +2927,322 @@
       "source_location": "L1"
     },
     {
-      "id": "package_dependencies",
-      "label": "dependencies",
+      "id": "package_devdependencies",
+      "label": "devDependencies",
       "_origin": "ast",
       "community": 16,
-      "community_name": "dependencies",
+      "community_name": "devDependencies",
       "file_type": "code",
-      "norm_label": "dependencies",
+      "norm_label": "devdependencies",
       "source_file": "package.json",
-      "source_location": "L12"
+      "source_location": "L24"
     },
     {
-      "id": "package_dependencies_axios",
-      "label": "axios",
+      "id": "package_devdependencies_autoprefixer",
+      "label": "autoprefixer",
       "_origin": "ast",
       "community": 16,
-      "community_name": "dependencies",
+      "community_name": "devDependencies",
       "file_type": "code",
-      "norm_label": "axios",
+      "norm_label": "autoprefixer",
       "source_file": "package.json",
-      "source_location": "L15"
+      "source_location": "L30"
     },
     {
-      "id": "package_dependencies_hookform_resolvers",
-      "label": "@hookform/resolvers",
+      "id": "package_devdependencies_oxlint",
+      "label": "oxlint",
       "_origin": "ast",
       "community": 16,
-      "community_name": "dependencies",
+      "community_name": "devDependencies",
       "file_type": "code",
-      "norm_label": "@hookform/resolvers",
+      "norm_label": "oxlint",
       "source_file": "package.json",
-      "source_location": "L13"
-    },
-    {
-      "id": "package_dependencies_lucide_react",
-      "label": "lucide-react",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "lucide-react",
-      "source_file": "package.json",
-      "source_location": "L16"
-    },
-    {
-      "id": "package_dependencies_react",
-      "label": "react",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "react",
-      "source_file": "package.json",
-      "source_location": "L17"
-    },
-    {
-      "id": "package_dependencies_react_dom",
-      "label": "react-dom",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "react-dom",
-      "source_file": "package.json",
-      "source_location": "L18"
-    },
-    {
-      "id": "package_dependencies_react_hook_form",
-      "label": "react-hook-form",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "react-hook-form",
-      "source_file": "package.json",
-      "source_location": "L19"
-    },
-    {
-      "id": "package_dependencies_react_router_dom",
-      "label": "react-router-dom",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "react-router-dom",
-      "source_file": "package.json",
-      "source_location": "L20"
-    },
-    {
-      "id": "package_dependencies_tanstack_react_query",
-      "label": "@tanstack/react-query",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "@tanstack/react-query",
-      "source_file": "package.json",
-      "source_location": "L14"
-    },
-    {
-      "id": "package_dependencies_zod",
-      "label": "zod",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "zod",
-      "source_file": "package.json",
-      "source_location": "L21"
-    },
-    {
-      "id": "package_dependencies_zustand",
-      "label": "zustand",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "zustand",
-      "source_file": "package.json",
-      "source_location": "L22"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_1_use_descriptive_filenames",
-      "label": "1. Use Descriptive Filenames",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. use descriptive filenames",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L83"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_2_record_entire_hero_scripts",
-      "label": "2. Record entire hero scripts.",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. record entire hero scripts.",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L91"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_3_attach_the_recording_to_the_pull_request",
-      "label": "3. Attach the recording to the pull request",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. attach the recording to the pull request",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L192"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_basic_recording",
-      "label": "Basic Recording",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "basic recording",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L5"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_best_practices",
-      "label": "Best Practices",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "best practices",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L81"
-    },
-    {
-      "id": "agents_skills_playwright_cli_references_video_recording_cursor_target_highlight_and_click_point",
-      "label": "Cursor, Target Highlight and Click Point",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "cursor, target highlight and click point",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
       "source_location": "L31"
     },
     {
-      "id": "agents_skills_playwright_cli_references_video_recording_limitations",
-      "label": "Limitations",
+      "id": "package_devdependencies_playwright_test",
+      "label": "@playwright/test",
       "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "limitations",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L213"
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L25"
     },
     {
-      "id": "agents_skills_playwright_cli_references_video_recording_overlay_api_summary",
-      "label": "Overlay API Summary",
+      "id": "package_devdependencies_postcss",
+      "label": "postcss",
       "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "overlay api summary",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L181"
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "postcss",
+      "source_file": "package.json",
+      "source_location": "L32"
     },
     {
-      "id": "agents_skills_playwright_cli_references_video_recording_tracing_vs_video",
-      "label": "Tracing vs Video",
+      "id": "package_devdependencies_tailwindcss",
+      "label": "tailwindcss",
       "_origin": "ast",
-      "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "tracing vs video",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
-      "source_location": "L204"
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "tailwindcss",
+      "source_file": "package.json",
+      "source_location": "L33"
     },
     {
-      "id": "agents_skills_playwright_cli_references_video_recording_video_recording",
-      "label": "Video Recording",
+      "id": "package_devdependencies_types_node",
+      "label": "@types/node",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "@types/node",
+      "source_file": "package.json",
+      "source_location": "L26"
+    },
+    {
+      "id": "package_devdependencies_types_react",
+      "label": "@types/react",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "@types/react",
+      "source_file": "package.json",
+      "source_location": "L27"
+    },
+    {
+      "id": "package_devdependencies_types_react_dom",
+      "label": "@types/react-dom",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "@types/react-dom",
+      "source_file": "package.json",
+      "source_location": "L28"
+    },
+    {
+      "id": "package_devdependencies_typescript",
+      "label": "typescript",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "typescript",
+      "source_file": "package.json",
+      "source_location": "L34"
+    },
+    {
+      "id": "package_devdependencies_vite",
+      "label": "vite",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "vite",
+      "source_file": "package.json",
+      "source_location": "L35"
+    },
+    {
+      "id": "package_devdependencies_vitejs_plugin_react",
+      "label": "@vitejs/plugin-react",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "@vitejs/plugin-react",
+      "source_file": "package.json",
+      "source_location": "L29"
+    },
+    {
+      "id": "e2e_auth_spec",
+      "label": "auth.spec.ts",
       "_origin": "ast",
       "community": 17,
-      "community_name": "Video Recording",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "video recording",
-      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "auth.spec.ts",
+      "source_file": "e2e/auth.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "e2e_auth_spec_admin_user",
+      "label": "ADMIN_USER",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "admin_user",
+      "source_file": "e2e/auth.spec.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "e2e_auth_spec_receveur_user",
+      "label": "RECEVEUR_USER",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "receveur_user",
+      "source_file": "e2e/auth.spec.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "e2e_bureaux_spec",
+      "label": "bureaux.spec.ts",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "bureaux.spec.ts",
+      "source_file": "e2e/bureaux.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "e2e_health_spec",
+      "label": "health.spec.ts",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "health.spec.ts",
+      "source_file": "e2e/health.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "e2e_periodes_gestion_spec",
+      "label": "periodes-gestion.spec.ts",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "periodes-gestion.spec.ts",
+      "source_file": "e2e/periodes-gestion.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "e2e_plan_comptable_spec",
+      "label": "plan-comptable.spec.ts",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "plan-comptable.spec.ts",
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "e2e_plan_comptable_spec_mock_lignes",
+      "label": "MOCK_LIGNES",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "mock_lignes",
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "e2e_plan_comptable_spec_mock_sections",
+      "label": "MOCK_SECTIONS",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "mock_sections",
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "playwright_config",
+      "label": "playwright.config.ts",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "code",
+      "norm_label": "playwright.config.ts",
+      "source_file": "playwright.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ref_playwright_test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "@playwright/test",
+      "file_type": "concept",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L25"
+    },
+    {
+      "id": "src_api_comptabilite",
+      "label": "comptabilite.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "comptabilite.ts",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_api_health",
+      "label": "health.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "health.ts",
+      "source_file": "src/api/health.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_dashboard_healthpage",
+      "label": "HealthPage.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthpage.tsx",
+      "source_file": "src/features/dashboard/HealthPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_plan_comptable_components_lignecomptablesearch",
+      "label": "plan-comptable/components/LigneComptableSearch.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "plan-comptable/components/lignecomptablesearch.tsx",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_saisie_g58_components_lignecomptablesearch",
+      "label": "saisie-g58/components/LigneComptableSearch.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "saisie-g58/components/lignecomptablesearch.tsx",
+      "source_file": "src/features/saisie-g58/components/LigneComptableSearch.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_types_index",
+      "label": "index.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "index.ts",
+      "source_file": "src/types/index.ts",
       "source_location": "L1"
     },
     {
@@ -3178,7 +3250,7 @@
       "label": "ARCHITECTURE.md",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "architecture.md",
@@ -3190,7 +3262,7 @@
       "label": "1. Stack",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. stack",
@@ -3202,7 +3274,7 @@
       "label": "2. Structure des dossiers",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. structure des dossiers",
@@ -3214,7 +3286,7 @@
       "label": "3. Principes d'organisation",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. principes d'organisation",
@@ -3226,7 +3298,7 @@
       "label": "4. Consommation de l'API backend",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. consommation de l'api backend",
@@ -3238,7 +3310,7 @@
       "label": "5. Environnement et variables",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. environnement et variables",
@@ -3250,7 +3322,7 @@
       "label": "6. Tests",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "6. tests",
@@ -3262,7 +3334,7 @@
       "label": "7. Ce qui reste ouvert (\u00e0 trancher avec l'utilisateur au fil du projet)",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "7. ce qui reste ouvert (a trancher avec l'utilisateur au fil du projet)",
@@ -3274,12 +3346,24 @@
       "label": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
       "_origin": "ast",
       "community": 18,
-      "community_name": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "architecture.md \u2014 comptageweb \u00b7 frontend (client/)",
       "source_file": "ARCHITECTURE.md",
       "source_location": "L1"
+    },
+    {
+      "id": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "label": "2026-10-14 \u2014 Composant LigneComptableSearch (Section 3, T\u00e2che 1)",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-14 \u2014 composant lignecomptablesearch (section 3, tache 1)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143"
     },
     {
       "id": "agent",
@@ -3521,6 +3605,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_features_plan_comptable_plancomptablepage",
+      "label": "PlanComptablePage.tsx",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.tsx",
+      "file_type": "code",
+      "norm_label": "plancomptablepage.tsx",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_main",
       "label": "main.tsx",
       "_origin": "ast",
@@ -3530,6 +3625,17 @@
       "norm_label": "main.tsx",
       "source_file": "src/main.tsx",
       "source_location": "L1"
+    },
+    {
+      "id": "ref_lucide_react",
+      "label": "lucide-react",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.tsx",
+      "file_type": "concept",
+      "norm_label": "lucide-react",
+      "source_file": "package.json",
+      "source_location": "L16"
     },
     {
       "id": "ref_react_dom",
@@ -3805,7 +3911,7 @@
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 module authentification & rbac complet (section 1)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L218"
+      "source_location": "L269"
     },
     {
       "id": "agents_skills_playwright_cli_skill",
@@ -4277,6 +4383,126 @@
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "video-recording.md",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_1_use_descriptive_filenames",
+      "label": "1. Use Descriptive Filenames",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. use descriptive filenames",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L83"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_2_record_entire_hero_scripts",
+      "label": "2. Record entire hero scripts.",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. record entire hero scripts.",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L91"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_3_attach_the_recording_to_the_pull_request",
+      "label": "3. Attach the recording to the pull request",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. attach the recording to the pull request",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L192"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_basic_recording",
+      "label": "Basic Recording",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "basic recording",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L5"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_best_practices",
+      "label": "Best Practices",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "best practices",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L81"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_cursor_target_highlight_and_click_point",
+      "label": "Cursor, Target Highlight and Click Point",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cursor, target highlight and click point",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_limitations",
+      "label": "Limitations",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "limitations",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L213"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_overlay_api_summary",
+      "label": "Overlay API Summary",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "overlay api summary",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L181"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_tracing_vs_video",
+      "label": "Tracing vs Video",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "tracing vs video",
+      "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
+      "source_location": "L204"
+    },
+    {
+      "id": "agents_skills_playwright_cli_references_video_recording_video_recording",
+      "label": "Video Recording",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Running Custom Playwright Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "video recording",
       "source_file": ".agents/skills/playwright-cli/references/video-recording.md",
       "source_location": "L1"
     },
@@ -5955,6 +6181,7 @@
     {
       "id": "src_assets_paoma_logo",
       "label": "src_assets_paoma_logo",
+      "_origin": "semantic",
       "community": 2,
       "community_name": "App.tsx",
       "external": true,
@@ -5966,6 +6193,7 @@
     {
       "id": "src_styles_globals",
       "label": "src_styles_globals",
+      "_origin": "semantic",
       "community": 2,
       "community_name": "App.tsx",
       "external": true,
@@ -6046,6 +6274,30 @@
       "context": "call",
       "source_file": "src/api/client.ts",
       "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite_getlignescomptables",
+      "target": "src_api_client_apiclient",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite_getsectionscomptables",
+      "target": "src_api_client_apiclient",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -6177,7 +6429,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L104",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -6189,7 +6441,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -6201,7 +6453,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -6213,7 +6465,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -6225,7 +6477,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -6237,7 +6489,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -6249,7 +6501,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L58",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_app",
+      "target": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/App.tsx",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -6261,7 +6525,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L74",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -6273,7 +6537,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/App.tsx",
-      "source_location": "L81",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -6745,6 +7009,67 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "target": "src_api_comptabilite_getsectionscomptables",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "target": "src_api_comptabilite_getlignescomptables",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
+      "target": "src_contexts_authcontext_useauth",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_lignecomptablesearch",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch",
+      "relation": "re_exports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "export",
+      "source_file": "src/features/saisie-g58/components/LigneComptableSearch.tsx",
+      "source_location": "L1",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
       "source": "src_api_client_apiclienterror",
       "target": "src_types_index_apierror",
       "relation": "references",
@@ -6910,6 +7235,18 @@
       "context": "field",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
       "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearchprops",
+      "target": "src_types_index_lignecomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "field",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -7237,6 +7574,66 @@
       "weight": 1.0
     },
     {
+      "source": "src_api_comptabilite",
+      "target": "src_api_client_apiclient",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_types_index_lignecomptable",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_types_index_lignecomptablesearchparams",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_types_index_paginatedresponse",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_types_index_sectioncomptable",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
       "source": "src_api_health",
       "target": "src_api_client_apiclient",
       "relation": "imports",
@@ -7346,6 +7743,18 @@
     },
     {
       "source": "src_app",
+      "target": "src_features_dashboard_healthpage_healthpage",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/App.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app",
       "target": "src_features_auth_pages_loginpage_loginpage",
       "relation": "imports",
       "_origin": "ast",
@@ -7430,7 +7839,7 @@
     },
     {
       "source": "src_app",
-      "target": "src_features_dashboard_healthpage_healthpage",
+      "target": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -8197,6 +8606,78 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_types_index_lignecomptable",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_types_index_sectioncomptable",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_api_comptabilite_getlignescomptables",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_api_comptabilite_getsectionscomptables",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "src_contexts_authcontext_useauth",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "src_lib_formerrors",
       "target": "src_types_index_apierror",
       "relation": "imports",
@@ -8293,6 +8774,18 @@
       "weight": 1.0
     },
     {
+      "source": "e2e_plan_comptable_spec",
+      "target": "ref_playwright_test",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "playwright_config",
       "target": "ref_playwright_test",
       "relation": "imports_from",
@@ -8350,6 +8843,31 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/api/client.ts",
+      "source_location": "L2",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_api_client",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/api/comptabilite.ts",
       "source_location": "L2",
       "type_only": true,
       "weight": 1.0
@@ -8414,6 +8932,18 @@
       "context": "import",
       "source_file": "src/App.tsx",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app",
+      "target": "src_features_dashboard_healthpage",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/App.tsx",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -8502,7 +9032,7 @@
     },
     {
       "source": "src_app",
-      "target": "src_features_dashboard_healthpage",
+      "target": "src_features_plan_comptable_plancomptablepage",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9554,6 +10084,103 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L2",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_api_comptabilite",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "src_contexts_authcontext",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "src_lib_formerrors",
       "target": "ref_react_hook_form",
       "relation": "imports_from",
@@ -9698,6 +10325,31 @@
       "context": "parameter_type",
       "source_file": "src/api/client.ts",
       "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_lignecomptablesearch",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "re_exports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "re-export",
+      "source_file": "src/features/saisie-g58/components/LigneComptableSearch.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_lignecomptablesearch",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearchprops",
+      "relation": "re_exports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "re-export",
+      "source_file": "src/features/saisie-g58/components/LigneComptableSearch.tsx",
+      "source_location": "L2",
+      "type_only": true,
       "weight": 1.0
     },
     {
@@ -12396,6 +13048,28 @@
       "weight": 1.0
     },
     {
+      "source": "e2e_plan_comptable_spec",
+      "target": "e2e_plan_comptable_spec_mock_lignes",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "e2e_plan_comptable_spec",
+      "target": "e2e_plan_comptable_spec_mock_sections",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "e2e/plan-comptable.spec.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "oxlintrc",
       "target": "oxlintrc_schema",
       "relation": "contains",
@@ -12815,13 +13489,46 @@
     },
     {
       "source": "project_state_9_journal_des_actions_log",
+      "target": "project_state_2026_10_14_traitement_explicite_des_\u00e9tats_vide_et_chargement_section_3_t\u00e2che_3",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_9_journal_des_actions_log",
+      "target": "project_state_2026_10_14_historique_des_lignes_r\u00e9centes_par_bureau_section_3_t\u00e2che_2",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_9_journal_des_actions_log",
+      "target": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_9_journal_des_actions_log",
       "target": "project_state_2026_10_12_gestion_des_erreurs_de_validation_renvoy\u00e9es_par_le_backend_section_2_t\u00e2che_4",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L111",
+      "source_location": "L162",
       "weight": 1.0
     },
     {
@@ -12832,7 +13539,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L127",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -12843,7 +13550,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L141",
+      "source_location": "L192",
       "weight": 1.0
     },
     {
@@ -12854,7 +13561,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L160",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -12865,7 +13572,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L202",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -12876,7 +13583,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L218",
+      "source_location": "L269",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_project_state_md_\u00e9tat_du_projet_frontend_client",
+      "target": "project_state_9_journal_des_actions_log",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -12931,7 +13649,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L53",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -12942,7 +13660,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L64",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -12953,7 +13671,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -12964,7 +13682,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L80",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -12975,18 +13693,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L86",
-      "weight": 1.0
-    },
-    {
-      "source": "project_state_project_state_md_\u00e9tat_du_projet_frontend_client",
-      "target": "project_state_9_journal_des_actions_log",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L98",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -13122,6 +13829,28 @@
       "weight": 1.0
     },
     {
+      "source": "src_api_comptabilite",
+      "target": "src_api_comptabilite_getsectionscomptables",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "src_api_comptabilite",
+      "target": "src_api_comptabilite_getlignescomptables",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
       "source": "src_api_health",
       "target": "src_api_health_gethealth",
       "relation": "contains",
@@ -13239,7 +13968,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/App.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -13250,7 +13979,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/App.tsx",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -13771,6 +14500,39 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearchprops",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_components_lignecomptablesearch",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_plan_comptable_plancomptablepage",
+      "target": "src_features_plan_comptable_plancomptablepage_plancomptablepage",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/features/plan-comptable/PlanComptablePage.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
       "source": "src_lib_formerrors",
       "target": "src_lib_formerrors_applyservervalidationerrors",
       "relation": "contains",
@@ -13805,6 +14567,39 @@
     },
     {
       "source": "src_types_index",
+      "target": "src_types_index_sectioncomptable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/types/index.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_index_lignecomptableparentdetail",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/types/index.ts",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_index_lignecomptable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/types/index.ts",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "src_types_index",
       "target": "src_types_index_loginrequest",
       "relation": "contains",
       "_origin": "ast",
@@ -13812,6 +14607,17 @@
       "confidence_score": 1.0,
       "source_file": "src/types/index.ts",
       "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_index_lignecomptablesearchparams",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/types/index.ts",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -14516,7 +15322,7 @@
       "confidence_score": 0.95,
       "context": "AuthProvider",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L229",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -14528,7 +15334,7 @@
       "confidence_score": 0.95,
       "context": "Bureau",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L162",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -14540,7 +15346,7 @@
       "confidence_score": 0.95,
       "context": "BureauFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L162",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -14556,6 +15362,78 @@
       "weight": 1.0
     },
     {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_types_index_lignecomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_types_index_lignecomptableparentdetail",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableParentDetail",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "architecture_3_principes_d_organisation",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableSearch",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "architecture_7_ce_qui_reste_ouvert_\u00e0_trancher_avec_l_utilisateur_au_fil_du_projet",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableSearch",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_3_recherche_dans_le_plan_comptable_remplace_le_treeview_legacy",
+      "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableSearch",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_types_index_lignecomptablesearchparams",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableSearchParams",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
       "source": "project_state_2026_10_12_module_authentification_rbac_complet_section_1",
       "target": "src_types_index_loginrequest",
       "relation": "references",
@@ -14564,7 +15442,7 @@
       "confidence_score": 0.95,
       "context": "LoginRequest",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L220",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -14576,7 +15454,7 @@
       "confidence_score": 0.95,
       "context": "LoginResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L220",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -14588,7 +15466,7 @@
       "confidence_score": 0.95,
       "context": "PaginatedResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L162",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -14600,7 +15478,7 @@
       "confidence_score": 0.95,
       "context": "PeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L143",
+      "source_location": "L194",
       "weight": 1.0
     },
     {
@@ -14612,7 +15490,7 @@
       "confidence_score": 0.95,
       "context": "PeriodeGestionFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L143",
+      "source_location": "L194",
       "weight": 1.0
     },
     {
@@ -14624,7 +15502,7 @@
       "confidence_score": 0.95,
       "context": "Province",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L162",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -14636,7 +15514,7 @@
       "confidence_score": 0.95,
       "context": "RefreshResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L220",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -14648,7 +15526,19 @@
       "confidence_score": 0.95,
       "context": "RequireAuth",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L225",
+      "source_location": "L276",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_types_index_sectioncomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "SectionComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -14660,7 +15550,7 @@
       "confidence_score": 0.95,
       "context": "User",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L220",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -14672,7 +15562,7 @@
       "confidence_score": 0.95,
       "context": "applyServerValidationErrors",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L113",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -14684,7 +15574,7 @@
       "confidence_score": 0.95,
       "context": "cloturerPeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L144",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -14696,7 +15586,19 @@
       "confidence_score": 0.95,
       "context": "createPeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L144",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_api_comptabilite_getlignescomptables",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "getLignesComptables",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -14708,7 +15610,7 @@
       "confidence_score": 0.95,
       "context": "getMe",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L221",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -14720,7 +15622,19 @@
       "confidence_score": 0.95,
       "context": "getPeriodesGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L144",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_14_composant_lignecomptablesearch_section_3_t\u00e2che_1",
+      "target": "src_api_comptabilite_getsectionscomptables",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "getSectionsComptables",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -14732,7 +15646,7 @@
       "confidence_score": 0.95,
       "context": "login",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L221",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -14744,7 +15658,7 @@
       "confidence_score": 0.95,
       "context": "logout",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L221",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -14756,10 +15670,10 @@
       "confidence_score": 0.95,
       "context": "refreshToken",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L221",
+      "source_location": "L272",
       "weight": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d6358884e52bd5b1bbfb229d4411aed7ef31125f"
+  "built_at_commit": "aab7875902cf741620fd4900a616000f11860baf"
 }
