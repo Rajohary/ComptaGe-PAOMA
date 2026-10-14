@@ -92,9 +92,9 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 7. Stock de valeurs postales
 
-- [ ] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
-- [ ] Endpoints de saisie/consultation du stock par bureau et par mois
-- [ ] Documenter dans `../API_CONTRACT.md`
+- [x] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
+- [x] Endpoints de saisie/consultation du stock par bureau et par mois
+- [x] Documenter dans `../API_CONTRACT.md`
 
 ---
 
@@ -121,6 +121,27 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-14 — Module Stock de valeurs postales (Section 7)
+- Ce qui a été fait :
+  - **Modélisation & Référentiel** : validation des modèles [`ProduitPostal`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/models.py#L20-L70) et [`StockValeurPostale`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/models.py#L71-L172) (Tableau A G58).
+  - **Script de seed** : création de [`apps/stock/management/commands/seed_produits_postaux.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/management/commands/seed_produits_postaux.py) initialisant de façon idempotente 14 produits postaux (timbres d'affranchissement usuels de 100 à 5000 Ar, timbres fiscaux de 1000 à 10000 Ar, aérogrammes...).
+  - **Serializers DRF & Logique métier** ([`apps/stock/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/serializers.py)) :
+    - Calcul automatique de la quantité finale (`quantite_finale = quantite_initiale + quantite_recue - quantite_vendue`).
+    - Calcul automatique des valeurs monétaires en fonction de la valeur faciale du produit.
+    - Contrôles d'intégrité métier : refus si période clôturée, refus si la période n'appartient pas au bureau indiqué, refus si la quantité vendue dépasse le stock disponible.
+  - **Vues & Endpoints** ([`apps/stock/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/views.py)) :
+    - `ProduitPostalViewSet` : CRUD/consultation des produits postaux.
+    - `StockValeurPostaleViewSet` : saisie et consultation du stock, filtrable par bureau, période, produit ou catégorie.
+    - Action `@action(detail=False) recapitulatif` : totaux agrégés du Tableau A (valeur initiale, reçue, vendue, finale et quantités) pour une période et un bureau.
+  - **Permissions RBAC** ([`apps/stock/permissions.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/permissions.py)) : lecture pour tous les authentifiés, écriture réservée à l'ADMIN et au RECEVEUR du bureau.
+  - **Routage** : [`apps/stock/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/urls.py) inclus dans [`config/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/config/urls.py).
+  - **Tests unitaires** : [`apps/stock/tests/test_api_stock.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/tests/test_api_stock.py) (5 tests passés avec succès couvrant création, calculs automatiques, rejet de survente, rejet sur période clôturée et récapitulatif agrégé).
+  - **Documentation** : [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) mis à jour avec les nouveaux endpoints et payloads d'exemple.
+- Fichiers/dossiers touchés : `apps/stock/`, `config/urls.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 7 (les 3 cases).
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Section 7 terminée.
 
 ### 2026-10-14 — Endpoint de recherche instantanée dans les lignes comptables (Section 3, Tâches 3 & 4)
 - Ce qui a été fait :

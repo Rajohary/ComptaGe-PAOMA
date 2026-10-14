@@ -157,4 +157,74 @@ export interface LigneComptableSearchParams {
   page?: number;
 }
 
+export type CategorieProduit = 'VP' | 'TF' | 'AUTRE';
 
+export interface ProduitPostal {
+  id: number;
+  nom: string;
+  categorie: CategorieProduit;
+  categorie_libelle: string;
+  valeur_faciale: string;
+  actif: boolean;
+}
+
+export interface StockValeur {
+  id: number;
+  bureau: number;
+  bureau_detail?: {
+    id: number;
+    ncodique: number;
+    nom_bureau: string;
+    classe: string;
+  };
+  periode_gestion: number;
+  periode_detail?: {
+    id: number;
+    nom_receveur: string;
+    date_debut: string;
+    date_fin: string;
+    cloturee: boolean;
+  };
+  produit: number;
+  produit_detail?: ProduitPostal;
+  quantite_initiale: number;
+  quantite_recue: number;
+  quantite_vendue: number;
+  quantite_finale: number;
+  valeur_initiale: string;
+  valeur_recue: string;
+  valeur_vendue: string;
+  valeur_finale: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface StockValeurFormData {
+  bureau: number;
+  periode_gestion: number;
+  produit: number;
+  quantite_initiale: number;
+  quantite_recue: number;
+  quantite_vendue: number;
+}
+
+export interface StockValeurRecapitulatif {
+  total_valeur_initiale: number;
+  total_valeur_recue: number;
+  total_valeur_vendue: number;
+  total_valeur_finale: number;
+  total_quantite_initiale: number;
+  total_quantite_recue: number;
+  total_quantite_vendue: number;
+  total_quantite_finale: number;
+  nb_lignes: number;
+}
+
+export interface StockValeurSearchParams {
+  bureau?: number;
+  periode_gestion?: number;
+  periode?: number;
+  produit?: number;
+  categorie?: string;
+  page?: number;
+}

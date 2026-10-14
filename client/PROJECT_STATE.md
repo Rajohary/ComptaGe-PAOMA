@@ -81,7 +81,8 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 7. Stock de valeurs postales
 
-- [ ] Écran de saisie/consultation du stock par bureau et par mois
+- [x] Écran de saisie/consultation du stock par bureau et par mois
+
 
 ---
 
@@ -109,6 +110,26 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
  - Points restés ouverts ou à valider avec l'utilisateur : ...
  ```
+
+### 2026-10-14 — Écran de suivi du stock de valeurs postales et timbres (Section 7)
+- Ce qui a été fait :
+  - Définition des types TypeScript `ProduitPostal`, `StockValeur`, `StockValeurFormData`, `StockValeurRecapitulatif`, `StockValeurSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Création du client API [src/api/stocks.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/stocks.ts) pour consommer `/api/v1/produits-postaux/`, `/api/v1/stocks-valeurs/` et `/api/v1/stocks-valeurs/recapitulatif/`.
+  - Implémentation du formulaire modal [StockValeurFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/stock/components/StockValeurFormModal.tsx) avec validation Zod (contrôle de cohérence stock disponible >= quantité vendue, non-négativité), calcul instantané en direct des montants en Ariary et report des erreurs serveur DRF.
+  - Implémentation de la page principale [StockValeursPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/stock/StockValeursPage.tsx) avec sélection du bureau et de la période, cartes de synthèse financière agrégée (existant, approvisionnements, ventes, solde final), table des mouvements physiques et financiers, verrouillage automatique en lecture seule si la période est clôturée, et modale de confirmation de suppression.
+  - Branchement de la page sur la route `/stock` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) et navigation correspondante dans [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+  - Rédaction et validation des tests e2e Playwright dans [e2e/stock.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/stock.spec.ts) (3/3 tests passés, 26/26 tests sur l'ensemble de la suite).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/stocks.ts`
+  - `src/features/stock/StockValeursPage.tsx`
+  - `src/features/stock/components/StockValeurFormModal.tsx`
+  - `src/App.tsx`
+  - `e2e/stock.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 7 (« Écran de saisie/consultation du stock par bureau et par mois »)
+- Dépendance à un endpoint backend : `/api/v1/produits-postaux/`, `/api/v1/stocks-valeurs/`, `/api/v1/stocks-valeurs/recapitulatif/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
 ### 2026-10-14 — Traitement explicite des états vide et chargement (Section 3, Tâche 3)
 - Ce qui a été fait :

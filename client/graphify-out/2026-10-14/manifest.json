@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "PROJECT_STATE.md": {
-    "mtime": 1791966045.9993508,
-    "seen": 1791966078.0952394,
-    "ast_hash": "ffd0e16d0045257bec009b3c5136a75a",
+    "mtime": 1791966177.7519968,
+    "seen": 1791966197.8142395,
+    "ast_hash": "4fc816901d2d9069656820a9d3b45b82",
     "semantic_hash": ""
   },
   ".oxlintrc.json": {
@@ -420,9 +420,9 @@
     "semantic_hash": ""
   },
   "e2e/plan-comptable.spec.ts": {
-    "mtime": 1791966005.5141861,
-    "seen": 1791966078.0951564,
-    "ast_hash": "87ef7cf9aaed0f658cdeb0973a708566",
+    "mtime": 1791966143.875113,
+    "seen": 1791966197.8141003,
+    "ast_hash": "7870536e3e75b37dacb2e4ae86c1d98d",
     "semantic_hash": ""
   },
   "src/api/comptabilite.ts": {

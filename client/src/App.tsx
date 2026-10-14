@@ -7,6 +7,7 @@ import DashboardPage from './features/dashboard/pages/DashboardPage';
 import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
 import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
+import { StockValeursPage } from './features/stock/StockValeursPage';
 import { HealthPage } from './features/dashboard/HealthPage';
 
 /**
@@ -96,10 +97,11 @@ export default function App() {
             path="stock"
             element={
               <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'ADMIN']}>
-                <PlaceholderPage title="Stock de valeurs postales" module="7" />
+                <StockValeursPage />
               </RequireAuth>
             }
           />
+
 
           {/* Santé système */}
           <Route path="sante" element={<HealthPage />} />
