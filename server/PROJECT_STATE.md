@@ -49,7 +49,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Plan comptable (sections A-E)
 
-- [ ] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
+- [x] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
 - [ ] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
 - [ ] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
 - [ ] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
@@ -58,12 +58,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
-- [ ] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
+- [x] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
 - [ ] Logique de validation dans `services.py` : période active, `montant_rectifie` initialisé = `montant` à la création
 - [ ] Endpoint de création/modification d'un mouvement
 - [ ] Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans `services.py`, testée unitairement
 - [ ] Test unitaire : `montant_rectifie = montant + augmentation - diminution` est vérifié et rejeté si incohérent
-- [ ] Modèle `MouvementEncaisse` + endpoint associé
+- [~] Modèle `MouvementEncaisse` + endpoint associé (modèle créé — endpoint restant)
 - [ ] Endpoint « Situation comptable » avec report automatique du solde du mois précédent
 - [ ] Test unitaire : le report de solde d'un mois sur l'autre est correct
 - [ ] Documenter tous ces endpoints dans `../API_CONTRACT.md`
@@ -74,7 +74,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 - [ ] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
 - [ ] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
-- [ ] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
+- [x] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
 - [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
 - [ ] Test unitaire : une rectification sans motif est rejetée
 - [ ] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
@@ -92,7 +92,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 7. Stock de valeurs postales
 
-- [ ] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
+- [x] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
 - [ ] Endpoints de saisie/consultation du stock par bureau et par mois
 - [ ] Documenter dans `../API_CONTRACT.md`
 
