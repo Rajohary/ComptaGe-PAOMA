@@ -1,5 +1,5 @@
-import unittest
 from datetime import date
+from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework import status
 from apps.referentiel.views import PeriodeGestionViewSet
@@ -15,7 +15,7 @@ class MockUser:
         self.role = role
 
 
-class PeriodeGestionAPITestCase(unittest.TestCase):
+class PeriodeGestionAPITestCase(TestCase):
     def setUp(self):
         self.province = Province.objects.create(nprovince=70, nom="Province Periode Suite")
         self.bureau = Bureau.objects.create(

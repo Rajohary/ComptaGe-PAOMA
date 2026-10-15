@@ -83,10 +83,10 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 6. Tableaux de bord (endpoints d'agrégation)
 
-- [ ] Endpoint de progression de saisie du mois en cours par bureau (pour dashboard Receveur)
-- [ ] Endpoint de liste des écarts filtrable (pour dashboard Inspecteur)
-- [ ] Endpoint de vue d'ensemble globale (pour dashboard Admin)
-- [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
+- [x] Endpoint de progression de saisie du mois en cours par bureau (pour dashboard Receveur)
+- [x] Endpoint de liste des écarts filtrable (pour dashboard Inspecteur)
+- [x] Endpoint de vue d'ensemble globale (pour dashboard Admin)
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md`
 
 ---
 
@@ -239,6 +239,40 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - Points restés ouverts ou à valider avec l'utilisateur : rien de bloquant ; l'inscription est volontairement réservée à l'admin pour rester cohérente avec le RBAC du projet.
 
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
+
+### 2026-10-15 — Module 6 : Tableaux de bord (endpoints d'agrégation) et vue DIF
+- Ce qui a été fait :
+  - **Dashboard Receveur (`apps/comptabilite/`)** :
+    - Implémentation du service [`get_progression_saisie_receveur()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/services.py) dans `apps/comptabilite/services.py` : calcul de la progression par section comptable (A à E, ENC), totaux des débits/crédits, solde net de la période, détection des écritures en écart, et suivi en temps réel de l'encaisse physique (`reserve_numeraire + entrees - sorties`).
+    - Serializers dédiés dans [`apps/comptabilite/serializers.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py).
+    - Vue API [`ReceveurDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/views.py) sous `GET /api/v1/dashboard/receveur/` avec vérification stricte du rattachement au bureau (un receveur ou agent ne peut pas consulter un autre bureau).
+    - Suite de tests unitaires et d'API dans [`apps/comptabilite/tests/test_dashboard_receveur.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_dashboard_receveur.py) (6 tests au vert : nominal, isolation inter-bureau, accès agent, accès admin, rejet 401, bureau sans période).
+  - **Dashboard Inspecteur & Vue DIF (`apps/audit/`)** :
+    - Implémentation du service d'anomalies et KPIs [`get_ecarts_queryset()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/services.py) et [`calculate_ecarts_kpis()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/services.py) dans `apps/audit/services.py` (critère : `montant != montant_rectifie` ou `augmentation > 0` ou `diminution > 0`).
+    - Serializers détaillés dans [`apps/audit/serializers.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/serializers.py) incluant bureau, période, ligne, montant déclaré, rectifié, écart net, motif et agent/inspecteur.
+    - Deux vues complémentaires protégées par `IsInspecteurOrAdmin` :
+      - [`EcartsListView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/views.py) sous `GET /api/v1/audit/ecarts/` (équivalent vue DIF du CDC) avec pagination DRF et filtres avancés (`bureau`, `province`, `periode`, `date_min`, `date_max`, `statut`, `search`, `ordering`).
+      - [`InspecteurDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/views.py) sous `GET /api/v1/dashboard/inspecteur/` avec KPIs globaux, synthèse des bureaux impactés et 10 dernières anomalies.
+    - Tests unitaires et d'API dans [`apps/audit/tests/test_dashboard_inspecteur.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/tests/test_dashboard_inspecteur.py) (filtrage, calculs KPIs, RBAC restrictif).
+  - **Dashboard Admin (`apps/referentiel/`)** :
+    - Implémentation du service [`get_admin_dashboard_overview()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/services.py) dans `apps/referentiel/services.py` agrégeant la vue macroscopique : réseau postal (bureaux actifs/inactifs, répartition classes et provinces), périodes de gestion (ouvertes/clôturées, taux de clôture), utilisateurs par rôle RBAC, volumétrie comptable globale (mouvements G58, débits, crédits, encaisse) et alertes d'audit.
+    - Serializers et vue [`AdminDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/views.py) sous `GET /api/v1/dashboard/admin/`, réservée au rôle `ADMIN`.
+    - Tests d'API complets dans [`apps/referentiel/tests/test_api_dashboard_admin.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_dashboard_admin.py) (vue nominale, blocage RBAC des receveurs et auditeurs).
+  - **Routage et contrat d'API** :
+    - Inclusion des routes dans [`config/urls.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/config/urls.py).
+    - Documentation exhaustive dans [`../API_CONTRACT.md`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/API_CONTRACT.md) avec exemples complets de requêtes et payloads JSON.
+  - **Exécution des tests** : 31/31 tests passés au vert (`pytest` et `manage.py test`).
+- Fichiers/dossiers touchés :
+  - `server/apps/accounts/permissions.py`
+  - `server/apps/comptabilite/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_dashboard_receveur.py`
+  - `server/apps/audit/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_dashboard_inspecteur.py`
+  - `server/apps/referentiel/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_api_dashboard_admin.py`
+  - `server/config/urls.py`
+  - `API_CONTRACT.md`
+  - `server/PROJECT_STATE.md`
+- Cases cochées : section 6 (100% complétée : 4/4 cases cochées).
+- API_CONTRACT.md mis à jour : oui (endpoints `/api/v1/dashboard/receveur/`, `/api/v1/dashboard/inspecteur/`, `/api/v1/audit/ecarts/` et `/api/v1/dashboard/admin/` documentés avec exemples complets).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant, les 3 dashboards répondent aux spécifications d'agrégation et de sécurité RBAC. Prêt pour les sections 3/4.
 
 ### 2026-10-13 — Création de tous les modèles Django (apps comptabilite, audit, stock)
 - Ce qui a été fait :

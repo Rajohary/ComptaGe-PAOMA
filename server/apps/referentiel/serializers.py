@@ -103,3 +103,75 @@ class PeriodeGestionSerializer(serializers.ModelSerializer):
                 })
 
         return attrs
+
+
+# ---------------------------------------------------------------------------
+# Serializers pour le Tableau de Bord Admin (vue d'ensemble globale)
+# ---------------------------------------------------------------------------
+
+class ClasseRepartitionItemSerializer(serializers.Serializer):
+    classe = serializers.CharField()
+    nb_bureaux = serializers.IntegerField()
+
+
+class ProvinceRepartitionItemSerializer(serializers.Serializer):
+    province_id = serializers.IntegerField()
+    nprovince = serializers.IntegerField()
+    province_nom = serializers.CharField()
+    nb_bureaux = serializers.IntegerField()
+
+
+class TerritoireOverviewSerializer(serializers.Serializer):
+    total_bureaux = serializers.IntegerField()
+    total_provinces = serializers.IntegerField()
+    bureaux_actifs_count = serializers.IntegerField()
+    bureaux_sans_periode_active = serializers.IntegerField()
+    repartition_classes = ClasseRepartitionItemSerializer(many=True)
+    repartition_provinces = ProvinceRepartitionItemSerializer(many=True)
+
+
+class PeriodesOverviewSerializer(serializers.Serializer):
+    total_periodes = serializers.IntegerField()
+    periodes_en_cours = serializers.IntegerField()
+    periodes_cloturees = serializers.IntegerField()
+    taux_cloture_pourcentage = serializers.FloatField()
+
+
+class UtilisateursOverviewSerializer(serializers.Serializer):
+    total_utilisateurs = serializers.IntegerField()
+    utilisateurs_actifs = serializers.IntegerField()
+    repartition_roles = serializers.DictField(child=serializers.IntegerField())
+
+
+class ComptabiliteOverviewSerializer(serializers.Serializer):
+    total_mouvements_g58 = serializers.IntegerField()
+    total_debit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_credit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    solde_global = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_mouvements_encaisse = serializers.IntegerField()
+
+
+class AuditLogSummarySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    created_at = serializers.DateTimeField()
+    action = serializers.CharField()
+    action_label = serializers.CharField()
+    auteur = serializers.CharField()
+    model_name = serializers.CharField()
+    object_repr = serializers.CharField()
+    detail = serializers.CharField()
+
+
+class AuditOverviewSerializer(serializers.Serializer):
+    total_ecarts_detectes = serializers.IntegerField()
+    ecarts_en_attente = serializers.IntegerField()
+    total_logs_audit = serializers.IntegerField()
+    derniers_logs = AuditLogSummarySerializer(many=True)
+
+
+class AdminDashboardResponseSerializer(serializers.Serializer):
+    territoire = TerritoireOverviewSerializer()
+    periodes = PeriodesOverviewSerializer()
+    utilisateurs = UtilisateursOverviewSerializer()
+    comptabilite = ComptabiliteOverviewSerializer()
+    audit = AuditOverviewSerializer()

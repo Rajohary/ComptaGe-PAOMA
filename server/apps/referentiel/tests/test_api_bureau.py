@@ -1,4 +1,4 @@
-import unittest
+from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework import status
 from apps.referentiel.views import BureauViewSet
@@ -13,7 +13,7 @@ class MockUser:
         self.role = role
 
 
-class BureauAPITestCase(unittest.TestCase):
+class BureauAPITestCase(TestCase):
     def setUp(self):
         self.province = Province.objects.create(nprovince=60, nom="Province Test Suite")
         self.factory = APIRequestFactory()
