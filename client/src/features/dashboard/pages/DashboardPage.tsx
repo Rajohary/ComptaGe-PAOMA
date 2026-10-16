@@ -1,70 +1,105 @@
+import React, { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import { LayoutDashboard } from 'lucide-react';
+import ReceveurDashboard from '../components/ReceveurDashboard';
+import InspecteurDashboard from '../components/InspecteurDashboard';
+import AdminDashboard from '../components/AdminDashboard';
+import {
+  Building2,
+  ShieldCheck,
+  Globe2,
+} from 'lucide-react';
 
 /**
- * Page d'accueil après connexion.
- * Pour l'instant, affiche un message de bienvenue contextuel selon le rôle.
- * Le contenu réel des dashboards sera implémenté dans le module 6 de PROJECT_STATE.md.
+ * Page d'accueil après connexion (Module 6 de PROJECT_STATE.md).
+ * Affiche dynamiquement le tableau de bord correspondant au rôle de l'utilisateur :
+ *   - RECEVEUR / AGENT_SAISIE -> Progression de saisie G58 du bureau et encaisse
+ *   - INSPECTEUR              -> Synthèse des écarts et bureaux impactés (vue DIF)
+ *   - ADMIN                   -> Vue d'ensemble macroscopique du réseau + bascule possible
  */
 export default function DashboardPage() {
   const { user, role } = useAuth();
+  const [adminViewMode, setAdminViewMode] = useState<'admin' | 'inspecteur' | 'receveur'>('admin');
 
   const roleLabels: Record<string, string> = {
-    ADMIN: 'Administrateur',
-    RECEVEUR: 'Receveur',
+    ADMIN: 'Administrateur Central',
+    RECEVEUR: 'Receveur des Postes',
     AGENT_SAISIE: 'Agent de saisie',
-    INSPECTEUR: 'Inspecteur',
+    INSPECTEUR: 'Inspecteur / Auditeur',
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-5xl">
-      {/* Fil d'Ariane / En-tête contextuel */}
-      <div className="mb-6">
-        <div className="text-xs font-sans text-text-secondary uppercase tracking-wider mb-1">
-          Accueil
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+      {/* Fil d'Ariane & En-tête contextuel */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="text-xs font-sans text-text-secondary uppercase tracking-wider mb-1">
+            Accueil • Paositra Malagasy
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-text-primary">
+            Tableau de Bord
+          </h1>
         </div>
-        <h1 className="text-2xl font-heading font-bold text-text-primary">
-          Tableau de bord
-        </h1>
+
+        {/* Sélecteur de vue pour l'Administrateur */}
+        {role === 'ADMIN' && (
+          <div className="inline-flex p-1 rounded-xl bg-surface-card border border-border-subtle shadow-sm self-start sm:self-auto text-xs">
+            <button
+              onClick={() => setAdminViewMode('admin')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                adminViewMode === 'admin'
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              <Globe2 className="w-3.5 h-3.5" />
+              Vue Réseau (Admin)
+            </button>
+            <button
+              onClick={() => setAdminViewMode('inspecteur')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                adminViewMode === 'inspecteur'
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Audit (Inspecteur)
+            </button>
+            <button
+              onClick={() => setAdminViewMode('receveur')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                adminViewMode === 'receveur'
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              <Building2 className="w-3.5 h-3.5" />
+              Bureau (Receveur)
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Carte de bienvenue */}
-      <div className="bg-surface-card rounded-xl border border-border-subtle p-6">
-        <div className="flex items-start gap-4">
-          <div className="p-2.5 rounded-lg bg-brand/10">
-            <LayoutDashboard className="w-5 h-5 text-brand" />
-          </div>
-          <div>
-            <h2 className="text-lg font-heading font-semibold text-text-primary">
-              Bienvenue{user?.first_name ? `, ${user.first_name}` : ''}
-            </h2>
-            <p className="text-sm font-sans text-text-secondary mt-1">
-              Vous êtes connecté en tant que{' '}
-              <span className="font-medium text-text-primary">
-                {role ? roleLabels[role] || role : '—'}
-              </span>
-              {user?.bureau_code != null && (
-                <>
-                  {' '} — Bureau n°{' '}
-                  <span className="font-medium text-text-primary tabular-nums">
-                    {user.bureau_code}
-                  </span>
-                </>
-              )}
-            </p>
-          </div>
+      {/* Rendu dynamique du composant de tableau de bord */}
+      {role === 'ADMIN' ? (
+        adminViewMode === 'admin' ? (
+          <AdminDashboard />
+        ) : adminViewMode === 'inspecteur' ? (
+          <InspecteurDashboard />
+        ) : (
+          <ReceveurDashboard />
+        )
+      ) : role === 'INSPECTEUR' ? (
+        <InspecteurDashboard />
+      ) : role === 'RECEVEUR' || role === 'AGENT_SAISIE' ? (
+        <ReceveurDashboard />
+      ) : (
+        <div className="bg-surface-card rounded-xl border border-border-subtle p-8 text-center">
+          <p className="text-sm text-text-secondary">
+            Connecté en tant que <strong className="text-text-primary">{role ? roleLabels[role] || role : '—'}</strong>.
+          </p>
         </div>
-      </div>
-
-      {/* Placeholder — contenu dashboard réel à venir (module 6) */}
-      <div className="mt-6 bg-surface-card rounded-xl border border-border-subtle border-dashed p-8 text-center">
-        <p className="text-sm font-sans text-text-secondary">
-          Les widgets de tableau de bord spécifiques à votre rôle seront affichés ici.
-        </p>
-        <p className="text-xs font-sans text-text-secondary/70 mt-2">
-          Module 6 de PROJECT_STATE.md — à implémenter ultérieurement.
-        </p>
-      </div>
+      )}
     </div>
   );
 }
