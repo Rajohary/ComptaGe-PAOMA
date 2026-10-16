@@ -12,6 +12,8 @@ import {
   Package,
   CalendarDays,
   Activity,
+  Wallet,
+  Scale,
   LogOut,
   Sun,
   Moon,
@@ -41,10 +43,22 @@ const NAV_ITEMS: NavItem[] = [
     roles: ['RECEVEUR', 'AGENT_SAISIE'],
   },
   {
+    label: 'Encaisse',
+    to: '/encaisse',
+    icon: <Wallet className="w-5 h-5" />,
+    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN'],
+  },
+  {
+    label: 'Situation',
+    to: '/situation-comptable',
+    icon: <Scale className="w-5 h-5" />,
+    roles: ['RECEVEUR', 'INSPECTEUR', 'ADMIN'],
+  },
+  {
     label: 'Plan comptable',
     to: '/plan-comptable',
     icon: <Search className="w-5 h-5" />,
-    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR'],
+    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN'],
   },
   {
     label: 'Bureaux',

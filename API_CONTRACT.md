@@ -44,6 +44,19 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
+| `/api/v1/lignes-comptables/` | GET | Authentifié | implémenté (voir §4) | Recherche instantanée et référentiel du plan comptable (remplace TreeView legacy) |
+| `/api/v1/sections-comptables/` | GET | Authentifié | implémenté (voir §4) | Référentiel des sections macro-comptables (A à E) |
+| `/api/v1/produits-postaux/` | GET, POST, PUT, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel des produits postaux et timbres fiscaux |
+| `/api/v1/stocks-valeurs/` | GET, POST, PUT, PATCH, DELETE | Receveur (son bureau), Admin | implémenté (voir §4) | Suivi des stocks de valeurs postales (Tableau A G58) |
+| `/api/v1/stocks-valeurs/recapitulatif/` | GET | Authentifié | implémenté (voir §4) | Synthèse et totaux financiers d'une période de gestion |
+| `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | implémenté (voir §4) | Saisie et consultation des mouvements du Journal G58 |
+| `/api/v1/mouvements/{id}/` | GET, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Détail / modification avant audit / suppression d'un mouvement |
+| `/api/v1/mouvements/totaux/` | GET | Authentifié | implémenté (voir §4) | Totaux par section (A-E), sous-sections B1-B4, débits, crédits, solde |
+| `/api/v1/rubriques-encaisse/` | GET | Authentifié | implémenté (voir §4) | Référentiel des rubriques d'encaisse (TR, SF, CR...) |
+| `/api/v1/mouvements-encaisse/` | GET, POST, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Suivi des mouvements de caisse et de coffre (entrées/sorties) |
+| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
+| `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | planifié | Liste des mouvements en écart (équivalent vue DIF) |
+| `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Situation comptable mensuelle avec report automatique de solde |
 | `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
 | `/api/v1/dashboard/receveur/` | GET | Receveur (son bureau), Agent saisie (son bureau), Admin, Inspecteur | implémenté (voir §4) | Progression mensuelle G58 par section, totaux et caisse actuelle |
 | `/api/v1/dashboard/inspecteur/` | GET | Inspecteur, Admin | implémenté (voir §4) | Vue synthétique des écarts de caisse et bureaux impactés |
@@ -328,6 +341,48 @@ Réponse 200 :
 ```
 *En cas de tentative de re-clôture d'une période déjà clôturée : 400 Bad Request `{ "detail": "Cette période de gestion est déjà clôturée." }`.*
 
+### GET /api/v1/sections-comptables/
+Réponse 200 (liste paginée des sections A à E) :
+```json
+{
+  "count": 5,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "code": "A",
+      "libelle": "Opérations d'ordre postal et financier",
+      "sens": 1,
+      "sens_libelle": "Débit",
+      "actif": true,
+      "ordre": 1
+    },
+    {
+      "id": 2,
+      "code": "B",
+      "libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "actif": true,
+      "ordre": 2
+    }
+  ]
+}
+```
+
+### GET /api/v1/lignes-comptables/ (Recherche instantanée plan comptable)
+Endpoint consommé par le composant frontend de recherche / sélection rapide (remplace le TreeView legacy).
+- **Accès :** Tout utilisateur authentifié (`RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`).
+- **Paramètres de requête (query params) :**
+  - `search` : recherche textuelle instantanée (insensible à la casse) sur le préfixe de compte (ex: `B101`, `AD`), le libellé (ex: `mandat`, `timbres`), le code de section (`A`), ou le libellé de section.
+  - `section` : filtre par code de section (`A`, `B`, `C`, `D`, `E`) ou par identifiant ID de section.
+  - `sens` : filtre par sens comptable de la section (`1` = Débit, `2` = Crédit).
+  - `parent` : ID de la ligne parente, ou `null` pour récupérer uniquement les lignes racines/groupes.
+  - `feuille` : `true` pour ne récupérer que les lignes imputables (lignes terminales n'ayant pas de sous-lignes).
+  - `actif` : `true` (par défaut), `false`, ou `all`.
+
+Exemple de requête : `GET /api/v1/lignes-comptables/?search=mandat`
 ### GET /api/v1/dashboard/receveur/ (Tableau de bord Receveur & Agent de saisie)
 *Paramètres query optionnels : `bureau` (id ou ncodique, réservé Admin/Inspecteur pour cibler un autre bureau), `periode` (id de période).*
 *Règles d'accès : `RECEVEUR` ou `AGENT_SAISIE` limité à son bureau rattaché ; `ADMIN` et `INSPECTEUR` peuvent consulter tout bureau.*
@@ -335,6 +390,69 @@ Réponse 200 :
 Réponse 200 :
 ```json
 {
+  "count": 9,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 22,
+      "menu_sub": 200,
+      "compte": "B1",
+      "libelle": "Sous-section B1 — Émissions et versements mandats",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": null,
+      "parent_detail": null,
+      "actif": true
+    },
+    {
+      "id": 23,
+      "menu_sub": 201,
+      "compte": "B101",
+      "libelle": "Mandats ordinaires émis en numéraire",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": 22,
+      "parent_detail": {
+        "id": 22,
+        "menu_sub": 200,
+        "compte": "B1",
+        "libelle": "Sous-section B1 — Émissions et versements mandats"
+      },
+      "actif": true
+    }
+  ]
+}
+```
+
+### GET /api/v1/produits-postaux/
+Réponse 200 (liste paginée des produits postaux) :
+```json
+{
+  "count": 14,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "nom": "Timbre d'affranchissement 500 Ar",
+      "categorie": "VP",
+      "categorie_libelle": "Valeurs postales (timbres, aérogrammes…)",
+      "valeur_faciale": "500.00",
+      "actif": true
+    }
+  ]
+}
+```
+
+### GET /api/v1/stocks-valeurs/ (Tableau A G58)
+Filtres disponibles : `bureau` (id ou ncodique), `periode_gestion` ou `periode` (id), `produit` (id), `categorie` (VP, TF...).
   "bureau": {
     "id": 1,
     "ncodique": 10101,
@@ -406,6 +524,85 @@ Réponse 200 :
 Réponse 200 :
 ```json
 {
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "bureau": 1,
+      "bureau_detail": {
+        "id": 1,
+        "ncodique": 10101,
+        "nom_bureau": "Antaninarenina",
+        "classe": "R1"
+      },
+      "periode_gestion": 1,
+      "periode_detail": {
+        "id": 1,
+        "nom_receveur": "Rakoto Jean",
+        "date_debut": "2026-06-01",
+        "date_fin": "2026-06-30",
+        "cloturee": false
+      },
+      "produit": 1,
+      "produit_detail": {
+        "id": 1,
+        "nom": "Timbre d'affranchissement 500 Ar",
+        "categorie": "VP",
+        "categorie_libelle": "Valeurs postales (timbres, aérogrammes…)",
+        "valeur_faciale": "500.00",
+        "actif": true
+      },
+      "quantite_initiale": 100,
+      "quantite_recue": 50,
+      "quantite_vendue": 30,
+      "quantite_finale": 120,
+      "valeur_initiale": "50000.00",
+      "valeur_recue": "25000.00",
+      "valeur_vendue": "15000.00",
+      "valeur_finale": "60000.00",
+      "created_at": "2026-10-14T11:45:00Z",
+      "updated_at": "2026-10-14T11:45:00Z"
+    }
+  ]
+}
+```
+
+### POST /api/v1/stocks-valeurs/
+Requête (les valeurs monétaires et `quantite_finale` sont calculées automatiquement si omises grâce à la `valeur_faciale` du produit) :
+```json
+{
+  "bureau": 1,
+  "periode_gestion": 1,
+  "produit": 1,
+  "quantite_initiale": 100,
+  "quantite_recue": 50,
+  "quantite_vendue": 30
+}
+```
+*Validations : rejet 400 si la période est clôturée, si la période n'appartient pas au bureau, ou si quantite_vendue > initiale + reçue.*
+
+### GET /api/v1/stocks-valeurs/recapitulatif/
+Paramètres : `?periode=<id>&bureau=<id_ou_ncodique>`
+
+Réponse 200 :
+```json
+{
+  "total_valeur_initiale": 50000.0,
+  "total_valeur_recue": 25000.0,
+  "total_valeur_vendue": 15000.0,
+  "total_valeur_finale": 60000.0,
+  "total_quantite_initiale": 100,
+  "total_quantite_recue": 50,
+  "total_quantite_vendue": 30,
+  "total_quantite_finale": 120,
+  "nb_lignes": 1
+}
+```
+
+### GET /api/v1/mouvements/ (Journal G58)
+Filtres disponibles : `periode_gestion` ou `periode` (id), `bureau` (id ou ncodique), `date_operation` ou `date` (YYYY-MM-DD), `section` (code ou id), `sens` (1=Débit, 2=Crédit), `compte` (AD01, B101...).
   "kpis": {
     "total_ecarts_count": 5,
     "total_montant_declare": "320000.00",
@@ -472,6 +669,78 @@ Réponse 200 :
 Réponse 200 :
 ```json
 {
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "periode_gestion": 1,
+      "ligne_comptable": 23,
+      "ligne_detail": {
+        "id": 23,
+        "menu_sub": 201,
+        "compte": "B101",
+        "libelle": "Mandats ordinaires émis en numéraire",
+        "section": 2,
+        "section_code": "B",
+        "section_libelle": "Opérations relatives aux correspondances et objets",
+        "sens": 2,
+        "sens_libelle": "Crédit",
+        "parent": 22,
+        "parent_detail": {
+          "id": 22,
+          "menu_sub": 200,
+          "compte": "B1",
+          "libelle": "Sous-section B1 — Émissions et versements mandats"
+        },
+        "actif": true
+      },
+      "saisi_par": 2,
+      "saisi_par_username": "receveur1",
+      "rectifie_par": null,
+      "rectifie_par_username": null,
+      "date_operation": "2026-06-15",
+      "montant": "25000.00",
+      "augmentation": "0.00",
+      "diminution": "0.00",
+      "montant_rectifie": "25000.00",
+      "motif_rectification": "",
+      "a_ecart": false,
+      "created_at": "2026-10-14T15:20:00Z",
+      "updated_at": "2026-10-14T15:20:00Z"
+    }
+  ]
+}
+```
+
+### POST /api/v1/mouvements/
+Saisie d'une écriture comptable dans le journal.
+- **Accès :** `AGENT_SAISIE` (sur son bureau), `RECEVEUR` (sur son bureau), `ADMIN`.
+- **Règles :** la période doit être active et ouverte, la date comprise dans la période, et la ligne active et directement imputable. À la création, `montant_rectifie` est automatiquement égal à `montant`.
+
+Requête :
+```json
+{
+  "periode_gestion": 1,
+  "ligne_comptable": 23,
+  "date_operation": "2026-06-15",
+  "montant": "25000.00"
+}
+```
+Réponse 201 : objet complet créé (structure identique à celle du GET ci-dessus).
+
+### PATCH / PUT /api/v1/mouvements/{id}/
+Modification par l'opérateur avant audit inspecteur.
+Requête (PATCH) :
+```json
+{
+  "montant": "30000.00"
+}
+```
+### GET /api/v1/mouvements/totaux/
+Calcul consolidé des totaux du Journal G58 pour une période donnée.
+Paramètres de requête : `?periode=<id>&date=<YYYY-MM-DD (optionnel)>`
   "count": 5,
   "next": null,
   "previous": null,
@@ -529,6 +798,161 @@ Réponse 200 :
 Réponse 200 :
 ```json
 {
+  "periode_gestion_id": 1,
+  "date_operation": null,
+  "totaux_sections": {
+    "A": {
+      "section_id": 1,
+      "code": "A",
+      "libelle": "Opérations d'ordre postal et financier",
+      "sens": 1,
+      "sens_libelle": "Débit",
+      "total_declare": "50000.00",
+      "total_rectifie": "50000.00"
+    },
+    "B": {
+      "section_id": 2,
+      "code": "B",
+      "libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "total_declare": "35000.00",
+      "total_rectifie": "40000.00"
+    }
+  },
+  "sous_sections_b": {
+    "B1": {
+      "total_declare": "20000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B2": {
+      "total_declare": "15000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B3": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    },
+    "B4": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    }
+  },
+  "total_general_debit": "50000.00",
+  "total_general_credit": "40000.00",
+  "solde_net": "10000.00"
+}
+```
+
+### GET /api/v1/rubriques-encaisse/
+Réponse 200 (liste des rubriques d'encaisse et de coffre) :
+```json
+{
+  "count": 5,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "rubrique_parent": 1,
+      "parent_libelle": "ENCAISSE ET VALEURS",
+      "menu_sub": 1,
+      "compte": "TR",
+      "libelle": "Trésorerie et espèces physiques (billets et pièces)"
+    },
+    {
+      "id": 2,
+      "rubrique_parent": 1,
+      "parent_libelle": "ENCAISSE ET VALEURS",
+      "menu_sub": 2,
+      "compte": "SF",
+      "libelle": "Stock final de timbres et valeurs postales"
+    }
+  ]
+}
+```
+
+### GET /api/v1/mouvements-encaisse/
+Filtres disponibles : `periode_gestion` ou `periode` (id), `bureau` (id ou ncodique), `date_operation` ou `date` (YYYY-MM-DD), `sens` (1=Entrée, 2=Sortie), `rubrique_encaisse` (id), `compte` (TR, SF, CR...).
+
+Réponse 200 :
+```json
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "periode_gestion": 1,
+      "rubrique_encaisse": 1,
+      "rubrique_detail": {
+        "id": 1,
+        "rubrique_parent": 1,
+        "parent_libelle": "ENCAISSE ET VALEURS",
+        "menu_sub": 1,
+        "compte": "TR",
+        "libelle": "Trésorerie et espèces physiques (billets et pièces)"
+      },
+      "sens": 1,
+      "sens_libelle": "Entrée",
+      "date_operation": "2026-06-05",
+      "montant": "150000.00",
+      "saisi_par": 2,
+      "saisi_par_username": "receveur1",
+      "created_at": "2026-10-14T15:35:00Z",
+      "updated_at": "2026-10-14T15:35:00Z"
+    }
+  ]
+}
+```
+
+### POST /api/v1/mouvements-encaisse/
+Enregistrement d'un flux physique de trésorerie ou de coffre.
+- **Accès :** `AGENT_SAISIE` (sur son bureau), `RECEVEUR` (sur son bureau), `ADMIN`.
+- **Règles :** période active requise, date comprise dans la période.
+
+Requête :
+```json
+{
+  "periode_gestion": 1,
+  "rubrique_encaisse": 1,
+  "sens": 1,
+  "date_operation": "2026-06-05",
+  "montant": "150000.00"
+}
+### GET /api/v1/situation-comptable/{periode_id}/
+Calcul et consultation de la Situation Comptable mensuelle d'un bureau pour une période donnée.
+- **Accès :** `RECEVEUR` (limité à son propre bureau), `INSPECTEUR` (tous bureaux), `ADMIN` (tous bureaux).
+- **Règles :** 
+  - Si une période antérieure existe pour le bureau, ses soldes de fin (`solde_debiteur_fin`, `solde_crediteur_fin`) sont automatiquement reportés en solde de début (`solde_debiteur_reporte`, `solde_crediteur_reporte`).
+  - Sinon, ce sont les soldes déclarés à l'ouverture de la période qui sont utilisés.
+  - Calcul dynamique : `cumul_debit = solde_debiteur_reporte + total_debit`, `cumul_credit = solde_crediteur_reporte + total_credit`.
+  - Balance de clôture : dégage un `solde_debiteur_fin` ou `solde_crediteur_fin`.
+
+Réponse 200 :
+```json
+{
+  "periode_id": 2,
+  "periode_nom": "Juin 2026",
+  "bureau": {
+    "code": 101,
+    "nom": "BUREAU CENTRAL ANTANANARIVO"
+  },
+  "report_precedent": {
+    "periode_precedente_id": 1,
+    "periode_precedente_nom": "Mai 2026",
+    "est_report_automatique": true
+  },
+  "solde_debiteur_reporte": "100000.00",
+  "solde_crediteur_reporte": "0.00",
+  "total_debit_mois": "50000.00",
+  "total_credit_mois": "30000.00",
+  "cumul_debit": "150000.00",
+  "cumul_credit": "30000.00",
+  "solde_debiteur_fin": "120000.00",
+  "solde_crediteur_fin": "0.00",
+  "statut_periode": "ACTIVE"
   "territoire": {
     "total_bureaux": 24,
     "total_provinces": 6,
@@ -593,6 +1017,38 @@ Réponse 200 :
 
 Si un changement casse la compatibilité (renommage de champ, changement de format, suppression d'un endpoint), le noter ici brièvement avec la date — ça évite qu'un agent travaillant sur l'autre côté du projet découvre la casse par un bug plutôt que par la documentation.
 
+### 2026-10-14 — Endpoint Situation Comptable avec report automatique (Section 4)
+- Endpoint ajouté : `GET /api/v1/situation-comptable/{periode_id}/`
+- Fonctionnalités :
+  - Report automatique du solde de clôture du mois précédent.
+  - Agrégation des mouvements de la période (débits / crédits).
+  - Établissement de la balance cumulée et solde de clôture du mois.
+  - Contrôle d'accès RBAC avec isolation par bureau pour les Receveurs.
+
+### 2026-10-14 — Endpoints Totaux et Mouvements d'encaisse ajoutés (Section 4)
+- Endpoints ajoutés :
+  - `GET /api/v1/mouvements/totaux/?periode_id=X` : totaux par sous-sections B1-B4 et total général.
+  - `GET /api/v1/rubriques-encaisse/` : référentiel des rubriques d'encaisse.
+  - `GET, POST, PUT, PATCH, DELETE /api/v1/mouvements-encaisse/` : flux d'encaisse (caisse et coffre).
+
+### 2026-10-14 — Endpoints Mouvements G58 ajoutés (Section 4)
+- Endpoints ajoutés :
+  - `GET, POST /api/v1/mouvements/` : saisie et consultation des écritures G58.
+  - `GET, PUT, PATCH, DELETE /api/v1/mouvements/{id}/` : consultation, modification avant audit, suppression d'une écriture sur période active.
+- Validations : période active obligatoire, contrôle d'imputation sur ligne feuille, initialisation stricte `montant_rectifie = montant`.
+
+### 2026-10-14 — Module Stock de valeurs postales ajouté (Section 7)
+- Endpoints ajoutés :
+  - `GET, POST, PUT, DELETE /api/v1/produits-postaux/` (référentiel produits postaux et timbres fiscaux).
+  - `GET, POST, PUT, PATCH, DELETE /api/v1/stocks-valeurs/` (suivi des stocks Tableau A G58).
+  - `GET /api/v1/stocks-valeurs/recapitulatif/` (totaux agrégés du stock pour une période et un bureau).
+- Validations : calcul automatique des totaux/valeurs finales, cohérence avec la période ouverte, blocage des ventes excédentaires.
+
+### 2026-10-14 — Endpoints Plan comptable ajoutés
+- Endpoints ajoutés :
+  - `GET /api/v1/lignes-comptables/` : recherche instantanée avec filtrage multi-critères (`search`, `section`, `sens`, `parent`, `feuille`, `actif`) et enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
+  - `GET /api/v1/sections-comptables/` : référentiel macro-comptable (sections A à E).
+- Rôles autorisés : tout utilisateur authentifié.
 ### 2026-10-15 — Tableaux de bord et vue DIF implémentés (Module 6)
 - Endpoints ajoutés et documentés :
   - `GET /api/v1/dashboard/receveur/` : progression mensuelle G58, situation par section et encaisse/caisse actuelle

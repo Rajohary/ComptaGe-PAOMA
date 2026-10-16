@@ -13,5 +13,6 @@ urlpatterns = [
     path("api/v1/auth/", include("apps.accounts.urls")),
     path("api/v1/", include("apps.referentiel.urls")),
     path("api/v1/", include("apps.comptabilite.urls")),
+    path("api/v1/", include("apps.stock.urls")),
     path("api/v1/", include("apps.audit.urls")),
 ]
