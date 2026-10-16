@@ -362,18 +362,14 @@ class SituationComptableView(APIView):
 
         situation = calcul_situation_comptable(periode)
         return Response(situation, status=status.HTTP_200_OK)
-"""
-Vues API pour l'application Comptabilité.
-Conforme à ARCHITECTURE.md (§ 3 : les vues orchestrent, ne calculent pas).
-"""
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
+
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.views import APIView
 from apps.accounts.permissions import HasRole
 from apps.comptabilite.services import get_progression_saisie_receveur
 from apps.comptabilite.serializers import ReceveurDashboardResponseSerializer
+
 
 
 class IsReceveurOrAgentOrAuditeur(HasRole):
