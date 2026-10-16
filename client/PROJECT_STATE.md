@@ -74,9 +74,9 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 6. Tableaux de bord
 
-- [ ] Dashboard Receveur : progression de la saisie du mois en cours par section, montant en caisse actuel
-- [ ] Dashboard Inspecteur : bureaux avec écarts en attente, triable/filtrable
-- [ ] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours)
+- [x] Dashboard Receveur : progression de la saisie du mois en cours par section, montant en caisse actuel
+- [x] Dashboard Inspecteur : bureaux avec écarts en attente, triable/filtrable
+- [x] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours)
 
 ---
 
@@ -104,13 +104,36 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
  
  ```
- ### AAAA-MM-JJ — Titre court de la tâche
- - Ce qui a été fait : ...
- - Fichiers/dossiers touchés : ...
- - Cases cochées : section X, tâche Y
- - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
- - Points restés ouverts ou à valider avec l'utilisateur : ...
- ```
+### AAAA-MM-JJ — Titre court de la tâche
+- Ce qui a été fait : ...
+- Fichiers/dossiers touchés : ...
+- Cases cochées : section X, tâche Y
+- Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
+- Points restés ouverts ou à valider avec l'utilisateur : ...
+```
+
+### 2026-10-16 — Module 6 : Tableaux de bord (Receveur, Inspecteur, Admin)
+- Ce qui a été fait :
+  - Création de l'utilitaire de formatage monétaire et date [src/lib/formatters.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/lib/formatters.ts) (`formatAriary`, `formatDate`, `formatDateTime`, `formatPercent`) avec respect strict de `tabular-nums` et des règles typographiques institutionnelles de `DESIGN.md`.
+  - Définition complète des types TypeScript dans [src/types/index.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/types/index.ts) (`ReceveurDashboardData`, `InspecteurDashboardData`, `AdminDashboardData`, `EcartsListResponse`, `SectionProgressionItem`, `BureauAvecEcartsItem`, `EcartItem`, etc.) en conformité avec `API_CONTRACT.md`.
+  - Implémentation du client API et des hooks TanStack Query dans [src/api/dashboard.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/api/dashboard.ts) (`useReceveurDashboard`, `useInspecteurDashboard`, `useAdminDashboard`, `useEcartsList`).
+  - Implémentation du composant [ReceveurDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/ReceveurDashboard.tsx) : progression de la saisie par section (A à E, ENC), montant en caisse avec décomposition détaillée (réserve numéraire + entrées - sorties), récapitulatif des flux débit/crédit G58, alerte écarts avec lien direct vers le journal d'écritures.
+  - Implémentation du composant [InspecteurDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/InspecteurDashboard.tsx) : KPI d'audit national/régional (total écarts en attente, montant cumulé, bureaux audités), tableau interactif des bureaux avec écarts en attente (filtrable par terme de recherche, triable par bureau, montant, statut, ou date), et flux des anomalies récentes (vue DIF).
+  - Implémentation du composant [AdminDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/AdminDashboard.tsx) : vue d'ensemble nationale (nombre de bureaux actifs/inactifs, répartition géographique par province et classe), périodes de gestion ouvertes/clôturées, répartition des comptes utilisateurs RBAC, flux financiers globaux et journal d'audit des actions critiques.
+  - Mise à niveau de la page principale [DashboardPage.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/pages/DashboardPage.tsx) : affichage contextuel et automatique selon le rôle de l'utilisateur connecté (`RECEVEUR`/`AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`), avec onglets de supervision pour les administrateurs permettant de basculer instantanément entre les vues.
+  - Suite de tests end-to-end Playwright [e2e/dashboard.spec.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/e2e/dashboard.spec.ts) validant le rendu visuel, la décomposition de caisse, le tri/filtrage du tableau des écarts, et les vues de supervision administrative.
+- Fichiers/dossiers touchés :
+  - `src/lib/formatters.ts`
+  - `src/types/index.ts`
+  - `src/api/dashboard.ts`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/components/InspecteurDashboard.tsx`
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+- Cases cochées : Section 6 (3 cases : Dashboard Receveur, Dashboard Inspecteur, Dashboard Admin)
+- Dépendance à un endpoint backend : `/api/v1/dashboard/receveur/`, `/api/v1/dashboard/inspecteur/`, `/api/v1/audit/ecarts/`, `/api/v1/dashboard/admin/` (tous implémentés et testés dans le backend)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
 ### 2026-10-15 — Révision et enrichissement de l'espace Encaisse (Section 4)
 - Ce qui a été fait :

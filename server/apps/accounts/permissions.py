@@ -29,6 +29,14 @@ class IsInspecteur(HasRole):
     required_roles = ("INSPECTEUR",)
 
 
+class IsInspecteurOrAdmin(HasRole):
+    required_roles = ("INSPECTEUR", "ADMIN")
+
+
+class IsReceveurOrAdmin(HasRole):
+    required_roles = ("RECEVEUR", "ADMIN")
+
+
 class IsSameBureau(HasRole):
     required_roles = ("RECEVEUR", "AGENT_SAISIE")
 

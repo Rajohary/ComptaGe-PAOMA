@@ -84,3 +84,24 @@ class PeriodeGestionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from apps.accounts.permissions import IsAdmin
+from .services import get_admin_dashboard_overview
+from .serializers import AdminDashboardResponseSerializer
+
+
+class AdminDashboardView(APIView):
+    """
+    Tableau de bord Administrateur : vue d'ensemble globale du système
+    (réseau postal, périodes actives, utilisateurs RBAC, volumétrie et alertes d'audit).
+    Réservé aux Administrateurs.
+    """
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        data = get_admin_dashboard_overview()
+        serializer = AdminDashboardResponseSerializer(data)
+        return Response(serializer.data)
+
+

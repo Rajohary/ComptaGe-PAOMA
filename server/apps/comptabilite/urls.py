@@ -19,3 +19,14 @@ router.register(r"mouvements-encaisse", MouvementEncaisseViewSet, basename="mouv
 urlpatterns = [
     path("situation-comptable/<int:periode_id>/", SituationComptableView.as_view(), name="situation-comptable"),
 ] + router.urls
+"""
+Routage des URLs pour l'application Comptabilité.
+"""
+
+from django.urls import path
+from apps.comptabilite.views import ReceveurDashboardView
+
+urlpatterns = [
+    # Dashboard Receveur : progression de saisie du mois en cours
+    path("dashboard/receveur/", ReceveurDashboardView.as_view(), name="dashboard-receveur"),
+]

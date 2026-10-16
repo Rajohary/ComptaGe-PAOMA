@@ -88,7 +88,15 @@ DATABASES = {
         conn_max_age=600,
         conn_health_checks=True,
     )
-}                           
+}
+
+# Pour l'exécution des tests sans requérir les privilèges PostgreSQL CREATEDB
+import sys
+if "pytest" in sys.modules or "test" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    }
 
 
 # Password validation
