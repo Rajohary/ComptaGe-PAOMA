@@ -1,0 +1,107 @@
+from rest_framework import viewsets, filters, status, decorators
+from rest_framework.response import Response
+from .models import Province, Bureau, PeriodeGestion
+from .serializers import ProvinceSerializer, BureauSerializer, PeriodeGestionSerializer
+from .permissions import IsAdminUserOrReadOnly, IsReceveurOrAdmin
+
+
+class ProvinceViewSet(viewsets.ModelViewSet):
+    """
+    CRUD pour les Provinces de Madagascar.
+    Lecture accessible à tous, écriture réservée aux Administrateurs.
+    """
+    queryset = Province.objects.all().order_by("nprovince")
+    serializer_class = ProvinceSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    search_fields = ["nom"]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+
+
+class BureauViewSet(viewsets.ModelViewSet):
+    """
+    CRUD complet pour les Bureaux de poste.
+    - GET /api/v1/bureaux/ : liste paginée avec recherche possible par nom ou ncodique
+    - POST /api/v1/bureaux/ : création (réservée Admin)
+    - GET /api/v1/bureaux/{id}/ : détail d'un bureau
+    - PUT / PATCH /api/v1/bureaux/{id}/ : modification (réservée Admin)
+    - DELETE /api/v1/bureaux/{id}/ : suppression (réservée Admin)
+    """
+    queryset = Bureau.objects.select_related("province").all().order_by("ncodique")
+    serializer_class = BureauSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["nom_bureau", "ncodique", "classe", "ccp"]
+    ordering_fields = ["ncodique", "nom_bureau", "created_at"]
+
+
+class PeriodeGestionViewSet(viewsets.ModelViewSet):
+    """
+    Gestion des périodes de gestion comptable (Journal G58) :
+    - GET /api/v1/periodes-gestion/ : liste des périodes (filtrable par bureau, cloturee)
+    - POST /api/v1/periodes-gestion/ : ouverture d'une période de gestion avec inventaire initial obligatoire
+    - GET /api/v1/periodes-gestion/{id}/ : détail d'une période
+    """
+    queryset = PeriodeGestion.objects.select_related("bureau", "receveur").all().order_by("-date_debut", "-id")
+    serializer_class = PeriodeGestionSerializer
+    permission_classes = [IsReceveurOrAdmin]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["nom_receveur", "bureau__nom_bureau", "bureau__ncodique"]
+    ordering_fields = ["date_debut", "date_fin", "created_at"]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        from django.contrib.auth import get_user_model
+        UserModel = get_user_model()
+        # Si un utilisateur authentifié Django crée la période et que receveur n'est pas spécifié
+        if user and user.is_authenticated and isinstance(user, UserModel) and not serializer.validated_data.get("receveur"):
+            serializer.save(receveur=user)
+        else:
+            serializer.save()
+
+    @decorators.action(detail=True, methods=["post"], url_path="cloturer")
+    def cloturer(self, request, pk=None):
+        """
+        Clôture officielle d'une période de gestion comptable (Journal G58).
+        - Passe `cloturee` à True (coupure = 1).
+        - Enregistre `date_cloture` à l'instant présent.
+        - Interdit la re-clôture si la période est déjà clôturée (400 Bad Request).
+        - Accessible uniquement au Receveur ou à l'Admin.
+        """
+        from django.utils import timezone
+        periode = self.get_object()
+
+        if periode.cloturee:
+            return Response(
+                {"detail": "Cette période de gestion est déjà clôturée."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        periode.cloturee = True
+        periode.date_cloture = timezone.now()
+        periode.save(update_fields=["cloturee", "date_cloture", "updated_at"])
+
+        serializer = self.get_serializer(periode)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from apps.accounts.permissions import IsAdmin
+from .services import get_admin_dashboard_overview
+from .serializers import AdminDashboardResponseSerializer
+
+
+class AdminDashboardView(APIView):
+    """
+    Tableau de bord Administrateur : vue d'ensemble globale du système
+    (réseau postal, périodes actives, utilisateurs RBAC, volumétrie et alertes d'audit).
+    Réservé aux Administrateurs.
+    """
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        data = get_admin_dashboard_overview()
+        serializer = AdminDashboardResponseSerializer(data)
+        return Response(serializer.data)
+
+

@@ -45,11 +45,11 @@ export const apiClient = async <T>(
   const token = localStorage.getItem('access_token');
 
   const requestHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
+'Content-Type': 'application/json',
     ...(headers as Record<string, string>),
   };
 
-  if (requiresAuth && token) {
+  if (token && (requiresAuth || requiresAuth === false)) {
     requestHeaders['Authorization'] = `Bearer ${token}`;
   }
 

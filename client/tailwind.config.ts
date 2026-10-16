@@ -26,6 +26,25 @@ export default {
         },
         accent: {
           DEFAULT: 'var(--color-accent)',
+          hover: 'var(--color-accent-hover)',
+          soft: 'var(--color-accent-soft)',
+        },
+        paoma: {
+          blue: {
+            DEFAULT: '#004387',
+            hover: '#00356F',
+            soft: '#E8F1FA',
+          },
+          yellow: {
+            DEFAULT: '#FFD600',
+            dark: '#E5C000',
+            light: '#FFF9D6',
+          },
+          red: {
+            DEFAULT: '#E3161B',
+            dark: '#C50805',
+            soft: '#FDECEB',
+          },
         },
         status: {
           success: 'var(--color-status-success)',
