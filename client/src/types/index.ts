@@ -228,3 +228,142 @@ export interface StockValeurSearchParams {
   categorie?: string;
   page?: number;
 }
+
+export interface MouvementG58 {
+  id: number;
+  periode_gestion: number;
+  periode_detail?: {
+    id: number;
+    nom_receveur: string;
+    date_debut: string;
+    date_fin: string;
+    cloturee: boolean;
+  };
+  ligne_comptable: number;
+  ligne_detail?: LigneComptable;
+  saisi_par: number;
+  saisi_par_username: string;
+  rectifie_par: number | null;
+  rectifie_par_username: string | null;
+  date_operation: string;
+  montant: string;
+  augmentation: string;
+  diminution: string;
+  montant_rectifie: string;
+  motif_rectification: string;
+  a_ecart: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface MouvementG58FormData {
+  periode_gestion: number;
+  ligne_comptable: number;
+  date_operation: string;
+  montant: string;
+}
+
+export interface MouvementSearchParams {
+  periode_gestion?: number;
+  periode?: number;
+  bureau?: number;
+  date_operation?: string;
+  date?: string;
+  section?: string | number;
+  sens?: number;
+  compte?: string;
+  page?: number;
+}
+
+export interface TotauxSectionItem {
+  section_id: number;
+  code: string;
+  libelle: string;
+  sens: number;
+  sens_libelle: string;
+  total_declare: string;
+  total_rectifie: string;
+}
+
+export interface SousSectionBItem {
+  total_declare: string;
+  total_rectifie: string;
+}
+
+export interface TotauxG58 {
+  periode_gestion_id: number;
+  date_operation?: string | null;
+  totaux_sections: Record<string, TotauxSectionItem>;
+  sous_sections_b: Record<string, SousSectionBItem>;
+  total_general_debit: string;
+  total_general_credit: string;
+  solde_net: string;
+}
+
+export interface RubriqueEncaisse {
+  id: number;
+  rubrique_parent: number;
+  parent_libelle: string;
+  menu_sub: number;
+  compte: string;
+  libelle: string;
+}
+
+export interface MouvementEncaisse {
+  id: number;
+  periode_gestion: number;
+  rubrique_encaisse: number;
+  rubrique_detail?: RubriqueEncaisse;
+  sens: number; // 1 = Entrée, 2 = Sortie
+  sens_libelle: string;
+  date_operation: string;
+  montant: string;
+  saisi_par: number;
+  saisi_par_username: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface MouvementEncaisseFormData {
+  periode_gestion: number;
+  rubrique_encaisse: number;
+  sens: number;
+  date_operation: string;
+  montant: string;
+}
+
+export interface MouvementEncaisseSearchParams {
+  periode_gestion?: number;
+  periode?: number;
+  bureau?: number;
+  date_operation?: string;
+  date?: string;
+  sens?: number;
+  rubrique_encaisse?: number;
+  compte?: string;
+  page?: number;
+}
+
+export interface SituationComptable {
+  periode_id: number;
+  bureau_id?: number;
+  bureau_nom?: string;
+  bureau_ncodique?: number;
+  nom_receveur?: string;
+  date_debut?: string;
+  date_fin?: string;
+  cloturee?: boolean;
+  source_report: string;
+  periode_precedente_id?: number | null;
+  solde_debiteur_reporte: string | number;
+  solde_crediteur_reporte: string | number;
+  total_debit_mois: string | number;
+  total_credit_mois: string | number;
+  cumul_debit: string | number;
+  cumul_credit: string | number;
+  solde_debiteur_fin: string | number;
+  solde_crediteur_fin: string | number;
+  totaux_sections?: Record<string, TotauxSectionItem>;
+  sous_sections_b?: Record<string, SousSectionBItem>;
+}
+

@@ -623,7 +623,7 @@ export const StockValeursPage: React.FC = () => {
       {/* Modale de confirmation de suppression */}
       {deletingStock && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-delete-title"

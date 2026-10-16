@@ -8,6 +8,9 @@ import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
 import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
 import { StockValeursPage } from './features/stock/StockValeursPage';
+import { SaisieG58Page } from './features/saisie-g58/pages/SaisieG58Page';
+import { SituationComptablePage } from './features/saisie-g58/pages/SituationComptablePage';
+import { EncaissePage } from './features/encaisse/EncaissePage';
 import { HealthPage } from './features/dashboard/HealthPage';
 
 /**
@@ -57,10 +60,31 @@ export default function App() {
             path="saisie"
             element={
               <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE']}>
-                <PlaceholderPage title="Saisie G58" module="4" />
+                <SaisieG58Page />
               </RequireAuth>
             }
           />
+
+          {/* Détails de l'encaisse — Receveur, Agent de saisie, Inspecteur, Admin */}
+          <Route
+            path="encaisse"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <EncaissePage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Situation comptable — Receveur, Inspecteur, Admin */}
+          <Route
+            path="situation-comptable"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'INSPECTEUR', 'ADMIN']}>
+                <SituationComptablePage />
+              </RequireAuth>
+            }
+          />
+
 
           {/* Plan comptable — Receveur, Agent de saisie, Inspecteur, Admin */}
           <Route

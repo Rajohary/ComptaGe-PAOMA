@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "PROJECT_STATE.md": {
-    "mtime": 1791968499.9633355,
-    "seen": 1791968508.3803995,
-    "ast_hash": "aeff15b70cef1326c9fcb28e0471c27e",
+    "mtime": 1792050302.4554532,
+    "seen": 1792050312.5351362,
+    "ast_hash": "58f2cc9a718e71fc2690312d16506d5e",
     "semantic_hash": ""
   },
   ".oxlintrc.json": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1791967985.678647,
-    "seen": 1791968508.3803127,
-    "ast_hash": "d12940b7b9984b314dc4acb36c3f0587",
+    "mtime": 1792001975.9127355,
+    "seen": 1792002283.5074368,
+    "ast_hash": "d8005a7e1c35eaca03df078b7e58f02c",
     "semantic_hash": ""
   },
   "src/api/auth.ts": {
@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "src/api/client.ts": {
-    "mtime": 1791961193.372703,
-    "seen": 1791965516.780741,
-    "ast_hash": "5b987d56f0a2104f92dcf86eed24b24a",
+    "mtime": 1791998252.8596776,
+    "seen": 1791998980.2486746,
+    "ast_hash": "caf6acfd7bf1d3db411f19a0f452c30a",
     "semantic_hash": ""
   },
   "src/api/health.ts": {
@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "src/components/layout/Sidebar.tsx": {
-    "mtime": 1791967503.9238775,
-    "seen": 1791968508.3803258,
-    "ast_hash": "59e9cea3424bae061ff4917e764aa80a",
+    "mtime": 1792002015.0672758,
+    "seen": 1792002283.5074487,
+    "ast_hash": "b785f00bbb2da5282bad9c2a09df2fb7",
     "semantic_hash": ""
   },
   "src/components/layout/Topbar.tsx": {
@@ -144,9 +144,9 @@
     "semantic_hash": ""
   },
   "src/components/ui/Modal.tsx": {
-    "mtime": 1791961193.374292,
-    "seen": 1791965516.780753,
-    "ast_hash": "e6a8f10d7a3fca3bf5da2ca1f44a9bba",
+    "mtime": 1792070359.434458,
+    "seen": 1792070402.3109179,
+    "ast_hash": "5eeebf11018fba58d4c280e6322ab185",
     "semantic_hash": ""
   },
   "src/components/ui/Select.tsx": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "src/types/index.ts": {
-    "mtime": 1791967854.4769819,
-    "seen": 1791968508.3803625,
-    "ast_hash": "9dafcd9dca47e5f5f7080d0e08e42cae",
+    "mtime": 1792001865.6179378,
+    "seen": 1792002283.5074904,
+    "ast_hash": "723c6ff1c0c96a52b01d8f4ab5a43371",
     "semantic_hash": ""
   },
   "tailwind.config.ts": {
@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "src/api/comptabilite.ts": {
-    "mtime": 1791967503.9238775,
-    "seen": 1791968508.380317,
-    "ast_hash": "36d0a87a7a096234a4acbb05649e1ce5",
+    "mtime": 1792049957.7651424,
+    "seen": 1792050312.535055,
+    "ast_hash": "f72ebb8f78ce0f140f06a80e3ecd89fb",
     "semantic_hash": ""
   },
   "src/features/plan-comptable/PlanComptablePage.tsx": {
@@ -450,27 +450,81 @@
     "semantic_hash": ""
   },
   "e2e/stock.spec.ts": {
-    "mtime": 1791968419.5565405,
-    "seen": 1791968508.380304,
+    "mtime": 1791978303.427694,
+    "seen": 1791998980.2486644,
     "ast_hash": "16b153d46660536bbd5200e6cc67687f",
     "semantic_hash": ""
   },
   "src/api/stocks.ts": {
-    "mtime": 1791967872.7119353,
-    "seen": 1791968508.3803213,
+    "mtime": 1791978303.4435823,
+    "seen": 1791998980.2486799,
     "ast_hash": "a4da87ad40f0b0f66faa1c92d3643728",
     "semantic_hash": ""
   },
   "src/features/stock/StockValeursPage.tsx": {
-    "mtime": 1791968037.2555153,
-    "seen": 1791968508.3803568,
-    "ast_hash": "df960ed7a95e5561590553ebe3a912da",
+    "mtime": 1792070379.487127,
+    "seen": 1792070402.3109508,
+    "ast_hash": "edf4c201597504e65c79b310f7a63663",
     "semantic_hash": ""
   },
   "src/features/stock/components/StockValeurFormModal.tsx": {
-    "mtime": 1791968317.4405918,
-    "seen": 1791968508.3803582,
-    "ast_hash": "5adb4f897c1ff7668ce3e4312aa0b245",
+    "mtime": 1792070375.393418,
+    "seen": 1792070402.3109517,
+    "ast_hash": "4faf4b4345da6e6579579b28879948b6",
+    "semantic_hash": ""
+  },
+  "e2e/saisie-g58.spec.ts": {
+    "mtime": 1792002537.298706,
+    "seen": 1792049732.2953937,
+    "ast_hash": "2ad2603315cd4030fd849d2ad7b67f7a",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/components/SectionForm.tsx": {
+    "mtime": 1792070384.568395,
+    "seen": 1792070402.3109453,
+    "ast_hash": "a549e1250b4f2c867ec35d2809f0eee1",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/components/TotauxLive.tsx": {
+    "mtime": 1791998508.56762,
+    "seen": 1791998980.2487452,
+    "ast_hash": "81ce5fdd67cac25ab466d4cac44ed79d",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/pages/SaisieG58Page.tsx": {
+    "mtime": 1792002048.594602,
+    "seen": 1792002283.5074825,
+    "ast_hash": "30aef4bde92735e1ff104afc163427e2",
+    "semantic_hash": ""
+  },
+  "e2e/encaisse.spec.ts": {
+    "mtime": 1792050213.9490354,
+    "seen": 1792050312.5350332,
+    "ast_hash": "710a3481d02733be19a095ffc2ca5351",
+    "semantic_hash": ""
+  },
+  "src/features/encaisse/EncaissePage.tsx": {
+    "mtime": 1792070368.0544364,
+    "seen": 1792070402.3109338,
+    "ast_hash": "f8a0866bdc1e884e4233740d93c9d44e",
+    "semantic_hash": ""
+  },
+  "src/features/encaisse/components/EncaisseFormModal.tsx": {
+    "mtime": 1792070363.5184479,
+    "seen": 1792070402.3109353,
+    "ast_hash": "e409a5d3530bf14f7d552f84a6727b86",
+    "semantic_hash": ""
+  },
+  "e2e/situation-comptable.spec.ts": {
+    "mtime": 1792002130.934451,
+    "seen": 1792002283.507427,
+    "ast_hash": "aa351cd4705d4719150c8f578ed0666e",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/pages/SituationComptablePage.tsx": {
+    "mtime": 1792002085.6705341,
+    "seen": 1792002283.5074842,
+    "ast_hash": "07927d23f4370eaa9370348ef1f65df6",
     "semantic_hash": ""
   }
 }

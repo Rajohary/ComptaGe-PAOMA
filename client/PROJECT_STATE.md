@@ -53,13 +53,14 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
+- [x] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
+- [x] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
+- [x] Validation React Hook Form + Zod cohérente avec les contraintes backend
+- [x] Écran « Détails de l'encaisse »
+- [x] Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent
+- [x] Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel
 
-- [ ] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
-- [ ] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
-- [ ] Validation React Hook Form + Zod cohérente avec les contraintes backend
-- [ ] Écran « Détails de l'encaisse »
-- [ ] Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent
-- [ ] Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel
+
 
 ---
 
@@ -110,6 +111,144 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
  - Points restés ouverts ou à valider avec l'utilisateur : ...
  ```
+
+### 2026-10-15 — Révision et enrichissement de l'espace Encaisse (Section 4)
+- Ce qui a été fait :
+  - Enrichissement analytique : ajout du bloc de répartition des flux par rubrique d'encaisse (`TR`: Trésorerie et espèces, `SF`: Stock final, `CR`: Créances) avec calcul immédiat des totaux entrées, sorties, solde net et volume d'écritures.
+  - Ergonomie et filtrage instantané : ajout de pastilles de filtrage rapide du sens (`Tous`, `Entrées`, `Sorties`) combinées avec la barre de recherche textuelle.
+  - Mode édition en place : prise en charge complète de la modification d'un mouvement d'encaisse (`updateMouvementEncaisse` consommant `PATCH /api/v1/mouvements-encaisse/{id}/`), intégration du bouton modifier dans le tableau et préremplissage automatique dans `EncaisseFormModal`.
+  - Tests automatisés : enrichissement de [e2e/encaisse.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/encaisse.spec.ts) (6/6 tests passés couvrant affichage, cartes de synthèse, répartition analytique, modification, pastilles de sens, validation Zod).
+  - Validation globale : **41/41 tests Playwright passés au vert**, build Vite opérationnel sans erreur.
+- Fichiers/dossiers touchés :
+  - `src/api/comptabilite.ts`
+  - `src/features/encaisse/components/EncaisseFormModal.tsx`
+  - `src/features/encaisse/EncaissePage.tsx`
+  - `e2e/encaisse.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Révision et renforcement de l'espace Encaisse (Section 4).
+- Dépendance à un endpoint backend : `/api/v1/mouvements-encaisse/` (`GET`, `POST`, `PATCH`, `DELETE`) et `/api/v1/rubriques-encaisse/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-15 — Test e2e saisie complète d'une section G58 et TotauxLive (Section 4, Tâche 6)
+- Ce qui a été fait :
+  - Conception et rédaction du test end-to-end automatisé complet dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) :
+    - Navigation et bascule sur l'onglet de la section B (Crédit - Opérations mandats).
+    - Recherche et sélection dynamique d'une ligne comptable imputable via le modal `LigneComptableSearch` (`B101`).
+    - Vérification du calcul en temps réel sans soumission dans le composant `TotauxLive` lors de la saisie progressive touche par touche (`pressSequentially`).
+    - Soumission du formulaire d'imputation et vérification de la création de la ligne dans le tableau du Journal G58.
+    - Réinitialisation du champ montant et maintien de la somme consolidée enregistrée.
+  - Exécution et validation de la suite Playwright complète (6/6 tests saisie G58 passés, 39/39 tests globaux passés au vert).
+  - Validation du build de production Vite sans régression (`npm run build`).
+- Fichiers/dossiers touchés :
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 6 (« Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Toutes les tâches de la Section 4 sont désormais achevées et validées. Prêt pour la Section 5 (Audit et détection d'écarts).
+
+### 2026-10-14 — Écran Situation comptable & report automatique (Section 4, Tâche 5)
+- Ce qui a été fait :
+  - Définition du type TypeScript `SituationComptable` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) calqué sur le contrat backend.
+  - Implémentation du client d'API [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getSituationComptable(periodeId)`) consommant l'endpoint `/api/v1/situation-comptable/{id}/`.
+  - Conception et développement de la page [SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx) avec :
+    - Bannière de traçabilité claire indiquant l'origine du report de solde (automatique depuis la période précédente ou solde initial déclaré).
+    - Tableaux comparatifs de la balance mensuelle : Colonne des Débits (Report + Opérations mois = Cumul Débits) et Colonne des Crédits (Report + Opérations mois = Cumul Crédits).
+    - Détermination automatique du solde de clôture périodique (débiteur ou créditeur) avec mise en avant visuelle selon la balance.
+    - Sélecteurs réactifs de bureau (pour Admin/Inspecteur) et de période avec actualisation immédiate des calculs.
+  - Déclaration de la route `/situation-comptable` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx), entrée de menu dans [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx) et bouton raccourci dans l'en-tête de [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts) (3/3 tests passés, 38/38 tests de la suite complète au vert).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/App.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 5 (« Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent »)
+- Dépendance à un endpoint backend : `/api/v1/situation-comptable/{periode_id}/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Écran Détails de l'encaisse (Section 4, Tâche 4)
+- Ce qui a été fait :
+  - Définition des types TypeScript `RubriqueEncaisse`, `MouvementEncaisse`, `MouvementEncaisseFormData`, `MouvementEncaisseSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) conformément à `API_CONTRACT.md`.
+  - Implémentation des appels d'API dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getRubriquesEncaisse`, `getMouvementsEncaisse`, `createMouvementEncaisse`, `deleteMouvementEncaisse`) pour consommer les endpoints `/api/v1/rubriques-encaisse/` et `/api/v1/mouvements-encaisse/`.
+  - Création du composant modal [EncaisseFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/encaisse/components/EncaisseFormModal.tsx) avec validation Zod (sens du flux, montant strictement positif, date confinée à la période active) et gestion des erreurs DRF 400.
+  - Implémentation de la page principale [EncaissePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/encaisse/EncaissePage.tsx) avec :
+    - 4 cartes de synthèse financière en temps réel : Réserve initiale de départ, Total Entrées, Total Sorties, et Solde théorique en caisse (`réserve + entrées - sorties`).
+    - Filtres combinés par bureau, période de gestion, sens du flux (Entrée / Sortie) et rubrique d'encaisse, complétés d'une barre de recherche instantanée.
+    - Tableau des écritures physiques avec badges directionnels, montant coloré et bouton de suppression avec confirmation sécurisée.
+    - Verrouillage automatique en lecture seule dès que la période de gestion est clôturée.
+  - Branchement de la route `/encaisse` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx), ajout dans la navigation [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx) et bouton raccourci dans le bandeau de [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/encaisse.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/encaisse.spec.ts) (4/4 tests passés, 35/35 tests sur l'ensemble de la suite Playwright).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/encaisse/components/EncaisseFormModal.tsx`
+  - `src/features/encaisse/EncaissePage.tsx`
+  - `src/App.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/encaisse.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 4 (« Écran « Détails de l'encaisse » »)
+- Dépendance à un endpoint backend : `/api/v1/rubriques-encaisse/` et `/api/v1/mouvements-encaisse/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Validation React Hook Form + Zod & erreurs DRF (Section 4, Tâche 3)
+- Ce qui a été fait :
+  - Définition d'un schéma de validation Zod dynamique `createMouvementSchema(periode)` dans [SectionForm.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/SectionForm.tsx) garantissant :
+    - La sélection obligatoire d'une ligne comptable imputable (`ligne_comptable` > 0).
+    - La saisie d'un montant strictement positif (`montant` > 0 et format numérique valide).
+    - La conformité stricte de la date d'opération avec l'intervalle de la période de gestion active (`date_debut <= date_operation <= date_fin`), alignée avec les contraintes métier du service Django backend.
+  - Branchement du mapping des erreurs serveur Django DRF via `applyServerValidationErrors` lors des réponses 400 (ex. tentative d'imputation sur un compte de regroupement, compte inactif, dépassement de plafonds), avec affichage immédiat sous le champ incriminé et gestion des erreurs globales de racine (`errors.root`).
+  - Ajout des cas de tests automatisés dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) couvrant la validation Zod côté client (montant négatif, date hors période) et l'association des erreurs serveur DRF 400 sur `ligne_comptable` et `montant`.
+  - Validation complète de la suite Playwright : 5/5 tests saisie G58 passés, 31/31 tests globaux passés au vert.
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 3 (« Validation React Hook Form + Zod cohérente avec les contraintes backend »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Composant TotauxLive réactif (Section 4, Tâche 2)
+- Ce qui a été fait :
+  - Conception et intégration du composant réactif [TotauxLive.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/TotauxLive.tsx) dans le flux de saisie du Journal G58.
+  - Calcul instantané des totaux cumulés pour la section active à chaque frappe dans le champ montant, sans nécessiter de soumission de formulaire (gain ergonomique majeur par rapport à l'application legacy).
+  - Prise en charge des badges contextuels Débit / Crédit selon la section macro-comptable affichée.
+  - Affichage consolidé des totaux débits, totaux crédits et solde net calculé avec mise à jour immédiate lors de l'effacement ou de la modification de montants.
+  - Test end-to-end automatisé validé dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts).
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/TotauxLive.tsx`
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 2 (« Composant TotauxLive — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/totaux/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Composant SectionForm du Journal G58 (Section 4, Tâche 1)
+- Ce qui a été fait :
+  - Définition des types TypeScript `MouvementG58`, `MouvementG58FormData`, `MouvementSearchParams`, `TotauxG58`, `TotauxSectionItem` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Ajout des fonctions d'API dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getMouvements`, `createMouvement`, `updateMouvement`, `deleteMouvement`, `getTotauxG58`) pour consommer les endpoints DRF `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/`.
+  - Implémentation du composant réactif [TotauxLive.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/TotauxLive.tsx) assurant le calcul en direct à chaque frappe dans le champ montant, avec badges débits/crédits et affichage des soldes nets.
+  - Implémentation du composant [SectionForm.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/SectionForm.tsx) pour la saisie des opérations journalières par section (A, B, D en priorité) avec recherche escamotable [LigneComptableSearch](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/LigneComptableSearch.tsx), tableau des écritures, édition en ligne, suppression avec confirmation et verrouillage en cas de période clôturée.
+  - Implémentation de la page principale [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx) avec navigation par onglets de sections et sélecteur de période de gestion, branchée sur `/saisie` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx).
+  - Rédaction et validation des tests e2e Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) (3/3 passés, 29/29 tests globaux passés).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/components/TotauxLive.tsx`
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/App.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 1 (« Composant SectionForm — formulaire de saisie d'une section (A, B, D en priorité) »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
 ### 2026-10-14 — Écran de suivi du stock de valeurs postales et timbres (Section 7)
 - Ce qui a été fait :

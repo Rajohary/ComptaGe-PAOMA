@@ -1,25 +1,25 @@
 # Graph Report - client  (2026-10-14)
 
 ## Corpus Check
-- 67 files · ~41,427 words
+- 78 files · ~55,047 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 6 file(s) not represented in the graph (top: (none) 4, .example 1, .css 1)
 
 ## Summary
-- 525 nodes · 825 edges · 25 communities (23 shown, 2 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.95)
+- 605 nodes · 1145 edges · 24 communities (22 shown, 2 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 58 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `aab78759`
+- Built from commit: `d8b8d5cf`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- PeriodeGestionFormModal.tsx
+- apiClient
 - package.json
 - App.tsx
-- AuthContext.tsx
+- index.ts
 - Running Custom Playwright Code
 - Cookies
 - DESIGN.md — ComptaGeWeb · Frontend (client/)
@@ -31,10 +31,9 @@
 - Tracing
 - compilerOptions
 - Flat Design System Skill (Antigravity)
-- PROJECT_STATE.md — État du projet · Frontend (client/)
-- devDependencies
+- 9. Journal des actions (log)
+- EncaisseFormModal.tsx
 - @playwright/test
-- index.ts
 - AGENT.md — ComptaGeWeb · Frontend (client/)
 - .oxlintrc.json
 - flat/DESIGN.md
@@ -42,49 +41,49 @@
 - tsconfig.json
 
 ## God Nodes (most connected - your core abstractions)
-1. `apiClient()` - 23 edges
-2. `react` - 20 edges
-3. `compilerOptions` - 18 edges
-4. `Browser Automation with playwright-cli` - 16 edges
-5. `lucide-react` - 15 edges
-6. `compilerOptions` - 15 edges
-7. `Flat Design System Skill (Antigravity)` - 14 edges
-8. `Running Custom Playwright Code` - 13 edges
-9. `App()` - 12 edges
-10. `Button()` - 12 edges
+1. `apiClient()` - 33 edges
+2. `react` - 27 edges
+3. `Button()` - 24 edges
+4. `lucide-react` - 22 edges
+5. `compilerOptions` - 18 edges
+6. `useAuth()` - 17 edges
+7. `Browser Automation with playwright-cli` - 16 edges
+8. `App()` - 15 edges
+9. `PeriodeGestion` - 15 edges
+10. `compilerOptions` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `3. Recherche dans le plan comptable (remplace le TreeView legacy)` --references--> `LigneComptableSearch()`  [INFERRED]
-  PROJECT_STATE.md → src/features/plan-comptable/components/LigneComptableSearch.tsx
+- `5.2 Règles` --references--> `TotauxLive()`  [INFERRED]
+  DESIGN.md → src/features/saisie-g58/components/TotauxLive.tsx
 - `2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4)` --references--> `applyServerValidationErrors()`  [INFERRED]
   PROJECT_STATE.md → src/lib/formErrors.ts
+- `2026-10-14 — Validation React Hook Form + Zod & erreurs DRF (Section 4, Tâche 3)` --references--> `applyServerValidationErrors()`  [INFERRED]
+  PROJECT_STATE.md → src/lib/formErrors.ts
+- `2026-10-14 — Composant LigneComptableSearch (Section 3, Tâche 1)` --references--> `getSectionsComptables()`  [INFERRED]
+  PROJECT_STATE.md → src/api/comptabilite.ts
 - `3. Principes d'organisation` --references--> `Button()`  [INFERRED]
   ARCHITECTURE.md → src/components/ui/Button.tsx
-- `2026-10-12 — Module Authentification & RBAC complet (Section 1)` --references--> `RequireAuth()`  [INFERRED]
-  PROJECT_STATE.md → src/features/auth/components/RequireAuth.tsx
-- `7. Ce qui reste ouvert (à trancher avec l'utilisateur au fil du projet)` --references--> `LigneComptableSearch()`  [INFERRED]
-  ARCHITECTURE.md → src/features/plan-comptable/components/LigneComptableSearch.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (25 total, 2 thin omitted)
+## Communities (24 total, 2 thin omitted)
 
-### Community 0 - "PeriodeGestionFormModal.tsx"
+### Community 0 - "apiClient"
 Cohesion: 0.09
-Nodes (51): 2026-10-12 — Écran d'ouverture d'une période de gestion (Section 2, Tâche 2), 2026-10-12 — Écran de gestion des bureaux (Section 2, Tâche 1), axios, @hookform/resolvers, react, react-hook-form, zod, apiClient() (+43 more)
+Nodes (54): 2026-10-12 — Écran d'ouverture d'une période de gestion (Section 2, Tâche 2), 2026-10-12 — Écran de gestion des bureaux (Section 2, Tâche 1), 2026-10-14 — Écran de suivi du stock de valeurs postales et timbres (Section 7), apiClient(), ApiClientError, failedQueue, processQueue(), RequestOptions (+46 more)
 
 ### Community 1 - "package.json"
-Cohesion: 0.06
-Nodes (32): dependencies, axios, @hookform/resolvers, lucide-react, react, react-dom, react-hook-form, react-router-dom (+24 more)
+Cohesion: 0.04
+Nodes (45): dependencies, axios, @hookform/resolvers, lucide-react, react, react-dom, react-hook-form, react-router-dom (+37 more)
 
 ### Community 2 - "App.tsx"
-Cohesion: 0.12
-Nodes (25): lucide-react, react-dom, react-router-dom, App(), PlaceholderPage(), AppLayout(), AppShell(), NAV_ITEMS (+17 more)
+Cohesion: 0.08
+Nodes (43): 2026-10-12 — Module Authentification & RBAC complet (Section 1), lucide-react, react, react-dom, react-router-dom, getMe(), login(), logout() (+35 more)
 
-### Community 3 - "AuthContext.tsx"
-Cohesion: 0.28
-Nodes (14): 2026-10-12 — Module Authentification & RBAC complet (Section 1), getMe(), login(), logout(), refreshToken(), AuthContext, AuthContextType, AuthProvider() (+6 more)
+### Community 3 - "index.ts"
+Cohesion: 0.08
+Nodes (49): 1. Stack, 2. Structure des dossiers, 3. Principes d'organisation, 4. Consommation de l'API backend, 5. Environnement et variables, 6. Tests, 7. Ce qui reste ouvert (à trancher avec l'utilisateur au fil du projet), ARCHITECTURE.md — ComptaGeWeb · Frontend (client/) (+41 more)
 
 ### Community 4 - "Running Custom Playwright Code"
 Cohesion: 0.04
@@ -130,21 +129,17 @@ Nodes (16): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib
 Cohesion: 0.13
 Nodes (14): Accessibility, Brand, Component Rule Expectations, Example Constraint Language, Expected Behavior, Flat Design System Skill (Antigravity), Guideline Authoring Workflow, Mission (+6 more)
 
-### Community 15 - "PROJECT_STATE.md — État du projet · Frontend (client/)"
+### Community 15 - "9. Journal des actions (log)"
 Cohesion: 0.12
-Nodes (16): 0. Mise en place du projet, 1. Authentification & RBAC, 2026-10-12 — Correction des anomalies de build, finalisation & validation e2e Module 1 (Auth & RBAC), 2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4), 2026-10-12 — Écran de clôture d'une période de gestion (Section 2, Tâche 3), 2026-10-14 — Historique des lignes récentes par bureau (Section 3, Tâche 2), 2026-10-14 — Traitement explicite des états vide et chargement (Section 3, Tâche 3), 2. Référentiel (provinces, bureaux, périodes de gestion) (+8 more)
+Nodes (16): 0. Mise en place du projet, 1. Authentification & RBAC, 2026-10-12 — Correction des anomalies de build, finalisation & validation e2e Module 1 (Auth & RBAC), 2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4), 2026-10-12 — Écran de clôture d'une période de gestion (Section 2, Tâche 3), 2026-10-14 — Composant TotauxLive réactif (Section 4, Tâche 2), 2026-10-14 — Historique des lignes récentes par bureau (Section 3, Tâche 2), 2026-10-14 — Traitement explicite des états vide et chargement (Section 3, Tâche 3) (+8 more)
 
-### Community 16 - "devDependencies"
-Cohesion: 0.17
-Nodes (12): devDependencies, autoprefixer, oxlint, @playwright/test, postcss, tailwindcss, @types/node, @types/react (+4 more)
+### Community 16 - "EncaisseFormModal.tsx"
+Cohesion: 0.16
+Nodes (21): @hookform/resolvers, react-hook-form, zod, Input, InputProps, Select, SelectProps, BureauFormInput (+13 more)
 
 ### Community 17 - "@playwright/test"
-Cohesion: 0.18
-Nodes (5): ADMIN_USER, RECEVEUR_USER, MOCK_LIGNES, MOCK_SECTIONS, @playwright/test
-
-### Community 18 - "index.ts"
-Cohesion: 0.14
-Nodes (21): 1. Stack, 2. Structure des dossiers, 3. Principes d'organisation, 4. Consommation de l'API backend, 5. Environnement et variables, 6. Tests, 7. Ce qui reste ouvert (à trancher avec l'utilisateur au fil du projet), ARCHITECTURE.md — ComptaGeWeb · Frontend (client/) (+13 more)
+Cohesion: 0.08
+Nodes (17): ADMIN_USER, RECEVEUR_USER, MOCK_BUREAUX, MOCK_PERIODES, MOCK_RUBRIQUES, MOCK_LIGNES, MOCK_SECTIONS, MOCK_LIGNES (+9 more)
 
 ### Community 19 - "AGENT.md — ComptaGeWeb · Frontend (client/)"
 Cohesion: 0.25
@@ -163,24 +158,24 @@ Cohesion: 0.50
 Nodes (3): Expanding the Oxlint configuration, React Compiler, React + TypeScript + Vite
 
 ## Knowledge Gaps
-- **313 isolated node(s):** `$schema`, `plugins`, `react/rules-of-hooks`, `react/only-export-components`, `RECEVEUR_USER` (+308 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 326 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **335 isolated node(s):** `$schema`, `plugins`, `react/rules-of-hooks`, `react/only-export-components`, `RECEVEUR_USER` (+330 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 348 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `PeriodeGestionFormModal.tsx` to `index.ts`, `package.json`, `App.tsx`, `AuthContext.tsx`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+- **Why does `TotauxLive()` connect `index.ts` to `DESIGN.md — ComptaGeWeb · Frontend (client/)`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **What connects `$schema`, `plugins`, `react/rules-of-hooks` to the rest of the system?**
-  _313 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `PeriodeGestionFormModal.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.09027777777777778 - nodes in this community are weakly interconnected._
-- **Why does `Browser Automation with playwright-cli` connect `Browser Automation with playwright-cli` to `Running Custom Playwright Code`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _335 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `apiClient` be split into smaller, more focused modules?**
+  _Cohesion score 0.09324009324009325 - nodes in this community are weakly interconnected._
+- **Why does `react` connect `App.tsx` to `apiClient`, `package.json`, `index.ts`, `EncaisseFormModal.tsx`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Should `package.json` be split into smaller, more focused modules?**
-  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
+- **Why does `5.2 Règles` connect `DESIGN.md — ComptaGeWeb · Frontend (client/)` to `index.ts`?**
+  _High betweenness centrality (0.050) - this node is a cross-community bridge._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.11875843454790823 - nodes in this community are weakly interconnected._
-- **Should `Running Custom Playwright Code` be split into smaller, more focused modules?**
-  _Cohesion score 0.04421768707482993 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08469945355191257 - nodes in this community are weakly interconnected._
