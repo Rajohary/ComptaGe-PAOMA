@@ -21,4 +21,3 @@ urlpatterns = [
     path("situation-comptable/<int:periode_id>/", SituationComptableView.as_view(), name="situation-comptable"),
     path("dashboard/receveur/", ReceveurDashboardView.as_view(), name="dashboard-receveur"),
 ] + router.urls
-

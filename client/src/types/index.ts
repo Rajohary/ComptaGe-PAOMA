@@ -172,6 +172,33 @@ export interface StockValeur {
   id: number;
   bureau: number;
   bureau_detail?: {
+    id: number;
+    ncodique: number;
+    nom_bureau: string;
+    classe: string;
+  };
+  periode_gestion: number;
+  periode_detail?: {
+    id: number;
+    nom_receveur: string;
+    date_debut: string;
+    date_fin: string;
+    cloturee: boolean;
+  };
+  produit: number;
+  produit_detail?: ProduitPostal;
+  quantite_initiale: number;
+  quantite_recue: number;
+  quantite_vendue: number;
+  quantite_finale: number;
+  valeur_initiale: string;
+  valeur_recue: string;
+  valeur_vendue: string;
+  valeur_finale: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 // ============================================================================
 // Tableaux de bord (Module 6 — API_CONTRACT.md)
 // ============================================================================
@@ -215,10 +242,7 @@ export interface ReceveurDashboardData {
     ncodique: number;
     nom_bureau: string;
     classe: string;
-  };
-  periode_gestion: number;
-  periode_detail?: {
-    province_nom: string;
+    province_nom?: string;
   };
   periode: {
     id: number;
@@ -226,19 +250,13 @@ export interface ReceveurDashboardData {
     date_debut: string;
     date_fin: string;
     cloturee: boolean;
-  };
-  produit: number;
-  produit_detail?: ProduitPostal;
-  quantite_initiale: number;
-  quantite_recue: number;
-  quantite_vendue: number;
-  quantite_finale: number;
-  valeur_initiale: string;
-  valeur_recue: string;
-  valeur_vendue: string;
-  valeur_finale: string;
-  created_at?: string;
-  updated_at?: string;
+    date_cloture?: string | null;
+  } | null;
+  has_active_periode: boolean;
+  message: string;
+  progression_sections: SectionProgressionItem[];
+  totaux_mouvements: TotauxMouvementsProgression;
+  encaisse: EncaisseProgression;
 }
 
 export interface StockValeurFormData {

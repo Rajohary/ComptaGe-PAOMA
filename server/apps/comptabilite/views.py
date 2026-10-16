@@ -366,36 +366,108 @@ class SituationComptableView(APIView):
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from apps.accounts.permissions import HasRole
-from apps.comptabilite.services import get_progression_saisie_receveur
-from apps.comptabilite.serializers import ReceveurDashboardResponseSerializer
-
-
-
-class IsReceveurOrAgentOrAuditeur(HasRole):
-    """
-    Autorise les rôles RECEVEUR, AGENT_SAISIE, INSPECTEUR et ADMIN.
-    L'isolation par bureau pour RECEVEUR/AGENT_SAISIE est assurée dans services.py.
-    """
-    required_roles = ("RECEVEUR", "AGENT_SAISIE", "INSPECTEUR", "ADMIN")
-
-
 class ReceveurDashboardView(APIView):
     """
     Tableau de bord Receveur : progression de la saisie du mois en cours par section,
-    totaux Débit/Crédit, écarts détectés et situation de caisse actuelle.
+    montant en caisse actuel et équilibre débit/crédit.
+    - GET /api/v1/dashboard/receveur/
+    - Query params:
+        - bureau : optionnel (id ou ncodique du bureau à consulter)
+        - periode : optionnel (id de la période de gestion, sinon période active courante)
     """
-    permission_classes = [IsAuthenticated, IsReceveurOrAgentOrAuditeur]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        bureau_id = request.query_params.get("bureau") or request.query_params.get("bureau_id")
-        periode_id = request.query_params.get("periode") or request.query_params.get("periode_id")
+        from django.db.models import Q
+        from apps.referentiel.models import Bureau, PeriodeGestion
+        from .services import get_progression_saisie_receveur
 
-        data = get_progression_saisie_receveur(
-            user=request.user,
-            bureau_id=bureau_id,
-            periode_id=periode_id,
-        )
+        user = request.user
+        role = getattr(user, "role", None)
+        bureau_param = request.query_params.get("bureau")
+        periode_param = request.query_params.get("periode")
 
-        serializer = ReceveurDashboardResponseSerializer(data)
-        return Response(serializer.data)
+        target_bureau = None
+
+        # 1. Résolution du bureau
+        if bureau_param:
+            if str(bureau_param).isdigit():
+                target_bureau = Bureau.objects.filter(
+                    Q(id=int(bureau_param)) | Q(ncodique=int(bureau_param))
+                ).first()
+            if not target_bureau:
+                return Response(
+                    {"detail": f"Bureau '{bureau_param}' introuvable."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            bureau_code = getattr(user, "bureau_code", None)
+            if bureau_code is not None:
+                target_bureau = Bureau.objects.filter(ncodique=bureau_code).first()
+            if not target_bureau:
+                if user.is_staff or user.is_superuser or role in ["ADMIN", "INSPECTEUR"]:
+                    target_bureau = Bureau.objects.first()
+                if not target_bureau:
+                    return Response(
+                        {"detail": "Aucun bureau associé ni spécifié."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        # 2. Vérification RBAC : isolation stricte
+        if not (user.is_staff or user.is_superuser or role in ["ADMIN", "INSPECTEUR"]):
+            user_bureau_code = getattr(user, "bureau_code", None)
+            if user_bureau_code is None or user_bureau_code != target_bureau.ncodique:
+                return Response(
+                    {"detail": "Vous n'êtes pas autorisé à consulter un autre bureau."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+        # 3. Résolution de la période
+        target_periode = None
+        if periode_param and str(periode_param).isdigit():
+            target_periode = PeriodeGestion.objects.filter(
+                id=int(periode_param),
+                bureau=target_bureau
+            ).first()
+        else:
+            target_periode = PeriodeGestion.objects.filter(
+                bureau=target_bureau,
+                cloturee=False
+            ).order_by("-date_debut", "-id").first()
+
+        if not target_periode:
+            return Response({
+                "bureau": {
+                    "id": target_bureau.id,
+                    "ncodique": target_bureau.ncodique,
+                    "nom_bureau": target_bureau.nom_bureau,
+                    "classe": target_bureau.classe,
+                    "province_nom": target_bureau.province.nom if target_bureau.province else None,
+                },
+                "periode": None,
+                "has_active_periode": False,
+                "message": "Aucune période de gestion active trouvée pour ce bureau.",
+                "progression_sections": [],
+                "totaux_mouvements": {
+                    "nb_mouvements": 0,
+                    "total_debit": "0.00",
+                    "total_credit": "0.00",
+                    "solde_mouvements": "0.00",
+                    "nb_ecarts": 0,
+                    "dernier_mouvement_date": None,
+                },
+                "encaisse": {
+                    "reserve_numeraire_depart": "0.00",
+                    "valeurs_postales_depart": "0.00",
+                    "timbres_fiscaux_depart": "0.00",
+                    "total_inventaire_depart": "0.00",
+                    "total_entrees_encaisse": "0.00",
+                    "total_sorties_encaisse": "0.00",
+                    "variation_nette": "0.00",
+                    "montant_caisse_actuel": "0.00",
+                },
+            }, status=status.HTTP_200_OK)
+
+        data = get_progression_saisie_receveur(target_periode)
+        return Response(data, status=status.HTTP_200_OK)
+
