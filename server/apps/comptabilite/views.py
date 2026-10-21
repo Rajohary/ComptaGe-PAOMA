@@ -364,8 +364,6 @@ class SituationComptableView(APIView):
         return Response(situation, status=status.HTTP_200_OK)
 
 
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 class ReceveurDashboardView(APIView):
     """
     Tableau de bord Receveur : progression de la saisie du mois en cours par section,
