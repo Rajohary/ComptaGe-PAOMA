@@ -3,22 +3,29 @@ Vues API pour l'application Audit (Tableau de bord Inspecteur et vue DIF des éc
 Conforme à ARCHITECTURE.md (§ 3 : les vues orchestrent, ne calculent pas).
 """
 
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import get_object_or_404
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 from apps.accounts.permissions import IsInspecteurOrAdmin
 from apps.audit.services import (
     get_ecarts_queryset,
     calculate_ecarts_kpis,
     format_mouvement_ecart,
+    rectifier_mouvement,
 )
 from apps.audit.serializers import (
     EcartItemSerializer,
     InspecteurDashboardResponseSerializer,
     InspecteurKPIsSerializer,
+    RectificationMouvementInputSerializer,
 )
+from apps.comptabilite.models import Mouvement
+
 
 
 class StandardResultsPagination(PageNumberPagination):
@@ -108,3 +115,45 @@ class InspecteurDashboardView(APIView):
 
         serializer = InspecteurDashboardResponseSerializer(data)
         return Response(serializer.data)
+
+
+class RectifierMouvementView(APIView):
+    """
+    Endpoint de rectification d'un mouvement par un Inspecteur ou Administrateur (UC-04).
+    PATCH /api/v1/mouvements/{id}/rectifier/
+
+    Règles métier :
+      - Réservé aux profils INSPECTEUR et ADMIN (IsInspecteurOrAdmin).
+      - Obligation d'un motif explicite.
+      - Cohérence mathématique : MontantRectif = Montant + Augmentation - Diminution.
+      - Génère un enregistrement immuable dans AuditLogEntry.
+    """
+    permission_classes = [IsAuthenticated, IsInspecteurOrAdmin]
+
+    def patch(self, request, pk=None, id=None):
+        mouvement_id = pk if pk is not None else id
+        mouvement = get_object_or_404(Mouvement, pk=mouvement_id)
+
+        serializer = RectificationMouvementInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        data = serializer.validated_data
+        try:
+            mouvement_rectifie = rectifier_mouvement(
+                mouvement=mouvement,
+                inspecteur=request.user,
+                motif=data.get("motif"),
+                augmentation=data.get("augmentation", 0),
+                diminution=data.get("diminution", 0),
+                montant_rectifie=data.get("montant_rectifie"),
+            )
+        except DjangoValidationError as e:
+            return Response(
+                e.message_dict if hasattr(e, "message_dict") else {"detail": e.messages},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        formatted = format_mouvement_ecart(mouvement_rectifie)
+        out_serializer = EcartItemSerializer(formatted)
+        return Response(out_serializer.data, status=status.HTTP_200_OK)
+

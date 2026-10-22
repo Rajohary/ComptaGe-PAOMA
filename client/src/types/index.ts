@@ -124,6 +124,14 @@ export interface SectionComptable {
   ordre: number;
 }
 
+export interface SectionComptableFormData {
+  code: string;
+  libelle: string;
+  sens: number;
+  ordre: number;
+  actif?: boolean;
+}
+
 export interface LigneComptableParentDetail {
   id: number;
   menu_sub: number;
@@ -145,6 +153,15 @@ export interface LigneComptable {
   parent_detail: LigneComptableParentDetail | null;
   actif: boolean;
   is_leaf?: boolean;
+}
+
+export interface LigneComptableFormData {
+  section: number;
+  parent?: number | null;
+  menu_sub: number;
+  compte: string;
+  libelle: string;
+  actif?: boolean;
 }
 
 export interface LigneComptableSearchParams {
@@ -306,13 +323,14 @@ export interface MouvementG58 {
   rectifie_par: number | null;
   rectifie_par_username: string | null;
   date_operation: string;
-    date_cloture: string | null;
-  } | null;
-  has_active_periode: boolean;
-  message: string;
-  progression_sections: SectionProgressionItem[];
-  totaux_mouvements: TotauxMouvementsProgression;
-  encaisse: EncaisseProgression;
+  montant: string;
+  augmentation: string;
+  diminution: string;
+  montant_rectifie: string;
+  motif_rectification: string;
+  a_ecart: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface BureauAvecEcartsItem {
@@ -362,10 +380,21 @@ export interface EcartItem {
   augmentation: string;
   diminution: string;
   montant_rectifie: string;
+  ecart: string;
   motif_rectification: string;
-  a_ecart: boolean;
+  saisi_par: string;
+  rectifie_par: string | null;
+  est_rectifie: boolean;
+  a_ecart?: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface RectificationInput {
+  motif: string;
+  augmentation?: string | number;
+  diminution?: string | number;
+  montant_rectifie?: string | number;
 }
 
 export interface MouvementG58FormData {
@@ -477,14 +506,6 @@ export interface SituationComptable {
   solde_crediteur_fin: string | number;
   totaux_sections?: Record<string, TotauxSectionItem>;
   sous_sections_b?: Record<string, SousSectionBItem>;
-}
-  ecart: string;
-  motif_rectification: string;
-  saisi_par: string;
-  rectifie_par: string | null;
-  est_rectifie: boolean;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface InspecteurDashboardData {

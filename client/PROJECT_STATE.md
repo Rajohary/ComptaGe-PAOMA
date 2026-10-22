@@ -42,11 +42,13 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ---
 
-## 3. Recherche dans le plan comptable (remplace le TreeView legacy)
+## 3. Recherche et gestion du plan comptable (remplace le TreeView legacy)
 
 - [x] Composant `LigneComptableSearch` — recherche instantanée (debounce), résultats groupés par section
 - [x] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
 - [x] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
+- [x] Administration du plan comptable (réservée ADMIN) : création et modification des rubriques/sous-comptes (`LigneComptableModal`) et des sections (`SectionComptableModal`) avec validation Zod et cohérence hiérarchique parente
+- [x] Contrôle d'accès RBAC : masquer les actions d'écriture aux profils non administrateurs (testé e2e)
 
 ---
 
@@ -66,9 +68,9 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 5. Audit et détection d'écarts
 
-- [ ] Écran Inspecteur : liste des écarts (équivalent vue DIF), filtrable par bureau/province/montant
-- [ ] Formulaire de rectification (obligation de motif, affichage du calcul automatique de `montant_rectifie`)
-- [ ] Test e2e `rbac.spec.ts` : un agent de saisie ne voit pas les actions de rectification réservées à l'inspecteur
+- [x] Écran Inspecteur : liste des écarts (équivalent vue DIF), filtrable par bureau/province/montant
+- [x] Formulaire de rectification (obligation de motif, affichage du calcul automatique de `montant_rectifie`)
+- [x] Test e2e `rbac.spec.ts` : un agent de saisie ne voit pas les actions de rectification réservées à l'inspecteur
 
 ---
 
@@ -112,6 +114,35 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
 
+### 2026-10-22 — Module 3 : Gestion complète du Plan Comptable (Création, Modification, RBAC Admin)
+- Ce qui a été fait :
+  - **Typage & API CRUD Plan Comptable** :
+    - Définition de `SectionComptableFormData` et `LigneComptableFormData` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+    - Enrichissement de [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) avec les fonctions d'écriture : `createSectionComptable`, `updateSectionComptable`, `deleteSectionComptable`, `createLigneComptable`, `updateLigneComptable`, `deleteLigneComptable`.
+  - **Formulaires Modaux d'Administration (Zod + UX)** :
+    - [src/features/plan-comptable/components/LigneComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableModal.tsx) : modal de création/édition d'une rubrique comptable avec sélection de section, filtrage dynamique des lignes parentes éligibles (même section uniquement, auto-exclusion), validation Zod (`menu_sub`, `compte`, `libelle`, `actif`), et rattachement des erreurs backend DRF via `applyServerValidationErrors`.
+    - [src/features/plan-comptable/components/SectionComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/SectionComptableModal.tsx) : modal de création/édition d'une section macro-comptable avec code majuscule unique, sens comptable (Débit/Crédit), ordre d'affichage et statut actif.
+  - **Enrichissement de la vue Plan Comptable & RBAC** :
+    - Mise à jour de [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) pour afficher les boutons d'administration (« Nouvelle ligne », « Section », « Modifier », « Supprimer ») uniquement pour les utilisateurs ayant le rôle `ADMIN`.
+    - Pour les receveurs, agents de saisie et inspecteurs, l'interface conserve un mode consultation et sélection épuré, sans aucun bouton d'action administrative.
+    - Ajout de bandeaux de confirmation et gestion explicite des erreurs (ex: protection en suppression si des écritures ou sous-lignes sont liées).
+  - **Tests automatisés & validation globale** :
+    - Enrichissement de [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) avec 3 nouveaux tests (9/9 passés au vert) validant la non-visibilité des actions pour les utilisateurs standards, la création d'une nouvelle ligne par un admin avec modale, et la modification d'une ligne existante.
+    - **51/51 tests Playwright passés au vert** sur l'ensemble de l'application frontend.
+    - Build Vite de production sans aucune erreur (`npm run build`).
+    - Graphe de connaissances synchronisé (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/plan-comptable/components/LigneComptableModal.tsx`
+  - `src/features/plan-comptable/components/SectionComptableModal.tsx`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 3 (Gestion du plan comptable et RBAC).
+- Dépendance à un endpoint backend : `/api/v1/sections-comptables/` et `/api/v1/lignes-comptables/` (`POST`, `PUT`, `PATCH`, `DELETE` implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
 ### 2026-10-16 — Module 6 : Tableaux de bord (Receveur, Inspecteur, Admin)
 - Ce qui a été fait :
   - Création de l'utilitaire de formatage monétaire et date [src/lib/formatters.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/lib/formatters.ts) (`formatAriary`, `formatDate`, `formatDateTime`, `formatPercent`) avec respect strict de `tabular-nums` et des règles typographiques institutionnelles de `DESIGN.md`.
@@ -134,6 +165,43 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Cases cochées : Section 6 (3 cases : Dashboard Receveur, Dashboard Inspecteur, Dashboard Admin)
 - Dépendance à un endpoint backend : `/api/v1/dashboard/receveur/`, `/api/v1/dashboard/inspecteur/`, `/api/v1/audit/ecarts/`, `/api/v1/dashboard/admin/` (tous implémentés et testés dans le backend)
 - Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-21 — Module 5 : Audit et détection d'écarts (Vue DIF, Rectification UC-04, RBAC)
+- Ce qui a été fait :
+  - **Module d'API Audit dédié** ([src/api/audit.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/audit.ts)) :
+    - `getEcarts(params)` consommant `GET /api/v1/audit/ecarts/` (avec filtres bureau, province, statut, ordering, pagination et KPIs d'audit).
+    - `rectifierMouvement(id, data)` consommant `PATCH /api/v1/mouvements/{id}/rectifier/` avec motif obligatoire et équation comptable.
+  - **Écran Inspecteur : Vue DIF** ([src/features/audit/AuditEcartsPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/AuditEcartsPage.tsx)) :
+    - Cartes KPIs de synthèse en direct : Total Écarts, Écart Net Cumulé, Bureaux Impactés, Montant Rectifié Total.
+    - Barre de filtrage multi-critères : recherche libre, bureau (ncodique/nom), province, statut de régularisation (Tous, En attente, Régularisés) et plage de montants / écarts min & max.
+    - Table complète des écarts avec tri interactif par date et montant, ventilation des ajustements (+/-), badges sémantiques d'état et pagination.
+  - **Formulaire de rectification d'audit UC-04** ([src/features/audit/components/RectificationModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/components/RectificationModal.tsx)) :
+    - Modal de redressement contradictoire conforme au CDC et à DESIGN.md.
+    - Validation stricte Zod : motif textuel obligatoire, contrôle de cohérence des ajustements.
+    - Calcul automatique en temps réel de `montant_rectifie = montant + augmentation - diminution` avec affichage de l'équation de contrôle sans soumission préalable.
+  - **Intégration du routage protégé et RBAC** :
+    - Branchement de `/audit` sur [AuditEcartsPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/AuditEcartsPage.tsx) avec protection `RequireAuth` réservée aux rôles `INSPECTEUR` et `ADMIN`.
+    - Sidebar mise à jour : lien masqué pour les rôles `RECEVEUR` et `AGENT_SAISIE`.
+  - **Couverture de tests Playwright e2e** ([e2e/rbac.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/rbac.spec.ts)) :
+    - Test d'affichage de la table d'audit et des cartes KPIs.
+    - Test de filtrage dynamique par bureau, province, statut et montant.
+    - Test complet de soumission de rectification avec calcul automatique en direct et contrôle du payload `PATCH`.
+    - Test RBAC d'interdiction pour l'agent de saisie (redirection `/non-autorise`, masquage du lien dans la sidebar).
+  - **Validation globale** :
+    - **48/48 tests Playwright passés au vert** (100 % de succès).
+    - `npm run build` opérationnel sans warning TypeScript.
+    - Graphe de connaissances mis à jour via `graphify update .`.
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/audit.ts`
+  - `src/features/audit/AuditEcartsPage.tsx`
+  - `src/features/audit/components/RectificationModal.tsx`
+  - `src/App.tsx`
+  - `e2e/rbac.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 5 (3 cases : Écran Inspecteur / Vue DIF, Formulaire de rectification, Test e2e `rbac.spec.ts`).
+- Dépendance à un endpoint backend : `/api/v1/audit/ecarts/`, `/api/v1/mouvements/{id}/rectifier/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant. Section 5 achevée.
 
 ### 2026-10-15 — Révision et enrichissement de l'espace Encaisse (Section 4)
 - Ce qui a été fait :

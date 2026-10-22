@@ -12,28 +12,7 @@ import { SaisieG58Page } from './features/saisie-g58/pages/SaisieG58Page';
 import { SituationComptablePage } from './features/saisie-g58/pages/SituationComptablePage';
 import { EncaissePage } from './features/encaisse/EncaissePage';
 import { HealthPage } from './features/dashboard/HealthPage';
-
-/**
- * Composant placeholder générique pour les routes non encore implémentées.
- * Affiche un état vide explicite (DESIGN.md section 4.2 : jamais de zone vide sans message).
- */
-function PlaceholderPage({ title, module }: { title: string; module: string }) {
-  return (
-    <div className="p-6 md:p-8 max-w-5xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-heading font-bold text-text-primary">{title}</h1>
-      </div>
-      <div className="bg-surface-card rounded-xl border border-border-subtle border-dashed p-8 text-center">
-        <p className="text-sm font-sans text-text-secondary">
-          Ce module n'est pas encore implémenté.
-        </p>
-        <p className="text-xs font-sans text-text-secondary/70 mt-2">
-          Voir section {module} de PROJECT_STATE.md.
-        </p>
-      </div>
-    </div>
-  );
-}
+import { AuditEcartsPage } from './features/audit/AuditEcartsPage';
 
 export default function App() {
   return (
@@ -111,7 +90,7 @@ export default function App() {
             path="audit"
             element={
               <RequireAuth allowedRoles={['INSPECTEUR', 'ADMIN']}>
-                <PlaceholderPage title="Audit & Écarts" module="5" />
+                <AuditEcartsPage />
               </RequireAuth>
             }
           />

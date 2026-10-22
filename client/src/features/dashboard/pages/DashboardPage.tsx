@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import ReceveurDashboard from '../components/ReceveurDashboard';
 import InspecteurDashboard from '../components/InspecteurDashboard';
@@ -17,7 +17,7 @@ import {
  *   - ADMIN                   -> Vue d'ensemble macroscopique du réseau + bascule possible
  */
 export default function DashboardPage() {
-  const { user, role } = useAuth();
+  const { role } = useAuth();
   const [adminViewMode, setAdminViewMode] = useState<'admin' | 'inspecteur' | 'receveur'>('admin');
 
   const roleLabels: Record<string, string> = {

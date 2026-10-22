@@ -48,6 +48,7 @@ class LigneComptableSerializer(serializers.ModelSerializer):
     Serializer complet pour LigneComptable.
     Enrichit chaque ligne avec le contexte de sa section et de sa ligne parente
     pour une consommation immédiate par le sélecteur / recherche instantanée.
+    Prend en charge la création et la modification (POST / PUT / PATCH) par les administrateurs.
     """
     section_code = serializers.CharField(source="section.code", read_only=True)
     section_libelle = serializers.CharField(source="section.libelle", read_only=True)
@@ -79,6 +80,27 @@ class LigneComptableSerializer(serializers.ModelSerializer):
             "sens_libelle",
             "parent_detail",
         ]
+
+    def validate(self, attrs):
+        parent = attrs.get("parent", getattr(self.instance, "parent", None))
+        section = attrs.get("section", getattr(self.instance, "section", None))
+
+        # 1. Cohérence parent-section : si un parent est défini, sa section doit correspondre
+        if parent is not None and section is not None:
+            if parent.section_id != section.id:
+                raise serializers.ValidationError(
+                    {"parent": f"La ligne parente (section {parent.section.code}) doit appartenir à la même section ({section.code})."}
+                )
+
+        # 2. Empêcher une boucle de parenté : une ligne ne peut pas être son propre parent
+        if self.instance and parent is not None:
+            if parent.id == self.instance.id:
+                raise serializers.ValidationError(
+                    {"parent": "Une ligne comptable ne peut pas être son propre parent."}
+                )
+
+        return attrs
+
 
 
 class MouvementSerializer(serializers.ModelSerializer):

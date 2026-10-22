@@ -3,7 +3,10 @@ Services métier pour l'application Audit (détection des écarts et tableau de 
 Conforme à ARCHITECTURE.md (§ 3 : la logique métier vit dans services.py).
 """
 
+import json
 from decimal import Decimal
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import (
     F,
     Q,
@@ -15,8 +18,10 @@ from django.db.models import (
     ExpressionWrapper,
     Value,
 )
+from apps.audit.models import AuditLogEntry
 from apps.comptabilite.models import Mouvement
 from apps.referentiel.models import Bureau
+
 
 
 def get_ecarts_queryset(filters=None):
@@ -241,3 +246,112 @@ def format_mouvement_ecart(m):
         "created_at": m.created_at,
         "updated_at": m.updated_at,
     }
+
+
+@transaction.atomic
+def rectifier_mouvement(
+    mouvement: Mouvement,
+    inspecteur,
+    motif: str,
+    augmentation: Decimal = Decimal("0.00"),
+    diminution: Decimal = Decimal("0.00"),
+    montant_rectifie: Decimal = None,
+) -> Mouvement:
+    """
+    Règle métier UC-04 (CDC) :
+    Contrôle comptable, détection des écarts et redressement.
+
+    Exigences :
+      1. Obligation de motif : motif non vide et explicite.
+      2. Calcul automatique ou cohérence stricte de montant_rectifie :
+         MontantRectif = Montant + Augmentation - Diminution
+      3. Trace immuable dans AuditLogEntry avec détail JSON avant/après.
+      4. Met à jour rectifie_par = inspecteur et motif_rectification = motif.
+    """
+    if not inspecteur or not getattr(inspecteur, "is_authenticated", False):
+        raise ValidationError({"inspecteur": "L'inspecteur effectuant la rectification est obligatoire."})
+
+    motif_clean = (motif or "").strip()
+    if not motif_clean:
+        raise ValidationError(
+            {"motif": "Le motif de la rectification est obligatoire (justification de l'écart constatée)."}
+        )
+
+    # Conversion en Decimal et validation positive
+    aug_dec = Decimal(str(augmentation or 0))
+    dim_dec = Decimal(str(diminution or 0))
+
+    if aug_dec < 0:
+        raise ValidationError({"augmentation": "L'augmentation ne peut pas être négative."})
+    if dim_dec < 0:
+        raise ValidationError({"diminution": "La diminution ne peut pas être négative."})
+
+    montant_initial = Decimal(str(mouvement.montant or 0))
+    nouveau_rectifie = montant_initial + aug_dec - dim_dec
+
+    if nouveau_rectifie < 0:
+        raise ValidationError(
+            {"diminution": f"La diminution ({dim_dec}) ne peut excéder le montant initial + augmentation ({montant_initial + aug_dec})."}
+        )
+
+    if montant_rectifie is not None:
+        rectifie_fourni = Decimal(str(montant_rectifie))
+        if rectifie_fourni != nouveau_rectifie:
+            raise ValidationError(
+                {
+                    "montant_rectifie": (
+                        f"Incohérence : montant_rectifie ({rectifie_fourni}) doit être égal à "
+                        f"montant ({montant_initial}) + augmentation ({aug_dec}) - diminution ({dim_dec}) = {nouveau_rectifie}."
+                    )
+                }
+            )
+
+    # Sauvegarde de l'état précédent pour l'audit log
+    etat_avant = {
+        "montant": str(mouvement.montant),
+        "augmentation": str(mouvement.augmentation),
+        "diminution": str(mouvement.diminution),
+        "montant_rectifie": str(mouvement.montant_rectifie),
+        "motif_rectification": mouvement.motif_rectification,
+        "rectifie_par": mouvement.rectifie_par.username if mouvement.rectifie_par else None,
+    }
+
+    # Mise à jour du mouvement
+    mouvement.augmentation = aug_dec
+    mouvement.diminution = dim_dec
+    mouvement.montant_rectifie = nouveau_rectifie
+    mouvement.motif_rectification = motif_clean
+    mouvement.rectifie_par = inspecteur
+    mouvement.save()
+
+    etat_apres = {
+        "montant": str(mouvement.montant),
+        "augmentation": str(mouvement.augmentation),
+        "diminution": str(mouvement.diminution),
+        "montant_rectifie": str(mouvement.montant_rectifie),
+        "motif_rectification": mouvement.motif_rectification,
+        "rectifie_par": inspecteur.username,
+        "ecart_net": str(nouveau_rectifie - montant_initial),
+    }
+
+    # Création de l'entrée d'audit immuable
+    AuditLogEntry.objects.create(
+        auteur=inspecteur,
+        app_label="comptabilite",
+        model_name="Mouvement",
+        object_id=str(mouvement.id),
+        object_repr=f"Mouvement #{mouvement.id} ({mouvement.ligne_comptable.compte if mouvement.ligne_comptable else 'N/A'}) - Bureau {mouvement.periode_gestion.bureau.nom_bureau if mouvement.periode_gestion and mouvement.periode_gestion.bureau else 'N/A'}",
+        action=AuditLogEntry.ActionType.RECTIFICATION,
+        detail=json.dumps(
+            {
+                "action": "rectification_inspecteur",
+                "avant": etat_avant,
+                "apres": etat_apres,
+                "motif": motif_clean,
+            },
+            ensure_ascii=False,
+        ),
+    )
+
+    return mouvement
+

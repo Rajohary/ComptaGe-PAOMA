@@ -1,6 +1,25 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import type { LigneComptable, SectionComptable } from '../../../types';
-import { getLignesComptables, getSectionsComptables } from '../../../api/comptabilite';
+import type {
+  LigneComptable,
+  SectionComptable,
+  LigneComptableFormData,
+  SectionComptableFormData,
+  ApiError,
+} from '../../../types';
+import {
+  getLignesComptables,
+  getSectionsComptables,
+  createLigneComptable,
+  updateLigneComptable,
+  deleteLigneComptable,
+  createSectionComptable,
+  updateSectionComptable,
+  deleteSectionComptable,
+} from '../../../api/comptabilite';
+import { useAuth } from '../../../contexts/AuthContext';
+import { Button } from '../../../components/ui/Button';
+import { LigneComptableModal } from './LigneComptableModal';
+import { SectionComptableModal } from './SectionComptableModal';
 import {
   Search,
   BookOpen,
@@ -11,6 +30,11 @@ import {
   AlertCircle,
   RefreshCw,
   ChevronRight,
+  Plus,
+  Edit2,
+  Trash2,
+  CheckCircle2,
+  FolderPlus,
 } from 'lucide-react';
 
 const RECENT_LINES_KEY_PREFIX = 'comptage_recent_lignes_';
@@ -35,6 +59,9 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
   onlyLeaf = false,
   variant: _variant = 'page',
 }) => {
+  const { role } = useAuth();
+  const isAdmin = role === 'ADMIN';
+
   const [sections, setSections] = useState<SectionComptable[]>([]);
   const [selectedSection, setSelectedSection] = useState<string>(defaultSection);
   const [selectedSens, setSelectedSens] = useState<string>(''); // '' | '1' | '2'
@@ -45,6 +72,19 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
   const [lignes, setLignes] = useState<LigneComptable[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Notifications de succès et d'erreur
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  // Modales d'administration
+  const [isLigneModalOpen, setIsLigneModalOpen] = useState(false);
+  const [ligneToEdit, setLigneToEdit] = useState<LigneComptable | null>(null);
+  const [ligneApiErrors, setLigneApiErrors] = useState<ApiError | null>(null);
+
+  const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
+  const [sectionToEdit, setSectionToEdit] = useState<SectionComptable | null>(null);
+  const [sectionApiErrors, setSectionApiErrors] = useState<ApiError | null>(null);
 
   // Historique des lignes récentes
   const [recentLignes, setRecentLignes] = useState<LigneComptable[]>([]);
@@ -100,21 +140,18 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
   }, [searchTerm]);
 
   // Charger le référentiel des sections
-  useEffect(() => {
-    let mounted = true;
-    getSectionsComptables()
-      .then((res: { results: SectionComptable[] }) => {
-        if (mounted) {
-          setSections(res.results || []);
-        }
-      })
-      .catch((err: unknown) => {
-        console.warn('Impossible de charger les sections comptables', err);
-      });
-    return () => {
-      mounted = false;
-    };
+  const fetchSections = useCallback(async () => {
+    try {
+      const res = await getSectionsComptables();
+      setSections(res.results || []);
+    } catch (err: unknown) {
+      console.warn('Impossible de charger les sections comptables', err);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchSections();
+  }, [fetchSections]);
 
   // Charger les lignes selon critères
   const fetchLignes = useCallback(async () => {
@@ -149,7 +186,113 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
     }
   };
 
-  // Grouper les résultats par section (A, B, C, D, E)
+  // Gestion des actions d'administration Lignes
+  const handleOpenCreateLigne = () => {
+    setLigneToEdit(null);
+    setLigneApiErrors(null);
+    setIsLigneModalOpen(true);
+  };
+
+  const handleOpenEditLigne = (ligne: LigneComptable) => {
+    setLigneToEdit(ligne);
+    setLigneApiErrors(null);
+    setIsLigneModalOpen(true);
+  };
+
+  const handleSaveLigne = async (formData: LigneComptableFormData) => {
+    setLigneApiErrors(null);
+    try {
+      if (ligneToEdit) {
+        await updateLigneComptable(ligneToEdit.id, formData);
+        setSuccessMessage(`Ligne « ${formData.compte} » modifiée avec succès.`);
+      } else {
+        await createLigneComptable(formData);
+        setSuccessMessage(`Ligne « ${formData.compte} » créée avec succès.`);
+      }
+      setIsLigneModalOpen(false);
+      setLigneToEdit(null);
+      fetchLignes();
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
+      setLigneApiErrors(err);
+      throw err;
+    }
+  };
+
+  const handleDeleteLigne = async (ligne: LigneComptable) => {
+    if (!window.confirm(`Confirmez-vous la suppression de la ligne « ${ligne.compte} — ${ligne.libelle} » ?`)) {
+      return;
+    }
+    setActionError(null);
+    try {
+      await deleteLigneComptable(ligne.id);
+      setSuccessMessage(`Ligne « ${ligne.compte} » supprimée.`);
+      fetchLignes();
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
+      setActionError(
+        err?.detail ||
+          'Impossible de supprimer cette ligne comptable. Elle est probablement référencée par des écritures ou des sous-comptes.'
+      );
+      setTimeout(() => setActionError(null), 6000);
+    }
+  };
+
+  // Gestion des actions d'administration Sections
+  const handleOpenCreateSection = () => {
+    setSectionToEdit(null);
+    setSectionApiErrors(null);
+    setIsSectionModalOpen(true);
+  };
+
+  const handleOpenEditSection = (section: SectionComptable) => {
+    setSectionToEdit(section);
+    setSectionApiErrors(null);
+    setIsSectionModalOpen(true);
+  };
+
+  const handleSaveSection = async (formData: SectionComptableFormData) => {
+    setSectionApiErrors(null);
+    try {
+      if (sectionToEdit) {
+        await updateSectionComptable(sectionToEdit.id, formData);
+        setSuccessMessage(`Section ${formData.code} modifiée avec succès.`);
+      } else {
+        await createSectionComptable(formData);
+        setSuccessMessage(`Section ${formData.code} créée avec succès.`);
+      }
+      setIsSectionModalOpen(false);
+      setSectionToEdit(null);
+      fetchSections();
+      fetchLignes();
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
+      setSectionApiErrors(err);
+      throw err;
+    }
+  };
+
+  const handleDeleteSection = async (section: SectionComptable) => {
+    if (!window.confirm(`Confirmez-vous la suppression de la Section ${section.code} ?`)) {
+      return;
+    }
+    setActionError(null);
+    try {
+      await deleteSectionComptable(section.id);
+      setSuccessMessage(`Section ${section.code} supprimée.`);
+      fetchSections();
+      fetchLignes();
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
+      setActionError(
+        err?.detail ||
+          'Impossible de supprimer cette section. Des lignes comptables lui sont actuellement rattachées.'
+      );
+      setTimeout(() => setActionError(null), 6000);
+    }
+  };
+
+  // Grouper les résultats par section (A, B, C, D, E...)
   const groupedLignes = lignes.reduce<Record<string, { section: SectionComptable | null; items: LigneComptable[] }>>(
     (acc, ligne) => {
       const key = ligne.section_code || 'AUTRE';
@@ -170,6 +313,21 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
 
   return (
     <div className="w-full space-y-6">
+      {/* Messages de retour visuel */}
+      {successMessage && (
+        <div className="p-4 rounded-lg bg-status-success/15 border border-status-success/30 text-status-success flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+          <span className="text-sm font-medium">{successMessage}</span>
+        </div>
+      )}
+
+      {actionError && (
+        <div className="p-4 rounded-lg bg-status-alert/15 border border-status-alert/30 text-status-alert flex items-center gap-2 animate-in fade-in">
+          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <span className="text-sm font-medium">{actionError}</span>
+        </div>
+      )}
+
       {/* Barre d'outils et recherche instantanée */}
       <div className="bg-surface-card border border-border-subtle rounded-xl p-4 sm:p-5 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
@@ -238,6 +396,32 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
               Crédit
             </button>
           </div>
+
+          {/* Boutons d'action Admin : Ajouter une ligne / Ajouter une section */}
+          {isAdmin && (
+            <div className="flex items-center gap-2 self-start md:self-auto">
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={handleOpenCreateLigne}
+                className="flex items-center gap-1.5 text-xs font-semibold whitespace-nowrap"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Nouvelle ligne</span>
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={handleOpenCreateSection}
+                className="flex items-center gap-1.5 text-xs whitespace-nowrap"
+              >
+                <FolderPlus className="w-4 h-4 text-accent" />
+                <span>Section</span>
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Pilules de sélection rapide par section macro-comptable */}
@@ -257,21 +441,33 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
             Toutes (A-E)
           </button>
           {sections.map((sec) => (
-            <button
-              key={sec.code}
-              type="button"
-              onClick={() => setSelectedSection(selectedSection === sec.code ? '' : sec.code)}
-              className={`px-2.5 py-1 text-xs font-sans rounded-full flex items-center gap-1.5 transition-colors ${
-                selectedSection === sec.code
-                  ? 'bg-accent text-text-primary font-semibold shadow-sm'
-                  : 'bg-surface-secondary text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              <span className="font-bold">{sec.code}</span>
-              <span className="max-w-[120px] truncate text-[11px] opacity-90 hidden sm:inline">
-                {sec.libelle}
-              </span>
-            </button>
+            <div key={sec.code} className="inline-flex items-center group/pill">
+              <button
+                type="button"
+                onClick={() => setSelectedSection(selectedSection === sec.code ? '' : sec.code)}
+                className={`px-2.5 py-1 text-xs font-sans rounded-full flex items-center gap-1.5 transition-colors ${
+                  selectedSection === sec.code
+                    ? 'bg-accent text-text-primary font-semibold shadow-sm'
+                    : 'bg-surface-secondary text-text-secondary hover:text-text-primary'
+                }`}
+              >
+                <span className="font-bold">{sec.code}</span>
+                <span className="max-w-[120px] truncate text-[11px] opacity-90 hidden sm:inline">
+                  {sec.libelle}
+                </span>
+              </button>
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={() => handleOpenEditSection(sec)}
+                  className="opacity-0 group-hover/pill:opacity-100 p-1 text-text-secondary hover:text-accent transition-opacity ml-0.5"
+                  title={`Modifier la section ${sec.code}`}
+                  aria-label={`Modifier la section ${sec.code}`}
+                >
+                  <Edit2 className="w-3 h-3" />
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -457,6 +653,33 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                       </div>
                     </div>
                   </div>
+
+                  {/* Boutons d'édition/suppression de la section pour l'admin */}
+                  {isAdmin && sectionMeta && (
+                    <div className="flex items-center gap-1">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleOpenEditSection(sectionMeta)}
+                        className="text-xs flex items-center gap-1 text-text-secondary hover:text-text-primary"
+                        title={`Modifier la section ${secCode}`}
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Modifier</span>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteSection(sectionMeta)}
+                        className="text-xs flex items-center gap-1 text-status-alert hover:bg-status-alert/10"
+                        title={`Supprimer la section ${secCode}`}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Liste des lignes de la section */}
@@ -504,6 +727,13 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                                   rattaché à <strong className="font-mono">{ligne.parent_detail.compte}</strong>
                                 </span>
                               )}
+
+                              {/* Indicateur inactif si applicable */}
+                              {!ligne.actif && (
+                                <span className="text-[10px] font-sans bg-surface-secondary text-text-secondary/70 px-1.5 py-0.5 rounded">
+                                  Inactif
+                                </span>
+                              )}
                             </div>
 
                             {/* Libellé de la ligne comptable */}
@@ -513,11 +743,46 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                           </div>
                         </div>
 
-                        {/* Actions / Sélection */}
+                        {/* Actions / Sélection / Administration */}
                         <div className="flex items-center gap-2 self-end sm:self-center flex-shrink-0">
                           <span className="text-[11px] font-mono text-text-secondary hidden md:inline">
                             Sub #{ligne.menu_sub}
                           </span>
+
+                          {/* Boutons d'édition/suppression pour l'Admin */}
+                          {isAdmin && (
+                            <div className="flex items-center gap-1">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenEditLigne(ligne);
+                                }}
+                                className="text-xs p-1.5 text-text-secondary hover:text-accent"
+                                title={`Modifier la ligne ${ligne.compte}`}
+                                aria-label={`Modifier la ligne ${ligne.compte}`}
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteLigne(ligne);
+                                }}
+                                className="text-xs p-1.5 text-status-alert hover:bg-status-alert/10"
+                                title={`Supprimer la ligne ${ligne.compte}`}
+                                aria-label={`Supprimer la ligne ${ligne.compte}`}
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </Button>
+                            </div>
+                          )}
+
                           {onSelectLigne && (
                             <button
                               type="button"
@@ -541,6 +806,39 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
           })}
         </div>
       )}
+
+      {/* Modal de création / modification d'une ligne comptable */}
+      <LigneComptableModal
+        isOpen={isLigneModalOpen}
+        onClose={() => {
+          setIsLigneModalOpen(false);
+          setLigneToEdit(null);
+          setLigneApiErrors(null);
+        }}
+        onSubmit={handleSaveLigne}
+        ligneToEdit={ligneToEdit}
+        sections={sections}
+        allLignes={lignes}
+        apiErrors={ligneApiErrors}
+        defaultSectionId={
+          selectedSection
+            ? sections.find((s) => s.code === selectedSection)?.id || null
+            : null
+        }
+      />
+
+      {/* Modal de création / modification d'une section macro-comptable */}
+      <SectionComptableModal
+        isOpen={isSectionModalOpen}
+        onClose={() => {
+          setIsSectionModalOpen(false);
+          setSectionToEdit(null);
+          setSectionApiErrors(null);
+        }}
+        onSubmit={handleSaveSection}
+        sectionToEdit={sectionToEdit}
+        apiErrors={sectionApiErrors}
+      />
     </div>
   );
 };

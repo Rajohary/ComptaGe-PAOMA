@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAdminDashboard } from '../../../api/dashboard';
 import { formatAriary, formatPercent, formatDateTime } from '../../../lib/formatters';
@@ -11,10 +10,8 @@ import {
   RefreshCw,
   ArrowRight,
   ShieldAlert,
-  Activity,
   Layers,
   MapPin,
-  FileCheck,
 } from 'lucide-react';
 
 export default function AdminDashboard() {

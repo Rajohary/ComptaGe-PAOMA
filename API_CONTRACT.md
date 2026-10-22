@@ -44,8 +44,10 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
-| `/api/v1/lignes-comptables/` | GET | Authentifié | implémenté (voir §4) | Recherche instantanée et référentiel du plan comptable (remplace TreeView legacy) |
-| `/api/v1/sections-comptables/` | GET | Authentifié | implémenté (voir §4) | Référentiel des sections macro-comptables (A à E) |
+| `/api/v1/sections-comptables/` | GET, POST, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel et gestion des sections macro-comptables (A à E) |
+| `/api/v1/sections-comptables/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, mise à jour ou suppression d'une section macro-comptable |
+| `/api/v1/lignes-comptables/` | GET, POST, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Recherche instantanée et gestion du plan comptable (remplace TreeView legacy) |
+| `/api/v1/lignes-comptables/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, mise à jour ou suppression d'une ligne du plan comptable |
 | `/api/v1/produits-postaux/` | GET, POST, PUT, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel des produits postaux et timbres fiscaux |
 | `/api/v1/stocks-valeurs/` | GET, POST, PUT, PATCH, DELETE | Receveur (son bureau), Admin | implémenté (voir §4) | Suivi des stocks de valeurs postales (Tableau A G58) |
 | `/api/v1/stocks-valeurs/recapitulatif/` | GET | Authentifié | implémenté (voir §4) | Synthèse et totaux financiers d'une période de gestion |
@@ -54,18 +56,13 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/mouvements/totaux/` | GET | Authentifié | implémenté (voir §4) | Totaux par section (A-E), sous-sections B1-B4, débits, crédits, solde |
 | `/api/v1/rubriques-encaisse/` | GET | Authentifié | implémenté (voir §4) | Référentiel des rubriques d'encaisse (TR, SF, CR...) |
 | `/api/v1/mouvements-encaisse/` | GET, POST, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Suivi des mouvements de caisse et de coffre (entrées/sorties) |
-| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
-| `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | planifié | Liste des mouvements en écart (équivalent vue DIF) |
+| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur, Admin | implémenté (voir §4) | Rectification d'un mouvement d'audit (obligation motif, équation de contrôle, trace immuable) |
 | `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Situation comptable mensuelle avec report automatique de solde |
 | `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
 | `/api/v1/dashboard/receveur/` | GET | Receveur (son bureau), Agent saisie (son bureau), Admin, Inspecteur | implémenté (voir §4) | Progression mensuelle G58 par section, totaux et caisse actuelle |
 | `/api/v1/dashboard/inspecteur/` | GET | Inspecteur, Admin | implémenté (voir §4) | Vue synthétique des écarts de caisse et bureaux impactés |
 | `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | implémenté (voir §4) | Liste filtrable et paginée des mouvements en anomalie (vue DIF) |
 | `/api/v1/dashboard/admin/` | GET | Admin | implémenté (voir §4) | Vue d'ensemble globale du système (territoire, périodes, RBAC, flux, audit) |
-| `/api/v1/lignes-comptables/` | GET | Authentifié | planifié | Recherche dans le plan comptable (remplace le TreeView legacy) |
-| `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | planifié | Création/consultation des mouvements G58 |
-| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
-| `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | planifié | Situation comptable mensuelle avec report de solde |
 
 **Note pour les deux agents :** quand un endpoint passe de `planifié` à `implémenté`, préciser dans la colonne État la forme exacte de la réponse (ou lier vers un exemple de payload en bas de ce fichier, section 4) — pas juste changer le mot.
 
@@ -383,9 +380,6 @@ Endpoint consommé par le composant frontend de recherche / sélection rapide (r
   - `actif` : `true` (par défaut), `false`, ou `all`.
 
 Exemple de requête : `GET /api/v1/lignes-comptables/?search=mandat`
-### GET /api/v1/dashboard/receveur/ (Tableau de bord Receveur & Agent de saisie)
-*Paramètres query optionnels : `bureau` (id ou ncodique, réservé Admin/Inspecteur pour cibler un autre bureau), `periode` (id de période).*
-*Règles d'accès : `RECEVEUR` ou `AGENT_SAISIE` limité à son bureau rattaché ; `ADMIN` et `INSPECTEUR` peuvent consulter tout bureau.*
 
 Réponse 200 :
 ```json
@@ -413,6 +407,77 @@ Réponse 200 :
       "menu_sub": 201,
       "compte": "B101",
       "libelle": "Mandats ordinaires émis en numéraire",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": 22,
+      "parent_detail": {
+        "id": 22,
+        "menu_sub": 200,
+        "compte": "B1",
+        "libelle": "Sous-section B1 — Émissions et versements mandats"
+      },
+      "actif": true
+    }
+  ]
+}
+```
+
+### POST /api/v1/sections-comptables/
+Création d'une nouvelle section macro-comptable.
+- **Accès :** Réservé aux profils `ADMIN` (et superutilisateurs).
+- **Règles :** `code` unique, `sens` obligatoire (1=Débit, 2=Crédit, 0=Non applicable).
+
+Requête (POST) :
+```json
+{
+  "code": "F",
+  "libelle": "Opérations financières exceptionnelles",
+  "sens": 1,
+  "ordre": 6,
+  "actif": true
+}
+```
+Réponse 201 : objet complet créé.
+
+### PUT / PATCH /api/v1/sections-comptables/{id}/
+Modification d'une section macro-comptable existante.
+- **Accès :** Réservé aux profils `ADMIN`.
+
+### POST /api/v1/lignes-comptables/
+Création d'une rubrique / sous-compte dans le plan comptable.
+- **Accès :** Réservé aux profils `ADMIN` (et superutilisateurs).
+- **Règles :**
+  - `menu_sub` unique et obligatoire (identifiant métier d'imputation).
+  - `section` obligatoire (FK SectionComptable).
+  - Si `parent` est renseigné, la ligne parente doit impérativement appartenir à la même section.
+  - Une ligne ne peut pas être son propre parent.
+
+Requête (POST) :
+```json
+{
+  "section": 2,
+  "parent": 22,
+  "menu_sub": 209,
+  "compte": "B109",
+  "libelle": "Autres versements de mandats express",
+  "actif": true
+}
+```
+Réponse 201 : objet complet créé avec enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
+
+### PUT / PATCH /api/v1/lignes-comptables/{id}/
+Modification d'une ligne du plan comptable.
+- **Accès :** Réservé aux profils `ADMIN`.
+- Possibilité de modifier le libellé, le code compte, le statut actif/inactif, ou de rattacher à une autre sous-section parente.
+
+### DELETE /api/v1/lignes-comptables/{id}/
+Suppression d'une ligne comptable.
+- **Accès :** Réservé aux profils `ADMIN`.
+- **Règles :** Protection stricte (`ProtectedError` / code 400 ou 500) si des écritures du Journal G58 (`Mouvement`) ou des sous-lignes utilisent cette ligne. La désactivation (`actif: false`) est préconisée.
+
       "section": 2,
       "section_code": "B",
       "section_libelle": "Opérations relatives aux correspondances et objets",
@@ -741,55 +806,106 @@ Requête (PATCH) :
 ### GET /api/v1/mouvements/totaux/
 Calcul consolidé des totaux du Journal G58 pour une période donnée.
 Paramètres de requête : `?periode=<id>&date=<YYYY-MM-DD (optionnel)>`
-  "count": 5,
-  "next": null,
-  "previous": null,
-  "kpis": {
-    "total_ecarts_count": 5,
-    "total_montant_declare": "320000.00",
-    "total_montant_rectifie": "345000.00",
-    "total_ecart_net": "25000.00",
-    "total_ecart_absolu": "35000.00",
-    "total_augmentation": "30000.00",
-    "total_diminution": "5000.00",
-    "nb_bureaux_impactes": 2,
-    "nb_non_rectifies": 3,
-    "nb_rectifies": 2,
-    "bureaux_avec_ecarts": [ ... ]
-  },
-  "results": [
-    {
-      "id": 12,
-      "date_operation": "2026-06-15",
-      "bureau": {
-        "id": 1,
-        "ncodique": 10101,
-        "nom_bureau": "Antaninarenina",
-        "classe": "R1",
-        "province_nom": "Antananarivo"
-      },
-      "periode_gestion_id": 1,
-      "ligne_comptable": {
-        "id": 5,
-        "menu_sub": 102,
-        "compte": "AD02",
-        "libelle": "Vente de valeurs postales",
-        "section_code": "A"
-      },
-      "montant": "50000.00",
-      "augmentation": "10000.00",
-      "diminution": "0.00",
-      "montant_rectifie": "60000.00",
-      "ecart": "10000.00",
-      "motif_rectification": "Manquant constaté lors du pointage contradictoire",
-      "saisi_par": "receveur1",
-      "rectifie_par": "inspecteur1",
-      "est_rectifie": true,
-      "created_at": "2026-06-15T10:30:00Z",
-      "updated_at": "2026-06-16T14:20:00Z"
+
+Réponse 200 :
+```json
+{
+  "periode_gestion_id": 1,
+  "date_operation": null,
+  "totaux_sections": {
+    "A": {
+      "section_id": 1,
+      "code": "A",
+      "libelle": "Opérations d'ordre postal et financier",
+      "sens": 1,
+      "sens_libelle": "Débit",
+      "total_declare": "50000.00",
+      "total_rectifie": "50000.00"
+    },
+    "B": {
+      "section_id": 2,
+      "code": "B",
+      "libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "total_declare": "35000.00",
+      "total_rectifie": "40000.00"
     }
-  ]
+  },
+  "sous_sections_b": {
+    "B1": {
+      "total_declare": "20000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B2": {
+      "total_declare": "15000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B3": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    },
+    "B4": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    }
+  },
+  "total_general_debit": "50000.00",
+  "total_general_credit": "40000.00",
+  "solde_net": "10000.00"
 }
+```
+
+### PATCH /api/v1/mouvements/{id}/rectifier/
+Redressement d'audit et rectification d'une écriture comptable en anomalie (UC-04).
+- **Accès :** `INSPECTEUR`, `ADMIN`.
+- **Règles :**
+  - Saisie obligatoire d'un champ `motif` non vide détaillant la cause du redressement (pointage contradictoire, manquant guichet, fausse déclaration).
+  - Équation comptable vérifiée : `MontantRectif = Montant + Augmentation - Diminution`. Si `montant_rectifie` n'est pas fourni dans la requête, il est calculé automatiquement.
+  - Génération d'une trace d'audit immuable (`AuditLogEntry`, action `RECTIFICATION`) avec capture des états avant/après.
+
+Requête (PATCH) :
+```json
+{
+  "motif": "Erreur de saisie guichet constatée lors du pointage contradictoire",
+  "augmentation": "10000.00",
+  "diminution": "0.00"
+}
+```
+
+Réponse 200 :
+```json
+{
+  "id": 12,
+  "date_operation": "2026-06-15",
+  "bureau": {
+    "id": 1,
+    "ncodique": 10101,
+    "nom_bureau": "Antaninarenina",
+    "classe": "R1",
+    "province_nom": "Antananarivo"
+  },
+  "periode_gestion_id": 1,
+  "ligne_comptable": {
+    "id": 5,
+    "menu_sub": 102,
+    "compte": "AD02",
+    "libelle": "Vente de valeurs postales",
+    "section_code": "A"
+  },
+  "montant": "50000.00",
+  "augmentation": "10000.00",
+  "diminution": "0.00",
+  "montant_rectifie": "60000.00",
+  "ecart": "10000.00",
+  "motif_rectification": "Erreur de saisie guichet constatée lors du pointage contradictoire",
+  "saisi_par": "receveur1",
+  "rectifie_par": "inspecteur1",
+  "est_rectifie": true,
+  "created_at": "2026-06-15T10:30:00Z",
+  "updated_at": "2026-06-16T14:20:00Z"
+}
+```
 ```
 
 ### GET /api/v1/dashboard/admin/ (Tableau de bord Administrateur)
@@ -1049,6 +1165,21 @@ Si un changement casse la compatibilité (renommage de champ, changement de form
   - `GET /api/v1/lignes-comptables/` : recherche instantanée avec filtrage multi-critères (`search`, `section`, `sens`, `parent`, `feuille`, `actif`) et enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
   - `GET /api/v1/sections-comptables/` : référentiel macro-comptable (sections A à E).
 - Rôles autorisés : tout utilisateur authentifié.
+### 2026-10-15 — Gestion complète du Plan Comptable (Création, Modification, RBAC)
+- Endpoints étendus en CRUD complet :
+  - `POST, PUT, PATCH, DELETE /api/v1/sections-comptables/` : création et modification des sections macro-comptables (A à E).
+  - `POST, PUT, PATCH, DELETE /api/v1/lignes-comptables/` : création et modification des rubriques et sous-comptes du plan comptable avec validation de cohérence de la section parente.
+- Sécurité :
+  - Lecture (`GET`) ouverte à tous les profils authentifiés (`RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`).
+  - Écriture (`POST`, `PUT`, `PATCH`, `DELETE`) strictement réservée aux profils `ADMIN` (conformément au CDC § 3.3).
+
+### 2026-10-15 — Rectification d'audit et détection d'écarts finalisées (Section 5)
+- Endpoints documentés et finalisés :
+  - `PATCH /api/v1/mouvements/{id}/rectifier/` : rectification d'un mouvement d'audit avec obligation de justification textuelle (`motif`), vérification de cohérence mathématique `montant_rectifie = montant + augmentation - diminution`, et journalisation immuable dans `AuditLogEntry`.
+  - `GET /api/v1/audit/ecarts/` : vue DIF complète avec KPIs et filtres multi-critères.
+  - Interface Django Admin : enregistrement d'AuditLogEntry en lecture seule stricte.
+- Sécurité : accès réservé aux inspecteurs (`INSPECTEUR`) et administrateurs (`ADMIN`).
+
 ### 2026-10-15 — Tableaux de bord et vue DIF implémentés (Module 6)
 - Endpoints ajoutés et documentés :
   - `GET /api/v1/dashboard/receveur/` : progression mensuelle G58, situation par section et encaisse/caisse actuelle

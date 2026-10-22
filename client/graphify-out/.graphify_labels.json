@@ -1,5 +1,5 @@
 {
-  "0": "StockValeurFormModal.tsx",
+  "0": "Button",
   "1": "package.json",
   "2": "App.tsx",
   "3": "index.ts",
@@ -17,10 +17,17 @@
   "15": "9. Journal des actions (log)",
   "16": "apiClient",
   "17": "@playwright/test",
+  "18": "lucide-react",
   "19": "AGENT.md — ComptaGeWeb · Frontend (client/)",
   "20": ".oxlintrc.json",
   "21": "flat/DESIGN.md",
   "22": "React + TypeScript + Vite",
   "23": "tsconfig.json",
-  "24": "postcss.config.js"
+  "24": "postcss.config.js",
+  "25": "playwright-cli/SKILL.md",
+  "26": "Video Recording",
+  "27": "Advanced Mocking with run-code",
+  "28": "Attaching Screenshots and Videos to Pull Requests",
+  "29": "Trace Output Files",
+  "30": "element-attributes.md"
 }

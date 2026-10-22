@@ -16,18 +16,19 @@ from .serializers import (
     RubriqueEncaisseSerializer,
     MouvementEncaisseSerializer,
 )
-from .permissions import IsSaisieAllowed
+from .permissions import IsSaisieAllowed, IsAdminOrReadOnlyAuthenticated
 
 
-class SectionComptableViewSet(viewsets.ReadOnlyModelViewSet):
+class SectionComptableViewSet(viewsets.ModelViewSet):
     """
-    API ReadOnly pour les sections macro-comptables (A à E).
-    - GET /api/v1/sections-comptables/ : liste des sections (filtrable par actif, sens)
-    - GET /api/v1/sections-comptables/{id}/ : détail d'une section
+    CRUD et consultation des sections macro-comptables (A à E).
+    - GET /api/v1/sections-comptables/ : liste des sections (accessible à tout utilisateur authentifié).
+    - GET /api/v1/sections-comptables/{id}/ : détail d'une section.
+    - POST / PUT / PATCH / DELETE : création, modification et suppression réservées aux Administrateurs.
     """
     queryset = SectionComptable.objects.all().order_by("ordre", "code")
     serializer_class = SectionComptableSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["code", "libelle"]
     ordering_fields = ["ordre", "code", "sens"]
@@ -48,13 +49,14 @@ class SectionComptableViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
-class LigneComptableViewSet(viewsets.ReadOnlyModelViewSet):
+class LigneComptableViewSet(viewsets.ModelViewSet):
     """
-    API ReadOnly pour la recherche instantanée et le référentiel des lignes comptables.
+    CRUD, recherche instantanée et référentiel des lignes comptables.
     Consommée par le composant d'autocomplétion / recherche instantanée qui remplace le TreeView legacy.
 
-    - GET /api/v1/lignes-comptables/ : liste paginée des lignes comptables
-    - GET /api/v1/lignes-comptables/{id}/ : détail d'une ligne comptable
+    - GET /api/v1/lignes-comptables/ : liste paginée des lignes comptables (accessible à tout utilisateur authentifié).
+    - GET /api/v1/lignes-comptables/{id}/ : détail d'une ligne comptable.
+    - POST / PUT / PATCH / DELETE : création, modification et suppression réservées aux Administrateurs (CDC RBAC).
 
     Filtres disponibles en query params :
       - search : recherche instantanée textuelle sur 'compte', 'libelle', 'section__code', 'section__libelle'
@@ -71,10 +73,12 @@ class LigneComptableViewSet(viewsets.ReadOnlyModelViewSet):
         .order_by("section__ordre", "menu_sub")
     )
     serializer_class = LigneComptableSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
+
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["compte", "libelle", "section__code", "section__libelle"]
     ordering_fields = ["menu_sub", "compte", "libelle", "section__ordre"]
+
 
     def get_queryset(self):
         qs = super().get_queryset()

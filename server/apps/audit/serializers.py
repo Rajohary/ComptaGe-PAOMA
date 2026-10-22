@@ -76,3 +76,41 @@ class EcartsListResponseSerializer(serializers.Serializer):
     previous = serializers.CharField(allow_null=True)
     kpis = InspecteurKPIsSerializer(required=False)
     results = EcartItemSerializer(many=True)
+
+
+class RectificationMouvementInputSerializer(serializers.Serializer):
+    """
+    Serializer d'entrée pour la rectification d'un mouvement par un inspecteur (UC-04).
+    """
+    motif = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        max_length=250,
+        trim_whitespace=True,
+        help_text="Motif obligatoire justifiant le redressement d'audit"
+    )
+    augmentation = serializers.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        required=False,
+        default=0,
+        min_value=0,
+        help_text="Montant de régularisation à la hausse"
+    )
+    diminution = serializers.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        required=False,
+        default=0,
+        min_value=0,
+        help_text="Montant de régularisation à la baisse"
+    )
+    montant_rectifie = serializers.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        required=False,
+        allow_null=True,
+        min_value=0,
+        help_text="Optionnel : montant final consolidé vérifié (doit être égal à montant + augmentation - diminution)"
+    )
+

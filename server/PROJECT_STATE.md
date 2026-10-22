@@ -50,9 +50,10 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 ## 3. Plan comptable (sections A-E)
 
 - [x] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
-- [X] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
-- [X] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
-- [X] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
+- [x] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
+- [x] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
+- [x] Endpoints CRUD de création et modification du plan comptable (`SectionComptable` et `LigneComptable`), réservés Admin
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
 
 ---
 
@@ -72,12 +73,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 5. Audit et détection d'écarts
 
-- [ ] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
-- [ ] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
+- [x] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
+- [x] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
 - [x] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
-- [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
-- [ ] Test unitaire : une rectification sans motif est rejetée
-- [ ] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md`
+- [x] Test unitaire : une rectification sans motif est rejetée
+- [x] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
 
 ---
 
@@ -95,8 +96,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 - [x] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
 - [x] Endpoints de saisie/consultation du stock par bureau et par mois
 - [x] Documenter dans `../API_CONTRACT.md`
-- [ ] Endpoints de saisie/consultation du stock par bureau et par mois
-- [ ] Documenter dans `../API_CONTRACT.md`
+
 
 ---
 
@@ -474,4 +474,72 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - Cases cochées : aucune case de PROJECT_STATE.md directement (Section 3-7 restent `[ ]` — cette entrée prépare le terrain pour la Section 3).
 - API_CONTRACT.md mis à jour : non applicable (modèles uniquement, pas d'endpoint).
 - Points restés ouverts ou à valider : Prêt pour Section 3 (SectionComptable + LigneComptable seed + endpoint de recherche), puis Section 4 (vues/serializers Mouvement).
+
+### 2026-10-15 — Finalisation complète de la section 5 : Audit et détection d'écarts
+- Ce qui a été fait :
+  - **Service de redressement / rectification d'audit (`rectifier_mouvement`)** dans [`server/apps/audit/services.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/services.py) :
+    - Contrôle strict de la présence du `motif` (obligatoire, non vide).
+    - Application de l'équation comptable : `montant_rectifie = montant + augmentation - diminution`.
+    - Calcul automatique ou contrôle d'intégrité de `montant_rectifie`.
+    - Assignation de l'auditeur/inspecteur (`rectifie_par`) et mise à jour de `motif_rectification`.
+    - Création d'une entrée d'audit immuable (`AuditLogEntry`, action `RECTIFICATION`) avec capture structurée JSON des états `avant` et `apres`.
+  - **Serializer d'entrée (`RectificationMouvementInputSerializer`)** dans [`server/apps/audit/serializers.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/serializers.py).
+  - **Endpoint de rectification d'audit (`RectifierMouvementView`)** dans [`server/apps/audit/views.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/views.py) :
+    - Route `PATCH /api/v1/mouvements/<id>/rectifier/` exposée dans [`server/apps/audit/urls.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/urls.py).
+    - Permission stricte `IsInspecteurOrAdmin` : seuls `INSPECTEUR` et `ADMIN` sont autorisés à redresser les écritures.
+  - **Enregistrement de `AuditLogEntry` dans l'administration Django** ([`server/apps/audit/admin.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/admin.py)) en lecture seule stricte (append-only, interdiction formelle d'ajouter, modifier ou supprimer via l'admin).
+  - **Tests unitaires dédiés** dans [`server/apps/audit/tests/test_rectification.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/tests/test_rectification.py) :
+    - Succès nominal avec calcul automatique et création de l'entrée d'audit.
+    - Rejet 400 si motif vide ou absent.
+    - Rejet 403 pour Receveur et Agent de saisie, rejet 401 pour anonyme, succès pour Inspecteur et Admin.
+    - Rejet 400 en cas d'incohérence mathématique sur `montant_rectifie`.
+  - **Validation globale** :
+    - `python manage.py test apps.audit` : 7/7 tests passés au vert.
+    - `python manage.py test` : 64/64 tests passés au vert sur l'ensemble de la suite backend.
+  - **Mise à jour du contrat d'interface** dans [`API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) :
+    - Enregistrement de `PATCH /api/v1/mouvements/{id}/rectifier/` et passage à l'état `implémenté`.
+    - Correction des doublons et des blocs de payload dans `API_CONTRACT.md`.
+- Fichiers/dossiers touchés :
+  - `server/apps/audit/services.py`
+  - `server/apps/audit/serializers.py`
+  - `server/apps/audit/views.py`
+  - `server/apps/audit/urls.py`
+  - `server/apps/audit/admin.py`
+  - `server/apps/audit/tests/test_rectification.py`
+  - `server/PROJECT_STATE.md`
+  - `API_CONTRACT.md`
+- Cases cochées : Section 5 (100% complétée : 6/6 cases cochées).
+- API_CONTRACT.md mis à jour : Oui, dans le même tour de travail.
+- Points restés ouverts ou à valider avec l'utilisateur : Aucun, section 5 achevée et prête pour intégration frontend.
+
+### 2026-10-15 — Fonctionnalités de création et modification du Plan Comptable (Section 3)
+- Ce qui a été fait :
+  - **Extension en CRUD complet (`viewsets.ModelViewSet`)** de [`SectionComptableViewSet`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py#L21) et [`LigneComptableViewSet`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py#L52) dans [`server/apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py).
+  - **Classe de permission dédiée (`IsAdminOrReadOnlyAuthenticated`)** dans [`server/apps/comptabilite/permissions.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/permissions.py) :
+    - `GET` : accessible à tout agent ou receveur authentifié.
+    - `POST`, `PUT`, `PATCH`, `DELETE` : strictement réservé au rôle `ADMIN` (conformément à la matrice RBAC du CDC § 3.3).
+  - **Validation métier renforcée dans le serializer** [`LigneComptableSerializer`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py#L46) :
+    - Vérification d'intégrité de l'arborescence : la ligne parente doit impérativement être rattachée à la même section macro-comptable.
+    - Protection anti-boucle : interdiction formelle pour une ligne d'être son propre parent.
+  - **Interface Django Admin complète** dans [`server/apps/comptabilite/admin.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/admin.py) pour `SectionComptable`, `LigneComptable`, `RubriqueEncaisseParent`, `RubriqueEncaisse`, `Mouvement` et `MouvementEncaisse`.
+  - **Tests unitaires exhaustifs** dans [`server/apps/comptabilite/tests/test_api_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_plan_comptable.py) :
+    - Création et modification de sections comptables par un Admin (201 Created, 200 OK).
+    - Création et modification de lignes comptables par un Admin (201 Created, 200 OK).
+    - Rejet 403 Forbidden systématique pour les rôles Receveur et Agent de saisie sur toute tentative d'écriture.
+    - Rejet 401 Unauthorized pour les utilisateurs anonymes.
+    - Rejet 400 Bad Request en cas de tentative d'assignation d'un parent d'une autre section.
+    - Maintien au vert de tous les tests de filtrage, recherche instantanée et feuille.
+  - **Exécution des tests** : 11/11 tests passés pour `test_api_plan_comptable`, et **69/69 tests au vert** sur la suite globale Django (`manage.py test`).
+  - **Mise à jour de la documentation** dans [`API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers touchés :
+  - `server/apps/comptabilite/permissions.py`
+  - `server/apps/comptabilite/serializers.py`
+  - `server/apps/comptabilite/views.py`
+  - `server/apps/comptabilite/admin.py`
+  - `server/apps/comptabilite/tests/test_api_plan_comptable.py`
+  - `server/PROJECT_STATE.md`
+  - `API_CONTRACT.md`
+- Cases cochées : Section 3 entièrement complétée.
+
+
 
