@@ -80,7 +80,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 - [x] Dashboard Receveur : progression de la saisie du mois en cours par section, montant en caisse actuel
 - [x] Dashboard Inspecteur : bureaux avec écarts en attente, triable/filtrable
-- [x] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours)
+- [x] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours) + Sélecteur de bureau pour voir l'état détaillé d'un bureau (données du bureau, accès direct au tableau de bord receveur et historique des périodes)
 
 ---
 
@@ -97,7 +97,7 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 
 - [x] Téléchargement du bordereau G58 en PDF depuis l'interface (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
 - [x] Bouton d'export Excel des écritures d'une période (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
-- [ ] Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- [x] Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Graphique d'évolution des recettes d'un bureau sur plusieurs mois (choix de la librairie à trancher le moment venu)
 - [ ] Notifications de rappel avant date limite de clôture mensuelle
 
@@ -115,6 +115,46 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-26 — Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- Ce qui a été fait :
+  - **Types & client API** :
+    - Déclaration des interfaces `HistoriquePeriodeItem`, `PeriodeEnCoursInfo` et `HistoriquePassationResponse` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+    - Ajout de la fonction `getHistoriquePeriodesBureau(bureauIdOrNcodique)` dans [src/api/referentiel.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/referentiel.ts) consommant l'endpoint `GET /api/v1/bureaux/{bureau_id}/historique-periodes/` conforme à `API_CONTRACT.md`.
+  - **Écran dédié `HistoriquePeriodesPage`** ([src/features/periodes-gestion/HistoriquePeriodesPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/HistoriquePeriodesPage.tsx)) :
+    - Sélecteur de bureau dynamique alimenté par le référentiel avec restriction automatique au bureau assigné pour les profils Receveurs et Agents de saisie.
+    - Bannière de synthèse du bureau (nom, code codique, classe, province, compte CCP) et indicateurs globaux (total périodes, clôturées, période active).
+    - Encadré d'alerte et de suivi de la période en cours (receveur en fonction, date de prise de service, inventaire d'ouverture).
+    - Tableau chronologique complet des passations de gestion :
+      - Dates de début et fin de gestion, statut (En cours / Clôturée).
+      - Receveur en charge avec avatar / initiales.
+      - Inventaire initial détaillé (numéraire, valeurs postales, timbres).
+      - Soldes d'ouverture (débiteur/créditeur de passation).
+      - Volumétrie des mouvements et totaux de flux (débits / crédits).
+      - Soldes de clôture calculés (report pour la passation suivante).
+      - Téléchargement direct du bordereau officiel Journal G58 en PDF et export des écritures en classeur Excel (.xlsx).
+    - Recherche instantanée locale par receveur ou période.
+  - **Intégration & Navigation** :
+    - Route protégée `/historique-periodes` ajoutée dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) pour les rôles RECEVEUR, AGENT_SAISIE, INSPECTEUR, ADMIN.
+    - Entrée « Passations & Historique » ajoutée dans la barre latérale [src/components/layout/Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+    - Bouton de raccourci d'historique intégré dans la liste des bureaux ([src/features/bureaux/BureauxPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/BureauxPage.tsx)) et dans chaque ligne des périodes de gestion ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)).
+  - **Tests et vérification** :
+    - Suite de tests e2e Playwright créée dans [e2e/historique-periodes.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/historique-periodes.spec.ts) (3 tests passés avec succès).
+    - Exécution globale des 61 tests e2e Playwright : 61/61 validés (100% au vert).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour de la base de connaissances AST (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/referentiel.ts`
+  - `src/features/periodes-gestion/HistoriquePeriodesPage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `src/features/bureaux/BureauxPage.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/App.tsx`
+  - `e2e/historique-periodes.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/bureaux/{bureau_id}/historique-periodes/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
 
 ### 2026-10-26 — Amélioration ergonomique : Recherche rapide et assistée de période (Saisie G58)
 - Ce qui a été fait :
@@ -638,6 +678,78 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Cases cochées : section 1 (toutes les 6 tâches)
 - Dépendance à un endpoint backend : `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/`, `/api/v1/auth/me/` (tous implémentés dans `API_CONTRACT.md`)
 - Points restés ouverts ou à valider avec l'utilisateur : Les tests e2e nécessitent un backend Django fonctionnel avec des comptes utilisateurs créés (receveur1, etc.). Le rafraîchissement automatique du token 401 était déjà implémenté dans `client.ts` depuis la section 0.
+
+### 2026-10-26 — Sélecteur de période dans la vue Bureau (Receveur) pour les rôles Admin & Inspecteur (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un sélecteur de période de gestion (`select-periode-dashboard`) dans l'en-tête de `ReceveurDashboard`, directement à côté du sélecteur de bureau de poste pour les profils `ADMIN` et `INSPECTEUR`.
+  - Chargement réactif des périodes de gestion associées au bureau sélectionné via `getPeriodesGestion({ bureau: effectiveBureau })`.
+  - Affichage de la plage de dates (`formatDate(date_debut) - formatDate(date_fin)`) et du badge de statut (`Active` ou `Clôturée`).
+  - Prise en charge de la sélection d'une période spécifique dans `useReceveurDashboard({ bureau, periode })`, permettant à l'administrateur d'inspecter l'état comptable, l'encaisse et l'avancement G58 de n'importe quelle période (passée ou en cours) pour le bureau choisi.
+  - Mise à jour des tests e2e dans `e2e/dashboard.spec.ts` pour valider la visibilité et le fonctionnement des deux sélecteurs (bureau et période).
+  - Validation complète : l'ensemble des tests e2e passe avec succès, build de production Vite/TypeScript 100% propre, graphe de connaissances mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Receveur / Admin)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Sélecteur de période de gestion dans la section Bureau du Dashboard Admin (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un champ de sélection de période (`admin-select-periode`) dans `AdminDashboard` directement après le sélecteur de bureau de poste.
+  - Chargement dynamique et asynchrone des périodes de gestion du bureau sélectionné via `getPeriodesGestion({ bureau: bureauId })`.
+  - Pré-sélection intelligente de la période en cours (active / non clôturée) ou de la plus récente.
+  - Affichage détaillé de chaque période dans le menu déroulant : plage de dates (`date_debut` au `date_fin`), receveur en charge, et statut (`En cours` ou `Clôturée`).
+  - Transmission de la période sélectionnée à la vue détaillée (`ReceveurDashboard`) lors du clic sur le bouton « Voir l'état », permettant à l'administrateur de consulter précisément l'état de caisse, les flux et l'avancement G58 de la période choisie.
+  - Mise à jour du test e2e `e2e/dashboard.spec.ts` pour vérifier la présence du sélecteur de période et la sélection de la période active.
+  - Validation complète : 63 tests Playwright réussis (`63 passed`), build Vite/TypeScript propre, graphe de connaissances mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin complété)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Révision de la section Traçabilité & Vigilance Réglementaire (Vue Réseau Admin)
+- Ce qui a été fait :
+  - Refonte complète de la section « Traçabilité & Vigilance Réglementaire » dans `AdminDashboard` :
+    - Badge d'intégrité CDC § 6.2 (« Journal Inaltérable » / append-only).
+    - Métriques directes de vigilance : total des logs enregistrés et nombre d'écarts en attente avec lien rapide vers l'Espace Audit (`/audit`).
+    - Barre d'outils interactive avec champ de recherche en direct (par auteur, modèle, objet ou détail) et filtre déroulant par nature d'action (Rectifications, Clôtures, Ouvertures, Créations, Modifications, Suppressions, Connexions).
+    - Badges et icônes typées par type d'événement avec mise en avant du détail de modification, du modèle cible et de l'utilisateur auteur.
+    - Horodatage certifié UTC+3 (heure locale Madagascar) et message d'état vide explicite en cas d'absence de résultat de filtre.
+  - Ajout d'un test e2e dédié dans `e2e/dashboard.spec.ts` validant l'affichage des métriques, des badges et du filtrage interactif.
+  - Validation complète : les 63 tests Playwright passent tous avec succès (`63 passed (1.1m)`), build de production Vite/TypeScript 100% propre, graphe `graphify` synchronisé.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin)
+- Dépendance à un endpoint backend : `/api/v1/dashboard/admin/`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Sélecteur de bureau sur le tableau de bord Admin et vue bureau détaillée (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un sélecteur de bureau dans le composant `AdminDashboard` (`admin-select-bureau`) au sein de la section des bureaux / maillage postal, permettant de consulter instantanément les informations clés d'un bureau (classe, codique, province, compte CCP).
+  - Ajout d'un bouton d'action directe "Voir l'état" qui bascule immédiatement vers la vue opérationnelle du bureau (`ReceveurDashboard`) pour ce bureau choisi, ainsi qu'un raccourci direct vers l'écran d'historique des périodes de gestion (`/historique-periodes?bureau=...`).
+  - Ajout d'un sélecteur de bureau réactif dans le bandeau d'en-tête de `ReceveurDashboard` (`select-bureau-dashboard`) pour les rôles `ADMIN` et `INSPECTEUR`, permettant de passer d'un bureau à un autre et d'interroger dynamiquement `/api/v1/dashboard/receveur/?bureau={id}`.
+  - Mise à jour de `DashboardPage` pour relier l'action de sélection d'état bureau depuis la vue Admin vers la vue Receveur avec le bureau pré-sélectionné.
+  - Ajout du test e2e de validation dans `e2e/dashboard.spec.ts` (`permet à l'administrateur de sélectionner un bureau pour voir son état détaillé`).
+  - Validation complète : 62 tests Playwright passés avec succès, build de production Vite/TypeScript 100% propre, et graphe `graphify` mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin complété avec le sélecteur de bureau)
+- Dépendance à un endpoint backend : `/api/v1/bureaux/`, `/api/v1/dashboard/receveur/?bureau={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
  <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
 

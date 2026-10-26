@@ -43,6 +43,7 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/auth/me/` | GET | Authentifié | implémenté | Infos de l'utilisateur courant (dont le rôle) |
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
+| `/api/v1/bureaux/{bureau_id}/historique-periodes/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Historique chronologique des périodes de gestion et passations d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
 | `/api/v1/sections-comptables/` | GET, POST, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel et gestion des sections macro-comptables (A à E) |
 | `/api/v1/sections-comptables/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, mise à jour ou suppression d'une section macro-comptable |
@@ -265,7 +266,59 @@ Réponse 200 : objet mis à jour.
 ### DELETE /api/v1/bureaux/{id}/ (Réservé Admin)
 Réponse 204 No Content.
 
+### GET /api/v1/bureaux/{bureau_id}/historique-periodes/ (Receveur de son bureau, Admin, Inspecteur)
+Permet d'extraire la chronologie complète des périodes de gestion et des passations de service d'un bureau (accessible par `id` ou `ncodique`).
+
+Paramètre d'URL : `bureau_id` (identifiant entier ou numéro codique du bureau).
+
+Réponse 200 OK :
+```json
+{
+  "bureau": {
+    "id": 47,
+    "ncodique": 11916,
+    "nom_bureau": "Tsiroanomandidy",
+    "classe": "R3",
+    "ccp": "9377",
+    "province": "Antananarivo"
+  },
+  "total_periodes": 14,
+  "periodes_cloturees": 13,
+  "periode_en_cours": {
+    "id": 999,
+    "nom_receveur": "VOLOLONIRINA Tit Lydia",
+    "date_debut": "2023-10-04",
+    "solde_debiteur_depart": "0.00",
+    "solde_crediteur_depart": "0.00",
+    "total_encaisse_depart": "85000000.00"
+  },
+  "historique": [
+    {
+      "id": 245,
+      "nom_receveur": "RASOAMANAMBELO RAHELIARISOA Philbertine",
+      "date_debut": "2009-07-25",
+      "date_fin": "2010-07-31",
+      "cloturee": true,
+      "date_cloture": null,
+      "solde_debiteur_depart": "27498826.79",
+      "solde_crediteur_depart": "0.00",
+      "reserve_numeraire": "30000000.00",
+      "valeurs_postales": "3600000.00",
+      "timbres_fiscaux": "0.00",
+      "total_encaisse_depart": "33600000.00",
+      "total_debit": "0.00",
+      "total_credit": "0.00",
+      "solde_debiteur_fin": "27498826.79",
+      "solde_crediteur_fin": "0.00",
+      "nb_mouvements": 0
+    }
+  ]
+}
+```
+
 ### POST /api/v1/periodes-gestion/ (Ouverture d'une période de gestion — Receveur ou Admin)
+Plusieurs périodes peuvent être ouvertes simultanément pour un même bureau.
+
 Requête :
 ```json
 {

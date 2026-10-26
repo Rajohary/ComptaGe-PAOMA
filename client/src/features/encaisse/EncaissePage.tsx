@@ -402,18 +402,18 @@ export const EncaissePage: React.FC = () => {
                 <div
                   key={item.rubrique.id}
                   data-testid={`rubrique-card-${item.rubrique.compte}`}
-                  className="bg-surface-secondary/40 border border-border-subtle rounded-lg p-3 space-y-2"
+                  className="bg-surface-secondary/40 dark:bg-surface-secondary/60 border border-border-subtle rounded-lg p-3 space-y-2 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-xs bg-brand/10 text-brand px-2 py-0.5 rounded">
+                      <span className="font-mono font-bold text-xs bg-brand/10 dark:bg-brand/20 text-brand px-2 py-0.5 rounded">
                         {item.rubrique.compte}
                       </span>
                       <span className="font-medium text-xs text-text-primary truncate max-w-[170px]" title={item.rubrique.libelle}>
                         {item.rubrique.libelle}
                       </span>
                     </div>
-                    <span className="text-[10px] font-sans font-semibold text-text-secondary bg-surface-secondary px-1.5 py-0.5 rounded">
+                    <span className="text-[10px] font-sans font-semibold text-text-secondary bg-surface-secondary dark:bg-surface-card border border-border-subtle/50 px-1.5 py-0.5 rounded">
                       {item.count} flux
                     </span>
                   </div>
@@ -461,10 +461,10 @@ export const EncaissePage: React.FC = () => {
               value={selectedBureauId}
               onChange={(e) => setSelectedBureauId(Number(e.target.value))}
               disabled={role === 'RECEVEUR' || role === 'AGENT_SAISIE'}
-              className="w-full text-xs font-sans bg-surface-secondary/40 border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden"
+              className="w-full text-xs font-sans bg-surface-secondary/70 dark:bg-surface-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {bureaux.map((b) => (
-                <option key={b.id} value={b.id}>
+                <option key={b.id} value={b.id} className="bg-surface-card dark:bg-surface-secondary text-text-primary">
                   {b.ncodique} — {b.nom_bureau}
                 </option>
               ))}
@@ -481,10 +481,10 @@ export const EncaissePage: React.FC = () => {
               aria-label="Période de gestion"
               value={selectedPeriodeId}
               onChange={(e) => setSelectedPeriodeId(Number(e.target.value))}
-              className="w-full text-xs font-sans bg-surface-secondary/40 border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden"
+              className="w-full text-xs font-sans bg-surface-secondary/70 dark:bg-surface-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
             >
               {periodes.map((p) => (
-                <option key={p.id} value={p.id}>
+                <option key={p.id} value={p.id} className="bg-surface-card dark:bg-surface-secondary text-text-primary">
                   {p.date_debut} au {p.date_fin} {p.cloturee ? '(Clôturée)' : '(En cours)'}
                 </option>
               ))}
@@ -501,11 +501,11 @@ export const EncaissePage: React.FC = () => {
               aria-label="Sens du flux"
               value={selectedSens}
               onChange={(e) => setSelectedSens(e.target.value)}
-              className="w-full text-xs font-sans bg-surface-secondary/40 border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden"
+              className="w-full text-xs font-sans bg-surface-secondary/70 dark:bg-surface-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
             >
-              <option value="">Tous les sens</option>
-              <option value="1">Entrées uniquement</option>
-              <option value="2">Sorties uniquement</option>
+              <option value="" className="bg-surface-card dark:bg-surface-secondary text-text-primary">Tous les sens</option>
+              <option value="1" className="bg-surface-card dark:bg-surface-secondary text-text-primary">Entrées uniquement</option>
+              <option value="2" className="bg-surface-card dark:bg-surface-secondary text-text-primary">Sorties uniquement</option>
             </select>
           </div>
 
@@ -519,11 +519,11 @@ export const EncaissePage: React.FC = () => {
               aria-label="Rubrique d'encaisse"
               value={selectedRubriqueId}
               onChange={(e) => setSelectedRubriqueId(e.target.value)}
-              className="w-full text-xs font-sans bg-surface-secondary/40 border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden"
+              className="w-full text-xs font-sans bg-surface-secondary/70 dark:bg-surface-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
             >
-              <option value="">Toutes les rubriques</option>
+              <option value="" className="bg-surface-card dark:bg-surface-secondary text-text-primary">Toutes les rubriques</option>
               {rubriques.map((r) => (
-                <option key={r.id} value={r.id}>
+                <option key={r.id} value={r.id} className="bg-surface-card dark:bg-surface-secondary text-text-primary">
                   {r.compte} — {r.libelle}
                 </option>
               ))}
@@ -540,7 +540,7 @@ export const EncaissePage: React.FC = () => {
               placeholder="Rechercher par compte, désignation ou receveur..."
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs font-sans bg-surface-secondary/20 border border-border-subtle rounded-lg text-text-primary focus:outline-hidden placeholder:text-text-secondary"
+              className="w-full pl-9 pr-3 py-1.5 text-xs font-sans bg-surface-secondary/50 dark:bg-surface-secondary border border-border-subtle rounded-lg text-text-primary placeholder:text-text-secondary/60 focus:outline-hidden focus:ring-2 focus:ring-accent"
             />
           </div>
 
@@ -552,7 +552,7 @@ export const EncaissePage: React.FC = () => {
               className={`px-2.5 py-1 rounded-md text-xs font-sans font-medium transition-colors ${
                 selectedSens === ''
                   ? 'bg-brand text-white shadow-2xs font-semibold'
-                  : 'bg-surface-secondary/60 text-text-secondary hover:text-text-primary'
+                  : 'bg-surface-secondary/60 hover:bg-surface-secondary text-text-secondary hover:text-text-primary border border-transparent hover:border-border-subtle'
               }`}
             >
               Tous
@@ -563,7 +563,7 @@ export const EncaissePage: React.FC = () => {
               className={`px-2.5 py-1 rounded-md text-xs font-sans font-medium transition-colors ${
                 selectedSens === '1'
                   ? 'bg-status-success text-white shadow-2xs font-semibold'
-                  : 'bg-surface-secondary/60 text-text-secondary hover:text-text-primary'
+                  : 'bg-surface-secondary/60 hover:bg-surface-secondary text-text-secondary hover:text-text-primary border border-transparent hover:border-border-subtle'
               }`}
             >
               Entrées
@@ -574,7 +574,7 @@ export const EncaissePage: React.FC = () => {
               className={`px-2.5 py-1 rounded-md text-xs font-sans font-medium transition-colors ${
                 selectedSens === '2'
                   ? 'bg-status-alert text-white shadow-2xs font-semibold'
-                  : 'bg-surface-secondary/60 text-text-secondary hover:text-text-primary'
+                  : 'bg-surface-secondary/60 hover:bg-surface-secondary text-text-secondary hover:text-text-primary border border-transparent hover:border-border-subtle'
               }`}
             >
               Sorties

@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "PROJECT_STATE.md": {
-    "mtime": 1793002307.8911223,
-    "seen": 1793002903.3018427,
-    "ast_hash": "34ed6ab9470ea0f93a79d5e4c8d0c33c",
+    "mtime": 1793016735.3284578,
+    "seen": 1793017515.267086,
+    "ast_hash": "e65c5a9dfb34af0c29dde8dc6e010343",
     "semantic_hash": ""
   },
   ".oxlintrc.json": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1792919627.2287524,
-    "seen": 1792939051.7593606,
-    "ast_hash": "574b8457f6f9799fe983c2c3b93d5203",
+    "mtime": 1793006342.6888592,
+    "seen": 1793006716.961832,
+    "ast_hash": "ada62479a465f668c55cc85f66593491",
     "semantic_hash": ""
   },
   "src/api/auth.ts": {
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "src/api/referentiel.ts": {
-    "mtime": 1792920612.9450016,
-    "seen": 1792939051.75937,
-    "ast_hash": "f5bce476e0ddead8406412ac3a5329ef",
+    "mtime": 1793006278.2930589,
+    "seen": 1793006716.961849,
+    "ast_hash": "fdb85f065936cada36df898bc0e14b9a",
     "semantic_hash": ""
   },
   "src/components/layout/AppLayout.tsx": {
@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "src/components/layout/Sidebar.tsx": {
-    "mtime": 1792919613.9439273,
-    "seen": 1792939051.7593758,
-    "ast_hash": "b4df804954c099d8a2167da2e68ef255",
+    "mtime": 1793006354.474823,
+    "seen": 1793006716.9618597,
+    "ast_hash": "ba9e7052117e855188a73a93ed12f6ce",
     "semantic_hash": ""
   },
   "src/components/layout/Topbar.tsx": {
@@ -186,9 +186,9 @@
     "semantic_hash": ""
   },
   "src/features/bureaux/BureauxPage.tsx": {
-    "mtime": 1791961193.374759,
-    "seen": 1791965516.7807617,
-    "ast_hash": "269f0563e1186ac99e3e33d9280e353e",
+    "mtime": 1793006377.374753,
+    "seen": 1793006716.9618928,
+    "ast_hash": "a64a818c696788de67e85cadf0144148",
     "semantic_hash": ""
   },
   "src/features/bureaux/components/BureauFormModal.tsx": {
@@ -204,15 +204,15 @@
     "semantic_hash": ""
   },
   "src/features/dashboard/pages/DashboardPage.tsx": {
-    "mtime": 1792917428.2494934,
-    "seen": 1792939051.759403,
-    "ast_hash": "6d86219892ec3fee10ed6e061ff8b100",
+    "mtime": 1793017294.490065,
+    "seen": 1793017515.2670228,
+    "ast_hash": "a4b7ff640c2e651e09a0251a469c6f16",
     "semantic_hash": ""
   },
   "src/features/periodes-gestion/PeriodesGestionPage.tsx": {
-    "mtime": 1793002777.0672975,
-    "seen": 1793002903.3017845,
-    "ast_hash": "a1e3f66518c2cc534a15294c5edd93b0",
+    "mtime": 1793006449.9775333,
+    "seen": 1793006716.9619114,
+    "ast_hash": "b25f6e10f181488fe5c56cf19e9385c8",
     "semantic_hash": ""
   },
   "src/features/periodes-gestion/components/ClotureModal.tsx": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "src/types/index.ts": {
-    "mtime": 1792998896.5869899,
-    "seen": 1793002276.683308,
-    "ast_hash": "58edfdbd8c81cb475738e9b03a25c061",
+    "mtime": 1793006273.174075,
+    "seen": 1793006716.961941,
+    "ast_hash": "ee35a9fdf65dceda2a2fb1f36b208f05",
     "semantic_hash": ""
   },
   "tailwind.config.ts": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "e2e/saisie-g58.spec.ts": {
-    "mtime": 1793002810.254642,
-    "seen": 1793002903.3017273,
-    "ast_hash": "fedf5360455fd8238ddd6088697b3269",
+    "mtime": 1793004007.4855,
+    "seen": 1793004047.156703,
+    "ast_hash": "8dab0f11f54267fe74b19a73a10883c6",
     "semantic_hash": ""
   },
   "src/features/saisie-g58/components/SectionForm.tsx": {
@@ -492,9 +492,9 @@
     "semantic_hash": ""
   },
   "src/features/saisie-g58/pages/SaisieG58Page.tsx": {
-    "mtime": 1793002633.9578104,
-    "seen": 1793002903.3017988,
-    "ast_hash": "2afdf8b0243e4cac490c2594c539037b",
+    "mtime": 1793003955.2825499,
+    "seen": 1793004047.1567783,
+    "ast_hash": "68d250fa54e7e4fdb7c5adbd64cc47ae",
     "semantic_hash": ""
   },
   "e2e/encaisse.spec.ts": {
@@ -504,9 +504,9 @@
     "semantic_hash": ""
   },
   "src/features/encaisse/EncaissePage.tsx": {
-    "mtime": 1792137337.2717938,
-    "seen": 1792566283.1113293,
-    "ast_hash": "f8a0866bdc1e884e4233740d93c9d44e",
+    "mtime": 1793004879.977089,
+    "seen": 1793004905.2664106,
+    "ast_hash": "9903743f8528a5c881bb24b588c55c57",
     "semantic_hash": ""
   },
   "src/features/encaisse/components/EncaisseFormModal.tsx": {
@@ -528,9 +528,9 @@
     "semantic_hash": ""
   },
   "e2e/dashboard.spec.ts": {
-    "mtime": 1792137321.0469863,
-    "seen": 1792566283.111252,
-    "ast_hash": "1da015a9aa22bdaf296b977e9338dac4",
+    "mtime": 1793017418.0527527,
+    "seen": 1793017515.266939,
+    "ast_hash": "f0475ff5f48c911bd4483ea521ee1f4c",
     "semantic_hash": ""
   },
   "e2e/rbac.spec.ts": {
@@ -564,9 +564,9 @@
     "semantic_hash": ""
   },
   "src/features/dashboard/components/AdminDashboard.tsx": {
-    "mtime": 1792917428.2474933,
-    "seen": 1792939051.759399,
-    "ast_hash": "5251345da6455dba627e22c3d80adabc",
+    "mtime": 1793017366.3468814,
+    "seen": 1793017515.2670186,
+    "ast_hash": "892480790d2991935cd0c6fd24378cc0",
     "semantic_hash": ""
   },
   "src/features/dashboard/components/InspecteurDashboard.tsx": {
@@ -576,9 +576,9 @@
     "semantic_hash": ""
   },
   "src/features/dashboard/components/ReceveurDashboard.tsx": {
-    "mtime": 1792917428.2484934,
-    "seen": 1792939051.7594018,
-    "ast_hash": "bf9b27b28771e83566438a71f30067b9",
+    "mtime": 1793017272.8617115,
+    "seen": 1793017515.2670217,
+    "ast_hash": "d82c3817a6c88e16de75fcd06461491c",
     "semantic_hash": ""
   },
   "src/lib/formatters.ts": {
@@ -603,6 +603,24 @@
     "mtime": 1793001660.2147453,
     "seen": 1793002276.6833022,
     "ast_hash": "b74d1f255c83ddf78206e7de949d51ae",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/components/PeriodeSearchModal.tsx": {
+    "mtime": 1793003847.4676526,
+    "seen": 1793004047.1567733,
+    "ast_hash": "680a1e58a16ac9577fbf11f6a31a0c9d",
+    "semantic_hash": ""
+  },
+  "e2e/historique-periodes.spec.ts": {
+    "mtime": 1793006635.3509867,
+    "seen": 1793006716.9617982,
+    "ast_hash": "1764e1092fa2d779fea25eb9dc326b38",
+    "semantic_hash": ""
+  },
+  "src/features/periodes-gestion/HistoriquePeriodesPage.tsx": {
+    "mtime": 1793006480.5069125,
+    "seen": 1793006716.9619098,
+    "ast_hash": "b0827b234aa3a11dc2cf63641db2a300",
     "semantic_hash": ""
   }
 }

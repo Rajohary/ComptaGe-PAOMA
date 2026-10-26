@@ -102,6 +102,50 @@ export interface PeriodeGestion {
   updated_at?: string;
 }
 
+export interface HistoriquePeriodeItem {
+  id: number;
+  nom_receveur: string;
+  date_debut: string;
+  date_fin: string | null;
+  cloturee: boolean;
+  date_cloture: string | null;
+  solde_debiteur_depart: string;
+  solde_crediteur_depart: string;
+  reserve_numeraire: string;
+  valeurs_postales: string;
+  timbres_fiscaux: string;
+  total_encaisse_depart: string;
+  total_debit: string;
+  total_credit: string;
+  solde_debiteur_fin: string;
+  solde_crediteur_fin: string;
+  nb_mouvements: number;
+}
+
+export interface PeriodeEnCoursInfo {
+  id: number;
+  nom_receveur: string;
+  date_debut: string;
+  solde_debiteur_depart: string;
+  solde_crediteur_depart: string;
+  total_encaisse_depart: string;
+}
+
+export interface HistoriquePassationResponse {
+  bureau: {
+    id: number;
+    ncodique: number;
+    nom_bureau: string;
+    classe: string;
+    ccp: string;
+    province: string | null;
+  };
+  total_periodes: number;
+  periodes_cloturees: number;
+  periode_en_cours: PeriodeEnCoursInfo | null;
+  historique: HistoriquePeriodeItem[];
+}
+
 export interface PeriodeGestionFormData {
   bureau: number;
   nom_receveur: string;

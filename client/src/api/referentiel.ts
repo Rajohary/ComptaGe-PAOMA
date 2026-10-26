@@ -97,3 +97,16 @@ export const cloturerPeriodeGestion = async (id: number, data?: { date_fin?: str
   });
 };
 
+export const getHistoriquePeriodesBureau = async (
+  bureauIdOrNcodique: number | string
+): Promise<import('../types').HistoriquePassationResponse> => {
+  return apiClient<import('../types').HistoriquePassationResponse>(
+    `/api/v1/bureaux/${bureauIdOrNcodique}/historique-periodes/`,
+    {
+      method: 'GET',
+      requiresAuth: true,
+    }
+  );
+};
+
+

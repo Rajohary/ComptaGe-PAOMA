@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Package,
   CalendarDays,
+  History,
   Activity,
   Wallet,
   Scale,
@@ -71,6 +72,12 @@ const NAV_ITEMS: NavItem[] = [
     to: '/periodes-gestion',
     icon: <CalendarDays className="w-5 h-5" />,
     roles: ['RECEVEUR', 'ADMIN'],
+  },
+  {
+    label: 'Passations & Historique',
+    to: '/historique-periodes',
+    icon: <History className="w-5 h-5" />,
+    roles: ['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN'],
   },
   {
     label: 'Audit & Écarts',

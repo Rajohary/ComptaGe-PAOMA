@@ -26,9 +26,12 @@ import {
   Clock,
   Lock,
   Download,
+  History,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const PeriodesGestionPage: React.FC = () => {
+  const navigate = useNavigate();
   const [periodes, setPeriodes] = useState<PeriodeGestion[]>([]);
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -202,14 +205,25 @@ export const PeriodesGestionPage: React.FC = () => {
           </p>
         </div>
 
-        <Button
-          onClick={handleOpenCreate}
-          variant="primary"
-          className="self-start sm:self-center"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Ouvrir une période</span>
-        </Button>
+        <div className="flex items-center gap-2 self-start sm:self-center">
+          <Button
+            onClick={() => navigate('/historique-periodes')}
+            variant="secondary"
+            className="flex items-center gap-1.5"
+            title="Consulter l'historique et les passations par bureau"
+          >
+            <History className="w-4 h-4 text-brand" />
+            <span>Passations & Historique</span>
+          </Button>
+
+          <Button
+            onClick={handleOpenCreate}
+            variant="primary"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Ouvrir une période</span>
+          </Button>
+        </div>
       </div>
 
       {/* Barre d'outils et recherche */}
@@ -366,6 +380,16 @@ export const PeriodesGestionPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/historique-periodes?bureau=${p.bureau}`)}
+                          className="hover:text-brand hover:bg-brand/10 p-1.5"
+                          title="Voir l'historique et passations de ce bureau"
+                          data-testid={`btn-historique-periode-${p.id}`}
+                        >
+                          <History className="w-3.5 h-3.5" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

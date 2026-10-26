@@ -6,6 +6,7 @@ import AppShell from './components/layout/AppShell';
 import DashboardPage from './features/dashboard/pages/DashboardPage';
 import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
+import { HistoriquePeriodesPage } from './features/periodes-gestion/HistoriquePeriodesPage';
 import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
 import { StockValeursPage } from './features/stock/StockValeursPage';
 import { SaisieG58Page } from './features/saisie-g58/pages/SaisieG58Page';
@@ -84,6 +85,14 @@ export default function App() {
 
           {/* Périodes de gestion (Référentiel) */}
           <Route path="periodes-gestion" element={<PeriodesGestionPage />} />
+          <Route
+            path="historique-periodes"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <HistoriquePeriodesPage />
+              </RequireAuth>
+            }
+          />
 
           {/* Audit — Inspecteur & Admin */}
           <Route

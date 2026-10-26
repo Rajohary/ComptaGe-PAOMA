@@ -20,9 +20,12 @@ import {
   AlertCircle,
   RefreshCw,
   Building,
+  History,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const BureauxPage: React.FC = () => {
+  const navigate = useNavigate();
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -269,6 +272,16 @@ export const BureauxPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/historique-periodes?bureau=${bureau.id}`)}
+                          className="hover:text-brand"
+                          aria-label={`Historique des périodes de ${bureau.nom_bureau}`}
+                          title="Historique des périodes et passations"
+                        >
+                          <History className="w-3.5 h-3.5" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

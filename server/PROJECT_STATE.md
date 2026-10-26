@@ -106,7 +106,7 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande backend (nou
 
 - [x] Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)
 - [x] Endpoint d'export Excel des écritures d'une période
-- [ ] Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- [x] Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Endpoint de données pour graphique d'évolution des recettes sur plusieurs mois
 
 ---
@@ -123,6 +123,41 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-26 — Autorisation de multiples périodes ouvertes pour un même bureau
+- Ce qui a été fait :
+  - **Suppression du blocage d'unicité de période active** ([`apps/referentiel/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py)) :
+    - Retrait de la validation interdisant l'ouverture d'une nouvelle période lorsqu'une période est déjà non clôturée sur un bureau.
+    - Plusieurs périodes de gestion peuvent désormais être ouvertes simultanément pour un même bureau.
+  - **Mise à jour des tests unitaires** ([`apps/referentiel/tests/test_api_periode.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_periode.py)) :
+    - Remplacement du test `test_ouverture_double_periode_active_refusee` par `test_ouverture_plusieurs_periodes_actives_autorisee` confirmant la création réussie avec code HTTP 201 Created et la présence de 2 périodes actives simultanées.
+    - Suite de tests du référentiel (24/24) et de comptabilité (53/53) validées avec succès.
+  - **Contrat API** ([`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md)) :
+    - Mise à jour de la documentation pour refléter la prise en charge de multiples périodes ouvertes.
+- Fichiers/dossiers touchés : `apps/referentiel/serializers.py`, `apps/referentiel/tests/test_api_periode.py`, `../API_CONTRACT.md`, `PROJECT_STATE.md`.
+- Cases cochées : non applicable (ajustement de règle métier).
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Endpoint d'historique des périodes de gestion d'un bureau (Section 8, Tâche 3)
+- Ce qui a été fait :
+  - **Serializers DRF** ([`apps/referentiel/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py)) :
+    - `HistoriquePeriodeItemSerializer` : sérialisation fine de chaque passation de service (nom du receveur, date début/fin, état de clôture, réserves d'encaisse transmises, soldes de départ et de fin calculés, totaux débit/crédit, nombre de mouvements imputés).
+    - `HistoriquePassationResponseSerializer` : réponse globale structurée avec métadonnées du bureau, nombre total de périodes, décompte des clôturées, et extraction de la période en cours.
+  - **Service Métier** ([`apps/referentiel/services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/services.py)) :
+    - Fonction `get_historique_periodes_bureau(bureau_id_or_ncodique)` : résolution flexible par clé primaire ou code codique postal (`ncodique`), tri chronologique des passations, calcul de balance et de clôture pour chaque période via `calcul_situation_comptable`, et agrégation de l'encaisse de départ.
+  - **Endpoint & Vues REST** ([`apps/referentiel/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py), [`apps/referentiel/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/urls.py)) :
+    - `GET /api/v1/bureaux/{bureau_id}/historique-periodes/` (`HistoriquePeriodesBureauView`).
+    - Contrôle RBAC rigoureux : accès étendu aux administrateurs (`ADMIN`, `superuser`) et inspecteurs (`INSPECTEUR`) pour tous les bureaux, isolation stricte pour les receveurs (`RECEVEUR`) et agents restreints à leur bureau assigné (`user.bureau_code == bureau.ncodique`). Renvoi 403 Forbidden en cas de tentative d'accès non autorisée et 404 en cas de bureau introuvable.
+  - **Tests Unitaires Automatisés** ([`apps/referentiel/tests/test_historique_periodes.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_historique_periodes.py)) :
+    - 7 tests unitaires couvrant : rejet anonyme 401, bureau introuvable 404, consultation complète par un Admin via ID, consultation par un Admin via numéro codique (`ncodique`), consultation par un Inspecteur, accès autorisé d'un Receveur sur son propre bureau, et rejet 403 Forbidden avec message explicite lors d'une tentative d'accès sur un autre bureau.
+    - Suite de tests du référentiel validée à **100% (24 tests passés avec succès)**.
+  - **Contrat API** ([`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md)) :
+    - Ajout de l'endpoint dans le registre des endpoints et spécification détaillée de la payload de réponse 200 OK.
+- Fichiers/dossiers touchés : `apps/referentiel/serializers.py`, `apps/referentiel/services.py`, `apps/referentiel/views.py`, `apps/referentiel/urls.py`, `apps/referentiel/tests/test_historique_periodes.py`, `../API_CONTRACT.md`, `PROJECT_STATE.md`.
+- Cases cochées : section 8, tâche `Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint de données pour graphique d'évolution des recettes sur plusieurs mois`.
 
 ### 2026-10-26 — Endpoint d'export Excel des écritures d'une période (Section 8, Tâche 2)
 - Ce qui a été fait :

@@ -105,8 +105,8 @@ class PeriodeGestionAPITestCase(TestCase):
         resp = view(req)
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_ouverture_double_periode_active_refusee(self):
-        """Vérifie qu'il est impossible d'ouvrir une 2ème période pour un bureau ayant déjà une période non clôturée."""
+    def test_ouverture_plusieurs_periodes_actives_autorisee(self):
+        """Vérifie qu'il est désormais possible d'ouvrir plusieurs périodes pour un même bureau."""
         PeriodeGestion.objects.create(
             bureau=self.bureau,
             nom_receveur="Premier Receveur",
@@ -130,8 +130,8 @@ class PeriodeGestionAPITestCase(TestCase):
         req = self.factory.post("/api/v1/periodes-gestion/", payload, format="json")
         force_authenticate(req, user=MockUser(role="RECEVEUR"))
         resp = view(req)
-        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("bureau", resp.data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(PeriodeGestion.objects.filter(bureau=self.bureau, cloturee=False).count(), 2)
 
     def test_cloture_periode_flow_and_rbac(self):
         """Vérifie la clôture réussie d'une période active, l'assignation de date_fin, l'interdiction de double clôture et le RBAC."""

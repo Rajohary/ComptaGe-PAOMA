@@ -161,3 +161,99 @@ def get_admin_dashboard_overview():
             "derniers_logs": derniers_logs,
         },
     }
+
+
+def get_historique_periodes_bureau(bureau_id_or_ncodique):
+    """
+    Extrait l'historique chronologique complet des périodes de gestion d'un bureau de poste.
+    Inclut :
+      - Informations d'identification du bureau
+      - Receveurs successifs (passation de gestion)
+      - Dates de prise et de fin de fonction
+      - Soldes d'ouverture (débiteur/créditeur) et inventaire initial (numéraire, valeurs postales, timbres fiscaux)
+      - Totaux débit/crédit et soldes de clôture calculés
+      - Volumétrie des mouvements enregistrés sur la période
+      - Détection de la période active/en cours
+    """
+    from apps.comptabilite.services import calcul_situation_comptable
+
+    try:
+        if str(bureau_id_or_ncodique).isdigit():
+            val = int(bureau_id_or_ncodique)
+            bureau = Bureau.objects.filter(Q(id=val) | Q(ncodique=val)).first()
+        else:
+            bureau = Bureau.objects.filter(ncodique=bureau_id_or_ncodique).first()
+    except Exception:
+        bureau = None
+
+    if not bureau:
+        return None
+
+    periodes_qs = bureau.periodes_gestion.all().order_by("date_debut", "id")
+    total_periodes = periodes_qs.count()
+    periodes_cloturees = 0
+    periode_en_cours_data = None
+    historique_items = []
+
+    for p in periodes_qs:
+        if p.cloturee:
+            periodes_cloturees += 1
+
+        # Calcul de la situation comptable de la période
+        sit = calcul_situation_comptable(p)
+
+        # Totaux de réserves initiales
+        total_encaisse_depart = (
+            (p.reserve_numeraire or Decimal("0.00"))
+            + (p.valeurs_postales or Decimal("0.00"))
+            + (p.timbres_fiscaux or Decimal("0.00"))
+        )
+
+        nb_mvt = p.mouvements.count()
+
+        item = {
+            "id": p.id,
+            "nom_receveur": p.nom_receveur or (p.receveur.get_full_name() if p.receveur else "Non assigné"),
+            "date_debut": p.date_debut,
+            "date_fin": p.date_fin,
+            "cloturee": p.cloturee,
+            "date_cloture": p.date_cloture,
+            "solde_debiteur_depart": p.solde_debiteur_depart or Decimal("0.00"),
+            "solde_crediteur_depart": p.solde_crediteur_depart or Decimal("0.00"),
+            "reserve_numeraire": p.reserve_numeraire or Decimal("0.00"),
+            "valeurs_postales": p.valeurs_postales or Decimal("0.00"),
+            "timbres_fiscaux": p.timbres_fiscaux or Decimal("0.00"),
+            "total_encaisse_depart": total_encaisse_depart,
+            "total_debit": sit["total_debit_mois"],
+            "total_credit": sit["total_credit_mois"],
+            "solde_debiteur_fin": sit["solde_debiteur_fin"],
+            "solde_crediteur_fin": sit["solde_crediteur_fin"],
+            "nb_mouvements": nb_mvt,
+        }
+
+        historique_items.append(item)
+
+        if not p.cloturee and periode_en_cours_data is None:
+            periode_en_cours_data = {
+                "id": p.id,
+                "nom_receveur": item["nom_receveur"],
+                "date_debut": str(p.date_debut),
+                "solde_debiteur_depart": str(item["solde_debiteur_depart"]),
+                "solde_crediteur_depart": str(item["solde_crediteur_depart"]),
+                "total_encaisse_depart": str(total_encaisse_depart),
+            }
+
+    return {
+        "bureau": {
+            "id": bureau.id,
+            "ncodique": bureau.ncodique,
+            "nom_bureau": bureau.nom_bureau,
+            "classe": bureau.classe,
+            "ccp": bureau.ccp,
+            "province": bureau.province.nom if bureau.province else None,
+        },
+        "total_periodes": total_periodes,
+        "periodes_cloturees": periodes_cloturees,
+        "periode_en_cours": periode_en_cours_data,
+        "historique": historique_items,
+    }
