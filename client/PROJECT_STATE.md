@@ -95,8 +95,8 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (états, statistiques, exports...) au fur et à mesure, avant de l'implémenter.
 
-- [ ] Téléchargement du bordereau G58 en PDF depuis l'interface (dépend de l'endpoint backend correspondant)
-- [ ] Bouton d'export Excel des écritures d'une période
+- [x] Téléchargement du bordereau G58 en PDF depuis l'interface (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
+- [x] Bouton d'export Excel des écritures d'une période (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
 - [ ] Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Graphique d'évolution des recettes d'un bureau sur plusieurs mois (choix de la librairie à trancher le moment venu)
 - [ ] Notifications de rappel avant date limite de clôture mensuelle
@@ -115,6 +115,79 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-26 — Amélioration ergonomique : Recherche rapide et assistée de période (Saisie G58)
+- Ce qui a été fait :
+  - **Composant dédié `PeriodeSearchModal`** ([src/features/saisie-g58/components/PeriodeSearchModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/PeriodeSearchModal.tsx)) :
+    - Boîte de dialogue de recherche dynamique instantanée par texte libre (dates au format ISO ou français `DD/MM/YYYY`, nom du receveur, numéro codique ou nom de bureau).
+    - Filtres rapides par statut (Toutes, En cours / Active, Clôturée).
+    - Filtre par millésime / année automatique selon les périodes disponibles.
+    - Présentation claire des dates de gestion, du receveur assigné, de l'état d'inventaire initial et du statut de clôture.
+  - **Intégration dans `SaisieG58Page`** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) :
+    - Bouton d'action « Rechercher » intégré directement dans le bloc sélecteur de période de gestion en en-tête.
+    - Sélection immédiate et synchronisation automatique de l'état `selectedPeriodeId` et des totaux consolidés associés.
+  - **Tests et validation** :
+    - Test e2e Playwright ajouté dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) (9/9 tests au vert).
+    - Build de production Vite validé (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/PeriodeSearchModal.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : non applicable (référentiel frontend existant).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Bouton d'export Excel des écritures d'une période (Journal G58)
+- Ce qui a été fait :
+  - **Connexion API & utilitaire de téléchargement** :
+    - Ajout de la fonction API `exportEcrituresExcel(periodeId)` dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) appelant l'endpoint `GET /api/v1/mouvements/export-excel/?periode_id={periodeId}`.
+    - Utilisation de `triggerBlobDownload` pour générer le téléchargement direct du classeur multi-feuilles avec nommage normalisé (`Journal_G58_{ncodique}_{date_debut}.xlsx`).
+  - **Intégration dans les écrans métier** :
+    - **Saisie du Journal G58** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) : bouton d'action dédié « Export Excel » avec gestion du spinner `isExportingExcel` et alertes d'erreur.
+    - **Situation Comptable** ([src/features/saisie-g58/pages/SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx)) : bouton d'action contextuel « Export Excel » à côté du sélecteur de période.
+    - **Périodes de Gestion** ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)) : icône d'export Excel direct sur chaque ligne de période du tableau pour consultation et archivage.
+  - **Tests et vérification** :
+    - Enrichissement des tests Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) et [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts) (tous passés avec succès).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/mouvements/export-excel/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Téléchargement du bordereau Journal G58 en PDF depuis l'interface
+- Ce qui a été fait :
+  - **Connexion API & utilitaire de téléchargement de flux Blob** :
+    - Mise à jour de [src/api/client.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/client.ts) pour supporter `responseType: 'blob'`.
+    - Ajout de la fonction API `downloadBordereauG58Pdf(periodeId)` dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) appelant l'endpoint `GET /api/v1/bordereau-g58/{periodeId}/pdf/`.
+    - Création du helper [src/lib/download.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/lib/download.ts) (`triggerBlobDownload`) pour déclencher le téléchargement du fichier PDF avec libellé officiel normalisé (`Bordereau_G58_{ncodique}_{date_debut}.pdf`).
+  - **Intégration dans les écrans métier** :
+    - **Saisie du Journal G58** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) : bouton d'action dédié « Bordereau G58 (PDF) » avec gestion d'état de chargement et gestion des erreurs.
+    - **Situation Comptable** ([src/features/saisie-g58/pages/SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx)) : bouton d'action contextuel « Bordereau G58 (PDF) » à côté du sélecteur de période.
+    - **Périodes de Gestion** ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)) : icône d'export PDF direct sur chaque ligne de période du tableau (pour consultation/archivage des périodes actives comme clôturées).
+  - **Tests et vérification** :
+    - Enrichissement des tests Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) et [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/api/client.ts`
+  - `src/api/comptabilite.ts`
+  - `src/lib/download.ts`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/bordereau-g58/{periode_id}/pdf/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
 
 ### 2026-10-25 — Ajout de raccourcis contextuels de création de ligne dans le Plan Comptable
 - Ce qui a été fait :

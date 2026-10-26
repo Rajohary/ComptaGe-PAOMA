@@ -293,4 +293,28 @@ export const getSituationComptable = async (
   );
 };
 
+/**
+ * Téléchargement du bordereau officiel Journal G58 en PDF
+ * GET /api/v1/bordereau-g58/{periodeId}/pdf/
+ */
+export const downloadBordereauG58Pdf = async (periodeId: number): Promise<Blob> => {
+  return apiClient<Blob>(`/api/v1/bordereau-g58/${periodeId}/pdf/`, {
+    method: 'GET',
+    responseType: 'blob',
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Export du classeur Excel (.xlsx) complet du Journal G58
+ * GET /api/v1/mouvements/export-excel/?periode_id={periodeId}
+ */
+export const exportEcrituresExcel = async (periodeId: number): Promise<Blob> => {
+  return apiClient<Blob>(`/api/v1/mouvements/export-excel/?periode_id=${periodeId}`, {
+    method: 'GET',
+    responseType: 'blob',
+    requiresAuth: true,
+  });
+};
+
 

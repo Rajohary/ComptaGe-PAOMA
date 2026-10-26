@@ -104,8 +104,8 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 Cette section n'est pas figée : ajouter ici toute nouvelle demande backend (nouveaux endpoints d'états, statistiques, exports...) au fur et à mesure, avant de l'implémenter.
 
-- [ ] Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)
-- [ ] Endpoint d'export Excel des écritures d'une période
+- [x] Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)
+- [x] Endpoint d'export Excel des écritures d'une période
 - [ ] Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Endpoint de données pour graphique d'évolution des recettes sur plusieurs mois
 
@@ -123,6 +123,56 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-26 — Endpoint d'export Excel des écritures d'une période (Section 8, Tâche 2)
+- Ce qui a été fait :
+  - **Module d'export Excel** ([`apps/comptabilite/excel.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/excel.py)) :
+    - Utilisation d'`openpyxl` pour générer un classeur multi-feuilles (.xlsx) stylisé aux couleurs et standards de Paositra Malagasy.
+    - Trois feuilles de calcul intégrées :
+      1. `'Écritures G58'` : liste chronologique complète de toutes les opérations imputées (N° opération, date, sens, section, compte, libellé, montant déclaré, augmentations, diminutions, net rectifié, motif, opérateur). Ligne de total général stylisée avec double filet comptable.
+      2. `'Situation Comptable'` : récapitulatif officiel de balance par section (A à E), cumuls généraux, reports débiteur/créditeur M-1 et soldes de clôture à reporter.
+      3. `'Encaisse et Valeurs'` : détail de tous les flux de liquidités (entrées/sorties), variation nette et inventaire du coffre-fort (numéraire, valeurs postales, timbres fiscaux).
+    - Ajustement automatique de la largeur des colonnes et application de formats monétaires professionnels (`#,##0.00 "Ar"`).
+  - **Endpoint & Vues** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `GET /api/v1/mouvements/export-excel/?periode_id={id}` (`ExportEcrituresExcelView`).
+    - Contrôle d'accès RBAC : isolation stricte pour `RECEVEUR` (autorisé uniquement sur son propre bureau), accès étendu pour `INSPECTEUR` et `ADMIN` sur tous les bureaux.
+    - Renvoi en flux binaire direct `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` avec en-tête `Content-Disposition: attachment; filename="Journal_G58_{ncodique}_{date_debut}.xlsx"`.
+  - **Tests unitaires** ([`apps/comptabilite/tests/test_excel_g58.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_excel_g58.py)) :
+    - 7 tests unitaires couvrant l'authentification obligatoire (401), la présence du paramètre obligatoire (400), l'accès admin (200), l'accès inspecteur (200), l'accès receveur sur son bureau (200), le rejet d'un receveur sur un autre bureau (403) et la gestion de période inexistante (404).
+    - Validation complète de la suite comptabilité (**53 tests réussis, 0 échec**).
+  - **Documentation & Dépendances** :
+    - `openpyxl>=3.1.0` ajouté à [`server/requirements.txt`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/requirements.txt).
+    - Contrat d'interface documenté dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers/dossiers touchés : `apps/comptabilite/excel.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_excel_g58.py`, `requirements.txt`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 8, tâche `Endpoint d'export Excel des écritures d'une période`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)`.
+
+### 2026-10-26 — Endpoint de génération du bordereau G58 en PDF (Section 8, Tâche 1)
+- Ce qui a été fait :
+  - **Module de génération PDF** ([`apps/comptabilite/pdf.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/pdf.py)) :
+    - Utilisation de ReportLab pour générer dynamiquement un document A4 vectoriel haute fidélité conforme au Journal G58 de Paositra Malagasy.
+    - Structure complète du bordereau :
+      1. En-tête officiel de la République de Madagascar et Paositra Malagasy.
+      2. Cartouche d'identification : Bureau (nom, ncodique, classe, province), Receveur et dates d'exercice/période.
+      3. Balance récapitulative des sections Débit (recettes) et Crédit (dépenses) avec reports de soldes, cumuls et dégagement du solde de clôture.
+      4. Détail exhaustif des écritures comptables du Journal G58 (date, sens, compte, libellé, montant initial, augmentations, diminutions et montant net rectifié).
+      5. Situation de l'encaisse physique et des valeurs en coffre (espèces, valeurs postales, timbres fiscaux).
+      6. Cadre d'émargement légal avec zones de visa pour le Receveur des Postes et l'Inspecteur vérificateur.
+  - **Endpoint & Vues** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `GET /api/v1/bordereau-g58/{periode_id}/pdf/` (`BordereauG58PdfView`).
+    - Contrôle d'accès RBAC : isolation stricte pour `RECEVEUR` (autorisé uniquement sur son propre bureau), accès étendu pour `INSPECTEUR` et `ADMIN` sur tous les bureaux.
+    - Renvoi en flux binaire direct `application/pdf` avec nom de fichier explicite `Bordereau_G58_{ncodique}_{date_debut}.pdf`.
+  - **Tests unitaires** ([`apps/comptabilite/tests/test_pdf_g58.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_pdf_g58.py)) :
+    - 6 tests unitaires validant l'authentification obligatoire (401), l'accès admin (200), l'accès inspecteur (200), l'accès receveur sur son bureau (200), le rejet d'un receveur sur un autre bureau (403) et la gestion de période inexistante (404).
+    - Validation complète de la suite de tests comptabilité (46 tests OK).
+  - **Documentation & Dépendances** :
+    - `reportlab>=4.0.0` ajouté à [`server/requirements.txt`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/requirements.txt).
+    - Contrat d'interface documenté dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers/dossiers touchés : `apps/comptabilite/pdf.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_pdf_g58.py`, `requirements.txt`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 8, tâche `Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint d'export Excel des écritures d'une période`.
 
 ### 2026-10-14 — Endpoint Situation comptable avec report automatique du solde (Section 4, Tâches 7, 8 & 9)
 - Ce qui a été fait :

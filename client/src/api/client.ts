@@ -45,7 +45,7 @@ export const apiClient = async <T>(
   const token = localStorage.getItem('access_token');
 
   const requestHeaders: Record<string, string> = {
-'Content-Type': 'application/json',
+    ...(rest.responseType === 'blob' ? {} : { 'Content-Type': 'application/json' }),
     ...(headers as Record<string, string>),
   };
 

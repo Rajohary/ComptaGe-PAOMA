@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "PROJECT_STATE.md": {
-    "mtime": 1792941289.6528795,
-    "seen": 1792942128.0063553,
-    "ast_hash": "9347616c538d617455b598feaa018d8e",
+    "mtime": 1793002933.1965246,
+    "seen": 1793004047.1568232,
+    "ast_hash": "7d4cc4230e7e9f851ac085e374b3193d",
     "semantic_hash": ""
   },
   ".oxlintrc.json": {
@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "src/api/client.ts": {
-    "mtime": 1792137337.268058,
-    "seen": 1792566283.111284,
-    "ast_hash": "caf6acfd7bf1d3db411f19a0f452c30a",
+    "mtime": 1793001642.9606986,
+    "seen": 1793002276.683239,
+    "ast_hash": "08359bd49f2bd1d2aef3926430ffe358",
     "semantic_hash": ""
   },
   "src/api/health.ts": {
@@ -210,9 +210,9 @@
     "semantic_hash": ""
   },
   "src/features/periodes-gestion/PeriodesGestionPage.tsx": {
-    "mtime": 1792920824.9129367,
-    "seen": 1792939051.7594068,
-    "ast_hash": "15f4a7676c547aa66e00a4d19e10c9dc",
+    "mtime": 1793002777.0672975,
+    "seen": 1793002903.3017845,
+    "ast_hash": "a1e3f66518c2cc534a15294c5edd93b0",
     "semantic_hash": ""
   },
   "src/features/periodes-gestion/components/ClotureModal.tsx": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "src/types/index.ts": {
-    "mtime": 1792935105.1804633,
-    "seen": 1792939051.75943,
-    "ast_hash": "f2b9f24b557e7ea8e66ab905d2c07891",
+    "mtime": 1792998896.5869899,
+    "seen": 1793002276.683308,
+    "ast_hash": "58edfdbd8c81cb475738e9b03a25c061",
     "semantic_hash": ""
   },
   "tailwind.config.ts": {
@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "src/api/comptabilite.ts": {
-    "mtime": 1792917428.2454934,
-    "seen": 1792939051.7593658,
-    "ast_hash": "c949308b78e3492a3dfefaf306cc244e",
+    "mtime": 1793002535.159905,
+    "seen": 1793002903.3017442,
+    "ast_hash": "20cac6199ca7c6ff6c4b8b14f80a40eb",
     "semantic_hash": ""
   },
   "src/features/plan-comptable/PlanComptablePage.tsx": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "src/features/plan-comptable/components/LigneComptableSearch.tsx": {
-    "mtime": 1792941166.2887936,
-    "seen": 1792941271.117349,
-    "ast_hash": "dda109d7b7b67300cf7dc691ac7ba15f",
+    "mtime": 1792995777.2856226,
+    "seen": 1793002276.6832898,
+    "ast_hash": "e206ebce655b3ff9402ba4bb4bccee41",
     "semantic_hash": ""
   },
   "src/features/saisie-g58/components/LigneComptableSearch.tsx": {
@@ -474,15 +474,15 @@
     "semantic_hash": ""
   },
   "e2e/saisie-g58.spec.ts": {
-    "mtime": 1792942086.5229573,
-    "seen": 1792942128.006239,
-    "ast_hash": "492a83be33dce84378ba049bbdfa75dc",
+    "mtime": 1793004007.4855,
+    "seen": 1793004047.156703,
+    "ast_hash": "8dab0f11f54267fe74b19a73a10883c6",
     "semantic_hash": ""
   },
   "src/features/saisie-g58/components/SectionForm.tsx": {
-    "mtime": 1792920772.1333625,
-    "seen": 1792939051.7594178,
-    "ast_hash": "40b9db24be6678cc518835fddfa42366",
+    "mtime": 1792999032.4248252,
+    "seen": 1793002276.683294,
+    "ast_hash": "1f67034884839414635ca406e2dc43b2",
     "semantic_hash": ""
   },
   "src/features/saisie-g58/components/TotauxLive.tsx": {
@@ -492,9 +492,9 @@
     "semantic_hash": ""
   },
   "src/features/saisie-g58/pages/SaisieG58Page.tsx": {
-    "mtime": 1792942074.0940042,
-    "seen": 1792942128.0063117,
-    "ast_hash": "6d5b1c4cea82e64e344fcbd2557cd05e",
+    "mtime": 1793003955.2825499,
+    "seen": 1793004047.1567783,
+    "ast_hash": "68d250fa54e7e4fdb7c5adbd64cc47ae",
     "semantic_hash": ""
   },
   "e2e/encaisse.spec.ts": {
@@ -516,15 +516,15 @@
     "semantic_hash": ""
   },
   "e2e/situation-comptable.spec.ts": {
-    "mtime": 1792137337.2438507,
-    "seen": 1792566283.1112683,
-    "ast_hash": "aa351cd4705d4719150c8f578ed0666e",
+    "mtime": 1793002854.9565995,
+    "seen": 1793002903.3017294,
+    "ast_hash": "eb44d519dd10db9c54aaa77884c93819",
     "semantic_hash": ""
   },
   "src/features/saisie-g58/pages/SituationComptablePage.tsx": {
-    "mtime": 1792920855.7572901,
-    "seen": 1792939051.7594216,
-    "ast_hash": "02666c7cd12746ef61e32811e645e48e",
+    "mtime": 1793002721.349727,
+    "seen": 1793002903.3018005,
+    "ast_hash": "b1404d09d887d7194e9ad10f63487bc5",
     "semantic_hash": ""
   },
   "e2e/dashboard.spec.ts": {
@@ -597,6 +597,18 @@
     "mtime": 1792917428.2519352,
     "seen": 1792939051.7594151,
     "ast_hash": "d13e38514bc6c368f2eab6ae1442a33c",
+    "semantic_hash": ""
+  },
+  "src/lib/download.ts": {
+    "mtime": 1793001660.2147453,
+    "seen": 1793002276.6833022,
+    "ast_hash": "b74d1f255c83ddf78206e7de949d51ae",
+    "semantic_hash": ""
+  },
+  "src/features/saisie-g58/components/PeriodeSearchModal.tsx": {
+    "mtime": 1793003847.4676526,
+    "seen": 1793004047.1567733,
+    "ast_hash": "680a1e58a16ac9577fbf11f6a31a0c9d",
     "semantic_hash": ""
   }
 }

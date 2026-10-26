@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const MOCK_PERIODES = {
-  count: 1,
+  count: 2,
   next: null,
   previous: null,
   results: [
@@ -18,6 +18,20 @@ const MOCK_PERIODES = {
       solde_crediteur_depart: '0.00',
       cloturee: false,
       date_cloture: null,
+    },
+    {
+      id: 2,
+      bureau: 1,
+      nom_receveur: 'Rasoa Marie',
+      date_debut: '2026-05-01',
+      date_fin: '2026-05-31',
+      reserve_numeraire: '450000.00',
+      valeurs_postales: '200000.00',
+      timbres_fiscaux: '80000.00',
+      solde_debiteur_depart: '0.00',
+      solde_crediteur_depart: '0.00',
+      cloturee: true,
+      date_cloture: '2026-05-31T18:00:00Z',
     },
   ],
 };
@@ -326,7 +340,7 @@ test.describe('Section 4 — Saisie du Journal G58 & Composant SectionForm', () 
 
     // Vérifier l'apparition de la nouvelle écriture
     await expect(page.getByTestId('mouvement-row-2')).toBeVisible();
-    await expect(page.getByText('30 000,00 Ar')).toBeVisible();
+    await expect(page.getByTestId('mouvement-row-2')).toContainText('30 000,00 Ar');
   });
 
   test('valide les contraintes Zod côté client (montant négatif ou date hors période)', async ({ page }) => {
@@ -347,7 +361,7 @@ test.describe('Section 4 — Saisie du Journal G58 & Composant SectionForm', () 
       page.getByText(/La date d'opération doit être comprise dans la période active/)
     ).toBeVisible();
     await expect(
-      page.getByText('Le montant doit être un nombre strictement positif')
+      page.getByText(/Le montant doit être un nombre positif/)
     ).toBeVisible();
   });
 
@@ -439,6 +453,102 @@ test.describe('Section 4 — Saisie du Journal G58 & Composant SectionForm', () 
     await expect(montantInput).toHaveValue('');
     // Le total cumulé de la section reste à 45 000 Ar grâce à l'écriture enregistrée
     await expect(liveCard.getByTestId('live-section-sum')).toContainText('45 000');
+  });
+
+  test('permet le téléchargement du bordereau officiel Journal G58 en PDF', async ({ page }) => {
+    let pdfRequested = false;
+
+    // Intercepter la requête GET vers l'endpoint PDF
+    await page.route('**/api/v1/bordereau-g58/1/pdf/**', async (route) => {
+      pdfRequested = true;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/pdf',
+        headers: {
+          'Content-Disposition': 'inline; filename="Bordereau_G58_101_2026-06-01.pdf"',
+        },
+        body: Buffer.from('%PDF-1.4 mock pdf content for test'),
+      });
+    });
+
+    await page.goto('/saisie');
+
+    // Vérifier la présence du bouton de téléchargement du bordereau G58
+    const downloadBtn = page.getByTestId('btn-download-bordereau-g58');
+    await expect(downloadBtn).toBeVisible();
+    await expect(downloadBtn).toContainText('Bordereau G58 (PDF)');
+
+    // Déclencher le téléchargement
+    await downloadBtn.click();
+
+    // Vérifier que la requête a bien été effectuée
+    await expect.poll(() => pdfRequested).toBe(true);
+  });
+
+  test('permet l’export du classeur Excel (.xlsx) complet des écritures du Journal G58', async ({ page }) => {
+    let excelRequested = false;
+
+    // Intercepter la requête GET vers l'endpoint export Excel
+    await page.route('**/api/v1/mouvements/export-excel/**', async (route) => {
+      excelRequested = true;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers: {
+          'Content-Disposition': 'attachment; filename="Journal_G58_101_2026-06-01.xlsx"',
+        },
+        body: Buffer.from('mock excel spreadsheet binary data'),
+      });
+    });
+
+    await page.goto('/saisie');
+
+    // Vérifier la présence du bouton Export Excel
+    const excelBtn = page.getByTestId('btn-export-excel-g58');
+    await expect(excelBtn).toBeVisible();
+    await expect(excelBtn).toContainText('Export Excel');
+
+    // Déclencher l'export
+    await excelBtn.click();
+
+    // Vérifier que l'appel API a bien été intercepté
+    await expect.poll(() => excelRequested).toBe(true);
+  });
+
+  test('facilite la recherche d’une période via la modale de recherche rapide', async ({ page }) => {
+    await page.goto('/saisie');
+
+    // Vérifier le sélecteur standard et le bouton de recherche rapide
+    const searchModalBtn = page.getByTestId('btn-open-search-periode-modal');
+    await expect(searchModalBtn).toBeVisible();
+
+    // Ouvrir la modale de recherche de période
+    await searchModalBtn.click();
+
+    // Vérifier l'ouverture de la boîte de dialogue
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Rechercher et sélectionner une période de gestion')).toBeVisible();
+
+    // Les 2 périodes mockées doivent être listées
+    await expect(page.getByTestId('periode-item-1')).toBeVisible();
+    await expect(page.getByTestId('periode-item-2')).toBeVisible();
+
+    // Tester la recherche par nom de receveur
+    const searchInput = page.getByTestId('input-search-periode-modal');
+    await searchInput.fill('Marie');
+    await expect(page.getByTestId('periode-item-2')).toBeVisible();
+    await expect(page.getByTestId('periode-item-1')).not.toBeVisible();
+
+    // Sélectionner la période filtrée (Période #2 de Mai)
+    await page.getByTestId('periode-item-2').click();
+
+    // La boîte de dialogue se referme
+    await expect(dialog).not.toBeVisible();
+
+    // Le selecteur principal doit maintenant refléter la période #2
+    const select = page.locator('#select-periode-g58');
+    await expect(select).toHaveValue('2');
   });
 });
 

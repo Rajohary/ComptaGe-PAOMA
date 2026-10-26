@@ -1,12 +1,19 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { getPeriodesGestion, getBureaux } from '../../../api/referentiel';
-import { getSectionsComptables, getTotauxG58 } from '../../../api/comptabilite';
+import {
+  getSectionsComptables,
+  getTotauxG58,
+  downloadBordereauG58Pdf,
+  exportEcrituresExcel,
+} from '../../../api/comptabilite';
 import type { PeriodeGestion, SectionComptable, TotauxG58, Bureau } from '../../../types';
 import { SectionForm } from '../components/SectionForm';
+import { PeriodeSearchModal } from '../components/PeriodeSearchModal';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { formatAriary } from '../../../lib/formatters';
+import { triggerBlobDownload } from '../../../lib/download';
 import {
   FileText,
   Calendar,
@@ -17,6 +24,9 @@ import {
   Building2,
   CheckCircle2,
   Lock,
+  Download,
+  FileSpreadsheet,
+  Search,
 } from 'lucide-react';
 
 export const SaisieG58Page: React.FC = () => {
@@ -38,6 +48,11 @@ export const SaisieG58Page: React.FC = () => {
   const [totauxG58, setTotauxG58] = useState<TotauxG58 | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState<boolean>(false);
+  const [pdfDownloadError, setPdfDownloadError] = useState<string | null>(null);
+  const [isExportingExcel, setIsExportingExcel] = useState<boolean>(false);
+  const [excelExportError, setExcelExportError] = useState<string | null>(null);
+  const [isPeriodeSearchOpen, setIsPeriodeSearchOpen] = useState<boolean>(false);
 
   // Charger les référentiels (bureaux si superviseur, périodes, sections)
   useEffect(() => {
@@ -155,6 +170,54 @@ export const SaisieG58Page: React.FC = () => {
     return bureaux.find((b) => b.id === selectedBureauId) || null;
   }, [selectedPeriode, bureaux, selectedBureauId]);
 
+  // Téléchargement du bordereau officiel Journal G58 en PDF
+  const handleDownloadPdf = async () => {
+    if (!selectedPeriodeId || isDownloadingPdf) return;
+    setIsDownloadingPdf(true);
+    setPdfDownloadError(null);
+    try {
+      const blob = await downloadBordereauG58Pdf(selectedPeriodeId);
+      const bureauCode = currentBureau?.ncodique || user?.bureau_code || 'bureau';
+      const dateDebut = selectedPeriode?.date_debut || 'periode';
+      const filename = `Bordereau_G58_${bureauCode}_${dateDebut}.pdf`;
+      triggerBlobDownload(blob, filename);
+    } catch (err: any) {
+      console.error('Erreur téléchargement bordereau G58 PDF', err);
+      setPdfDownloadError(
+        err?.detail ||
+          err?.message ||
+          'Impossible de générer le bordereau PDF. Veuillez vérifier votre connexion ou vos droits d’accès.'
+      );
+      setTimeout(() => setPdfDownloadError(null), 7000);
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
+
+  // Export du classeur Excel (.xlsx) complet du Journal G58
+  const handleExportExcel = async () => {
+    if (!selectedPeriodeId || isExportingExcel) return;
+    setIsExportingExcel(true);
+    setExcelExportError(null);
+    try {
+      const blob = await exportEcrituresExcel(selectedPeriodeId);
+      const bureauCode = currentBureau?.ncodique || user?.bureau_code || 'bureau';
+      const dateDebut = selectedPeriode?.date_debut || 'periode';
+      const filename = `Journal_G58_${bureauCode}_${dateDebut}.xlsx`;
+      triggerBlobDownload(blob, filename);
+    } catch (err: any) {
+      console.error('Erreur export Excel Journal G58', err);
+      setExcelExportError(
+        err?.detail ||
+          err?.message ||
+          'Impossible de générer le classeur Excel. Veuillez vérifier votre connexion ou vos droits d’accès.'
+      );
+      setTimeout(() => setExcelExportError(null), 7000);
+    } finally {
+      setIsExportingExcel(false);
+    }
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* En-tête de la page */}
@@ -199,27 +262,42 @@ export const SaisieG58Page: React.FC = () => {
             </div>
           )}
 
-          {/* Sélection de la période de gestion */}
-          <div className="flex items-center gap-2 bg-surface-card border border-border-subtle px-3 py-1.5 rounded-lg shadow-xs">
-            <Calendar className="w-4 h-4 text-brand shrink-0" />
-            <div className="text-left">
-              <label htmlFor="select-periode-g58" className="block text-[10px] font-sans text-text-secondary">
-                Période de gestion
-              </label>
-              <select
-                id="select-periode-g58"
-                aria-label="Période active"
-                value={selectedPeriodeId}
-                onChange={(e) => setSelectedPeriodeId(Number(e.target.value))}
-                className="text-xs font-sans font-medium bg-transparent text-text-primary focus:outline-none cursor-pointer"
-              >
-                {availablePeriodes.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.date_debut} au {p.date_fin ? p.date_fin : 'en cours'} {p.cloturee ? '(Clôturée)' : '(Ouverte)'}
-                  </option>
-                ))}
-              </select>
+          {/* Sélection de la période de gestion & bouton de recherche avancée */}
+          <div className="flex items-center gap-1.5 bg-surface-card border border-border-subtle p-1 rounded-lg shadow-xs">
+            <div className="flex items-center gap-2 px-2 py-0.5">
+              <Calendar className="w-4 h-4 text-brand shrink-0" />
+              <div className="text-left">
+                <label htmlFor="select-periode-g58" className="block text-[10px] font-sans text-text-secondary">
+                  Période de gestion
+                </label>
+                <select
+                  id="select-periode-g58"
+                  aria-label="Période active"
+                  value={selectedPeriodeId}
+                  onChange={(e) => setSelectedPeriodeId(Number(e.target.value))}
+                  className="text-xs font-sans font-medium bg-transparent text-text-primary focus:outline-none cursor-pointer max-w-[210px] sm:max-w-xs truncate"
+                >
+                  {availablePeriodes.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.date_debut} au {p.date_fin ? p.date_fin : 'en cours'} {p.cloturee ? '(Clôturée)' : '(Ouverte)'}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => setIsPeriodeSearchOpen(true)}
+              className="p-1.5 px-2 text-text-secondary hover:text-brand hover:bg-surface-secondary border-l border-border-subtle rounded-l-none"
+              title="Rechercher une période par date, receveur..."
+              data-testid="btn-open-search-periode-modal"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline text-[11px]">Rechercher</span>
+            </Button>
           </div>
 
           <Button
@@ -258,6 +336,36 @@ export const SaisieG58Page: React.FC = () => {
               <span>Situation comptable</span>
             </Button>
           </Link>
+
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={handleDownloadPdf}
+            isLoading={isDownloadingPdf}
+            disabled={!selectedPeriodeId || loading || isDownloadingPdf}
+            className="flex items-center gap-1.5 text-brand border-brand/30 hover:bg-brand/10"
+            data-testid="btn-download-bordereau-g58"
+            title="Télécharger le bordereau officiel Journal G58 en PDF"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Bordereau G58 (PDF)</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={handleExportExcel}
+            isLoading={isExportingExcel}
+            disabled={!selectedPeriodeId || loading || isExportingExcel}
+            className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10"
+            data-testid="btn-export-excel-g58"
+            title="Exporter l'ensemble des écritures de la période en classeur Excel (.xlsx)"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <span>Export Excel</span>
+          </Button>
         </div>
       </div>
 
@@ -291,6 +399,48 @@ export const SaisieG58Page: React.FC = () => {
               </span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Alerte erreur téléchargement PDF */}
+      {pdfDownloadError && (
+        <div
+          role="alert"
+          className="p-3 bg-status-alert/10 border border-status-alert/30 rounded-xl text-xs font-sans text-status-alert flex items-start justify-between gap-2"
+          data-testid="alert-pdf-download-error"
+        >
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{pdfDownloadError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setPdfDownloadError(null)}
+            className="text-status-alert hover:underline text-xs"
+          >
+            Fermer
+          </button>
+        </div>
+      )}
+
+      {/* Alerte erreur export Excel */}
+      {excelExportError && (
+        <div
+          role="alert"
+          className="p-3 bg-status-alert/10 border border-status-alert/30 rounded-xl text-xs font-sans text-status-alert flex items-start justify-between gap-2"
+          data-testid="alert-excel-export-error"
+        >
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{excelExportError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setExcelExportError(null)}
+            className="text-status-alert hover:underline text-xs"
+          >
+            Fermer
+          </button>
         </div>
       )}
 
@@ -438,6 +588,20 @@ export const SaisieG58Page: React.FC = () => {
           Aucune section comptable disponible pour la vue {activeSens === 1 ? 'Débit' : 'Crédit'}.
         </div>
       )}
+
+      {/* Modal de recherche rapide de période */}
+      <PeriodeSearchModal
+        isOpen={isPeriodeSearchOpen}
+        onClose={() => setIsPeriodeSearchOpen(false)}
+        periodes={availablePeriodes}
+        selectedPeriodeId={selectedPeriodeId}
+        onSelectPeriode={(p) => setSelectedPeriodeId(p.id)}
+        bureauName={
+          currentBureau
+            ? `${currentBureau.nom_bureau} (${currentBureau.ncodique})`
+            : undefined
+        }
+      />
     </div>
   );
 };

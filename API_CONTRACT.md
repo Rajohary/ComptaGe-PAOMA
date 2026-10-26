@@ -53,11 +53,13 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/stocks-valeurs/recapitulatif/` | GET | Authentifié | implémenté (voir §4) | Synthèse et totaux financiers d'une période de gestion |
 | `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | implémenté (voir §4) | Saisie et consultation des mouvements du Journal G58 |
 | `/api/v1/mouvements/{id}/` | GET, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Détail / modification avant audit / suppression d'un mouvement |
+| `/api/v1/mouvements/export-excel/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Export du classeur Excel (.xlsx) complet du Journal G58 (3 feuilles) |
 | `/api/v1/mouvements/totaux/` | GET | Authentifié | implémenté (voir §4) | Totaux par section (A-E), sous-sections B1-B4, débits, crédits, solde |
 | `/api/v1/rubriques-encaisse/` | GET | Authentifié | implémenté (voir §4) | Référentiel des rubriques d'encaisse (TR, SF, CR...) |
 | `/api/v1/mouvements-encaisse/` | GET, POST, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Suivi des mouvements de caisse et de coffre (entrées/sorties) |
 | `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur, Admin | implémenté (voir §4) | Rectification d'un mouvement d'audit (obligation motif, équation de contrôle, trace immuable) |
 | `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Situation comptable mensuelle avec report automatique de solde |
+| `/api/v1/bordereau-g58/{periode_id}/pdf/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Téléchargement du bordereau officiel Journal G58 en PDF |
 | `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
 | `/api/v1/dashboard/receveur/` | GET | Receveur (son bureau), Agent saisie (son bureau), Admin, Inspecteur | implémenté (voir §4) | Progression mensuelle G58 par section, totaux et caisse actuelle |
 | `/api/v1/dashboard/inspecteur/` | GET | Inspecteur, Admin | implémenté (voir §4) | Vue synthétique des écarts de caisse et bureaux impactés |
@@ -1132,6 +1134,24 @@ Réponse 200 :
 ## 5. Changements majeurs (journal court)
 
 Si un changement casse la compatibilité (renommage de champ, changement de format, suppression d'un endpoint), le noter ici brièvement avec la date — ça évite qu'un agent travaillant sur l'autre côté du projet découvre la casse par un bug plutôt que par la documentation.
+
+### 2026-10-26 — Endpoint Export Excel des écritures du Journal G58 (Section 8)
+- Endpoint ajouté : `GET /api/v1/mouvements/export-excel/?periode_id={id}`
+- Fonctionnalités :
+  - Génération dynamique d'un classeur multi-feuilles Microsoft Excel (.xlsx) stylisé aux couleurs officielles Paositra Malagasy.
+  - Feuille 1 ('Écritures G58') : journal exhaustif des imputations (N° opération, date, sens, section, compte, libellé, montant déclaré, augmentations, diminutions, net rectifié, motif, opérateur).
+  - Feuille 2 ('Situation Comptable') : balance synthétique par section, totaux débits/crédits, reports M-1 et soldes finaux.
+  - Feuille 3 ('Encaisse et Valeurs') : suivi des flux de liquidités (entrées/sorties) et état des réserves en coffre-fort.
+  - Contrôle d'accès RBAC : `RECEVEUR` (strictement isolé à son propre bureau), `INSPECTEUR` et `ADMIN` (tous bureaux).
+- Type de réponse : binaire `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` avec en-tête `Content-Disposition: attachment; filename="Journal_G58_{ncodique}_{date_debut}.xlsx"`.
+
+### 2026-10-26 — Endpoint Bordereau Journal G58 en PDF (Section 8)
+- Endpoint ajouté : `GET /api/v1/bordereau-g58/{periode_id}/pdf/`
+- Fonctionnalités :
+  - Génération dynamique du bordereau officiel Journal G58 de Paositra Malagasy en PDF A4.
+  - Mise en page fidèle au document papier officiel : En-tête officiel, Cartouche bureau/receveur/période, Balance synthétique Débit/Crédit et reports de soldes, Tableau détaillé des opérations G58, État d'encaisse et valeurs en coffre, Cadre d'émargement légal (Receveur et Inspecteur).
+  - Contrôle d'accès RBAC : `RECEVEUR` (strictement restreint à son bureau), `INSPECTEUR` (tous bureaux), `ADMIN` (tous bureaux).
+- Type de réponse : binaire `application/pdf` avec en-tête `Content-Disposition: inline; filename="Bordereau_G58_{ncodique}_{date_debut}.pdf"`.
 
 ### 2026-10-14 — Endpoint Situation Comptable avec report automatique (Section 4)
 - Endpoint ajouté : `GET /api/v1/situation-comptable/{periode_id}/`
