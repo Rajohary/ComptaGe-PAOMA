@@ -34,3 +34,6 @@ htmlcov/
 
 # Graphify build outputs
 graphify-out/
+
+# Fichiers volumineux et dumps SQL
+../docs/script.sql

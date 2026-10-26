@@ -74,7 +74,7 @@ class PeriodeGestionSerializer(serializers.ModelSerializer):
             "timbres_fiscaux": {"required": True, "allow_null": False},
             "nom_receveur": {"required": True, "allow_blank": False},
             "date_debut": {"required": True},
-            "date_fin": {"required": True},
+            "date_fin": {"required": False, "allow_null": True},
         }
 
     def validate(self, attrs):

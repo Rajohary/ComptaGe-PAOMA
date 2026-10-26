@@ -55,6 +55,7 @@ class LigneComptableSerializer(serializers.ModelSerializer):
     sens = serializers.IntegerField(source="section.sens", read_only=True)
     sens_libelle = serializers.CharField(source="section.get_sens_display", read_only=True)
     parent_detail = LigneComptableParentSerializer(source="parent", read_only=True)
+    menu_sub = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = LigneComptable
@@ -141,10 +142,7 @@ class MouvementSerializer(serializers.ModelSerializer):
             "saisi_par_username",
             "rectifie_par",
             "rectifie_par_username",
-            "augmentation",
-            "diminution",
             "montant_rectifie",
-            "motif_rectification",
             "a_ecart",
             "created_at",
             "updated_at",
@@ -155,6 +153,7 @@ class MouvementSerializer(serializers.ModelSerializer):
             valider_periode_active,
             valider_date_operation,
             valider_ligne_comptable,
+            verifier_coherence_montants,
         )
         from django.core.exceptions import ValidationError as DjangoValidationError
 
@@ -163,13 +162,20 @@ class MouvementSerializer(serializers.ModelSerializer):
         ligne = attrs.get("ligne_comptable", getattr(instance, "ligne_comptable", None))
         date_op = attrs.get("date_operation", getattr(instance, "date_operation", None))
         montant = attrs.get("montant", getattr(instance, "montant", None))
+        aug = attrs.get("augmentation", getattr(instance, "augmentation", 0))
+        dim = attrs.get("diminution", getattr(instance, "diminution", 0))
 
         try:
             valider_periode_active(periode)
             valider_date_operation(periode, date_op)
             valider_ligne_comptable(ligne)
-            if montant is not None and montant < 0:
-                raise serializers.ValidationError({"montant": "Le montant ne peut pas être négatif."})
+            if montant is not None:
+                verifier_coherence_montants(
+                    montant=montant,
+                    augmentation=aug,
+                    diminution=dim,
+                    montant_rectifie=None,
+                )
         except DjangoValidationError as e:
             raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)
 
@@ -189,6 +195,9 @@ class MouvementSerializer(serializers.ModelSerializer):
                 saisi_par=user,
                 date_operation=validated_data["date_operation"],
                 montant=validated_data["montant"],
+                augmentation=validated_data.get("augmentation", 0),
+                diminution=validated_data.get("diminution", 0),
+                motif_rectification=validated_data.get("motif_rectification", ""),
             )
         except DjangoValidationError as e:
             raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)
@@ -203,6 +212,9 @@ class MouvementSerializer(serializers.ModelSerializer):
                 date_operation=validated_data.get("date_operation"),
                 montant=validated_data.get("montant"),
                 ligne_comptable=validated_data.get("ligne_comptable"),
+                augmentation=validated_data.get("augmentation"),
+                diminution=validated_data.get("diminution"),
+                motif_rectification=validated_data.get("motif_rectification"),
             )
         except DjangoValidationError as e:
             raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)

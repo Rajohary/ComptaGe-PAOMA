@@ -89,9 +89,10 @@ export const createPeriodeGestion = async (
   });
 };
 
-export const cloturerPeriodeGestion = async (id: number): Promise<PeriodeGestion> => {
+export const cloturerPeriodeGestion = async (id: number, data?: { date_fin?: string }): Promise<PeriodeGestion> => {
   return apiClient<PeriodeGestion>(`/api/v1/periodes-gestion/${id}/cloturer/`, {
     method: 'POST',
+    data,
     requiresAuth: false,
   });
 };

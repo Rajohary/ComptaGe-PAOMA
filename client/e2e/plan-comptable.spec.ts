@@ -155,12 +155,15 @@ test.describe('Plan comptable — Recherche et consultation (Section 3)', () => 
       'Plan comptable des bureaux de poste'
     );
 
-    // Vérifier la présence des groupes de section A et B
+    // Par défaut, l'onglet Débit est sélectionné -> Section A visible
     await expect(page.getByRole('region', { name: 'Section A' })).toBeVisible();
+    await expect(page.getByText('A101')).toBeVisible();
+
+    // Basculer sur l'onglet Crédit -> Section B visible
+    await page.getByTestId('tab-sens-credit').click();
     await expect(page.getByRole('region', { name: 'Section B' })).toBeVisible();
 
-    // Vérifier les comptes
-    await expect(page.getByText('A101')).toBeVisible();
+    // Vérifier les comptes sous Crédit
     await expect(page.getByText('B101')).toBeVisible();
     await expect(page.getByText('Mandats ordinaires émis en numéraire')).toBeVisible();
   });
@@ -275,7 +278,7 @@ test.describe('Plan comptable — Recherche et consultation (Section 3)', () => 
 
     // Les boutons d'administration ne doivent pas être visibles pour le receveur
     await expect(page.getByRole('button', { name: 'Nouvelle ligne' })).not.toBeVisible();
-    await expect(page.getByRole('button', { name: 'Section' })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: /Ajouter une ligne dans la section/ })).not.toBeVisible();
     await expect(page.getByRole('button', { name: /Modifier la ligne/ })).not.toBeVisible();
   });
 });
@@ -426,6 +429,66 @@ test.describe('Plan comptable — Administration CRUD & RBAC Admin', () => {
 
     // Message de succès
     await expect(page.getByText('Ligne « A101 » modifiée avec succès.')).toBeVisible();
+  });
+
+  test('un administrateur peut ajouter une ligne directement depuis une section avec section pré-sélectionnée', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Basculer sur l'onglet Crédit pour voir la section B
+    await page.getByTestId('tab-sens-credit').click();
+
+    // Cliquer sur le bouton d'ajout de ligne de la section B
+    const addSectionBBtn = page.getByRole('button', { name: 'Ajouter une ligne dans la section B' });
+    await expect(addSectionBBtn).toBeVisible();
+    await addSectionBBtn.click();
+
+    // La modale doit s'ouvrir
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Ajouter une ligne au plan comptable')).toBeVisible();
+
+    // La section B doit être pré-sélectionnée (value="2")
+    const sectionSelect = modal.getByLabel('Section macro-comptable');
+    await expect(sectionSelect).toHaveValue('2');
+
+    // Aucun parent par défaut
+    const parentSelect = modal.getByLabel('Ligne parente (Sous-section)');
+    await expect(parentSelect).toHaveValue('');
+
+    // Remplir et valider
+    await modal.getByLabel('Numéro de compte').fill('B110');
+    await modal.getByLabel('Libellé de l’opération').fill('Nouveau sous-compte section B');
+    await modal.getByRole('button', { name: 'Créer la ligne' }).click();
+
+    await expect(page.getByText('Ligne « B110 » créée avec succès.')).toBeVisible();
+  });
+
+  test('un administrateur peut ajouter une sous-ligne directement depuis une ligne avec parent pré-sélectionné', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Basculer sur l'onglet Crédit pour voir la ligne B1
+    await page.getByTestId('tab-sens-credit').click();
+
+    // Cliquer sur le bouton d'ajout de sous-ligne rattachée à B1
+    const addSubLigneBtn = page.getByRole('button', { name: 'Ajouter une sous-ligne rattachée à B1', exact: true });
+    await expect(addSubLigneBtn).toBeVisible();
+    await addSubLigneBtn.click();
+
+    // La modale doit s'ouvrir
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Ajouter une ligne au plan comptable')).toBeVisible();
+
+    // La section B doit être pré-sélectionnée (section de B1, value="2")
+    const sectionSelect = modal.getByLabel('Section macro-comptable');
+    await expect(sectionSelect).toHaveValue('2');
+
+    // Remplir et valider
+    await modal.getByLabel('Numéro de compte').fill('B102');
+    await modal.getByLabel('Libellé de l’opération').fill('Sous-mandats émis');
+    await modal.getByRole('button', { name: 'Créer la ligne' }).click();
+
+    await expect(page.getByText('Ligne « B102 » créée avec succès.')).toBeVisible();
   });
 });
 

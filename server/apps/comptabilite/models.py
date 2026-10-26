@@ -36,7 +36,6 @@ class SectionComptable(models.Model):
 
     code = models.CharField(
         max_length=10,
-        unique=True,
         verbose_name="Code de section",
         help_text="Code court identifiant la section (ex: A, B, C, D, E, ENC)"
     )
@@ -63,9 +62,15 @@ class SectionComptable(models.Model):
 
     class Meta:
         db_table = "comptabilite_section_comptable"
-        ordering = ["ordre", "code"]
+        ordering = ["sens", "ordre", "code"]
         verbose_name = "Section comptable"
         verbose_name_plural = "Sections comptables"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["code", "sens"],
+                name="unique_section_code_par_sens"
+            )
+        ]
 
     def __str__(self):
         return f"[{self.code}] {self.libelle}"
@@ -95,8 +100,10 @@ class LigneComptable(models.Model):
     # menuSub du CDC : identifiant métier unique utilisé comme code produit d'imputation
     menu_sub = models.IntegerField(
         unique=True,
+        null=True,
+        blank=True,
         verbose_name="Identifiant métier (menuSub)",
-        help_text="Code produit unique d'imputation (menuSub dans tblMenuSub)"
+        help_text="Code produit unique d'imputation (menuSub dans tblMenuSub) - généré automatiquement si non fourni"
     )
     compte = models.CharField(
         max_length=50,
@@ -128,6 +135,12 @@ class LigneComptable(models.Model):
 
     def __str__(self):
         return f"{self.compte} — {self.libelle}" if self.compte else self.libelle
+
+    def save(self, *args, **kwargs):
+        if self.menu_sub is None:
+            max_sub = LigneComptable.objects.aggregate(models.Max("menu_sub"))["menu_sub__max"]
+            self.menu_sub = (max_sub or 1000) + 1
+        super().save(*args, **kwargs)
 
 
 # ---------------------------------------------------------------------------

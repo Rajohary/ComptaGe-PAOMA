@@ -44,7 +44,8 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Recherche et gestion du plan comptable (remplace le TreeView legacy)
 
-- [x] Composant `LigneComptableSearch` — recherche instantanée (debounce), résultats groupés par section
+- [x] Composant `LigneComptableSearch` — recherche instantanée (debounce), séparation stricte Débit / Crédit sous forme d'onglets maîtres dédiés évitant les collisions de code macro-comptable (A, B, C... sous Débit et A, B, C... sous Crédit)
+- [x] Boutons d'ajout contextuels directs au plan comptable : ajout d'une ligne directement depuis l'en-tête d'une section et ajout d'une sous-ligne rattachée directement depuis une ligne parente
 - [x] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
 - [x] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
 - [x] Administration du plan comptable (réservée ADMIN) : création et modification des rubriques/sous-comptes (`LigneComptableModal`) et des sections (`SectionComptableModal`) avec validation Zod et cohérence hiérarchique parente
@@ -55,6 +56,7 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
+- [x] Onglets maîtres Débit / Crédit posés au-dessus de la barre des sections avec totaux consolidés en direct, synchronisant les sections filtrées par sens actif (1 = Débit, 2 = Crédit)
 - [x] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
 - [x] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
 - [x] Validation React Hook Form + Zod cohérente avec les contraintes backend
@@ -113,6 +115,26 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-25 — Ajout de raccourcis contextuels de création de ligne dans le Plan Comptable
+- Ce qui a été fait :
+  - **Bouton d'ajout contextuel depuis une Section** :
+    - Ajout dans [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) d'un bouton « Nouvelle ligne » au niveau de chaque en-tête de section macro-comptable (visible uniquement par les profils `ADMIN`).
+    - La modale s'ouvre avec la section correspondante pré-sélectionnée et verrouillée sur le bon périmètre sans parent forcé.
+  - **Bouton d'ajout contextuel depuis une Ligne (sous-compte / sous-rubrique)** :
+    - Ajout dans [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) d'un bouton d'action d'ajout `+` sur chaque ligne comptable (visible uniquement par les profils `ADMIN`).
+    - La modale de création [src/features/plan-comptable/components/LigneComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableModal.tsx) supporte le paramètre `defaultParentId` : elle pré-sélectionne la section de la ligne parente ainsi que la ligne parente elle-même dans le champ « Ligne parente (Sous-section) ».
+  - **Tests e2e & Validation** :
+    - Enrichissement de [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) avec 2 nouveaux tests vérifiant l'ouverture et le pré-remplissage automatique (11/11 tests passés avec succès).
+    - Validation du build Vite de production (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableModal.tsx`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`/api/v1/lignes-comptables/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
 
 ### 2026-10-22 — Module 3 : Gestion complète du Plan Comptable (Création, Modification, RBAC Admin)
 - Ce qui a été fait :

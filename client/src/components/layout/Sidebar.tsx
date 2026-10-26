@@ -40,7 +40,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Saisie G58',
     to: '/saisie',
     icon: <FileText className="w-5 h-5" />,
-    roles: ['RECEVEUR', 'AGENT_SAISIE'],
+    roles: ['ADMIN', 'RECEVEUR', 'AGENT_SAISIE'],
   },
   {
     label: 'Encaisse',

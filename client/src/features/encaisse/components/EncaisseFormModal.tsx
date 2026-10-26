@@ -32,11 +32,15 @@ const createEncaisseSchema = (periode: PeriodeGestion) =>
     })
     .refine(
       (data) => {
-        if (!data.date_operation || !periode.date_debut || !periode.date_fin) return true;
-        return data.date_operation >= periode.date_debut && data.date_operation <= periode.date_fin;
+        if (!data.date_operation || !periode.date_debut) return true;
+        if (data.date_operation < periode.date_debut) return false;
+        if (periode.date_fin && data.date_operation > periode.date_fin) return false;
+        return true;
       },
       {
-        message: `La date d'opération doit être comprise dans la période active (du ${periode.date_debut} au ${periode.date_fin})`,
+        message: periode.date_fin
+          ? `La date d'opération doit être comprise dans la période active (du ${periode.date_debut} au ${periode.date_fin})`
+          : `La date d'opération doit être postérieure ou égale au ${periode.date_debut}`,
         path: ['date_operation'],
       }
     );

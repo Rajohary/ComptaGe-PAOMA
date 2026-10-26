@@ -34,11 +34,11 @@ export default function App() {
             }
           />
 
-          {/* Saisie G58 — Receveur & Agent de saisie */}
+          {/* Saisie G58 — Admin, Receveur & Agent de saisie */}
           <Route
             path="saisie"
             element={
-              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE']}>
+              <RequireAuth allowedRoles={['ADMIN', 'RECEVEUR', 'AGENT_SAISIE']}>
                 <SaisieG58Page />
               </RequireAuth>
             }

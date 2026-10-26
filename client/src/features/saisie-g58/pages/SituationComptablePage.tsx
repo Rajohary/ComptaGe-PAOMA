@@ -153,7 +153,7 @@ export const SituationComptablePage: React.FC = () => {
             >
               {filteredPeriodes.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.date_debut} au {p.date_fin} {p.cloturee ? '(Clôturée)' : '(En cours)'}
+                  {p.date_debut} au {p.date_fin ? p.date_fin : 'en cours'} {p.cloturee ? '(Clôturée)' : '(En cours)'}
                 </option>
               ))}
             </select>

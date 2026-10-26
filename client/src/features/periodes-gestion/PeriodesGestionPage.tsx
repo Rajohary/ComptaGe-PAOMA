@@ -112,12 +112,12 @@ export const PeriodesGestionPage: React.FC = () => {
     setClotureError(null);
   };
 
-  const handleConfirmCloture = async () => {
+  const handleConfirmCloture = async (dateFin: string) => {
     if (!periodeToCloture) return;
     setIsCloturing(true);
     setClotureError(null);
     try {
-      await cloturerPeriodeGestion(periodeToCloture.id);
+      await cloturerPeriodeGestion(periodeToCloture.id, { date_fin: dateFin });
       setPeriodeToCloture(null);
       loadPeriodes();
     } catch (err) {
@@ -262,7 +262,7 @@ export const PeriodesGestionPage: React.FC = () => {
                       {p.nom_receveur}
                     </td>
                     <td className="py-3 px-4 font-mono text-xs text-text-secondary">
-                      {p.date_debut} → {p.date_fin}
+                      {p.date_debut} → {p.date_fin ? p.date_fin : <span className="italic text-accent">en cours</span>}
                     </td>
                     <td className="py-3 px-4 font-mono text-right tabular-nums text-text-primary">
                       <div className="flex items-center justify-end gap-1.5">

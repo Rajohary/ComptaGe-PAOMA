@@ -6,24 +6,23 @@
 
 /**
  * Formate un montant en Ariary (MGA) avec séparateurs de milliers (espaces insécables).
- * Exemple : "1500000.00" -> "1 500 000,00 Ar" (ou entier "1 500 000 Ar" si pas de centimes significatifs).
+ * Exemple : "1500000.00" -> "1 500 000,00 Ar".
+ * Par convention comptable institutionnelle, les montants sont toujours affichés avec 2 décimales.
  */
 export function formatAriary(amount: string | number | null | undefined, showDecimals = true): string {
   if (amount === null || amount === undefined || amount === '') {
-    return '0 Ar';
+    return showDecimals ? '0,00 Ar' : '0 Ar';
   }
 
   const num = typeof amount === 'number' ? amount : parseFloat(amount);
   if (isNaN(num)) {
-    return '0 Ar';
+    return showDecimals ? '0,00 Ar' : '0 Ar';
   }
 
-  const hasDecimals = showDecimals && num % 1 !== 0;
-
-  const formatted = new Intl.NumberFormat('fr-MG', {
-    minimumFractionDigits: hasDecimals ? 2 : 0,
+  const formatted = num.toLocaleString('fr-FR', {
+    minimumFractionDigits: showDecimals ? 2 : 0,
     maximumFractionDigits: 2,
-  }).format(num);
+  });
 
   return `${formatted} Ar`;
 }

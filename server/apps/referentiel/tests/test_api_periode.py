@@ -32,13 +32,12 @@ class PeriodeGestionAPITestCase(TestCase):
         self.province.delete()
 
     def test_ouverture_periode_success(self):
-        """Vérifie l'ouverture valide d'une période de gestion par un receveur ou un admin."""
+        """Vérifie l'ouverture valide d'une période de gestion sans date de fin."""
         view = PeriodeGestionViewSet.as_view({"post": "create"})
         payload = {
             "bureau": self.bureau.id,
             "nom_receveur": "Rakoto Jean",
             "date_debut": "2026-06-01",
-            "date_fin": "2026-06-30",
             "reserve_numeraire": "500000.00",
             "valeurs_postales": "250000.00",
             "timbres_fiscaux": "100000.00",
@@ -50,6 +49,7 @@ class PeriodeGestionAPITestCase(TestCase):
         resp = view(req)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         self.assertEqual(resp.data["nom_receveur"], "Rakoto Jean")
+        self.assertIsNone(resp.data["date_fin"])
         self.assertEqual(resp.data["cloturee"], False)
         self.assertEqual(resp.data["reserve_numeraire"], "500000.00")
         self.assertEqual(resp.data["valeurs_postales"], "250000.00")
@@ -134,12 +134,12 @@ class PeriodeGestionAPITestCase(TestCase):
         self.assertIn("bureau", resp.data)
 
     def test_cloture_periode_flow_and_rbac(self):
-        """Vérifie la clôture réussie d'une période active, l'interdiction de double clôture et le RBAC."""
+        """Vérifie la clôture réussie d'une période active, l'assignation de date_fin, l'interdiction de double clôture et le RBAC."""
         periode = PeriodeGestion.objects.create(
             bureau=self.bureau,
             nom_receveur="Receveur A Clôturer",
             date_debut=date(2026, 6, 1),
-            date_fin=date(2026, 6, 30),
+            date_fin=None,
             reserve_numeraire=50000.00,
             valeurs_postales=20000.00,
             timbres_fiscaux=10000.00,
@@ -153,16 +153,18 @@ class PeriodeGestionAPITestCase(TestCase):
         resp_forbidden = view(req_forbidden, pk=periode.id)
         self.assertEqual(resp_forbidden.status_code, status.HTTP_403_FORBIDDEN)
 
-        # 2. Clôture par un receveur -> 200 OK
-        req_ok = self.factory.post(f"/api/v1/periodes-gestion/{periode.id}/cloturer/")
+        # 2. Clôture par un receveur avec date_fin spécifiée -> 200 OK
+        req_ok = self.factory.post(f"/api/v1/periodes-gestion/{periode.id}/cloturer/", {"date_fin": "2026-06-30"}, format="json")
         force_authenticate(req_ok, user=MockUser(role="RECEVEUR"))
         resp_ok = view(req_ok, pk=periode.id)
         self.assertEqual(resp_ok.status_code, status.HTTP_200_OK)
         self.assertTrue(resp_ok.data["cloturee"])
+        self.assertEqual(resp_ok.data["date_fin"], "2026-06-30")
         self.assertIsNotNone(resp_ok.data["date_cloture"])
 
         periode.refresh_from_db()
         self.assertTrue(periode.cloturee)
+        self.assertEqual(str(periode.date_fin), "2026-06-30")
         self.assertIsNotNone(periode.date_cloture)
 
         # 3. Tentative de ré-clôturer la même période -> 400 Bad Request

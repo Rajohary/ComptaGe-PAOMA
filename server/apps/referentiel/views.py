@@ -63,11 +63,13 @@ class PeriodeGestionViewSet(viewsets.ModelViewSet):
         """
         Clôture officielle d'une période de gestion comptable (Journal G58).
         - Passe `cloturee` à True (coupure = 1).
+        - Détermine et fige la `date_fin` (fournie dans la requête ou par défaut la date du jour).
         - Enregistre `date_cloture` à l'instant présent.
         - Interdit la re-clôture si la période est déjà clôturée (400 Bad Request).
         - Accessible uniquement au Receveur ou à l'Admin.
         """
         from django.utils import timezone
+        import datetime
         periode = self.get_object()
 
         if periode.cloturee:
@@ -76,9 +78,28 @@ class PeriodeGestionViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        date_fin_str = request.data.get("date_fin")
+        if date_fin_str:
+            try:
+                date_fin_val = datetime.date.fromisoformat(str(date_fin_str))
+            except ValueError:
+                return Response(
+                    {"date_fin": "Format de date de fin invalide (attendu: YYYY-MM-DD)."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        else:
+            date_fin_val = timezone.now().date()
+
+        if date_fin_val < periode.date_debut:
+            return Response(
+                {"date_fin": f"La date de fin ({date_fin_val}) ne peut pas être antérieure à la date de début ({periode.date_debut})."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         periode.cloturee = True
+        periode.date_fin = date_fin_val
         periode.date_cloture = timezone.now()
-        periode.save(update_fields=["cloturee", "date_cloture", "updated_at"])
+        periode.save(update_fields=["cloturee", "date_fin", "date_cloture", "updated_at"])
 
         serializer = self.get_serializer(periode)
         return Response(serializer.data, status=status.HTTP_200_OK)

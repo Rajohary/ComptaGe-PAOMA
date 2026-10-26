@@ -244,21 +244,33 @@ test.describe('Section 4 — Saisie du Journal G58 & Composant SectionForm', () 
     });
   });
 
-  test('affiche l’écran de saisie G58, les onglets de sections (A, B, D) et les totaux consolidés', async ({ page }) => {
+  test('affiche l’écran de saisie G58, les onglets Débit / Crédit, les sections et les totaux consolidés', async ({ page }) => {
     await page.goto('/saisie');
 
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Saisie du Journal G58');
 
-    // Vérifier la présence des onglets A, B, D
-    await expect(page.getByRole('tab', { name: /A/ })).toBeVisible();
-    await expect(page.getByRole('tab', { name: /B/ })).toBeVisible();
-    await expect(page.getByRole('tab', { name: /D/ })).toBeVisible();
+    // Vérifier la présence des onglets Débit et Crédit au dessus
+    const debitTab = page.getByTestId('tab-sens-debit');
+    const creditTab = page.getByTestId('tab-sens-credit');
+    await expect(debitTab).toBeVisible();
+    await expect(creditTab).toBeVisible();
+
+    // Onglet Débit actif par défaut : vérifie les sections Débit (A, D) visibles, et la section Crédit (B) masquée
+    await expect(page.getByTestId('tab-section-A')).toBeVisible();
+    await expect(page.getByTestId('tab-section-D')).toBeVisible();
+    await expect(page.getByTestId('tab-section-B')).not.toBeVisible();
 
     // Vérifier l'écriture existante dans la section A
     const row1 = page.getByTestId('mouvement-row-1');
     await expect(row1).toBeVisible();
     await expect(row1).toContainText('Versements usagers en numéraire');
     await expect(row1).toContainText('50 000,00 Ar');
+
+    // Basculer sur l'onglet Crédit : la section B apparaît, et les sections Débit (A, D) disparaissent
+    await creditTab.click();
+    await expect(page.getByTestId('tab-section-B')).toBeVisible();
+    await expect(page.getByTestId('tab-section-A')).not.toBeVisible();
+    await expect(page.getByTestId('tab-section-D')).not.toBeVisible();
   });
 
   test('calcule en temps réel le total dans TotauxLive à chaque frappe dans le champ montant', async ({ page }) => {
@@ -379,7 +391,11 @@ test.describe('Section 4 — Saisie du Journal G58 & Composant SectionForm', () 
   test('parcours complet de saisie d’une section avec vérification du total affiché en temps réel', async ({ page }) => {
     await page.goto('/saisie');
 
-    // 1. Basculer sur la Section B (Opérations correspondances & mandats - Crédit)
+    // 1. Basculer sur l'onglet Crédit (Opérations correspondances & mandats - Crédit)
+    const creditTab = page.getByRole('tab', { name: /Crédit/ });
+    await expect(creditTab).toBeVisible();
+    await creditTab.click();
+
     const tabB = page.getByRole('tab', { name: /B/ });
     await expect(tabB).toBeVisible();
     await tabB.click();

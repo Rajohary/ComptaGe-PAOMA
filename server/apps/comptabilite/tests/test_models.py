@@ -38,10 +38,21 @@ class PlanComptableModelsTestCase(unittest.TestCase):
         self.assertTrue(self.sec_a.actif)
 
     def test_section_code_unique(self):
+        """Le couple (code, sens) est unique : même code possible pour sens différent, mais pas même sens."""
+        # Même code avec un sens différent (CREDIT) doit réussir
+        sec_diff_sens = SectionComptable.objects.create(
+            code=self.code_a,
+            libelle="Section A Crédit",
+            sens=SectionComptable.Sens.CREDIT,
+        )
+        self.assertIsNotNone(sec_diff_sens.pk)
+        sec_diff_sens.delete()
+
+        # Même code avec le même sens (DEBIT) doit lever une IntegrityError
         with self.assertRaises(IntegrityError):
             SectionComptable.objects.create(
                 code=self.code_a,
-                libelle="Doublon section A",
+                libelle="Doublon section A même sens",
                 sens=SectionComptable.Sens.DEBIT,
             )
 

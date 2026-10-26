@@ -90,7 +90,7 @@ export interface PeriodeGestion {
   receveur?: number | null;
   nom_receveur: string;
   date_debut: string;
-  date_fin: string;
+  date_fin: string | null;
   reserve_numeraire: string;
   valeurs_postales: string;
   timbres_fiscaux: string;
@@ -106,7 +106,7 @@ export interface PeriodeGestionFormData {
   bureau: number;
   nom_receveur: string;
   date_debut: string;
-  date_fin: string;
+  date_fin?: string | null;
   reserve_numeraire: string;
   valeurs_postales: string;
   timbres_fiscaux: string;
@@ -158,7 +158,7 @@ export interface LigneComptable {
 export interface LigneComptableFormData {
   section: number;
   parent?: number | null;
-  menu_sub: number;
+  menu_sub?: number | null;
   compte: string;
   libelle: string;
   actif?: boolean;
@@ -402,6 +402,9 @@ export interface MouvementG58FormData {
   ligne_comptable: number;
   date_operation: string;
   montant: string;
+  augmentation?: string;
+  diminution?: string;
+  motif_rectification?: string;
 }
 
 export interface MouvementSearchParams {

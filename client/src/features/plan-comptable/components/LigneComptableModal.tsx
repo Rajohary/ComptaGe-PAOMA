@@ -22,10 +22,11 @@ const ligneComptableSchema = z.object({
     .optional()
     .nullable()
     .transform((val) => (val && val > 0 ? val : null)),
-  menu_sub: z.coerce
-    .number()
-    .int('Le menu_sub doit être un entier')
-    .positive('Le menu_sub doit être positif'),
+  menu_sub: z
+    .preprocess(
+      (val) => (val === '' || val === null || val === undefined ? undefined : Number(val)),
+      z.number().int('Le menu_sub doit être un entier').positive('Le menu_sub doit être positif').optional()
+    ),
   compte: z
     .string()
     .trim()
@@ -51,6 +52,7 @@ interface LigneComptableModalProps {
   allLignes: LigneComptable[];
   apiErrors?: ApiError | null;
   defaultSectionId?: number | null;
+  defaultParentId?: number | null;
 }
 
 export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
@@ -62,6 +64,7 @@ export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
   allLignes,
   apiErrors,
   defaultSectionId,
+  defaultParentId,
 }) => {
   const {
     register,
@@ -74,7 +77,7 @@ export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
     resolver: zodResolver(ligneComptableSchema),
     defaultValues: {
       section: defaultSectionId || sections[0]?.id || 1,
-      parent: null,
+      parent: defaultParentId || null,
       menu_sub: undefined as any,
       compte: '',
       libelle: '',
@@ -104,14 +107,14 @@ export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
     } else {
       reset({
         section: defaultSectionId || sections[0]?.id || 1,
-        parent: null,
+        parent: defaultParentId || null,
         menu_sub: undefined as any,
         compte: '',
         libelle: '',
         actif: true,
       });
     }
-  }, [ligneToEdit, defaultSectionId, sections, reset, isOpen]);
+  }, [ligneToEdit, defaultSectionId, defaultParentId, sections, reset, isOpen]);
 
   // Appliquer les erreurs backend (ex: menu_sub déjà pris, parent invalide)
   useEffect(() => {
@@ -128,7 +131,7 @@ export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
     await onSubmit({
       section: Number(values.section),
       parent: values.parent ? Number(values.parent) : null,
-      menu_sub: Number(values.menu_sub),
+      menu_sub: values.menu_sub ? Number(values.menu_sub) : undefined,
       compte: values.compte.trim(),
       libelle: values.libelle.trim(),
       actif: values.actif,
@@ -176,9 +179,10 @@ export const LigneComptableModal: React.FC<LigneComptableModalProps> = ({
         {/* Menu sub & Compte */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
-            label="Identifiant menu_sub"
+            label="Identifiant menu_sub (optionnel)"
             type="number"
-            placeholder="Ex : 201"
+            placeholder="Automatique (ex: 1001)"
+            helperText="Laisser vide pour une attribution automatique"
             {...register('menu_sub')}
             error={errors.menu_sub?.message}
             disabled={isSubmitting}

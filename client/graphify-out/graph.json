@@ -4,6 +4,19 @@
   "graph": {},
   "nodes": [
     {
+      "id": "src_api_client_apiclienterror",
+      "label": "ApiClientError",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "apiclienterror",
+      "source_file": "src/api/client.ts",
+      "source_location": "L11"
+    },
+    {
       "id": "src_components_ui_button_buttonprops",
       "label": "ButtonProps",
       "_callable": true,
@@ -56,19 +69,6 @@
       "source_location": "L3"
     },
     {
-      "id": "src_features_audit_components_rectificationmodal_rectificationformdata",
-      "label": "RectificationFormData",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Button",
-      "file_type": "code",
-      "norm_label": "rectificationformdata",
-      "source_file": "src/features/audit/components/RectificationModal.tsx",
-      "source_location": "L43"
-    },
-    {
       "id": "src_features_bureaux_components_bureauformmodal_bureauforminput",
       "label": "BureauFormInput",
       "_callable": true,
@@ -80,6 +80,19 @@
       "norm_label": "bureauforminput",
       "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
       "source_location": "L23"
+    },
+    {
+      "id": "src_features_bureaux_components_bureauformmodal_bureauformmodalprops",
+      "label": "BureauFormModalProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "bureauformmodalprops",
+      "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
+      "source_location": "L26"
     },
     {
       "id": "src_features_bureaux_components_bureauformmodal_bureauformoutput",
@@ -105,7 +118,7 @@
       "file_type": "code",
       "norm_label": "encaisseforminput",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L44"
+      "source_location": "L48"
     },
     {
       "id": "src_features_encaisse_components_encaisseformmodal_encaisseformoutput",
@@ -118,7 +131,20 @@
       "file_type": "code",
       "norm_label": "encaisseformoutput",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L45"
+      "source_location": "L49"
+    },
+    {
+      "id": "src_features_periodes_gestion_components_cloturemodal_cloturemodalprops",
+      "label": "ClotureModalProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "cloturemodalprops",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L7"
     },
     {
       "id": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionforminput",
@@ -131,7 +157,7 @@
       "file_type": "code",
       "norm_label": "periodegestionforminput",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L67"
+      "source_location": "L55"
     },
     {
       "id": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionformmodalprops",
@@ -144,7 +170,7 @@
       "file_type": "code",
       "norm_label": "periodegestionformmodalprops",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L70"
+      "source_location": "L58"
     },
     {
       "id": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionformoutput",
@@ -157,7 +183,7 @@
       "file_type": "code",
       "norm_label": "periodegestionformoutput",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L68"
+      "source_location": "L56"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablemodal_lignecomptableforminput",
@@ -170,7 +196,7 @@
       "file_type": "code",
       "norm_label": "lignecomptableforminput",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L42"
+      "source_location": "L43"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablemodal_lignecomptableformoutput",
@@ -183,7 +209,7 @@
       "file_type": "code",
       "norm_label": "lignecomptableformoutput",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "src_features_plan_comptable_components_sectioncomptablemodal_sectionforminput",
@@ -212,32 +238,6 @@
       "source_location": "L40"
     },
     {
-      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurforminput",
-      "label": "StockValeurFormInput",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Button",
-      "file_type": "code",
-      "norm_label": "stockvaleurforminput",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L45"
-    },
-    {
-      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformoutput",
-      "label": "StockValeurFormOutput",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Button",
-      "file_type": "code",
-      "norm_label": "stockvaleurformoutput",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L46"
-    },
-    {
       "id": "src_types_index_apierror",
       "label": "ApiError",
       "_callable": true,
@@ -251,104 +251,13 @@
       "source_location": "L35"
     },
     {
-      "id": "src_types_index_situationcomptable",
-      "label": "SituationComptable",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "9. Journal des actions (log)",
-      "file_type": "code",
-      "norm_label": "situationcomptable",
-      "source_file": "src/types/index.ts",
-      "source_location": "L488"
-    },
-    {
-      "id": "src_api_audit_ecartssearchparams",
-      "label": "EcartsSearchParams",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "ecartssearchparams",
-      "source_file": "src/api/audit.ts",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_api_client_apiclienterror",
-      "label": "ApiClientError",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "apiclienterror",
-      "source_file": "src/api/client.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "src_api_client_requestoptions",
-      "label": "RequestOptions",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "requestoptions",
-      "source_file": "src/api/client.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_features_audit_components_rectificationmodal_rectificationmodalprops",
-      "label": "RectificationModalProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "rectificationmodalprops",
-      "source_file": "src/features/audit/components/RectificationModal.tsx",
-      "source_location": "L49"
-    },
-    {
-      "id": "src_features_bureaux_components_bureauformmodal_bureauformmodalprops",
-      "label": "BureauFormModalProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "bureauformmodalprops",
-      "source_file": "src/features/bureaux/components/BureauFormModal.tsx",
-      "source_location": "L26"
-    },
-    {
-      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformmodalprops",
-      "label": "StockValeurFormModalProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "stockvaleurformmodalprops",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L48"
-    },
-    {
       "id": "src_types_index_bureau",
       "label": "Bureau",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 0,
+      "community_name": "Button",
       "file_type": "code",
       "norm_label": "bureau",
       "source_file": "src/types/index.ts",
@@ -360,64 +269,25 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 0,
+      "community_name": "Button",
       "file_type": "code",
       "norm_label": "bureauformdata",
       "source_file": "src/types/index.ts",
       "source_location": "L69"
     },
     {
-      "id": "src_types_index_ecartitem",
-      "label": "EcartItem",
+      "id": "src_types_index_periodegestion",
+      "label": "PeriodeGestion",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 0,
+      "community_name": "Button",
       "file_type": "code",
-      "norm_label": "ecartitem",
+      "norm_label": "periodegestion",
       "source_file": "src/types/index.ts",
-      "source_location": "L361"
-    },
-    {
-      "id": "src_types_index_ecartslistresponse",
-      "label": "EcartsListResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "ecartslistresponse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L516"
-    },
-    {
-      "id": "src_types_index_healthresponse",
-      "label": "HealthResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "healthresponse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L29"
-    },
-    {
-      "id": "src_types_index_paginatedresponse",
-      "label": "PaginatedResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "paginatedresponse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L40"
+      "source_location": "L81"
     },
     {
       "id": "src_types_index_periodegestionformdata",
@@ -425,25 +295,12 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 0,
+      "community_name": "Button",
       "file_type": "code",
       "norm_label": "periodegestionformdata",
       "source_file": "src/types/index.ts",
       "source_location": "L105"
-    },
-    {
-      "id": "src_types_index_produitpostal",
-      "label": "ProduitPostal",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "produitpostal",
-      "source_file": "src/types/index.ts",
-      "source_location": "L179"
     },
     {
       "id": "src_types_index_province",
@@ -451,77 +308,142 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 0,
+      "community_name": "Button",
       "file_type": "code",
       "norm_label": "province",
       "source_file": "src/types/index.ts",
       "source_location": "L47"
     },
     {
-      "id": "src_types_index_rectificationinput",
-      "label": "RectificationInput",
+      "id": "src_features_encaisse_components_encaisseformmodal_encaisseformmodalprops",
+      "label": "EncaisseFormModalProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
       "file_type": "code",
-      "norm_label": "rectificationinput",
-      "source_file": "src/types/index.ts",
-      "source_location": "L393"
+      "norm_label": "encaisseformmodalprops",
+      "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
+      "source_location": "L51"
     },
     {
-      "id": "src_types_index_stockvaleur",
-      "label": "StockValeur",
+      "id": "src_types_index_mouvementencaisse",
+      "label": "MouvementEncaisse",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
       "file_type": "code",
-      "norm_label": "stockvaleur",
+      "norm_label": "mouvementencaisse",
       "source_file": "src/types/index.ts",
-      "source_location": "L188"
+      "source_location": "L453"
     },
     {
-      "id": "src_types_index_stockvaleurformdata",
-      "label": "StockValeurFormData",
+      "id": "src_types_index_mouvementencaisseformdata",
+      "label": "MouvementEncaisseFormData",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
       "file_type": "code",
-      "norm_label": "stockvaleurformdata",
+      "norm_label": "mouvementencaisseformdata",
       "source_file": "src/types/index.ts",
-      "source_location": "L279"
+      "source_location": "L468"
     },
     {
-      "id": "src_types_index_stockvaleurrecapitulatif",
-      "label": "StockValeurRecapitulatif",
+      "id": "src_types_index_mouvementencaissesearchparams",
+      "label": "MouvementEncaisseSearchParams",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
       "file_type": "code",
-      "norm_label": "stockvaleurrecapitulatif",
+      "norm_label": "mouvementencaissesearchparams",
       "source_file": "src/types/index.ts",
-      "source_location": "L288"
+      "source_location": "L476"
     },
     {
-      "id": "src_types_index_stockvaleursearchparams",
-      "label": "StockValeurSearchParams",
+      "id": "src_types_index_rubriqueencaisse",
+      "label": "RubriqueEncaisse",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
       "file_type": "code",
-      "norm_label": "stockvaleursearchparams",
+      "norm_label": "rubriqueencaisse",
       "source_file": "src/types/index.ts",
-      "source_location": "L300"
+      "source_location": "L444"
+    },
+    {
+      "id": "src_types_index_situationcomptable",
+      "label": "SituationComptable",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "situationcomptable",
+      "source_file": "src/types/index.ts",
+      "source_location": "L488"
+    },
+    {
+      "id": "src_api_audit_ecartssearchparams",
+      "label": "EcartsSearchParams",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "ecartssearchparams",
+      "source_file": "src/api/audit.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_api_client_requestoptions",
+      "label": "RequestOptions",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "requestoptions",
+      "source_file": "src/api/client.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_features_audit_components_rectificationmodal_rectificationformdata",
+      "label": "RectificationFormData",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationformdata",
+      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "source_location": "L43"
+    },
+    {
+      "id": "src_features_audit_components_rectificationmodal_rectificationmodalprops",
+      "label": "RectificationModalProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationmodalprops",
+      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "source_location": "L49"
     },
     {
       "id": "src_features_dashboard_components_inspecteurdashboard_sortfield",
@@ -530,7 +452,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "sortfield",
       "source_file": "src/features/dashboard/components/InspecteurDashboard.tsx",
@@ -543,7 +465,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "sortorder",
       "source_file": "src/features/dashboard/components/InspecteurDashboard.tsx",
@@ -556,11 +478,24 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "receveurdashboardprops",
       "source_file": "src/features/dashboard/components/ReceveurDashboard.tsx",
       "source_location": "L20"
+    },
+    {
+      "id": "src_features_saisie_g58_components_totauxlive_totauxliveprops",
+      "label": "TotauxLiveProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "totauxliveprops",
+      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
+      "source_location": "L5"
     },
     {
       "id": "src_types_index_admindashboarddata",
@@ -569,11 +504,89 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "admindashboarddata",
       "source_file": "src/types/index.ts",
       "source_location": "L520"
+    },
+    {
+      "id": "src_types_index_bureauavececartsitem",
+      "label": "BureauAvecEcartsItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "bureauavececartsitem",
+      "source_file": "src/types/index.ts",
+      "source_location": "L336"
+    },
+    {
+      "id": "src_types_index_categorieproduit",
+      "label": "CategorieProduit",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "categorieproduit",
+      "source_file": "src/types/index.ts",
+      "source_location": "L177"
+    },
+    {
+      "id": "src_types_index_ecartitem",
+      "label": "EcartItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "ecartitem",
+      "source_file": "src/types/index.ts",
+      "source_location": "L361"
+    },
+    {
+      "id": "src_types_index_ecartslistresponse",
+      "label": "EcartsListResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "ecartslistresponse",
+      "source_file": "src/types/index.ts",
+      "source_location": "L516"
+    },
+    {
+      "id": "src_types_index_encaisseprogression",
+      "label": "EncaisseProgression",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "encaisseprogression",
+      "source_file": "src/types/index.ts",
+      "source_location": "L245"
+    },
+    {
+      "id": "src_types_index_healthresponse",
+      "label": "HealthResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthresponse",
+      "source_file": "src/types/index.ts",
+      "source_location": "L29"
     },
     {
       "id": "src_types_index_inspecteurdashboarddata",
@@ -582,11 +595,50 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "inspecteurdashboarddata",
       "source_file": "src/types/index.ts",
       "source_location": "L511"
+    },
+    {
+      "id": "src_types_index_inspecteurkpis",
+      "label": "InspecteurKPIs",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "inspecteurkpis",
+      "source_file": "src/types/index.ts",
+      "source_location": "L347"
+    },
+    {
+      "id": "src_types_index_lignecomptableparentdetail",
+      "label": "LigneComptableParentDetail",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "lignecomptableparentdetail",
+      "source_file": "src/types/index.ts",
+      "source_location": "L135"
+    },
+    {
+      "id": "src_types_index_paginatedresponse",
+      "label": "PaginatedResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "paginatedresponse",
+      "source_file": "src/types/index.ts",
+      "source_location": "L40"
     },
     {
       "id": "src_types_index_receveurdashboarddata",
@@ -595,11 +647,63 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "receveurdashboarddata",
       "source_file": "src/types/index.ts",
       "source_location": "L256"
+    },
+    {
+      "id": "src_types_index_rectificationinput",
+      "label": "RectificationInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationinput",
+      "source_file": "src/types/index.ts",
+      "source_location": "L393"
+    },
+    {
+      "id": "src_types_index_sectionprogressionitem",
+      "label": "SectionProgressionItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "sectionprogressionitem",
+      "source_file": "src/types/index.ts",
+      "source_location": "L223"
+    },
+    {
+      "id": "src_types_index_soussectionbitem",
+      "label": "SousSectionBItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "soussectionbitem",
+      "source_file": "src/types/index.ts",
+      "source_location": "L429"
+    },
+    {
+      "id": "src_types_index_totauxmouvementsprogression",
+      "label": "TotauxMouvementsProgression",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "totauxmouvementsprogression",
+      "source_file": "src/types/index.ts",
+      "source_location": "L236"
     },
     {
       "id": "src_components_layout_sidebar_navitem",
@@ -745,43 +849,17 @@
       "source_location": "L1"
     },
     {
-      "id": "src_features_encaisse_components_encaisseformmodal_encaisseformmodalprops",
-      "label": "EncaisseFormModalProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "encaisseformmodalprops",
-      "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L47"
-    },
-    {
-      "id": "src_features_periodes_gestion_components_cloturemodal_cloturemodalprops",
-      "label": "ClotureModalProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "cloturemodalprops",
-      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L6"
-    },
-    {
       "id": "src_features_plan_comptable_components_lignecomptablemodal_lignecomptablemodalprops",
       "label": "LigneComptableModalProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptablemodalprops",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearchprops",
@@ -790,7 +868,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptablesearchprops",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
@@ -803,7 +881,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectioncomptablemodalprops",
       "source_file": "src/features/plan-comptable/components/SectionComptableModal.tsx",
@@ -816,11 +894,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "mouvementforminput",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L56"
+      "source_location": "L62"
     },
     {
       "id": "src_features_saisie_g58_components_sectionform_mouvementformoutput",
@@ -829,11 +907,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "mouvementformoutput",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L57"
+      "source_location": "L63"
     },
     {
       "id": "src_features_saisie_g58_components_sectionform_sectionformprops",
@@ -842,76 +920,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectionformprops",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L60"
-    },
-    {
-      "id": "src_features_saisie_g58_components_totauxlive_totauxliveprops",
-      "label": "TotauxLiveProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "totauxliveprops",
-      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_types_index_bureauavececartsitem",
-      "label": "BureauAvecEcartsItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "bureauavececartsitem",
-      "source_file": "src/types/index.ts",
-      "source_location": "L336"
-    },
-    {
-      "id": "src_types_index_categorieproduit",
-      "label": "CategorieProduit",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "categorieproduit",
-      "source_file": "src/types/index.ts",
-      "source_location": "L177"
-    },
-    {
-      "id": "src_types_index_encaisseprogression",
-      "label": "EncaisseProgression",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "encaisseprogression",
-      "source_file": "src/types/index.ts",
-      "source_location": "L245"
-    },
-    {
-      "id": "src_types_index_inspecteurkpis",
-      "label": "InspecteurKPIs",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "inspecteurkpis",
-      "source_file": "src/types/index.ts",
-      "source_location": "L347"
+      "source_location": "L65"
     },
     {
       "id": "src_types_index_lignecomptable",
@@ -920,7 +933,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptable",
       "source_file": "src/types/index.ts",
@@ -933,24 +946,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptableformdata",
       "source_file": "src/types/index.ts",
       "source_location": "L158"
-    },
-    {
-      "id": "src_types_index_lignecomptableparentdetail",
-      "label": "LigneComptableParentDetail",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "lignecomptableparentdetail",
-      "source_file": "src/types/index.ts",
-      "source_location": "L135"
     },
     {
       "id": "src_types_index_lignecomptablesearchparams",
@@ -959,50 +959,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptablesearchparams",
       "source_file": "src/types/index.ts",
       "source_location": "L167"
-    },
-    {
-      "id": "src_types_index_mouvementencaisse",
-      "label": "MouvementEncaisse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "mouvementencaisse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L453"
-    },
-    {
-      "id": "src_types_index_mouvementencaisseformdata",
-      "label": "MouvementEncaisseFormData",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "mouvementencaisseformdata",
-      "source_file": "src/types/index.ts",
-      "source_location": "L468"
-    },
-    {
-      "id": "src_types_index_mouvementencaissesearchparams",
-      "label": "MouvementEncaisseSearchParams",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "mouvementencaissesearchparams",
-      "source_file": "src/types/index.ts",
-      "source_location": "L476"
     },
     {
       "id": "src_types_index_mouvementg58",
@@ -1011,7 +972,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "mouvementg58",
       "source_file": "src/types/index.ts",
@@ -1024,7 +985,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "mouvementg58formdata",
       "source_file": "src/types/index.ts",
@@ -1037,37 +998,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "mouvementsearchparams",
       "source_file": "src/types/index.ts",
       "source_location": "L407"
-    },
-    {
-      "id": "src_types_index_periodegestion",
-      "label": "PeriodeGestion",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "periodegestion",
-      "source_file": "src/types/index.ts",
-      "source_location": "L81"
-    },
-    {
-      "id": "src_types_index_rubriqueencaisse",
-      "label": "RubriqueEncaisse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "rubriqueencaisse",
-      "source_file": "src/types/index.ts",
-      "source_location": "L444"
     },
     {
       "id": "src_types_index_sectioncomptable",
@@ -1076,7 +1011,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectioncomptable",
       "source_file": "src/types/index.ts",
@@ -1089,37 +1024,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectioncomptableformdata",
       "source_file": "src/types/index.ts",
       "source_location": "L127"
-    },
-    {
-      "id": "src_types_index_sectionprogressionitem",
-      "label": "SectionProgressionItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "sectionprogressionitem",
-      "source_file": "src/types/index.ts",
-      "source_location": "L223"
-    },
-    {
-      "id": "src_types_index_soussectionbitem",
-      "label": "SousSectionBItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "soussectionbitem",
-      "source_file": "src/types/index.ts",
-      "source_location": "L429"
     },
     {
       "id": "src_types_index_totauxg58",
@@ -1128,24 +1037,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "totauxg58",
       "source_file": "src/types/index.ts",
       "source_location": "L434"
-    },
-    {
-      "id": "src_types_index_totauxmouvementsprogression",
-      "label": "TotauxMouvementsProgression",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "totauxmouvementsprogression",
-      "source_file": "src/types/index.ts",
-      "source_location": "L236"
     },
     {
       "id": "src_types_index_totauxsectionitem",
@@ -1154,11 +1050,247 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "totauxsectionitem",
       "source_file": "src/types/index.ts",
       "source_location": "L419"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurforminput",
+      "label": "StockValeurFormInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurforminput",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L45"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformmodalprops",
+      "label": "StockValeurFormModalProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurformmodalprops",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L48"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformoutput",
+      "label": "StockValeurFormOutput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurformoutput",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L46"
+    },
+    {
+      "id": "src_types_index_produitpostal",
+      "label": "ProduitPostal",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "produitpostal",
+      "source_file": "src/types/index.ts",
+      "source_location": "L179"
+    },
+    {
+      "id": "src_types_index_stockvaleur",
+      "label": "StockValeur",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleur",
+      "source_file": "src/types/index.ts",
+      "source_location": "L188"
+    },
+    {
+      "id": "src_types_index_stockvaleurformdata",
+      "label": "StockValeurFormData",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurformdata",
+      "source_file": "src/types/index.ts",
+      "source_location": "L279"
+    },
+    {
+      "id": "src_types_index_stockvaleurrecapitulatif",
+      "label": "StockValeurRecapitulatif",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurrecapitulatif",
+      "source_file": "src/types/index.ts",
+      "source_location": "L288"
+    },
+    {
+      "id": "src_types_index_stockvaleursearchparams",
+      "label": "StockValeurSearchParams",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleursearchparams",
+      "source_file": "src/types/index.ts",
+      "source_location": "L300"
+    },
+    {
+      "id": "src_api_client_apiclienterror_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "src/api/client.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_api_comptabilite_getsituationcomptable",
+      "label": "getSituationComptable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "getsituationcomptable()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L284"
+    },
+    {
+      "id": "src_api_comptabilite_gettotauxg58",
+      "label": "getTotauxG58()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "gettotauxg58()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L188"
+    },
+    {
+      "id": "src_api_referentiel_cloturerperiodegestion",
+      "label": "cloturerPeriodeGestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "cloturerperiodegestion()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L92"
+    },
+    {
+      "id": "src_api_referentiel_createbureau",
+      "label": "createBureau()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "createbureau()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "src_api_referentiel_createperiodegestion",
+      "label": "createPeriodeGestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "createperiodegestion()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L82"
+    },
+    {
+      "id": "src_api_referentiel_deletebureau",
+      "label": "deleteBureau()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "deletebureau()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "src_api_referentiel_getbureaux",
+      "label": "getBureaux()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "getbureaux()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_api_referentiel_getperiodesgestion",
+      "label": "getPeriodesGestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "getperiodesgestion()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "src_api_referentiel_getprovinces",
+      "label": "getProvinces()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "getprovinces()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "src_api_referentiel_updatebureau",
+      "label": "updateBureau()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "updatebureau()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L48"
     },
     {
       "id": "src_components_ui_button_button",
@@ -1185,16 +1317,16 @@
       "source_location": "L11"
     },
     {
-      "id": "src_features_audit_components_rectificationmodal_rectificationmodal",
-      "label": "RectificationModal()",
+      "id": "src_features_bureaux_bureauxpage_bureauxpage",
+      "label": "BureauxPage()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "rectificationmodal()",
-      "source_file": "src/features/audit/components/RectificationModal.tsx",
-      "source_location": "L57"
+      "norm_label": "bureauxpage()",
+      "source_file": "src/features/bureaux/BureauxPage.tsx",
+      "source_location": "L25"
     },
     {
       "id": "src_features_bureaux_components_bureauformmodal_bureauformmodal",
@@ -1230,7 +1362,19 @@
       "file_type": "code",
       "norm_label": "encaisseformmodal()",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L57"
+      "source_location": "L61"
+    },
+    {
+      "id": "src_features_periodes_gestion_components_cloturemodal_cloturemodal",
+      "label": "ClotureModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "cloturemodal()",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L16"
     },
     {
       "id": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionformmodal",
@@ -1242,7 +1386,19 @@
       "file_type": "code",
       "norm_label": "periodegestionformmodal()",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L78"
+      "source_location": "L66"
+    },
+    {
+      "id": "src_features_periodes_gestion_periodesgestionpage_periodesgestionpage",
+      "label": "PeriodesGestionPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "periodesgestionpage()",
+      "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
+      "source_location": "L28"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablemodal_lignecomptablemodal",
@@ -1254,7 +1410,7 @@
       "file_type": "code",
       "norm_label": "lignecomptablemodal()",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L56"
+      "source_location": "L58"
     },
     {
       "id": "src_features_plan_comptable_components_sectioncomptablemodal_sectioncomptablemodal",
@@ -1269,16 +1425,28 @@
       "source_location": "L50"
     },
     {
-      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformmodal",
-      "label": "StockValeurFormModal()",
+      "id": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "label": "SaisieG58Page()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "stockvaleurformmodal()",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L60"
+      "norm_label": "saisieg58page()",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_features_saisie_g58_pages_situationcomptablepage_situationcomptablepage",
+      "label": "SituationComptablePage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "situationcomptablepage()",
+      "source_file": "src/features/saisie-g58/pages/SituationComptablePage.tsx",
+      "source_location": "L20"
     },
     {
       "id": "src_lib_formerrors_applyservervalidationerrors",
@@ -1293,12 +1461,84 @@
       "source_location": "L13"
     },
     {
+      "id": "src_api_comptabilite_createmouvementencaisse",
+      "label": "createMouvementEncaisse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "createmouvementencaisse()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L247"
+    },
+    {
+      "id": "src_api_comptabilite_deletemouvementencaisse",
+      "label": "deleteMouvementEncaisse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "deletemouvementencaisse()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L274"
+    },
+    {
+      "id": "src_api_comptabilite_getmouvementsencaisse",
+      "label": "getMouvementsEncaisse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "getmouvementsencaisse()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L220"
+    },
+    {
+      "id": "src_api_comptabilite_getrubriquesencaisse",
+      "label": "getRubriquesEncaisse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "getrubriquesencaisse()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L205"
+    },
+    {
+      "id": "src_api_comptabilite_updatemouvementencaisse",
+      "label": "updateMouvementEncaisse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "updatemouvementencaisse()",
+      "source_file": "src/api/comptabilite.ts",
+      "source_location": "L260"
+    },
+    {
+      "id": "src_features_encaisse_encaissepage_encaissepage",
+      "label": "EncaissePage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "encaissepage()",
+      "source_file": "src/features/encaisse/EncaissePage.tsx",
+      "source_location": "L42"
+    },
+    {
       "id": "src_api_audit_getecarts",
       "label": "getEcarts()",
       "_callable": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 18,
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "getecarts()",
       "source_file": "src/api/audit.ts",
@@ -1309,312 +1549,24 @@
       "label": "rectifierMouvement()",
       "_callable": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 18,
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "rectifiermouvement()",
       "source_file": "src/api/audit.ts",
       "source_location": "L49"
     },
     {
-      "id": "src_api_client_apiclient",
-      "label": "apiClient()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "apiclient()",
-      "source_file": "src/api/client.ts",
-      "source_location": "L40"
-    },
-    {
-      "id": "src_api_client_apiclienterror_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "src/api/client.ts",
-      "source_location": "L15"
-    },
-    {
       "id": "src_api_client_processqueue",
       "label": "processQueue()",
       "_callable": true,
       "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
+      "community": 18,
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "processqueue()",
       "source_file": "src/api/client.ts",
       "source_location": "L29"
-    },
-    {
-      "id": "src_api_health_gethealth",
-      "label": "getHealth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "gethealth()",
-      "source_file": "src/api/health.ts",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_api_referentiel_cloturerperiodegestion",
-      "label": "cloturerPeriodeGestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "cloturerperiodegestion()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L92"
-    },
-    {
-      "id": "src_api_referentiel_createbureau",
-      "label": "createBureau()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "createbureau()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L40"
-    },
-    {
-      "id": "src_api_referentiel_createperiodegestion",
-      "label": "createPeriodeGestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "createperiodegestion()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L82"
-    },
-    {
-      "id": "src_api_referentiel_deletebureau",
-      "label": "deleteBureau()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "deletebureau()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L56"
-    },
-    {
-      "id": "src_api_referentiel_getbureau",
-      "label": "getBureau()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getbureau()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L33"
-    },
-    {
-      "id": "src_api_referentiel_getbureaux",
-      "label": "getBureaux()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getbureaux()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_api_referentiel_getperiodesgestion",
-      "label": "getPeriodesGestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getperiodesgestion()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L63"
-    },
-    {
-      "id": "src_api_referentiel_getprovinces",
-      "label": "getProvinces()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getprovinces()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "src_api_referentiel_updatebureau",
-      "label": "updateBureau()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "updatebureau()",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L48"
-    },
-    {
-      "id": "src_api_stocks_createstockvaleur",
-      "label": "createStockValeur()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "createstockvaleur()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L53"
-    },
-    {
-      "id": "src_api_stocks_deletestockvaleur",
-      "label": "deleteStockValeur()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "deletestockvaleur()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L80"
-    },
-    {
-      "id": "src_api_stocks_getproduitspostaux",
-      "label": "getProduitsPostaux()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getproduitspostaux()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L14"
-    },
-    {
-      "id": "src_api_stocks_getstockrecapitulatif",
-      "label": "getStockRecapitulatif()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getstockrecapitulatif()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L90"
-    },
-    {
-      "id": "src_api_stocks_getstocksvaleurs",
-      "label": "getStocksValeurs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "getstocksvaleurs()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L32"
-    },
-    {
-      "id": "src_api_stocks_updatestockvaleur",
-      "label": "updateStockValeur()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "updatestockvaleur()",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L66"
-    },
-    {
-      "id": "src_features_audit_auditecartspage_auditecartspage",
-      "label": "AuditEcartsPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "auditecartspage()",
-      "source_file": "src/features/audit/AuditEcartsPage.tsx",
-      "source_location": "L23"
-    },
-    {
-      "id": "src_features_bureaux_bureauxpage_bureauxpage",
-      "label": "BureauxPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "bureauxpage()",
-      "source_file": "src/features/bureaux/BureauxPage.tsx",
-      "source_location": "L25"
-    },
-    {
-      "id": "src_features_dashboard_healthpage_healthpage",
-      "label": "HealthPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "healthpage()",
-      "source_file": "src/features/dashboard/HealthPage.tsx",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_features_periodes_gestion_components_cloturemodal_cloturemodal",
-      "label": "ClotureModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "cloturemodal()",
-      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "src_features_periodes_gestion_periodesgestionpage_periodesgestionpage",
-      "label": "PeriodesGestionPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "periodesgestionpage()",
-      "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
-      "source_location": "L28"
-    },
-    {
-      "id": "src_features_stock_stockvaleurspage_stockvaleurspage",
-      "label": "StockValeursPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "stockvaleurspage()",
-      "source_file": "src/features/stock/StockValeursPage.tsx",
-      "source_location": "L38"
     },
     {
       "id": "src_api_dashboard_getadmindashboard",
@@ -1622,7 +1574,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "getadmindashboard()",
       "source_file": "src/api/dashboard.ts",
@@ -1634,7 +1586,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "getecartslist()",
       "source_file": "src/api/dashboard.ts",
@@ -1646,7 +1598,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "getinspecteurdashboard()",
       "source_file": "src/api/dashboard.ts",
@@ -1658,7 +1610,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "getreceveurdashboard()",
       "source_file": "src/api/dashboard.ts",
@@ -1670,7 +1622,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "useadmindashboard()",
       "source_file": "src/api/dashboard.ts",
@@ -1682,7 +1634,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "useecartslist()",
       "source_file": "src/api/dashboard.ts",
@@ -1694,7 +1646,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "useinspecteurdashboard()",
       "source_file": "src/api/dashboard.ts",
@@ -1706,11 +1658,47 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "usereceveurdashboard()",
       "source_file": "src/api/dashboard.ts",
       "source_location": "L95"
+    },
+    {
+      "id": "src_api_health_gethealth",
+      "label": "getHealth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "gethealth()",
+      "source_file": "src/api/health.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_features_audit_auditecartspage_auditecartspage",
+      "label": "AuditEcartsPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "auditecartspage()",
+      "source_file": "src/features/audit/AuditEcartsPage.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "src_features_audit_components_rectificationmodal_rectificationmodal",
+      "label": "RectificationModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationmodal()",
+      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "source_location": "L57"
     },
     {
       "id": "src_features_dashboard_components_admindashboard_admindashboard",
@@ -1718,7 +1706,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "admindashboard()",
       "source_file": "src/features/dashboard/components/AdminDashboard.tsx",
@@ -1730,7 +1718,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "inspecteurdashboard()",
       "source_file": "src/features/dashboard/components/InspecteurDashboard.tsx",
@@ -1742,11 +1730,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "receveurdashboard()",
       "source_file": "src/features/dashboard/components/ReceveurDashboard.tsx",
       "source_location": "L24"
+    },
+    {
+      "id": "src_features_dashboard_healthpage_healthpage",
+      "label": "HealthPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthpage()",
+      "source_file": "src/features/dashboard/HealthPage.tsx",
+      "source_location": "L6"
     },
     {
       "id": "src_features_dashboard_pages_dashboardpage_dashboardpage",
@@ -1754,7 +1754,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "dashboardpage()",
       "source_file": "src/features/dashboard/pages/DashboardPage.tsx",
@@ -1766,11 +1766,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "formatariary()",
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L11"
+      "source_location": "L12"
     },
     {
       "id": "src_lib_formatters_formatdate",
@@ -1778,11 +1778,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "formatdate()",
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L34"
+      "source_location": "L33"
     },
     {
       "id": "src_lib_formatters_formatdatetime",
@@ -1790,11 +1790,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "formatdatetime()",
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L52"
+      "source_location": "L51"
     },
     {
       "id": "src_lib_formatters_formatpercent",
@@ -1802,11 +1802,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "formatpercent()",
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L73"
+      "source_location": "L72"
     },
     {
       "id": "src_api_auth_getme",
@@ -1855,18 +1855,6 @@
       "norm_label": "refreshtoken()",
       "source_file": "src/api/auth.ts",
       "source_location": "L20"
-    },
-    {
-      "id": "src_api_comptabilite_getsituationcomptable",
-      "label": "getSituationComptable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "getsituationcomptable()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L284"
     },
     {
       "id": "src_app_app",
@@ -2037,28 +2025,16 @@
       "source_location": "L6"
     },
     {
-      "id": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "label": "SaisieG58Page()",
+      "id": "src_api_client_apiclient",
+      "label": "apiClient()",
       "_callable": true,
       "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
+      "community": 3,
+      "community_name": "apiClient",
       "file_type": "code",
-      "norm_label": "saisieg58page()",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_features_saisie_g58_pages_situationcomptablepage_situationcomptablepage",
-      "label": "SituationComptablePage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "situationcomptablepage()",
-      "source_file": "src/features/saisie-g58/pages/SituationComptablePage.tsx",
-      "source_location": "L20"
+      "norm_label": "apiclient()",
+      "source_file": "src/api/client.ts",
+      "source_location": "L40"
     },
     {
       "id": "src_api_comptabilite_createlignecomptable",
@@ -2066,7 +2042,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "createlignecomptable()",
       "source_file": "src/api/comptabilite.ts",
@@ -2078,23 +2054,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "createmouvement()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L151"
-    },
-    {
-      "id": "src_api_comptabilite_createmouvementencaisse",
-      "label": "createMouvementEncaisse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "createmouvementencaisse()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L247"
     },
     {
       "id": "src_api_comptabilite_createsectioncomptable",
@@ -2102,7 +2066,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "createsectioncomptable()",
       "source_file": "src/api/comptabilite.ts",
@@ -2114,7 +2078,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "deletelignecomptable()",
       "source_file": "src/api/comptabilite.ts",
@@ -2126,23 +2090,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "deletemouvement()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L178"
-    },
-    {
-      "id": "src_api_comptabilite_deletemouvementencaisse",
-      "label": "deleteMouvementEncaisse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "deletemouvementencaisse()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L274"
     },
     {
       "id": "src_api_comptabilite_deletesectioncomptable",
@@ -2150,7 +2102,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "deletesectioncomptable()",
       "source_file": "src/api/comptabilite.ts",
@@ -2162,7 +2114,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "getlignescomptables()",
       "source_file": "src/api/comptabilite.ts",
@@ -2174,35 +2126,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "getmouvements()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L126"
-    },
-    {
-      "id": "src_api_comptabilite_getmouvementsencaisse",
-      "label": "getMouvementsEncaisse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "getmouvementsencaisse()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L220"
-    },
-    {
-      "id": "src_api_comptabilite_getrubriquesencaisse",
-      "label": "getRubriquesEncaisse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "getrubriquesencaisse()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L205"
     },
     {
       "id": "src_api_comptabilite_getsectionscomptables",
@@ -2210,23 +2138,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "getsectionscomptables()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L14"
-    },
-    {
-      "id": "src_api_comptabilite_gettotauxg58",
-      "label": "getTotauxG58()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "gettotauxg58()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L188"
     },
     {
       "id": "src_api_comptabilite_updatelignecomptable",
@@ -2234,7 +2150,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "updatelignecomptable()",
       "source_file": "src/api/comptabilite.ts",
@@ -2246,23 +2162,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "updatemouvement()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L164"
-    },
-    {
-      "id": "src_api_comptabilite_updatemouvementencaisse",
-      "label": "updateMouvementEncaisse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "updatemouvementencaisse()",
-      "source_file": "src/api/comptabilite.ts",
-      "source_location": "L260"
     },
     {
       "id": "src_api_comptabilite_updatesectioncomptable",
@@ -2270,23 +2174,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "updatesectioncomptable()",
       "source_file": "src/api/comptabilite.ts",
       "source_location": "L37"
     },
     {
-      "id": "src_features_encaisse_encaissepage_encaissepage",
-      "label": "EncaissePage()",
+      "id": "src_api_referentiel_getbureau",
+      "label": "getBureau()",
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
-      "norm_label": "encaissepage()",
-      "source_file": "src/features/encaisse/EncaissePage.tsx",
-      "source_location": "L42"
+      "norm_label": "getbureau()",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L33"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
@@ -2294,7 +2198,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "lignecomptablesearch()",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
@@ -2306,11 +2210,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "createmouvementschema()",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L31"
+      "source_location": "L33"
     },
     {
       "id": "src_features_saisie_g58_components_sectionform_sectionform",
@@ -2318,11 +2222,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectionform()",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L74"
+      "source_location": "L79"
     },
     {
       "id": "src_features_saisie_g58_components_totauxlive_totauxlive",
@@ -2330,11 +2234,118 @@
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "totauxlive()",
       "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
-      "source_location": "L22"
+      "source_location": "L23"
+    },
+    {
+      "id": "src_api_stocks_createstockvaleur",
+      "label": "createStockValeur()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "createstockvaleur()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L53"
+    },
+    {
+      "id": "src_api_stocks_deletestockvaleur",
+      "label": "deleteStockValeur()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "deletestockvaleur()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L80"
+    },
+    {
+      "id": "src_api_stocks_getproduitspostaux",
+      "label": "getProduitsPostaux()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "getproduitspostaux()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "src_api_stocks_getstockrecapitulatif",
+      "label": "getStockRecapitulatif()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "getstockrecapitulatif()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L90"
+    },
+    {
+      "id": "src_api_stocks_getstocksvaleurs",
+      "label": "getStocksValeurs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "getstocksvaleurs()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "src_api_stocks_updatestockvaleur",
+      "label": "updateStockValeur()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "updatestockvaleur()",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L66"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurformmodal",
+      "label": "StockValeurFormModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurformmodal()",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L60"
+    },
+    {
+      "id": "src_features_stock_stockvaleurspage_stockvaleurspage",
+      "label": "StockValeursPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurspage()",
+      "source_file": "src/features/stock/StockValeursPage.tsx",
+      "source_location": "L38"
+    },
+    {
+      "id": "src_api_referentiel",
+      "label": "referentiel.ts",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "referentiel.ts",
+      "source_file": "src/api/referentiel.ts",
+      "source_location": "L1"
     },
     {
       "id": "src_components_ui_button",
@@ -2403,26 +2414,15 @@
       "source_location": "L10"
     },
     {
-      "id": "src_features_audit_components_rectificationmodal",
-      "label": "RectificationModal.tsx",
+      "id": "src_features_bureaux_bureauxpage",
+      "label": "BureauxPage.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "rectificationmodal.tsx",
-      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "norm_label": "bureauxpage.tsx",
+      "source_file": "src/features/bureaux/BureauxPage.tsx",
       "source_location": "L1"
-    },
-    {
-      "id": "src_features_audit_components_rectificationmodal_rectificationschema",
-      "label": "rectificationSchema",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Button",
-      "file_type": "code",
-      "norm_label": "rectificationschema",
-      "source_file": "src/features/audit/components/RectificationModal.tsx",
-      "source_location": "L12"
     },
     {
       "id": "src_features_bureaux_components_bureauformmodal",
@@ -2458,6 +2458,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_features_periodes_gestion_components_cloturemodal",
+      "label": "ClotureModal.tsx",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "code",
+      "norm_label": "cloturemodal.tsx",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_features_periodes_gestion_components_periodegestionformmodal",
       "label": "PeriodeGestionFormModal.tsx",
       "_origin": "ast",
@@ -2480,15 +2491,15 @@
       "source_location": "L12"
     },
     {
-      "id": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionschema",
-      "label": "periodeGestionSchema",
+      "id": "src_features_periodes_gestion_periodesgestionpage",
+      "label": "PeriodesGestionPage.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "periodegestionschema",
-      "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L54"
+      "norm_label": "periodesgestionpage.tsx",
+      "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
+      "source_location": "L1"
     },
     {
       "id": "src_features_plan_comptable_components_lignecomptablemodal",
@@ -2535,37 +2546,26 @@
       "source_location": "L17"
     },
     {
-      "id": "src_features_stock_components_stockvaleurformmodal",
-      "label": "StockValeurFormModal.tsx",
+      "id": "src_features_saisie_g58_pages_saisieg58page",
+      "label": "SaisieG58Page.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "stockvaleurformmodal.tsx",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "norm_label": "saisieg58page.tsx",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
       "source_location": "L1"
     },
     {
-      "id": "src_features_stock_components_stockvaleurformmodal_basestockvaleurschema",
-      "label": "baseStockValeurSchema",
+      "id": "src_features_saisie_g58_pages_situationcomptablepage",
+      "label": "SituationComptablePage.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Button",
       "file_type": "code",
-      "norm_label": "basestockvaleurschema",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurschema",
-      "label": "stockValeurSchema",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Button",
-      "file_type": "code",
-      "norm_label": "stockvaleurschema",
-      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
-      "source_location": "L37"
+      "norm_label": "situationcomptablepage.tsx",
+      "source_file": "src/features/saisie-g58/pages/SituationComptablePage.tsx",
+      "source_location": "L1"
     },
     {
       "id": "src_lib_formerrors",
@@ -2621,6 +2621,42 @@
       "norm_label": "zod",
       "source_file": "package.json",
       "source_location": "L21"
+    },
+    {
+      "id": "project_state_2026_10_12_\u00e9cran_d_ouverture_d_une_p\u00e9riode_de_gestion_section_2_t\u00e2che_2",
+      "label": "2026-10-12 \u2014 \u00c9cran d'ouverture d'une p\u00e9riode de gestion (Section 2, T\u00e2che 2)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-12 \u2014 ecran d'ouverture d'une periode de gestion (section 2, tache 2)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L465"
+    },
+    {
+      "id": "project_state_2026_10_12_\u00e9cran_de_gestion_des_bureaux_section_2_t\u00e2che_1",
+      "label": "2026-10-12 \u2014 \u00c9cran de gestion des bureaux (Section 2, T\u00e2che 1)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-12 \u2014 ecran de gestion des bureaux (section 2, tache 1)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L484"
+    },
+    {
+      "id": "project_state_3_recherche_et_gestion_du_plan_comptable_remplace_le_treeview_legacy",
+      "label": "3. Recherche et gestion du plan comptable (remplace le TreeView legacy)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Button",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. recherche et gestion du plan comptable (remplace le treeview legacy)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L45"
     },
     {
       "id": "package",
@@ -4105,11 +4141,22 @@
       "source_location": "L33"
     },
     {
+      "id": "src_features_encaisse_encaissepage",
+      "label": "EncaissePage.tsx",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "code",
+      "norm_label": "encaissepage.tsx",
+      "source_file": "src/features/encaisse/EncaissePage.tsx",
+      "source_location": "L1"
+    },
+    {
       "id": "project_state",
       "label": "PROJECT_STATE.md",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "project_state.md",
@@ -4121,7 +4168,7 @@
       "label": "0. Mise en place du projet",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "0. mise en place du projet",
@@ -4133,7 +4180,7 @@
       "label": "1. Authentification & RBAC",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. authentification & rbac",
@@ -4145,139 +4192,151 @@
       "label": "2026-10-12 \u2014 Correction des anomalies de build, finalisation & validation e2e Module 1 (Auth & RBAC)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 correction des anomalies de build, finalisation & validation e2e module 1 (auth & rbac)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L473"
+      "source_location": "L526"
     },
     {
       "id": "project_state_2026_10_12_gestion_des_erreurs_de_validation_renvoy\u00e9es_par_le_backend_section_2_t\u00e2che_4",
       "label": "2026-10-12 \u2014 Gestion des erreurs de validation renvoy\u00e9es par le backend (Section 2, T\u00e2che 4)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 gestion des erreurs de validation renvoyees par le backend (section 2, tache 4)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L382"
+      "source_location": "L435"
     },
     {
       "id": "project_state_2026_10_12_\u00e9cran_de_cl\u00f4ture_d_une_p\u00e9riode_de_gestion_section_2_t\u00e2che_3",
       "label": "2026-10-12 \u2014 \u00c9cran de cl\u00f4ture d'une p\u00e9riode de gestion (Section 2, T\u00e2che 3)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 ecran de cloture d'une periode de gestion (section 2, tache 3)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L398"
+      "source_location": "L451"
     },
     {
       "id": "project_state_2026_10_14_composant_totauxlive_r\u00e9actif_section_4_t\u00e2che_2",
       "label": "2026-10-14 \u2014 Composant TotauxLive r\u00e9actif (Section 4, T\u00e2che 2)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 composant totauxlive reactif (section 4, tache 2)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L276"
+      "source_location": "L329"
     },
     {
       "id": "project_state_2026_10_14_historique_des_lignes_r\u00e9centes_par_bureau_section_3_t\u00e2che_2",
       "label": "2026-10-14 \u2014 Historique des lignes r\u00e9centes par bureau (Section 3, T\u00e2che 2)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 historique des lignes recentes par bureau (section 3, tache 2)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L349"
+      "source_location": "L402"
     },
     {
       "id": "project_state_2026_10_14_traitement_explicite_des_\u00e9tats_vide_et_chargement_section_3_t\u00e2che_3",
       "label": "2026-10-14 \u2014 Traitement explicite des \u00e9tats vide et chargement (Section 3, T\u00e2che 3)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 traitement explicite des etats vide et chargement (section 3, tache 3)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L333"
+      "source_location": "L386"
     },
     {
       "id": "project_state_2026_10_14_validation_react_hook_form_zod_erreurs_drf_section_4_t\u00e2che_3",
       "label": "2026-10-14 \u2014 Validation React Hook Form + Zod & erreurs DRF (Section 4, T\u00e2che 3)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 validation react hook form + zod & erreurs drf (section 4, tache 3)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L259"
+      "source_location": "L312"
+    },
+    {
+      "id": "project_state_2026_10_14_\u00e9cran_d\u00e9tails_de_l_encaisse_section_4_t\u00e2che_4",
+      "label": "2026-10-14 \u2014 \u00c9cran D\u00e9tails de l'encaisse (Section 4, T\u00e2che 4)",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-14 \u2014 ecran details de l'encaisse (section 4, tache 4)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L286"
     },
     {
       "id": "project_state_2026_10_14_\u00e9cran_situation_comptable_report_automatique_section_4_t\u00e2che_5",
       "label": "2026-10-14 \u2014 \u00c9cran Situation comptable & report automatique (Section 4, T\u00e2che 5)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 ecran situation comptable & report automatique (section 4, tache 5)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L209"
+      "source_location": "L262"
     },
     {
       "id": "project_state_2026_10_15_r\u00e9vision_et_enrichissement_de_l_espace_encaisse_section_4",
       "label": "2026-10-15 \u2014 R\u00e9vision et enrichissement de l'espace Encaisse (Section 4)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-15 \u2014 revision et enrichissement de l'espace encaisse (section 4)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L175"
-    },
-    {
-      "id": "project_state_2026_10_15_test_e2e_saisie_compl\u00e8te_d_une_section_g58_et_totauxlive_section_4_t\u00e2che_6",
-      "label": "2026-10-15 \u2014 Test e2e saisie compl\u00e8te d'une section G58 et TotauxLive (Section 4, T\u00e2che 6)",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "9. Journal des actions (log)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-10-15 \u2014 test e2e saisie complete d'une section g58 et totauxlive (section 4, tache 6)",
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L192"
+      "source_location": "L228"
     },
     {
       "id": "project_state_2026_10_21_module_5_audit_et_d\u00e9tection_d_\u00e9carts_vue_dif_rectification_uc_04_rbac",
       "label": "2026-10-21 \u2014 Module 5 : Audit et d\u00e9tection d'\u00e9carts (Vue DIF, Rectification UC-04, RBAC)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-21 \u2014 module 5 : audit et detection d'ecarts (vue dif, rectification uc-04, rbac)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L138"
+      "source_location": "L191"
+    },
+    {
+      "id": "project_state_2026_10_25_ajout_de_raccourcis_contextuels_de_cr\u00e9ation_de_ligne_dans_le_plan_comptable",
+      "label": "2026-10-25 \u2014 Ajout de raccourcis contextuels de cr\u00e9ation de ligne dans le Plan Comptable",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "EncaissePage.tsx",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-25 \u2014 ajout de raccourcis contextuels de creation de ligne dans le plan comptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L119"
     },
     {
       "id": "project_state_2_r\u00e9f\u00e9rentiel_provinces_bureaux_p\u00e9riodes_de_gestion",
       "label": "2. R\u00e9f\u00e9rentiel (provinces, bureaux, p\u00e9riodes de gestion)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. referentiel (provinces, bureaux, periodes de gestion)",
@@ -4285,256 +4344,76 @@
       "source_location": "L36"
     },
     {
-      "id": "project_state_3_recherche_dans_le_plan_comptable_remplace_le_treeview_legacy",
-      "label": "3. Recherche dans le plan comptable (remplace le TreeView legacy)",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "9. Journal des actions (log)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. recherche dans le plan comptable (remplace le treeview legacy)",
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L45"
-    },
-    {
       "id": "project_state_5_audit_et_d\u00e9tection_d_\u00e9carts",
       "label": "5. Audit et d\u00e9tection d'\u00e9carts",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. audit et detection d'ecarts",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L67"
+      "source_location": "L71"
     },
     {
       "id": "project_state_6_tableaux_de_bord",
       "label": "6. Tableaux de bord",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "6. tableaux de bord",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L75"
+      "source_location": "L79"
     },
     {
       "id": "project_state_7_stock_de_valeurs_postales",
       "label": "7. Stock de valeurs postales",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "7. stock de valeurs postales",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L83"
+      "source_location": "L87"
     },
     {
       "id": "project_state_8_fonctionnalit\u00e9s_compl\u00e9mentaires_backlog_ouvert_\u00e0_prioriser_au_fil_de_l_eau_avec_l_utilisateur",
       "label": "8. Fonctionnalit\u00e9s compl\u00e9mentaires (backlog ouvert \u2014 \u00e0 prioriser au fil de l'eau avec l'utilisateur)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "8. fonctionnalites complementaires (backlog ouvert \u2014 a prioriser au fil de l'eau avec l'utilisateur)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L90"
+      "source_location": "L94"
     },
     {
       "id": "project_state_9_journal_des_actions_log",
       "label": "9. Journal des actions (log)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "9. journal des actions (log)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L102"
+      "source_location": "L106"
     },
     {
       "id": "project_state_project_state_md_\u00e9tat_du_projet_frontend_client",
       "label": "PROJECT_STATE.md \u2014 \u00c9tat du projet \u00b7 Frontend (client/)",
       "_origin": "ast",
       "community": 15,
-      "community_name": "9. Journal des actions (log)",
+      "community_name": "EncaissePage.tsx",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "project_state.md \u2014 etat du projet \u00b7 frontend (client/)",
       "source_file": "PROJECT_STATE.md",
       "source_location": "L1"
-    },
-    {
-      "id": "src_api_audit",
-      "label": "audit.ts",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "audit.ts",
-      "source_file": "src/api/audit.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_api_client",
-      "label": "client.ts",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "client.ts",
-      "source_file": "src/api/client.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_api_client_failedqueue",
-      "label": "failedQueue",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "failedqueue",
-      "source_file": "src/api/client.ts",
-      "source_location": "L24"
-    },
-    {
-      "id": "src_api_health",
-      "label": "health.ts",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "health.ts",
-      "source_file": "src/api/health.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_api_referentiel",
-      "label": "referentiel.ts",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "referentiel.ts",
-      "source_file": "src/api/referentiel.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_api_stocks",
-      "label": "stocks.ts",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "stocks.ts",
-      "source_file": "src/api/stocks.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_audit_auditecartspage",
-      "label": "AuditEcartsPage.tsx",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "auditecartspage.tsx",
-      "source_file": "src/features/audit/AuditEcartsPage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_bureaux_bureauxpage",
-      "label": "BureauxPage.tsx",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "bureauxpage.tsx",
-      "source_file": "src/features/bureaux/BureauxPage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_dashboard_healthpage",
-      "label": "HealthPage.tsx",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "healthpage.tsx",
-      "source_file": "src/features/dashboard/HealthPage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_periodes_gestion_periodesgestionpage",
-      "label": "PeriodesGestionPage.tsx",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "periodesgestionpage.tsx",
-      "source_file": "src/features/periodes-gestion/PeriodesGestionPage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_stock_stockvaleurspage",
-      "label": "StockValeursPage.tsx",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "code",
-      "norm_label": "stockvaleurspage.tsx",
-      "source_file": "src/features/stock/StockValeursPage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "ref_axios",
-      "label": "axios",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "concept",
-      "norm_label": "axios",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "project_state_2026_10_12_\u00e9cran_d_ouverture_d_une_p\u00e9riode_de_gestion_section_2_t\u00e2che_2",
-      "label": "2026-10-12 \u2014 \u00c9cran d'ouverture d'une p\u00e9riode de gestion (Section 2, T\u00e2che 2)",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-10-12 \u2014 ecran d'ouverture d'une periode de gestion (section 2, tache 2)",
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L412"
-    },
-    {
-      "id": "project_state_2026_10_12_\u00e9cran_de_gestion_des_bureaux_section_2_t\u00e2che_1",
-      "label": "2026-10-12 \u2014 \u00c9cran de gestion des bureaux (Section 2, T\u00e2che 1)",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-10-12 \u2014 ecran de gestion des bureaux (section 2, tache 1)",
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L431"
-    },
-    {
-      "id": "project_state_2026_10_14_\u00e9cran_de_suivi_du_stock_de_valeurs_postales_et_timbres_section_7",
-      "label": "2026-10-14 \u2014 \u00c9cran de suivi du stock de valeurs postales et timbres (Section 7)",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "apiClient",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-10-14 \u2014 ecran de suivi du stock de valeurs postales et timbres (section 7)",
-      "source_file": "PROJECT_STATE.md",
-      "source_location": "L313"
     },
     {
       "id": "e2e_auth_spec",
@@ -5021,22 +4900,99 @@
       "source_location": "L25"
     },
     {
+      "id": "src_api_audit",
+      "label": "audit.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "audit.ts",
+      "source_file": "src/api/audit.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_api_client",
+      "label": "client.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "client.ts",
+      "source_file": "src/api/client.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_api_client_failedqueue",
+      "label": "failedQueue",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "failedqueue",
+      "source_file": "src/api/client.ts",
+      "source_location": "L24"
+    },
+    {
       "id": "src_api_dashboard",
       "label": "dashboard.ts",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "dashboard.ts",
       "source_file": "src/api/dashboard.ts",
       "source_location": "L1"
     },
     {
+      "id": "src_api_health",
+      "label": "health.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "health.ts",
+      "source_file": "src/api/health.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_audit_auditecartspage",
+      "label": "AuditEcartsPage.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "auditecartspage.tsx",
+      "source_file": "src/features/audit/AuditEcartsPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_audit_components_rectificationmodal",
+      "label": "RectificationModal.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationmodal.tsx",
+      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_audit_components_rectificationmodal_rectificationschema",
+      "label": "rectificationSchema",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "rectificationschema",
+      "source_file": "src/features/audit/components/RectificationModal.tsx",
+      "source_location": "L12"
+    },
+    {
       "id": "src_features_dashboard_components_admindashboard",
       "label": "AdminDashboard.tsx",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "admindashboard.tsx",
       "source_file": "src/features/dashboard/components/AdminDashboard.tsx",
@@ -5047,7 +5003,7 @@
       "label": "InspecteurDashboard.tsx",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "inspecteurdashboard.tsx",
       "source_file": "src/features/dashboard/components/InspecteurDashboard.tsx",
@@ -5058,10 +5014,21 @@
       "label": "ReceveurDashboard.tsx",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "receveurdashboard.tsx",
       "source_file": "src/features/dashboard/components/ReceveurDashboard.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_dashboard_healthpage",
+      "label": "HealthPage.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "healthpage.tsx",
+      "source_file": "src/features/dashboard/HealthPage.tsx",
       "source_location": "L1"
     },
     {
@@ -5069,10 +5036,21 @@
       "label": "DashboardPage.tsx",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "dashboardpage.tsx",
       "source_file": "src/features/dashboard/pages/DashboardPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_saisie_g58_components_totauxlive",
+      "label": "TotauxLive.tsx",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "totauxlive.tsx",
+      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
       "source_location": "L1"
     },
     {
@@ -5080,18 +5058,40 @@
       "label": "formatters.ts",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "code",
       "norm_label": "formatters.ts",
       "source_file": "src/lib/formatters.ts",
       "source_location": "L1"
     },
     {
+      "id": "src_types_index",
+      "label": "index.ts",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "code",
+      "norm_label": "index.ts",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ref_axios",
+      "label": "axios",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "index.ts",
+      "file_type": "concept",
+      "norm_label": "axios",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
       "id": "ref_lucide_react",
       "label": "lucide-react",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "concept",
       "norm_label": "lucide-react",
       "source_file": "package.json",
@@ -5102,12 +5102,12 @@
       "label": "2026-10-16 \u2014 Module 6 : Tableaux de bord (Receveur, Inspecteur, Admin)",
       "_origin": "ast",
       "community": 18,
-      "community_name": "lucide-react",
+      "community_name": "index.ts",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-16 \u2014 module 6 : tableaux de bord (receveur, inspecteur, admin)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L115"
+      "source_location": "L168"
     },
     {
       "id": "agent",
@@ -5382,17 +5382,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_features_saisie_g58_pages_situationcomptablepage",
-      "label": "SituationComptablePage.tsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "situationcomptablepage.tsx",
-      "source_file": "src/features/saisie-g58/pages/SituationComptablePage.tsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_main",
       "label": "main.tsx",
       "_origin": "ast",
@@ -5457,7 +5446,7 @@
       "node_kind": "heading",
       "norm_label": "2026-10-12 \u2014 module authentification & rbac complet (section 1)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L489"
+      "source_location": "L542"
     },
     {
       "id": "oxlintrc",
@@ -6134,32 +6123,10 @@
       "label": "comptabilite.ts",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "comptabilite.ts",
       "source_file": "src/api/comptabilite.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_encaisse_encaissepage",
-      "label": "EncaissePage.tsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "encaissepage.tsx",
-      "source_file": "src/features/encaisse/EncaissePage.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_periodes_gestion_components_cloturemodal",
-      "label": "ClotureModal.tsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "cloturemodal.tsx",
-      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
       "source_location": "L1"
     },
     {
@@ -6167,7 +6134,7 @@
       "label": "plan-comptable/components/LigneComptableSearch.tsx",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "plan-comptable/components/lignecomptablesearch.tsx",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
@@ -6178,7 +6145,7 @@
       "label": "saisie-g58/components/LigneComptableSearch.tsx",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "saisie-g58/components/lignecomptablesearch.tsx",
       "source_file": "src/features/saisie-g58/components/LigneComptableSearch.tsx",
@@ -6189,43 +6156,10 @@
       "label": "SectionForm.tsx",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "code",
       "norm_label": "sectionform.tsx",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_saisie_g58_components_totauxlive",
-      "label": "TotauxLive.tsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "totauxlive.tsx",
-      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_features_saisie_g58_pages_saisieg58page",
-      "label": "SaisieG58Page.tsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "saisieg58page.tsx",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_types_index",
-      "label": "index.ts",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "index.ts",
-      "file_type": "code",
-      "norm_label": "index.ts",
-      "source_file": "src/types/index.ts",
       "source_location": "L1"
     },
     {
@@ -6233,7 +6167,7 @@
       "label": "ARCHITECTURE.md",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "architecture.md",
@@ -6245,7 +6179,7 @@
       "label": "1. Stack",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. stack",
@@ -6257,7 +6191,7 @@
       "label": "2. Structure des dossiers",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. structure des dossiers",
@@ -6269,7 +6203,7 @@
       "label": "3. Principes d'organisation",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. principes d'organisation",
@@ -6281,7 +6215,7 @@
       "label": "4. Consommation de l'API backend",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. consommation de l'api backend",
@@ -6293,7 +6227,7 @@
       "label": "5. Environnement et variables",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. environnement et variables",
@@ -6305,7 +6239,7 @@
       "label": "6. Tests",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "6. tests",
@@ -6317,7 +6251,7 @@
       "label": "7. Ce qui reste ouvert (\u00e0 trancher avec l'utilisateur au fil du projet)",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "7. ce qui reste ouvert (a trancher avec l'utilisateur au fil du projet)",
@@ -6329,7 +6263,7 @@
       "label": "ARCHITECTURE.md \u2014 ComptaGeWeb \u00b7 Frontend (client/)",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "architecture.md \u2014 comptageweb \u00b7 frontend (client/)",
@@ -6341,48 +6275,60 @@
       "label": "2026-10-14 \u2014 Composant LigneComptableSearch (Section 3, T\u00e2che 1)",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 composant lignecomptablesearch (section 3, tache 1)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L363"
+      "source_location": "L416"
     },
     {
       "id": "project_state_2026_10_14_composant_sectionform_du_journal_g58_section_4_t\u00e2che_1",
       "label": "2026-10-14 \u2014 Composant SectionForm du Journal G58 (Section 4, T\u00e2che 1)",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2026-10-14 \u2014 composant sectionform du journal g58 (section 4, tache 1)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L292"
+      "source_location": "L345"
     },
     {
-      "id": "project_state_2026_10_14_\u00e9cran_d\u00e9tails_de_l_encaisse_section_4_t\u00e2che_4",
-      "label": "2026-10-14 \u2014 \u00c9cran D\u00e9tails de l'encaisse (Section 4, T\u00e2che 4)",
+      "id": "project_state_2026_10_15_test_e2e_saisie_compl\u00e8te_d_une_section_g58_et_totauxlive_section_4_t\u00e2che_6",
+      "label": "2026-10-15 \u2014 Test e2e saisie compl\u00e8te d'une section G58 et TotauxLive (Section 4, T\u00e2che 6)",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-10-14 \u2014 ecran details de l'encaisse (section 4, tache 4)",
+      "norm_label": "2026-10-15 \u2014 test e2e saisie complete d'une section g58 et totauxlive (section 4, tache 6)",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L233"
+      "source_location": "L245"
+    },
+    {
+      "id": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "label": "2026-10-22 \u2014 Module 3 : Gestion compl\u00e8te du Plan Comptable (Cr\u00e9ation, Modification, RBAC Admin)",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "apiClient",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-22 \u2014 module 3 : gestion complete du plan comptable (creation, modification, rbac admin)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L139"
     },
     {
       "id": "project_state_4_saisie_du_journal_g58_c\u0153ur_fonctionnel",
       "label": "4. Saisie du Journal G58 \u2014 c\u0153ur fonctionnel",
       "_origin": "ast",
       "community": 3,
-      "community_name": "index.ts",
+      "community_name": "apiClient",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. saisie du journal g58 \u2014 c\u0153ur fonctionnel",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L54"
+      "source_location": "L57"
     },
     {
       "id": "agents_skills_playwright_cli_references_element_attributes",
@@ -6419,6 +6365,73 @@
       "norm_label": "inspecting element attributes",
       "source_file": ".agents/skills/playwright-cli/references/element-attributes.md",
       "source_location": "L1"
+    },
+    {
+      "id": "src_api_stocks",
+      "label": "stocks.ts",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stocks.ts",
+      "source_file": "src/api/stocks.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal",
+      "label": "StockValeurFormModal.tsx",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurformmodal.tsx",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_basestockvaleurschema",
+      "label": "baseStockValeurSchema",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "basestockvaleurschema",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_features_stock_components_stockvaleurformmodal_stockvaleurschema",
+      "label": "stockValeurSchema",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurschema",
+      "source_file": "src/features/stock/components/StockValeurFormModal.tsx",
+      "source_location": "L37"
+    },
+    {
+      "id": "src_features_stock_stockvaleurspage",
+      "label": "StockValeursPage.tsx",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "code",
+      "norm_label": "stockvaleurspage.tsx",
+      "source_file": "src/features/stock/StockValeursPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "project_state_2026_10_14_\u00e9cran_de_suivi_du_stock_de_valeurs_postales_et_timbres_section_7",
+      "label": "2026-10-14 \u2014 \u00c9cran de suivi du stock de valeurs postales et timbres (Section 7)",
+      "_origin": "ast",
+      "community": 32,
+      "community_name": "StockValeurFormModal.tsx",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-14 \u2014 ecran de suivi du stock de valeurs postales et timbres (section 7)",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L366"
     },
     {
       "id": "agents_skills_playwright_cli_references_running_code_clipboard",
@@ -9603,7 +9616,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L112",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -9615,7 +9628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L171",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -9627,7 +9640,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L204",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -9639,7 +9652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L230",
+      "source_location": "L234",
       "weight": 1.0
     },
     {
@@ -9651,7 +9664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L66",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -9783,7 +9796,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L113",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_periodes_gestion_components_cloturemodal_cloturemodal",
+      "target": "src_components_ui_input_input",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -9795,7 +9820,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L126",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -9807,7 +9832,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L175",
+      "source_location": "L161",
       "weight": 1.0
     },
     {
@@ -9819,7 +9844,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L183",
+      "source_location": "L169",
       "weight": 1.0
     },
     {
@@ -9831,7 +9856,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L316",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -9939,7 +9964,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L119",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -9951,7 +9976,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L156",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -9963,7 +9988,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L159",
+      "source_location": "L162",
       "weight": 1.0
     },
     {
@@ -9975,7 +10000,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L178",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -9987,7 +10012,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L229",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -9999,7 +10024,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L145",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -10011,7 +10036,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L161",
+      "source_location": "L163",
       "weight": 1.0
     },
     {
@@ -10023,7 +10048,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L206",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -10035,7 +10060,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L209",
+      "source_location": "L215",
       "weight": 1.0
     },
     {
@@ -10047,7 +10072,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L228",
+      "source_location": "L234",
       "weight": 1.0
     },
     {
@@ -10059,7 +10084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L258",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -10071,7 +10096,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L261",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -10083,7 +10108,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L281",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -10095,7 +10120,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L403",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -10119,7 +10144,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L811",
+      "source_location": "L863",
       "weight": 1.0
     },
     {
@@ -10131,7 +10156,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/plan-comptable/components/LigneComptableSearch.tsx",
-      "source_location": "L831",
+      "source_location": "L886",
       "weight": 1.0
     },
     {
@@ -10220,6 +10245,18 @@
     },
     {
       "source": "src_features_saisie_g58_components_sectionform_sectionform",
+      "target": "src_features_saisie_g58_components_sectionform_createmouvementschema",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_sectionform_sectionform",
       "target": "src_api_comptabilite_getmouvements",
       "relation": "calls",
       "_origin": "ast",
@@ -10227,7 +10264,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L126",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -10239,7 +10276,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L178",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -10251,7 +10288,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L182",
+      "source_location": "L196",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_sectionform_sectionform",
+      "target": "src_lib_formatters_formatariary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -10263,7 +10312,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L197",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -10275,7 +10324,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L236",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -10287,7 +10336,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L250",
+      "source_location": "L295",
       "weight": 1.0
     },
     {
@@ -10299,7 +10348,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L287",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -10311,7 +10360,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L365",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -10323,79 +10372,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L376",
+      "source_location": "L433",
       "weight": 1.0
     },
     {
       "source": "src_features_saisie_g58_components_sectionform_sectionform",
-      "target": "src_features_saisie_g58_components_sectionform_createmouvementschema",
+      "target": "src_lib_formatters_formatdate",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L98",
+      "source_location": "L607",
       "weight": 1.0
     },
     {
-      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "target": "src_components_ui_button_button",
+      "source": "src_features_saisie_g58_components_totauxlive_totauxlive",
+      "target": "src_lib_formatters_formatariary",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L132",
-      "weight": 1.0
-    },
-    {
-      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "target": "src_contexts_authcontext_useauth",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "target": "src_features_saisie_g58_components_sectionform_sectionform",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L220",
-      "weight": 1.0
-    },
-    {
-      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "target": "src_api_comptabilite_getsectionscomptables",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L36",
-      "weight": 1.0
-    },
-    {
-      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
-      "target": "src_api_referentiel_getperiodesgestion",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L36",
+      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -10407,7 +10408,91 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L72",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_components_ui_button_button",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L225",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_contexts_authcontext_useauth",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_lib_formatters_formatariary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L318",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_features_saisie_g58_components_sectionform_sectionform",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L420",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_api_referentiel_getbureaux",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_api_referentiel_getperiodesgestion",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page_saisieg58page",
+      "target": "src_api_comptabilite_getsectionscomptables",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -10816,7 +10901,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L50",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -10828,7 +10913,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L51",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -10840,7 +10925,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L52",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -10852,7 +10937,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L54",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -10864,7 +10949,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -10876,7 +10961,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L73",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -10888,7 +10973,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L74",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -10900,7 +10985,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L75",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -10912,7 +10997,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -10924,7 +11009,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -10936,7 +11021,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -10948,7 +11033,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -11008,7 +11093,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L62",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -11020,7 +11105,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L64",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -13254,7 +13339,7 @@
     },
     {
       "source": "src_features_periodes_gestion_components_cloturemodal",
-      "target": "src_types_index_periodegestion",
+      "target": "src_components_ui_input_input",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13262,6 +13347,18 @@
       "context": "import",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_periodes_gestion_components_cloturemodal",
+      "target": "src_types_index_periodegestion",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -14034,7 +14131,7 @@
     },
     {
       "source": "src_features_saisie_g58_components_sectionform",
-      "target": "src_lib_formerrors_applyservervalidationerrors",
+      "target": "src_lib_formatters_formatariary",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14042,6 +14139,30 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
       "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_sectionform",
+      "target": "src_lib_formatters_formatdate",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_sectionform",
+      "target": "src_lib_formerrors_applyservervalidationerrors",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -14105,6 +14226,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_saisie_g58_components_totauxlive",
+      "target": "src_lib_formatters_formatariary",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "src_features_saisie_g58_pages_saisieg58page",
       "target": "src_contexts_authcontext_useauth",
       "relation": "imports",
@@ -14114,6 +14247,18 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
       "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page",
+      "target": "src_api_referentiel_getbureaux",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14150,6 +14295,18 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
       "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page",
+      "target": "src_types_index_bureau",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -14210,6 +14367,18 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page",
+      "target": "src_lib_formatters_formatariary",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -16668,7 +16837,7 @@
     },
     {
       "source": "src_features_periodes_gestion_components_cloturemodal",
-      "target": "src_types_index",
+      "target": "src_components_ui_input",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -16676,6 +16845,18 @@
       "context": "import",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_periodes_gestion_components_cloturemodal",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
+      "source_location": "L4",
       "type_only": true,
       "weight": 1.0
     },
@@ -16688,7 +16869,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -17406,7 +17587,7 @@
     },
     {
       "source": "src_features_saisie_g58_components_sectionform",
-      "target": "src_lib_formerrors",
+      "target": "src_lib_formatters",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -17418,7 +17599,7 @@
     },
     {
       "source": "src_features_saisie_g58_components_sectionform",
-      "target": "ref_lucide_react",
+      "target": "src_lib_formerrors",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -17426,6 +17607,18 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
       "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_components_sectionform",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -17502,6 +17695,18 @@
       "weight": 1.0
     },
     {
+      "source": "src_features_saisie_g58_components_totauxlive",
+      "target": "src_lib_formatters",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "src_features_saisie_g58_pages_saisieg58page",
       "target": "ref_react",
       "relation": "imports_from",
@@ -17511,6 +17716,18 @@
       "context": "import",
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_features_saisie_g58_pages_saisieg58page",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -17600,7 +17817,7 @@
     },
     {
       "source": "src_features_saisie_g58_pages_saisieg58page",
-      "target": "ref_lucide_react",
+      "target": "src_lib_formatters",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -21543,13 +21760,35 @@
     },
     {
       "source": "project_state_9_journal_des_actions_log",
+      "target": "project_state_2026_10_25_ajout_de_raccourcis_contextuels_de_cr\u00e9ation_de_ligne_dans_le_plan_comptable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_9_journal_des_actions_log",
+      "target": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L139",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_9_journal_des_actions_log",
       "target": "project_state_2026_10_16_module_6_tableaux_de_bord_receveur_inspecteur_admin",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L115",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -21560,7 +21799,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L138",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -21571,7 +21810,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L175",
+      "source_location": "L228",
       "weight": 1.0
     },
     {
@@ -21582,7 +21821,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L192",
+      "source_location": "L245",
       "weight": 1.0
     },
     {
@@ -21593,7 +21832,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L209",
+      "source_location": "L262",
       "weight": 1.0
     },
     {
@@ -21604,7 +21843,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L233",
+      "source_location": "L286",
       "weight": 1.0
     },
     {
@@ -21615,7 +21854,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L259",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
@@ -21626,7 +21865,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L276",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -21637,7 +21876,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L292",
+      "source_location": "L345",
       "weight": 1.0
     },
     {
@@ -21648,7 +21887,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L313",
+      "source_location": "L366",
       "weight": 1.0
     },
     {
@@ -21659,7 +21898,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L333",
+      "source_location": "L386",
       "weight": 1.0
     },
     {
@@ -21670,7 +21909,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L349",
+      "source_location": "L402",
       "weight": 1.0
     },
     {
@@ -21681,7 +21920,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L363",
+      "source_location": "L416",
       "weight": 1.0
     },
     {
@@ -21692,7 +21931,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L382",
+      "source_location": "L435",
       "weight": 1.0
     },
     {
@@ -21703,7 +21942,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L398",
+      "source_location": "L451",
       "weight": 1.0
     },
     {
@@ -21714,7 +21953,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L412",
+      "source_location": "L465",
       "weight": 1.0
     },
     {
@@ -21725,7 +21964,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L431",
+      "source_location": "L484",
       "weight": 1.0
     },
     {
@@ -21736,7 +21975,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L473",
+      "source_location": "L526",
       "weight": 1.0
     },
     {
@@ -21747,7 +21986,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L489",
+      "source_location": "L542",
       "weight": 1.0
     },
     {
@@ -21758,7 +21997,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L102",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -21796,7 +22035,7 @@
     },
     {
       "source": "project_state_project_state_md_\u00e9tat_du_projet_frontend_client",
-      "target": "project_state_3_recherche_dans_le_plan_comptable_remplace_le_treeview_legacy",
+      "target": "project_state_3_recherche_et_gestion_du_plan_comptable_remplace_le_treeview_legacy",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -21813,7 +22052,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L54",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -21824,7 +22063,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L67",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -21835,7 +22074,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L75",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -21846,7 +22085,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L83",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -21857,7 +22096,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L90",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -23067,7 +23306,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L44",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -23078,7 +23317,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L45",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -23089,7 +23328,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L47",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -23100,7 +23339,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/encaisse/components/EncaisseFormModal.tsx",
-      "source_location": "L57",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -23122,7 +23361,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -23133,7 +23372,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/ClotureModal.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -23149,24 +23388,13 @@
     },
     {
       "source": "src_features_periodes_gestion_components_periodegestionformmodal",
-      "target": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionschema",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L54",
-      "weight": 1.0
-    },
-    {
-      "source": "src_features_periodes_gestion_components_periodegestionformmodal",
       "target": "src_features_periodes_gestion_components_periodegestionformmodal_periodegestionforminput",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L67",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -23177,7 +23405,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L68",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -23188,7 +23416,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L70",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -23199,7 +23427,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/periodes-gestion/components/PeriodeGestionFormModal.tsx",
-      "source_location": "L78",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -23232,7 +23460,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -23243,7 +23471,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -23254,7 +23482,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -23265,7 +23493,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/plan-comptable/components/LigneComptableModal.tsx",
-      "source_location": "L56",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -23364,7 +23592,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L31",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -23375,7 +23603,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L56",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -23386,7 +23614,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L57",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -23397,7 +23625,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L60",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -23408,7 +23636,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/SectionForm.tsx",
-      "source_location": "L74",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -23419,7 +23647,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -23430,7 +23658,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/components/TotauxLive.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -23441,7 +23669,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/features/saisie-g58/pages/SaisieG58Page.tsx",
-      "source_location": "L19",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -23540,7 +23768,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -23551,7 +23779,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L34",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -23562,7 +23790,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L52",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -23573,7 +23801,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/lib/formatters.ts",
-      "source_location": "L73",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -24707,7 +24935,7 @@
       "confidence_score": 0.95,
       "context": "AdminDashboardData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -24719,7 +24947,7 @@
       "confidence_score": 0.95,
       "context": "AuthProvider",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L500",
+      "source_location": "L553",
       "weight": 1.0
     },
     {
@@ -24731,7 +24959,7 @@
       "confidence_score": 0.95,
       "context": "Bureau",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L433",
+      "source_location": "L486",
       "weight": 1.0
     },
     {
@@ -24743,7 +24971,7 @@
       "confidence_score": 0.95,
       "context": "BureauAvecEcartsItem",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -24755,7 +24983,7 @@
       "confidence_score": 0.95,
       "context": "BureauFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L433",
+      "source_location": "L486",
       "weight": 1.0
     },
     {
@@ -24779,7 +25007,7 @@
       "confidence_score": 0.95,
       "context": "EcartItem",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -24791,7 +25019,7 @@
       "confidence_score": 0.95,
       "context": "EcartsListResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -24803,7 +25031,7 @@
       "confidence_score": 0.95,
       "context": "EncaisseFormModal",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L179",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -24815,7 +25043,7 @@
       "confidence_score": 0.95,
       "context": "InspecteurDashboardData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -24827,7 +25055,31 @@
       "confidence_score": 0.95,
       "context": "LigneComptable",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L365",
+      "source_location": "L418",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_types_index_lignecomptableformdata",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableFormData",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_3_recherche_et_gestion_du_plan_comptable_remplace_le_treeview_legacy",
+      "target": "src_features_plan_comptable_components_lignecomptablemodal_lignecomptablemodal",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "LigneComptableModal",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -24839,7 +25091,7 @@
       "confidence_score": 0.95,
       "context": "LigneComptableParentDetail",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L365",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -24875,11 +25127,11 @@
       "confidence_score": 0.95,
       "context": "LigneComptableSearch",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L196",
+      "source_location": "L249",
       "weight": 1.0
     },
     {
-      "source": "project_state_3_recherche_dans_le_plan_comptable_remplace_le_treeview_legacy",
+      "source": "project_state_3_recherche_et_gestion_du_plan_comptable_remplace_le_treeview_legacy",
       "target": "src_features_plan_comptable_components_lignecomptablesearch_lignecomptablesearch",
       "relation": "references",
       "_origin": "ast",
@@ -24899,7 +25151,7 @@
       "confidence_score": 0.95,
       "context": "LigneComptableSearchParams",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L365",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -24911,7 +25163,7 @@
       "confidence_score": 0.95,
       "context": "LoginRequest",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L491",
+      "source_location": "L544",
       "weight": 1.0
     },
     {
@@ -24923,7 +25175,7 @@
       "confidence_score": 0.95,
       "context": "LoginResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L491",
+      "source_location": "L544",
       "weight": 1.0
     },
     {
@@ -24935,7 +25187,7 @@
       "confidence_score": 0.95,
       "context": "MouvementEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L235",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -24947,7 +25199,7 @@
       "confidence_score": 0.95,
       "context": "MouvementEncaisseFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L235",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -24959,7 +25211,7 @@
       "confidence_score": 0.95,
       "context": "MouvementEncaisseSearchParams",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L235",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -24971,7 +25223,7 @@
       "confidence_score": 0.95,
       "context": "MouvementG58",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L294",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -24983,7 +25235,7 @@
       "confidence_score": 0.95,
       "context": "MouvementG58FormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L294",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -24995,7 +25247,7 @@
       "confidence_score": 0.95,
       "context": "MouvementSearchParams",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L294",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -25007,7 +25259,7 @@
       "confidence_score": 0.95,
       "context": "PaginatedResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L433",
+      "source_location": "L486",
       "weight": 1.0
     },
     {
@@ -25019,7 +25271,7 @@
       "confidence_score": 0.95,
       "context": "PeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L414",
+      "source_location": "L467",
       "weight": 1.0
     },
     {
@@ -25031,7 +25283,7 @@
       "confidence_score": 0.95,
       "context": "PeriodeGestionFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L414",
+      "source_location": "L467",
       "weight": 1.0
     },
     {
@@ -25043,7 +25295,7 @@
       "confidence_score": 0.95,
       "context": "ProduitPostal",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -25055,7 +25307,7 @@
       "confidence_score": 0.95,
       "context": "Province",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L433",
+      "source_location": "L486",
       "weight": 1.0
     },
     {
@@ -25067,7 +25319,7 @@
       "confidence_score": 0.95,
       "context": "ReceveurDashboardData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -25079,7 +25331,7 @@
       "confidence_score": 0.95,
       "context": "RefreshResponse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L491",
+      "source_location": "L544",
       "weight": 1.0
     },
     {
@@ -25091,7 +25343,7 @@
       "confidence_score": 0.95,
       "context": "RequireAuth",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L496",
+      "source_location": "L549",
       "weight": 1.0
     },
     {
@@ -25103,7 +25355,7 @@
       "confidence_score": 0.95,
       "context": "RequireAuth",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L152",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -25115,7 +25367,7 @@
       "confidence_score": 0.95,
       "context": "RubriqueEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L235",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -25127,7 +25379,31 @@
       "confidence_score": 0.95,
       "context": "SectionComptable",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L365",
+      "source_location": "L418",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_types_index_sectioncomptableformdata",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "SectionComptableFormData",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_3_recherche_et_gestion_du_plan_comptable_remplace_le_treeview_legacy",
+      "target": "src_features_plan_comptable_components_sectioncomptablemodal_sectioncomptablemodal",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "SectionComptableModal",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -25139,7 +25415,7 @@
       "confidence_score": 0.95,
       "context": "SectionForm",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L56",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -25151,7 +25427,7 @@
       "confidence_score": 0.95,
       "context": "SectionProgressionItem",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L118",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -25163,7 +25439,7 @@
       "confidence_score": 0.95,
       "context": "SituationComptable",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L211",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -25175,7 +25451,7 @@
       "confidence_score": 0.95,
       "context": "StockValeur",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -25187,7 +25463,7 @@
       "confidence_score": 0.95,
       "context": "StockValeurFormData",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -25199,7 +25475,7 @@
       "confidence_score": 0.95,
       "context": "StockValeurRecapitulatif",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -25211,7 +25487,7 @@
       "confidence_score": 0.95,
       "context": "StockValeurSearchParams",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L315",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -25223,7 +25499,7 @@
       "confidence_score": 0.95,
       "context": "TotauxG58",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L294",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -25259,7 +25535,7 @@
       "confidence_score": 0.95,
       "context": "TotauxLive",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L197",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -25271,7 +25547,7 @@
       "confidence_score": 0.95,
       "context": "TotauxLive",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L57",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -25283,7 +25559,7 @@
       "confidence_score": 0.95,
       "context": "TotauxSectionItem",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L294",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -25295,7 +25571,7 @@
       "confidence_score": 0.95,
       "context": "User",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L491",
+      "source_location": "L544",
       "weight": 1.0
     },
     {
@@ -25307,7 +25583,7 @@
       "confidence_score": 0.95,
       "context": "applyServerValidationErrors",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L384",
+      "source_location": "L437",
       "weight": 1.0
     },
     {
@@ -25319,7 +25595,19 @@
       "confidence_score": 0.95,
       "context": "applyServerValidationErrors",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L265",
+      "source_location": "L318",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_lib_formerrors_applyservervalidationerrors",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "applyServerValidationErrors",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -25331,7 +25619,19 @@
       "confidence_score": 0.95,
       "context": "cloturerPeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L415",
+      "source_location": "L468",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_createlignecomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "createLigneComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -25343,7 +25643,7 @@
       "confidence_score": 0.95,
       "context": "createMouvement",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L295",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -25355,7 +25655,7 @@
       "confidence_score": 0.95,
       "context": "createMouvementEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L236",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -25367,7 +25667,31 @@
       "confidence_score": 0.95,
       "context": "createPeriodeGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L415",
+      "source_location": "L468",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_createsectioncomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "createSectionComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_deletelignecomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "deleteLigneComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -25379,7 +25703,7 @@
       "confidence_score": 0.95,
       "context": "deleteMouvement",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L295",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -25391,7 +25715,19 @@
       "confidence_score": 0.95,
       "context": "deleteMouvementEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L236",
+      "source_location": "L289",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_deletesectioncomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "deleteSectionComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -25403,7 +25739,7 @@
       "confidence_score": 0.95,
       "context": "formatAriary",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L117",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -25415,7 +25751,7 @@
       "confidence_score": 0.95,
       "context": "formatDate",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L117",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -25427,7 +25763,7 @@
       "confidence_score": 0.95,
       "context": "formatDateTime",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L117",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -25439,7 +25775,7 @@
       "confidence_score": 0.95,
       "context": "formatPercent",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L117",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -25451,7 +25787,7 @@
       "confidence_score": 0.95,
       "context": "getLignesComptables",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L366",
+      "source_location": "L419",
       "weight": 1.0
     },
     {
@@ -25463,7 +25799,7 @@
       "confidence_score": 0.95,
       "context": "getMe",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L492",
+      "source_location": "L545",
       "weight": 1.0
     },
     {
@@ -25475,7 +25811,7 @@
       "confidence_score": 0.95,
       "context": "getMouvements",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L295",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -25487,7 +25823,7 @@
       "confidence_score": 0.95,
       "context": "getMouvementsEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L236",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -25499,7 +25835,7 @@
       "confidence_score": 0.95,
       "context": "getPeriodesGestion",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L415",
+      "source_location": "L468",
       "weight": 1.0
     },
     {
@@ -25511,7 +25847,7 @@
       "confidence_score": 0.95,
       "context": "getRubriquesEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L236",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -25523,7 +25859,7 @@
       "confidence_score": 0.95,
       "context": "getSectionsComptables",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L366",
+      "source_location": "L419",
       "weight": 1.0
     },
     {
@@ -25535,7 +25871,7 @@
       "confidence_score": 0.95,
       "context": "getTotauxG58",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L295",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -25547,7 +25883,7 @@
       "confidence_score": 0.95,
       "context": "login",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L492",
+      "source_location": "L545",
       "weight": 1.0
     },
     {
@@ -25559,7 +25895,7 @@
       "confidence_score": 0.95,
       "context": "logout",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L492",
+      "source_location": "L545",
       "weight": 1.0
     },
     {
@@ -25571,7 +25907,19 @@
       "confidence_score": 0.95,
       "context": "refreshToken",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L492",
+      "source_location": "L545",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_updatelignecomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "updateLigneComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -25583,7 +25931,7 @@
       "confidence_score": 0.95,
       "context": "updateMouvement",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L295",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -25595,7 +25943,19 @@
       "confidence_score": 0.95,
       "context": "updateMouvementEncaisse",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L179",
+      "source_location": "L232",
+      "weight": 1.0
+    },
+    {
+      "source": "project_state_2026_10_22_module_3_gestion_compl\u00e8te_du_plan_comptable_cr\u00e9ation_modification_rbac_admin",
+      "target": "src_api_comptabilite_updatesectioncomptable",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "updateSectionComptable",
+      "source_file": "PROJECT_STATE.md",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -25607,7 +25967,7 @@
       "confidence_score": 0.95,
       "context": "useAdminDashboard",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L119",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -25619,7 +25979,7 @@
       "confidence_score": 0.95,
       "context": "useEcartsList",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L119",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -25631,7 +25991,7 @@
       "confidence_score": 0.95,
       "context": "useInspecteurDashboard",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L119",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -25643,10 +26003,10 @@
       "confidence_score": 0.95,
       "context": "useReceveurDashboard",
       "source_file": "PROJECT_STATE.md",
-      "source_location": "L119",
+      "source_location": "L172",
       "weight": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ddb1d661950c1651dfc86262acfc82a53f7e2005"
+  "built_at_commit": "6dd5685a7f7318ab6728feef211aedab433e9eba"
 }

@@ -64,7 +64,7 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
 
   const [sections, setSections] = useState<SectionComptable[]>([]);
   const [selectedSection, setSelectedSection] = useState<string>(defaultSection);
-  const [selectedSens, setSelectedSens] = useState<string>(''); // '' | '1' | '2'
+  const [selectedSens, setSelectedSens] = useState<string>('1'); // Débit ('1') par défaut, ou Crédit ('2')
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
@@ -81,6 +81,8 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
   const [isLigneModalOpen, setIsLigneModalOpen] = useState(false);
   const [ligneToEdit, setLigneToEdit] = useState<LigneComptable | null>(null);
   const [ligneApiErrors, setLigneApiErrors] = useState<ApiError | null>(null);
+  const [customDefaultSectionId, setCustomDefaultSectionId] = useState<number | null>(null);
+  const [customDefaultParentId, setCustomDefaultParentId] = useState<number | null>(null);
 
   const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
   const [sectionToEdit, setSectionToEdit] = useState<SectionComptable | null>(null);
@@ -187,15 +189,19 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
   };
 
   // Gestion des actions d'administration Lignes
-  const handleOpenCreateLigne = () => {
+  const handleOpenCreateLigne = (preselectedSectionId?: number | null, preselectedParentId?: number | null) => {
     setLigneToEdit(null);
     setLigneApiErrors(null);
+    setCustomDefaultSectionId(preselectedSectionId ?? null);
+    setCustomDefaultParentId(preselectedParentId ?? null);
     setIsLigneModalOpen(true);
   };
 
   const handleOpenEditLigne = (ligne: LigneComptable) => {
     setLigneToEdit(ligne);
     setLigneApiErrors(null);
+    setCustomDefaultSectionId(null);
+    setCustomDefaultParentId(null);
     setIsLigneModalOpen(true);
   };
 
@@ -292,24 +298,33 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
     }
   };
 
-  // Grouper les résultats par section (A, B, C, D, E...)
-  const groupedLignes = lignes.reduce<Record<string, { section: SectionComptable | null; items: LigneComptable[] }>>(
-    (acc, ligne) => {
-      const key = ligne.section_code || 'AUTRE';
-      if (!acc[key]) {
-        const foundSec = sections.find((s) => s.code === key) || null;
-        acc[key] = {
-          section: foundSec,
-          items: [],
-        };
-      }
-      acc[key].items.push(ligne);
-      return acc;
-    },
-    {}
-  );
+  // Grouper les résultats par section (A, B, C, D, E...) et sens
+  const groupedLignes = lignes.reduce<
+    Record<string, { section: SectionComptable | null; items: LigneComptable[]; sens: number; code: string }>
+  >((acc, ligne) => {
+    const sensVal = ligne.sens || 1;
+    const secCode = ligne.section_code || 'AUTRE';
+    const key = `${sensVal}_${secCode}`;
+    if (!acc[key]) {
+      const foundSec = sections.find((s) => s.code === secCode && s.sens === sensVal) ||
+        sections.find((s) => s.code === secCode) || null;
+      acc[key] = {
+        section: foundSec,
+        items: [],
+        sens: sensVal,
+        code: secCode,
+      };
+    }
+    acc[key].items.push(ligne);
+    return acc;
+  }, {});
 
-  const sortedSectionKeys = Object.keys(groupedLignes).sort();
+  const sortedGroupKeys = Object.keys(groupedLignes).sort((a, b) => {
+    const [sensA, ...codePartsA] = a.split('_');
+    const [sensB, ...codePartsB] = b.split('_');
+    if (sensA !== sensB) return Number(sensA) - Number(sensB);
+    return codePartsA.join('_').localeCompare(codePartsB.join('_'));
+  });
 
   return (
     <div className="w-full space-y-6">
@@ -360,40 +375,39 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
             )}
           </div>
 
-          {/* Filtre par sens (Débit / Crédit) */}
-          <div className="flex items-center gap-1.5 bg-surface-secondary p-1 rounded-lg self-start md:self-auto">
+          {/* Onglets Débit / Crédit au dessus */}
+          <div className="flex items-center gap-1.5 bg-surface-secondary/80 p-1 rounded-xl self-start md:self-auto border border-border-subtle/50">
             <button
               type="button"
-              onClick={() => setSelectedSens('')}
-              className={`px-3 py-1.5 text-xs font-sans font-medium rounded-md transition-colors ${
-                selectedSens === ''
-                  ? 'bg-surface-card text-text-primary shadow-sm font-semibold'
-                  : 'text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              Tous sens
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedSens('1')}
-              className={`px-3 py-1.5 text-xs font-sans font-medium rounded-md transition-colors ${
+              data-testid="tab-sens-debit"
+              onClick={() => {
+                setSelectedSens('1');
+                setSelectedSection('');
+              }}
+              className={`px-4 py-2 text-xs font-sans rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                 selectedSens === '1'
-                  ? 'bg-brand text-white shadow-sm font-semibold'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'bg-brand text-white shadow-xs font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-secondary'
               }`}
             >
-              Débit
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>Débit (Recettes)</span>
             </button>
             <button
               type="button"
-              onClick={() => setSelectedSens('2')}
-              className={`px-3 py-1.5 text-xs font-sans font-medium rounded-md transition-colors ${
+              data-testid="tab-sens-credit"
+              onClick={() => {
+                setSelectedSens('2');
+                setSelectedSection('');
+              }}
+              className={`px-4 py-2 text-xs font-sans rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                 selectedSens === '2'
-                  ? 'bg-status-alert text-white shadow-sm font-semibold'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'bg-status-alert text-white shadow-xs font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-secondary'
               }`}
             >
-              Crédit
+              <span className="w-2 h-2 rounded-full bg-red-300"></span>
+              <span>Crédit (Dépenses)</span>
             </button>
           </div>
 
@@ -404,7 +418,7 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                 type="button"
                 variant="primary"
                 size="sm"
-                onClick={handleOpenCreateLigne}
+                onClick={() => handleOpenCreateLigne()}
                 className="flex items-center gap-1.5 text-xs font-semibold whitespace-nowrap"
               >
                 <Plus className="w-4 h-4" />
@@ -424,51 +438,53 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
           )}
         </div>
 
-        {/* Pilules de sélection rapide par section macro-comptable */}
+        {/* Pilules de sélection rapide par section macro-comptable filtrées par le sens actif */}
         <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border-subtle/60">
           <span className="text-xs font-sans font-medium text-text-secondary mr-1">
-            Section :
+            Sections {selectedSens === '1' ? 'Débit' : selectedSens === '2' ? 'Crédit' : ''} :
           </span>
           <button
             type="button"
             onClick={() => setSelectedSection('')}
-            className={`px-2.5 py-1 text-xs font-sans rounded-full transition-colors ${
+            className={`px-2.5 py-1 text-xs font-sans rounded-full transition-colors cursor-pointer ${
               selectedSection === ''
-                ? 'bg-brand text-white font-medium'
+                ? 'bg-brand text-white font-medium shadow-xs'
                 : 'bg-surface-secondary text-text-secondary hover:text-text-primary'
             }`}
           >
-            Toutes (A-E)
+            Toutes les sections
           </button>
-          {sections.map((sec) => (
-            <div key={sec.code} className="inline-flex items-center group/pill">
-              <button
-                type="button"
-                onClick={() => setSelectedSection(selectedSection === sec.code ? '' : sec.code)}
-                className={`px-2.5 py-1 text-xs font-sans rounded-full flex items-center gap-1.5 transition-colors ${
-                  selectedSection === sec.code
-                    ? 'bg-accent text-text-primary font-semibold shadow-sm'
-                    : 'bg-surface-secondary text-text-secondary hover:text-text-primary'
-                }`}
-              >
-                <span className="font-bold">{sec.code}</span>
-                <span className="max-w-[120px] truncate text-[11px] opacity-90 hidden sm:inline">
-                  {sec.libelle}
-                </span>
-              </button>
-              {isAdmin && (
+          {sections
+            .filter((sec) => !selectedSens || sec.sens.toString() === selectedSens)
+            .map((sec) => (
+              <div key={sec.id} className="inline-flex items-center group/pill">
                 <button
                   type="button"
-                  onClick={() => handleOpenEditSection(sec)}
-                  className="opacity-0 group-hover/pill:opacity-100 p-1 text-text-secondary hover:text-accent transition-opacity ml-0.5"
-                  title={`Modifier la section ${sec.code}`}
-                  aria-label={`Modifier la section ${sec.code}`}
+                  onClick={() => setSelectedSection(selectedSection === sec.code ? '' : sec.code)}
+                  className={`px-2.5 py-1 text-xs font-sans rounded-full flex items-center gap-1.5 transition-colors cursor-pointer ${
+                    selectedSection === sec.code
+                      ? 'bg-accent text-text-primary font-semibold shadow-xs'
+                      : 'bg-surface-secondary text-text-secondary hover:text-text-primary'
+                  }`}
                 >
-                  <Edit2 className="w-3 h-3" />
+                  <span className="font-bold">{sec.code}</span>
+                  <span className="max-w-[140px] truncate text-[11px] opacity-90 hidden sm:inline">
+                    {sec.libelle}
+                  </span>
                 </button>
-              )}
-            </div>
-          ))}
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEditSection(sec)}
+                    className="opacity-0 group-hover/pill:opacity-100 p-1 text-text-secondary hover:text-accent transition-opacity ml-0.5 cursor-pointer"
+                    title={`Modifier la section ${sec.code}`}
+                    aria-label={`Modifier la section ${sec.code}`}
+                  >
+                    <Edit2 className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            ))}
         </div>
       </div>
 
@@ -614,38 +630,46 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
             )}
           </div>
 
-          {sortedSectionKeys.map((secCode) => {
-            const group = groupedLignes[secCode];
+          {sortedGroupKeys.map((groupKey) => {
+            const group = groupedLignes[groupKey];
             const sectionMeta = group.section;
+            const secCode = group.code;
+            const isDebit = group.sens === 1;
+
             return (
               <section
-                key={`group-${secCode}`}
+                key={`group-${groupKey}`}
                 className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm"
                 aria-label={`Section ${secCode}`}
               >
                 {/* En-tête de section */}
                 <div className="bg-surface-secondary/70 border-b border-border-subtle px-4 py-3 flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-brand text-white font-heading font-bold text-sm flex items-center justify-center shadow-xs">
+                    <span
+                      className={`flex-shrink-0 w-7 h-7 rounded-lg text-white font-heading font-bold text-sm flex items-center justify-center shadow-xs ${
+                        isDebit ? 'bg-brand' : 'bg-status-alert'
+                      }`}
+                    >
                       {secCode}
                     </span>
                     <div className="min-w-0">
-                      <h4 className="text-sm font-heading font-bold text-text-primary truncate">
-                        Section {secCode} {sectionMeta ? `— ${sectionMeta.libelle}` : ''}
-                      </h4>
-                      <div className="text-[11px] font-sans text-text-secondary flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-sm font-heading font-bold text-text-primary truncate">
+                          Section {secCode} {sectionMeta ? `— ${sectionMeta.libelle}` : ''}
+                        </h4>
+                        <span
+                          className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
+                            isDebit ? 'bg-brand/10 text-brand' : 'bg-status-alert/10 text-status-alert'
+                          }`}
+                        >
+                          {isDebit ? 'Débit' : 'Crédit'}
+                        </span>
+                      </div>
+                      <div className="text-[11px] font-sans text-text-secondary flex items-center gap-2 mt-0.5">
                         <span>
                           Sens normal :{' '}
-                          <strong
-                            className={
-                              sectionMeta?.sens === 1
-                                ? 'text-brand'
-                                : sectionMeta?.sens === 2
-                                ? 'text-status-alert'
-                                : 'text-text-primary'
-                            }
-                          >
-                            {sectionMeta?.sens_libelle || (sectionMeta?.sens === 1 ? 'Débit' : 'Crédit')}
+                          <strong className={isDebit ? 'text-brand' : 'text-status-alert'}>
+                            {sectionMeta?.sens_libelle || (isDebit ? 'Débit' : 'Crédit')}
                           </strong>
                         </span>
                         <span>•</span>
@@ -654,9 +678,21 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                     </div>
                   </div>
 
-                  {/* Boutons d'édition/suppression de la section pour l'admin */}
+                  {/* Boutons d'administration de la section pour l'admin */}
                   {isAdmin && sectionMeta && (
                     <div className="flex items-center gap-1">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleOpenCreateLigne(sectionMeta.id, null)}
+                        className="text-xs flex items-center gap-1 text-brand hover:text-brand hover:bg-brand/10 font-medium"
+                        title={`Ajouter une ligne dans la section ${secCode}`}
+                        aria-label={`Ajouter une ligne dans la section ${secCode}`}
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Nouvelle ligne</span>
+                      </Button>
                       <Button
                         type="button"
                         variant="ghost"
@@ -664,6 +700,7 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                         onClick={() => handleOpenEditSection(sectionMeta)}
                         className="text-xs flex items-center gap-1 text-text-secondary hover:text-text-primary"
                         title={`Modifier la section ${secCode}`}
+                        aria-label={`Modifier la section ${secCode}`}
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Modifier</span>
@@ -675,6 +712,7 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                         onClick={() => handleDeleteSection(sectionMeta)}
                         className="text-xs flex items-center gap-1 text-status-alert hover:bg-status-alert/10"
                         title={`Supprimer la section ${secCode}`}
+                        aria-label={`Supprimer la section ${secCode}`}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
@@ -758,6 +796,20 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
                                 size="sm"
                                 onClick={(e) => {
                                   e.stopPropagation();
+                                  handleOpenCreateLigne(ligne.section, ligne.id);
+                                }}
+                                className="text-xs p-1.5 text-text-secondary hover:text-brand hover:bg-brand/10"
+                                title={`Ajouter une sous-ligne rattachée à ${ligne.compte}`}
+                                aria-label={`Ajouter une sous-ligne rattachée à ${ligne.compte}`}
+                              >
+                                <Plus className="w-3.5 h-3.5" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   handleOpenEditLigne(ligne);
                                 }}
                                 className="text-xs p-1.5 text-text-secondary hover:text-accent"
@@ -821,10 +873,13 @@ export const LigneComptableSearch: React.FC<LigneComptableSearchProps> = ({
         allLignes={lignes}
         apiErrors={ligneApiErrors}
         defaultSectionId={
-          selectedSection
+          customDefaultSectionId !== null
+            ? customDefaultSectionId
+            : selectedSection
             ? sections.find((s) => s.code === selectedSection)?.id || null
             : null
         }
+        defaultParentId={customDefaultParentId}
       />
 
       {/* Modal de création / modification d'une section macro-comptable */}
