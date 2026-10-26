@@ -142,8 +142,10 @@ class PeriodeGestion(models.Model):
         help_text="Date de prise de fonction / début de période (dateDebGest)"
     )
     date_fin = models.DateField(
+        null=True,
+        blank=True,
         verbose_name="Date de fin de gestion",
-        help_text="Date de cessation / fin de période (datefinGest)"
+        help_text="Date de cessation / fin de période (déterminée lors de la clôture)"
     )
     # Soldes et inventaire d'ouverture (en Ariary / MGA)
     reserve_numeraire = models.DecimalField(
@@ -213,7 +215,7 @@ class PeriodeGestion(models.Model):
         verbose_name_plural = "Périodes de gestion"
         constraints = [
             models.CheckConstraint(
-                condition=models.Q(date_fin__gte=models.F("date_debut")),
+                condition=models.Q(date_fin__isnull=True) | models.Q(date_fin__gte=models.F("date_debut")),
                 name="check_periode_gestion_date_fin_gte_debut"
             ),
         ]
@@ -228,6 +230,10 @@ class PeriodeGestion(models.Model):
         if self.date_debut and self.date_fin and self.date_fin < self.date_debut:
             raise ValidationError({
                 "date_fin": "La date de fin de gestion doit être supérieure ou égale à la date de début."
+            })
+        if self.cloturee and not self.date_fin:
+            raise ValidationError({
+                "date_fin": "La date de fin de gestion est obligatoire lors de la clôture de la période."
             })
 
     def save(self, *args, **kwargs):
@@ -249,5 +255,6 @@ class PeriodeGestion(models.Model):
 
     def __str__(self):
         statut = "Clôturée" if self.cloturee else "En cours"
-        return f"{self.bureau.nom_bureau} ({self.date_debut} au {self.date_fin}) [{statut}]"
+        date_fin_str = self.date_fin if self.date_fin else "en cours"
+        return f"{self.bureau.nom_bureau} ({self.date_debut} au {date_fin_str}) [{statut}]"
 

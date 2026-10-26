@@ -13,7 +13,6 @@ const basePeriodeGestionSchema = z.object({
   bureau: z.coerce.number().int().positive('Veuillez sélectionner un bureau de poste valide'),
   nom_receveur: z.string().min(2, 'Le nom du receveur doit comporter au moins 2 caractères'),
   date_debut: z.string().min(1, 'La date de début est obligatoire'),
-  date_fin: z.string().min(1, 'La date de fin est obligatoire'),
   reserve_numeraire: z
     .string()
     .min(1, 'Le montant de réserve en numéraire est obligatoire')
@@ -51,18 +50,7 @@ const basePeriodeGestionSchema = z.object({
     ),
 });
 
-const periodeGestionSchema = basePeriodeGestionSchema.refine(
-  (data) => {
-    if (data.date_debut && data.date_fin) {
-      return data.date_fin >= data.date_debut;
-    }
-    return true;
-  },
-  {
-    message: 'La date de fin de gestion doit être supérieure ou égale à la date de début',
-    path: ['date_fin'],
-  }
-);
+const periodeGestionSchema = basePeriodeGestionSchema;
 
 type PeriodeGestionFormInput = z.input<typeof periodeGestionSchema>;
 type PeriodeGestionFormOutput = z.output<typeof periodeGestionSchema>;
@@ -95,7 +83,6 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       bureau: bureaux[0]?.id || 1,
       nom_receveur: '',
       date_debut: new Date().toISOString().slice(0, 7) + '-01',
-      date_fin: new Date().toISOString().slice(0, 10),
       reserve_numeraire: '0.00',
       valeurs_postales: '0.00',
       timbres_fiscaux: '0.00',
@@ -110,7 +97,6 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
         bureau: bureaux[0]?.id || 1,
         nom_receveur: '',
         date_debut: new Date().toISOString().slice(0, 7) + '-01',
-        date_fin: new Date().toISOString().slice(0, 10),
         reserve_numeraire: '0.00',
         valeurs_postales: '0.00',
         timbres_fiscaux: '0.00',
@@ -136,7 +122,7 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       bureau: values.bureau,
       nom_receveur: values.nom_receveur,
       date_debut: values.date_debut,
-      date_fin: values.date_fin,
+      date_fin: null,
       reserve_numeraire: Number(values.reserve_numeraire).toFixed(2),
       valeurs_postales: Number(values.valeurs_postales).toFixed(2),
       timbres_fiscaux: Number(values.timbres_fiscaux).toFixed(2),
@@ -188,7 +174,7 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
           {...register('nom_receveur')}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <Input
             label="Date de début"
             required
@@ -196,13 +182,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
             error={errors.date_debut?.message}
             {...register('date_debut')}
           />
-          <Input
-            label="Date de fin"
-            required
-            type="date"
-            error={errors.date_fin?.message}
-            {...register('date_fin')}
-          />
+          <p className="text-[11px] font-sans text-text-secondary mt-1">
+            La date de fin sera automatiquement déterminée lors de la clôture officielle de cette période.
+          </p>
         </div>
       </div>
 

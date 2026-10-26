@@ -155,12 +155,15 @@ test.describe('Plan comptable — Recherche et consultation (Section 3)', () => 
       'Plan comptable des bureaux de poste'
     );
 
-    // Vérifier la présence des groupes de section A et B
+    // Par défaut, l'onglet Débit est sélectionné -> Section A visible
     await expect(page.getByRole('region', { name: 'Section A' })).toBeVisible();
+    await expect(page.getByText('A101')).toBeVisible();
+
+    // Basculer sur l'onglet Crédit -> Section B visible
+    await page.getByTestId('tab-sens-credit').click();
     await expect(page.getByRole('region', { name: 'Section B' })).toBeVisible();
 
-    // Vérifier les comptes
-    await expect(page.getByText('A101')).toBeVisible();
+    // Vérifier les comptes sous Crédit
     await expect(page.getByText('B101')).toBeVisible();
     await expect(page.getByText('Mandats ordinaires émis en numéraire')).toBeVisible();
   });
@@ -268,6 +271,224 @@ test.describe('Plan comptable — Recherche et consultation (Section 3)', () => 
     // Vérifier que le bloc récemment utilisées apparaît avec A101
     await expect(page.getByText('Récemment utilisées (Bureau 101)')).toBeVisible();
     await expect(page.getByRole('button', { name: /A101/ })).toBeVisible();
+  });
+
+  test('un utilisateur non admin ne voit pas les boutons de création ou de modification', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Les boutons d'administration ne doivent pas être visibles pour le receveur
+    await expect(page.getByRole('button', { name: 'Nouvelle ligne' })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: /Ajouter une ligne dans la section/ })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: /Modifier la ligne/ })).not.toBeVisible();
+  });
+});
+
+test.describe('Plan comptable — Administration CRUD & RBAC Admin', () => {
+  const ADMIN_USER = {
+    id: 2,
+    username: 'admin1',
+    first_name: 'Admin',
+    last_name: 'Système',
+    email: 'admin@comptage.local',
+    role: 'ADMIN',
+    syst_fonc: '',
+    bureau_code: null,
+  };
+
+  test.beforeEach(async ({ page }) => {
+    // Session Administrateur
+    await page.route('**/api/v1/auth/me/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(ADMIN_USER),
+      });
+    });
+
+    await page.route('**/api/v1/sections-comptables/**', async (route) => {
+      if (route.request().method() === 'GET') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(MOCK_SECTIONS),
+        });
+      } else if (route.request().method() === 'POST') {
+        const payload = JSON.parse(route.request().postData() || '{}');
+        await route.fulfill({
+          status: 201,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: 3,
+            ...payload,
+            sens_libelle: payload.sens === 1 ? 'Débit' : 'Crédit',
+          }),
+        });
+      }
+    });
+
+    await page.route('**/api/v1/lignes-comptables/**', async (route) => {
+      if (route.request().method() === 'GET') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            count: MOCK_LIGNES.length,
+            next: null,
+            previous: null,
+            results: MOCK_LIGNES,
+          }),
+        });
+      } else if (route.request().method() === 'POST') {
+        const payload = JSON.parse(route.request().postData() || '{}');
+        await route.fulfill({
+          status: 201,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: 4,
+            ...payload,
+            section_code: 'B',
+            section_libelle: 'Opérations relatives aux correspondances et objets',
+            sens: 2,
+            sens_libelle: 'Crédit',
+            parent_detail: null,
+          }),
+        });
+      } else if (route.request().method() === 'PATCH') {
+        const payload = JSON.parse(route.request().postData() || '{}');
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            ...MOCK_LIGNES[0],
+            ...payload,
+          }),
+        });
+      }
+    });
+
+    await page.addInitScript(() => {
+      localStorage.setItem('access_token', 'mock_token_admin');
+    });
+  });
+
+  test('un administrateur voit les actions d’administration et peut ouvrir le modal de création de ligne', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Les boutons d'administration doivent être visibles
+    const newLineBtn = page.getByRole('button', { name: 'Nouvelle ligne' });
+    const newSectionBtn = page.getByRole('button', { name: 'Section', exact: true });
+
+    await expect(newLineBtn).toBeVisible();
+    await expect(newSectionBtn).toBeVisible();
+
+    // Cliquer sur Nouvelle ligne
+    await newLineBtn.click();
+
+    // La modale doit s'ouvrir
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Ajouter une ligne au plan comptable')).toBeVisible();
+
+    // Vérifier les champs
+    await expect(modal.getByLabel('Section macro-comptable')).toBeVisible();
+    await expect(modal.getByLabel('Identifiant menu_sub')).toBeVisible();
+    await expect(modal.getByLabel('Numéro de compte')).toBeVisible();
+    await expect(modal.getByLabel('Libellé de l’opération')).toBeVisible();
+
+    // Remplir le formulaire
+    await modal.getByLabel('Identifiant menu_sub').fill('209');
+    await modal.getByLabel('Numéro de compte').fill('B109');
+    await modal.getByLabel('Libellé de l’opération').fill('Autres mandats télégraphiques');
+
+    // Valider
+    await modal.getByRole('button', { name: 'Créer la ligne' }).click();
+
+    // Message de succès
+    await expect(page.getByText('Ligne « B109 » créée avec succès.')).toBeVisible();
+  });
+
+  test('un administrateur peut modifier une ligne existante', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Cliquer sur le bouton modifier de la première ligne
+    const editBtn = page.getByRole('button', { name: 'Modifier la ligne A101' });
+    await expect(editBtn).toBeVisible();
+    await editBtn.click();
+
+    // Modal ouverte avec pré-remplissage
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Modifier la ligne A101')).toBeVisible();
+
+    // Modifier le libellé
+    const libelleInput = modal.getByLabel('Libellé de l’opération');
+    await libelleInput.fill('Versements reçus révisés');
+
+    // Enregistrer
+    await modal.getByRole('button', { name: 'Enregistrer les modifications' }).click();
+
+    // Message de succès
+    await expect(page.getByText('Ligne « A101 » modifiée avec succès.')).toBeVisible();
+  });
+
+  test('un administrateur peut ajouter une ligne directement depuis une section avec section pré-sélectionnée', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Basculer sur l'onglet Crédit pour voir la section B
+    await page.getByTestId('tab-sens-credit').click();
+
+    // Cliquer sur le bouton d'ajout de ligne de la section B
+    const addSectionBBtn = page.getByRole('button', { name: 'Ajouter une ligne dans la section B' });
+    await expect(addSectionBBtn).toBeVisible();
+    await addSectionBBtn.click();
+
+    // La modale doit s'ouvrir
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Ajouter une ligne au plan comptable')).toBeVisible();
+
+    // La section B doit être pré-sélectionnée (value="2")
+    const sectionSelect = modal.getByLabel('Section macro-comptable');
+    await expect(sectionSelect).toHaveValue('2');
+
+    // Aucun parent par défaut
+    const parentSelect = modal.getByLabel('Ligne parente (Sous-section)');
+    await expect(parentSelect).toHaveValue('');
+
+    // Remplir et valider
+    await modal.getByLabel('Numéro de compte').fill('B110');
+    await modal.getByLabel('Libellé de l’opération').fill('Nouveau sous-compte section B');
+    await modal.getByRole('button', { name: 'Créer la ligne' }).click();
+
+    await expect(page.getByText('Ligne « B110 » créée avec succès.')).toBeVisible();
+  });
+
+  test('un administrateur peut ajouter une sous-ligne directement depuis une ligne avec parent pré-sélectionné', async ({ page }) => {
+    await page.goto('/plan-comptable');
+
+    // Basculer sur l'onglet Crédit pour voir la ligne B1
+    await page.getByTestId('tab-sens-credit').click();
+
+    // Cliquer sur le bouton d'ajout de sous-ligne rattachée à B1
+    const addSubLigneBtn = page.getByRole('button', { name: 'Ajouter une sous-ligne rattachée à B1', exact: true });
+    await expect(addSubLigneBtn).toBeVisible();
+    await addSubLigneBtn.click();
+
+    // La modale doit s'ouvrir
+    const modal = page.locator('[role="dialog"]');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByText('Ajouter une ligne au plan comptable')).toBeVisible();
+
+    // La section B doit être pré-sélectionnée (section de B1, value="2")
+    const sectionSelect = modal.getByLabel('Section macro-comptable');
+    await expect(sectionSelect).toHaveValue('2');
+
+    // Remplir et valider
+    await modal.getByLabel('Numéro de compte').fill('B102');
+    await modal.getByLabel('Libellé de l’opération').fill('Sous-mandats émis');
+    await modal.getByRole('button', { name: 'Créer la ligne' }).click();
+
+    await expect(page.getByText('Ligne « B102 » créée avec succès.')).toBeVisible();
   });
 });
 

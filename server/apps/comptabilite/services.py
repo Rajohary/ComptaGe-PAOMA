@@ -108,19 +108,20 @@ def creer_mouvement(
     saisi_par,
     date_operation,
     montant: Decimal,
+    augmentation: Decimal = Decimal("0.00"),
+    diminution: Decimal = Decimal("0.00"),
+    montant_rectifie: Decimal = None,
+    motif_rectification: str = "",
 ) -> Mouvement:
     """
-    Création initiale d'une écriture comptable dans le Journal G58.
+    Création d'une écriture comptable dans le Journal G58.
 
     Règles métier :
       - Période active et non clôturée.
       - Date d'opération comprise dans les limites de la période.
       - Ligne comptable active et imputable.
-      - À la création initiale :
-          * augmentation = 0
-          * diminution = 0
-          * montant_rectifie = montant
-          * rectifie_par = None, motif_rectification = ""
+      - Vérification de l'équation :
+          montant_rectifie = montant + augmentation - diminution
     """
     valider_periode_active(periode_gestion)
     valider_date_operation(periode_gestion, date_operation)
@@ -130,16 +131,26 @@ def creer_mouvement(
     if montant_dec < 0:
         raise ValidationError({"montant": "Le montant initial déclaré ne peut pas être négatif."})
 
+    aug_dec = Decimal(str(augmentation or 0))
+    dim_dec = Decimal(str(diminution or 0))
+
+    rectifie_calcule = verifier_coherence_montants(
+        montant=montant_dec,
+        augmentation=aug_dec,
+        diminution=dim_dec,
+        montant_rectifie=montant_rectifie,
+    )
+
     mouvement = Mouvement.objects.create(
         periode_gestion=periode_gestion,
         ligne_comptable=ligne_comptable,
         saisi_par=saisi_par,
         date_operation=date_operation,
         montant=montant_dec,
-        augmentation=Decimal("0.00"),
-        diminution=Decimal("0.00"),
-        montant_rectifie=montant_dec,
-        motif_rectification="",
+        augmentation=aug_dec,
+        diminution=dim_dec,
+        montant_rectifie=rectifie_calcule,
+        motif_rectification=motif_rectification or "",
         rectifie_par=None,
     )
     return mouvement
@@ -151,14 +162,18 @@ def modifier_mouvement(
     date_operation=None,
     montant: Decimal = None,
     ligne_comptable: LigneComptable = None,
+    augmentation: Decimal = None,
+    diminution: Decimal = None,
+    montant_rectifie: Decimal = None,
+    motif_rectification: str = None,
 ) -> Mouvement:
     """
     Modification d'un mouvement par l'opérateur de saisie avant audit.
 
     Règles métier :
       - Période toujours active et non clôturée.
-      - Si le mouvement n'a pas encore fait l'objet de redressement inspecteur,
-        montant_rectifie est réinitialisé avec le nouveau montant.
+      - Recalcul et vérification de la cohérence de l'équation :
+        montant_rectifie = montant + augmentation - diminution
     """
     valider_periode_active(mouvement.periode_gestion)
 
@@ -176,17 +191,20 @@ def modifier_mouvement(
             raise ValidationError({"montant": "Le montant ne peut pas être négatif."})
         mouvement.montant = montant_dec
 
-        # Si pas encore rectifié par l'inspecteur, recalculer montant_rectifie = montant
-        if mouvement.augmentation == 0 and mouvement.diminution == 0:
-            mouvement.montant_rectifie = montant_dec
-        else:
-            # Revalider la cohérence avec augmentation et diminution
-            mouvement.montant_rectifie = verifier_coherence_montants(
-                montant=mouvement.montant,
-                augmentation=mouvement.augmentation,
-                diminution=mouvement.diminution,
-                montant_rectifie=None,
-            )
+    if augmentation is not None:
+        mouvement.augmentation = Decimal(str(augmentation))
+    if diminution is not None:
+        mouvement.diminution = Decimal(str(diminution))
+    if motif_rectification is not None:
+        mouvement.motif_rectification = motif_rectification
+
+    # Revalider la cohérence de l'équation comptable
+    mouvement.montant_rectifie = verifier_coherence_montants(
+        montant=mouvement.montant,
+        augmentation=mouvement.augmentation,
+        diminution=mouvement.diminution,
+        montant_rectifie=montant_rectifie,
+    )
 
     mouvement.save()
     return mouvement
@@ -238,6 +256,8 @@ def calcul_totaux_periode(periode_gestion: PeriodeGestion, date_operation=None) 
             "total_declare": total_declare,
             "total_rectifie": total_rectifie,
         }
+        # Clé composite pour distinguer Débit A et Crédit A
+        totaux_sections[f"{sec.sens}_{sec.code}"] = totaux_sections[sec.code]
 
         if sec.sens == SectionComptable.Sens.DEBIT:
             total_debit += total_rectifie

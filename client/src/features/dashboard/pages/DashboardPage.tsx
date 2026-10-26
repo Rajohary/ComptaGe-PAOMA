@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import ReceveurDashboard from '../components/ReceveurDashboard';
 import InspecteurDashboard from '../components/InspecteurDashboard';
@@ -17,8 +17,16 @@ import {
  *   - ADMIN                   -> Vue d'ensemble macroscopique du réseau + bascule possible
  */
 export default function DashboardPage() {
-  const { user, role } = useAuth();
+  const { role } = useAuth();
   const [adminViewMode, setAdminViewMode] = useState<'admin' | 'inspecteur' | 'receveur'>('admin');
+  const [selectedBureauId, setSelectedBureauId] = useState<number | undefined>(undefined);
+  const [selectedPeriodeId, setSelectedPeriodeId] = useState<number | undefined>(undefined);
+
+  const handleAdminSelectBureauView = (bureauId: number, periodeId?: number) => {
+    setSelectedBureauId(bureauId);
+    setSelectedPeriodeId(periodeId);
+    setAdminViewMode('receveur');
+  };
 
   const roleLabels: Record<string, string> = {
     ADMIN: 'Administrateur Central',
@@ -83,11 +91,19 @@ export default function DashboardPage() {
       {/* Rendu dynamique du composant de tableau de bord */}
       {role === 'ADMIN' ? (
         adminViewMode === 'admin' ? (
-          <AdminDashboard />
+          <AdminDashboard onSelectBureauView={handleAdminSelectBureauView} />
         ) : adminViewMode === 'inspecteur' ? (
           <InspecteurDashboard />
         ) : (
-          <ReceveurDashboard />
+          <ReceveurDashboard
+            bureauId={selectedBureauId}
+            periodeId={selectedPeriodeId}
+            onBureauChange={(id) => {
+              setSelectedBureauId(id);
+              setSelectedPeriodeId(undefined);
+            }}
+            onPeriodeChange={(pId) => setSelectedPeriodeId(pId)}
+          />
         )
       ) : role === 'INSPECTEUR' ? (
         <InspecteurDashboard />

@@ -1,9 +1,11 @@
 import { apiClient } from './client';
 import type {
   LigneComptable,
+  LigneComptableFormData,
   LigneComptableSearchParams,
   PaginatedResponse,
   SectionComptable,
+  SectionComptableFormData,
 } from '../types';
 
 /**
@@ -12,6 +14,43 @@ import type {
 export const getSectionsComptables = async (): Promise<PaginatedResponse<SectionComptable>> => {
   return apiClient<PaginatedResponse<SectionComptable>>('/api/v1/sections-comptables/', {
     method: 'GET',
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Création d'une nouvelle section macro-comptable (réservé ADMIN)
+ */
+export const createSectionComptable = async (
+  data: SectionComptableFormData
+): Promise<SectionComptable> => {
+  return apiClient<SectionComptable>('/api/v1/sections-comptables/', {
+    method: 'POST',
+    data,
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Modification d'une section macro-comptable existante (réservé ADMIN)
+ */
+export const updateSectionComptable = async (
+  id: number,
+  data: Partial<SectionComptableFormData>
+): Promise<SectionComptable> => {
+  return apiClient<SectionComptable>(`/api/v1/sections-comptables/${id}/`, {
+    method: 'PATCH',
+    data,
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Suppression d'une section macro-comptable (réservé ADMIN)
+ */
+export const deleteSectionComptable = async (id: number): Promise<void> => {
+  return apiClient<void>(`/api/v1/sections-comptables/${id}/`, {
+    method: 'DELETE',
     requiresAuth: true,
   });
 };
@@ -40,6 +79,43 @@ export const getLignesComptables = async (
   const queryString = query.toString() ? `?${query.toString()}` : '';
   return apiClient<PaginatedResponse<LigneComptable>>(`/api/v1/lignes-comptables/${queryString}`, {
     method: 'GET',
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Création d'une rubrique / sous-compte dans le plan comptable (réservé ADMIN)
+ */
+export const createLigneComptable = async (
+  data: LigneComptableFormData
+): Promise<LigneComptable> => {
+  return apiClient<LigneComptable>('/api/v1/lignes-comptables/', {
+    method: 'POST',
+    data,
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Modification d'une rubrique / ligne du plan comptable (réservé ADMIN)
+ */
+export const updateLigneComptable = async (
+  id: number,
+  data: Partial<LigneComptableFormData>
+): Promise<LigneComptable> => {
+  return apiClient<LigneComptable>(`/api/v1/lignes-comptables/${id}/`, {
+    method: 'PATCH',
+    data,
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Suppression d'une ligne du plan comptable (réservé ADMIN)
+ */
+export const deleteLigneComptable = async (id: number): Promise<void> => {
+  return apiClient<void>(`/api/v1/lignes-comptables/${id}/`, {
+    method: 'DELETE',
     requiresAuth: true,
   });
 };
@@ -215,6 +291,30 @@ export const getSituationComptable = async (
       requiresAuth: true,
     }
   );
+};
+
+/**
+ * Téléchargement du bordereau officiel Journal G58 en PDF
+ * GET /api/v1/bordereau-g58/{periodeId}/pdf/
+ */
+export const downloadBordereauG58Pdf = async (periodeId: number): Promise<Blob> => {
+  return apiClient<Blob>(`/api/v1/bordereau-g58/${periodeId}/pdf/`, {
+    method: 'GET',
+    responseType: 'blob',
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Export du classeur Excel (.xlsx) complet du Journal G58
+ * GET /api/v1/mouvements/export-excel/?periode_id={periodeId}
+ */
+export const exportEcrituresExcel = async (periodeId: number): Promise<Blob> => {
+  return apiClient<Blob>(`/api/v1/mouvements/export-excel/?periode_id=${periodeId}`, {
+    method: 'GET',
+    responseType: 'blob',
+    requiresAuth: true,
+  });
 };
 
 

@@ -265,4 +265,56 @@ test.describe('Section 4 — Écran Situation comptable & Report automatique de 
     await expect(page).toHaveURL(/\/situation-comptable/);
     await expect(page.getByRole('heading', { name: 'Situation comptable mensuelle' })).toBeVisible();
   });
+
+  test('permet de télécharger le bordereau officiel Journal G58 en PDF depuis la situation comptable', async ({ page }) => {
+    let pdfRequested = false;
+
+    await page.route('**/api/v1/bordereau-g58/2/pdf/**', async (route) => {
+      pdfRequested = true;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/pdf',
+        headers: {
+          'Content-Disposition': 'inline; filename="Bordereau_G58_10101_2026-06-01.pdf"',
+        },
+        body: Buffer.from('%PDF-1.4 mock pdf from situation comptable'),
+      });
+    });
+
+    await page.goto('/situation-comptable');
+
+    // Vérifier et cliquer sur le bouton de téléchargement PDF
+    const downloadBtn = page.getByTestId('btn-download-bordereau-g58');
+    await expect(downloadBtn).toBeVisible();
+    await expect(downloadBtn).toContainText('Bordereau G58 (PDF)');
+
+    await downloadBtn.click();
+    await expect.poll(() => pdfRequested).toBe(true);
+  });
+
+  test('permet d’exporter la balance et les écritures en classeur Excel (.xlsx)', async ({ page }) => {
+    let excelRequested = false;
+
+    await page.route('**/api/v1/mouvements/export-excel/**', async (route) => {
+      excelRequested = true;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers: {
+          'Content-Disposition': 'attachment; filename="Journal_G58_10101_2026-06-01.xlsx"',
+        },
+        body: Buffer.from('mock excel spreadsheet binary data from situation comptable'),
+      });
+    });
+
+    await page.goto('/situation-comptable');
+
+    // Vérifier et cliquer sur le bouton Export Excel
+    const excelBtn = page.getByTestId('btn-export-excel-situation');
+    await expect(excelBtn).toBeVisible();
+    await expect(excelBtn).toContainText('Export Excel');
+
+    await excelBtn.click();
+    await expect.poll(() => excelRequested).toBe(true);
+  });
 });

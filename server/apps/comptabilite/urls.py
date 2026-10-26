@@ -7,6 +7,8 @@ from .views import (
     RubriqueEncaisseViewSet,
     MouvementEncaisseViewSet,
     SituationComptableView,
+    BordereauG58PdfView,
+    ExportEcrituresExcelView,
     ReceveurDashboardView,
 )
 
@@ -18,6 +20,8 @@ router.register(r"rubriques-encaisse", RubriqueEncaisseViewSet, basename="rubriq
 router.register(r"mouvements-encaisse", MouvementEncaisseViewSet, basename="mouvement-encaisse")
 
 urlpatterns = [
+    path("mouvements/export-excel/", ExportEcrituresExcelView.as_view(), name="mouvements-export-excel"),
     path("situation-comptable/<int:periode_id>/", SituationComptableView.as_view(), name="situation-comptable"),
+    path("bordereau-g58/<int:periode_id>/pdf/", BordereauG58PdfView.as_view(), name="bordereau-g58-pdf"),
     path("dashboard/receveur/", ReceveurDashboardView.as_view(), name="dashboard-receveur"),
 ] + router.urls

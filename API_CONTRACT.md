@@ -43,29 +43,29 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/auth/me/` | GET | Authentifié | implémenté | Infos de l'utilisateur courant (dont le rôle) |
 | `/api/v1/bureaux/` | GET, POST | Admin (POST), tous (GET) | implémenté (voir §4) | Liste / création des bureaux de poste |
 | `/api/v1/bureaux/{id}/` | GET, PUT, PATCH, DELETE | Admin (PUT/PATCH/DELETE), tous (GET) | implémenté (voir §4) | Détail / modification / suppression d'un bureau |
+| `/api/v1/bureaux/{bureau_id}/historique-periodes/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Historique chronologique des périodes de gestion et passations d'un bureau |
 | `/api/v1/periodes-gestion/` | GET, POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Liste / ouverture d'une période de gestion |
-| `/api/v1/lignes-comptables/` | GET | Authentifié | implémenté (voir §4) | Recherche instantanée et référentiel du plan comptable (remplace TreeView legacy) |
-| `/api/v1/sections-comptables/` | GET | Authentifié | implémenté (voir §4) | Référentiel des sections macro-comptables (A à E) |
+| `/api/v1/sections-comptables/` | GET, POST, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel et gestion des sections macro-comptables (A à E) |
+| `/api/v1/sections-comptables/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, mise à jour ou suppression d'une section macro-comptable |
+| `/api/v1/lignes-comptables/` | GET, POST, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Recherche instantanée et gestion du plan comptable (remplace TreeView legacy) |
+| `/api/v1/lignes-comptables/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, mise à jour ou suppression d'une ligne du plan comptable |
 | `/api/v1/produits-postaux/` | GET, POST, PUT, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Référentiel des produits postaux et timbres fiscaux |
 | `/api/v1/stocks-valeurs/` | GET, POST, PUT, PATCH, DELETE | Receveur (son bureau), Admin | implémenté (voir §4) | Suivi des stocks de valeurs postales (Tableau A G58) |
 | `/api/v1/stocks-valeurs/recapitulatif/` | GET | Authentifié | implémenté (voir §4) | Synthèse et totaux financiers d'une période de gestion |
 | `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | implémenté (voir §4) | Saisie et consultation des mouvements du Journal G58 |
 | `/api/v1/mouvements/{id}/` | GET, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Détail / modification avant audit / suppression d'un mouvement |
+| `/api/v1/mouvements/export-excel/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Export du classeur Excel (.xlsx) complet du Journal G58 (3 feuilles) |
 | `/api/v1/mouvements/totaux/` | GET | Authentifié | implémenté (voir §4) | Totaux par section (A-E), sous-sections B1-B4, débits, crédits, solde |
 | `/api/v1/rubriques-encaisse/` | GET | Authentifié | implémenté (voir §4) | Référentiel des rubriques d'encaisse (TR, SF, CR...) |
 | `/api/v1/mouvements-encaisse/` | GET, POST, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Suivi des mouvements de caisse et de coffre (entrées/sorties) |
-| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
-| `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | planifié | Liste des mouvements en écart (équivalent vue DIF) |
+| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur, Admin | implémenté (voir §4) | Rectification d'un mouvement d'audit (obligation motif, équation de contrôle, trace immuable) |
 | `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Situation comptable mensuelle avec report automatique de solde |
+| `/api/v1/bordereau-g58/{periode_id}/pdf/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Téléchargement du bordereau officiel Journal G58 en PDF |
 | `/api/v1/periodes-gestion/{id}/cloturer/` | POST | Receveur (sur son bureau), Admin | implémenté (voir §4) | Clôture officielle d'une période de gestion |
 | `/api/v1/dashboard/receveur/` | GET | Receveur (son bureau), Agent saisie (son bureau), Admin, Inspecteur | implémenté (voir §4) | Progression mensuelle G58 par section, totaux et caisse actuelle |
 | `/api/v1/dashboard/inspecteur/` | GET | Inspecteur, Admin | implémenté (voir §4) | Vue synthétique des écarts de caisse et bureaux impactés |
 | `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | implémenté (voir §4) | Liste filtrable et paginée des mouvements en anomalie (vue DIF) |
 | `/api/v1/dashboard/admin/` | GET | Admin | implémenté (voir §4) | Vue d'ensemble globale du système (territoire, périodes, RBAC, flux, audit) |
-| `/api/v1/lignes-comptables/` | GET | Authentifié | planifié | Recherche dans le plan comptable (remplace le TreeView legacy) |
-| `/api/v1/mouvements/` | GET, POST | Selon RBAC (voir ARCHITECTURE.md backend) | planifié | Création/consultation des mouvements G58 |
-| `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur | planifié | Rectification d'un mouvement (augmentation/diminution/motif) |
-| `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | planifié | Situation comptable mensuelle avec report de solde |
 
 **Note pour les deux agents :** quand un endpoint passe de `planifié` à `implémenté`, préciser dans la colonne État la forme exacte de la réponse (ou lier vers un exemple de payload en bas de ce fichier, section 4) — pas juste changer le mot.
 
@@ -266,7 +266,59 @@ Réponse 200 : objet mis à jour.
 ### DELETE /api/v1/bureaux/{id}/ (Réservé Admin)
 Réponse 204 No Content.
 
+### GET /api/v1/bureaux/{bureau_id}/historique-periodes/ (Receveur de son bureau, Admin, Inspecteur)
+Permet d'extraire la chronologie complète des périodes de gestion et des passations de service d'un bureau (accessible par `id` ou `ncodique`).
+
+Paramètre d'URL : `bureau_id` (identifiant entier ou numéro codique du bureau).
+
+Réponse 200 OK :
+```json
+{
+  "bureau": {
+    "id": 47,
+    "ncodique": 11916,
+    "nom_bureau": "Tsiroanomandidy",
+    "classe": "R3",
+    "ccp": "9377",
+    "province": "Antananarivo"
+  },
+  "total_periodes": 14,
+  "periodes_cloturees": 13,
+  "periode_en_cours": {
+    "id": 999,
+    "nom_receveur": "VOLOLONIRINA Tit Lydia",
+    "date_debut": "2023-10-04",
+    "solde_debiteur_depart": "0.00",
+    "solde_crediteur_depart": "0.00",
+    "total_encaisse_depart": "85000000.00"
+  },
+  "historique": [
+    {
+      "id": 245,
+      "nom_receveur": "RASOAMANAMBELO RAHELIARISOA Philbertine",
+      "date_debut": "2009-07-25",
+      "date_fin": "2010-07-31",
+      "cloturee": true,
+      "date_cloture": null,
+      "solde_debiteur_depart": "27498826.79",
+      "solde_crediteur_depart": "0.00",
+      "reserve_numeraire": "30000000.00",
+      "valeurs_postales": "3600000.00",
+      "timbres_fiscaux": "0.00",
+      "total_encaisse_depart": "33600000.00",
+      "total_debit": "0.00",
+      "total_credit": "0.00",
+      "solde_debiteur_fin": "27498826.79",
+      "solde_crediteur_fin": "0.00",
+      "nb_mouvements": 0
+    }
+  ]
+}
+```
+
 ### POST /api/v1/periodes-gestion/ (Ouverture d'une période de gestion — Receveur ou Admin)
+Plusieurs périodes peuvent être ouvertes simultanément pour un même bureau.
+
 Requête :
 ```json
 {
@@ -383,9 +435,6 @@ Endpoint consommé par le composant frontend de recherche / sélection rapide (r
   - `actif` : `true` (par défaut), `false`, ou `all`.
 
 Exemple de requête : `GET /api/v1/lignes-comptables/?search=mandat`
-### GET /api/v1/dashboard/receveur/ (Tableau de bord Receveur & Agent de saisie)
-*Paramètres query optionnels : `bureau` (id ou ncodique, réservé Admin/Inspecteur pour cibler un autre bureau), `periode` (id de période).*
-*Règles d'accès : `RECEVEUR` ou `AGENT_SAISIE` limité à son bureau rattaché ; `ADMIN` et `INSPECTEUR` peuvent consulter tout bureau.*
 
 Réponse 200 :
 ```json
@@ -413,6 +462,77 @@ Réponse 200 :
       "menu_sub": 201,
       "compte": "B101",
       "libelle": "Mandats ordinaires émis en numéraire",
+      "section": 2,
+      "section_code": "B",
+      "section_libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "parent": 22,
+      "parent_detail": {
+        "id": 22,
+        "menu_sub": 200,
+        "compte": "B1",
+        "libelle": "Sous-section B1 — Émissions et versements mandats"
+      },
+      "actif": true
+    }
+  ]
+}
+```
+
+### POST /api/v1/sections-comptables/
+Création d'une nouvelle section macro-comptable.
+- **Accès :** Réservé aux profils `ADMIN` (et superutilisateurs).
+- **Règles :** `code` unique, `sens` obligatoire (1=Débit, 2=Crédit, 0=Non applicable).
+
+Requête (POST) :
+```json
+{
+  "code": "F",
+  "libelle": "Opérations financières exceptionnelles",
+  "sens": 1,
+  "ordre": 6,
+  "actif": true
+}
+```
+Réponse 201 : objet complet créé.
+
+### PUT / PATCH /api/v1/sections-comptables/{id}/
+Modification d'une section macro-comptable existante.
+- **Accès :** Réservé aux profils `ADMIN`.
+
+### POST /api/v1/lignes-comptables/
+Création d'une rubrique / sous-compte dans le plan comptable.
+- **Accès :** Réservé aux profils `ADMIN` (et superutilisateurs).
+- **Règles :**
+  - `menu_sub` unique et obligatoire (identifiant métier d'imputation).
+  - `section` obligatoire (FK SectionComptable).
+  - Si `parent` est renseigné, la ligne parente doit impérativement appartenir à la même section.
+  - Une ligne ne peut pas être son propre parent.
+
+Requête (POST) :
+```json
+{
+  "section": 2,
+  "parent": 22,
+  "menu_sub": 209,
+  "compte": "B109",
+  "libelle": "Autres versements de mandats express",
+  "actif": true
+}
+```
+Réponse 201 : objet complet créé avec enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
+
+### PUT / PATCH /api/v1/lignes-comptables/{id}/
+Modification d'une ligne du plan comptable.
+- **Accès :** Réservé aux profils `ADMIN`.
+- Possibilité de modifier le libellé, le code compte, le statut actif/inactif, ou de rattacher à une autre sous-section parente.
+
+### DELETE /api/v1/lignes-comptables/{id}/
+Suppression d'une ligne comptable.
+- **Accès :** Réservé aux profils `ADMIN`.
+- **Règles :** Protection stricte (`ProtectedError` / code 400 ou 500) si des écritures du Journal G58 (`Mouvement`) ou des sous-lignes utilisent cette ligne. La désactivation (`actif: false`) est préconisée.
+
       "section": 2,
       "section_code": "B",
       "section_libelle": "Opérations relatives aux correspondances et objets",
@@ -741,55 +861,106 @@ Requête (PATCH) :
 ### GET /api/v1/mouvements/totaux/
 Calcul consolidé des totaux du Journal G58 pour une période donnée.
 Paramètres de requête : `?periode=<id>&date=<YYYY-MM-DD (optionnel)>`
-  "count": 5,
-  "next": null,
-  "previous": null,
-  "kpis": {
-    "total_ecarts_count": 5,
-    "total_montant_declare": "320000.00",
-    "total_montant_rectifie": "345000.00",
-    "total_ecart_net": "25000.00",
-    "total_ecart_absolu": "35000.00",
-    "total_augmentation": "30000.00",
-    "total_diminution": "5000.00",
-    "nb_bureaux_impactes": 2,
-    "nb_non_rectifies": 3,
-    "nb_rectifies": 2,
-    "bureaux_avec_ecarts": [ ... ]
-  },
-  "results": [
-    {
-      "id": 12,
-      "date_operation": "2026-06-15",
-      "bureau": {
-        "id": 1,
-        "ncodique": 10101,
-        "nom_bureau": "Antaninarenina",
-        "classe": "R1",
-        "province_nom": "Antananarivo"
-      },
-      "periode_gestion_id": 1,
-      "ligne_comptable": {
-        "id": 5,
-        "menu_sub": 102,
-        "compte": "AD02",
-        "libelle": "Vente de valeurs postales",
-        "section_code": "A"
-      },
-      "montant": "50000.00",
-      "augmentation": "10000.00",
-      "diminution": "0.00",
-      "montant_rectifie": "60000.00",
-      "ecart": "10000.00",
-      "motif_rectification": "Manquant constaté lors du pointage contradictoire",
-      "saisi_par": "receveur1",
-      "rectifie_par": "inspecteur1",
-      "est_rectifie": true,
-      "created_at": "2026-06-15T10:30:00Z",
-      "updated_at": "2026-06-16T14:20:00Z"
+
+Réponse 200 :
+```json
+{
+  "periode_gestion_id": 1,
+  "date_operation": null,
+  "totaux_sections": {
+    "A": {
+      "section_id": 1,
+      "code": "A",
+      "libelle": "Opérations d'ordre postal et financier",
+      "sens": 1,
+      "sens_libelle": "Débit",
+      "total_declare": "50000.00",
+      "total_rectifie": "50000.00"
+    },
+    "B": {
+      "section_id": 2,
+      "code": "B",
+      "libelle": "Opérations relatives aux correspondances et objets",
+      "sens": 2,
+      "sens_libelle": "Crédit",
+      "total_declare": "35000.00",
+      "total_rectifie": "40000.00"
     }
-  ]
+  },
+  "sous_sections_b": {
+    "B1": {
+      "total_declare": "20000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B2": {
+      "total_declare": "15000.00",
+      "total_rectifie": "20000.00"
+    },
+    "B3": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    },
+    "B4": {
+      "total_declare": "0.00",
+      "total_rectifie": "0.00"
+    }
+  },
+  "total_general_debit": "50000.00",
+  "total_general_credit": "40000.00",
+  "solde_net": "10000.00"
 }
+```
+
+### PATCH /api/v1/mouvements/{id}/rectifier/
+Redressement d'audit et rectification d'une écriture comptable en anomalie (UC-04).
+- **Accès :** `INSPECTEUR`, `ADMIN`.
+- **Règles :**
+  - Saisie obligatoire d'un champ `motif` non vide détaillant la cause du redressement (pointage contradictoire, manquant guichet, fausse déclaration).
+  - Équation comptable vérifiée : `MontantRectif = Montant + Augmentation - Diminution`. Si `montant_rectifie` n'est pas fourni dans la requête, il est calculé automatiquement.
+  - Génération d'une trace d'audit immuable (`AuditLogEntry`, action `RECTIFICATION`) avec capture des états avant/après.
+
+Requête (PATCH) :
+```json
+{
+  "motif": "Erreur de saisie guichet constatée lors du pointage contradictoire",
+  "augmentation": "10000.00",
+  "diminution": "0.00"
+}
+```
+
+Réponse 200 :
+```json
+{
+  "id": 12,
+  "date_operation": "2026-06-15",
+  "bureau": {
+    "id": 1,
+    "ncodique": 10101,
+    "nom_bureau": "Antaninarenina",
+    "classe": "R1",
+    "province_nom": "Antananarivo"
+  },
+  "periode_gestion_id": 1,
+  "ligne_comptable": {
+    "id": 5,
+    "menu_sub": 102,
+    "compte": "AD02",
+    "libelle": "Vente de valeurs postales",
+    "section_code": "A"
+  },
+  "montant": "50000.00",
+  "augmentation": "10000.00",
+  "diminution": "0.00",
+  "montant_rectifie": "60000.00",
+  "ecart": "10000.00",
+  "motif_rectification": "Erreur de saisie guichet constatée lors du pointage contradictoire",
+  "saisi_par": "receveur1",
+  "rectifie_par": "inspecteur1",
+  "est_rectifie": true,
+  "created_at": "2026-06-15T10:30:00Z",
+  "updated_at": "2026-06-16T14:20:00Z"
+}
+```
 ```
 
 ### GET /api/v1/dashboard/admin/ (Tableau de bord Administrateur)
@@ -1017,6 +1188,24 @@ Réponse 200 :
 
 Si un changement casse la compatibilité (renommage de champ, changement de format, suppression d'un endpoint), le noter ici brièvement avec la date — ça évite qu'un agent travaillant sur l'autre côté du projet découvre la casse par un bug plutôt que par la documentation.
 
+### 2026-10-26 — Endpoint Export Excel des écritures du Journal G58 (Section 8)
+- Endpoint ajouté : `GET /api/v1/mouvements/export-excel/?periode_id={id}`
+- Fonctionnalités :
+  - Génération dynamique d'un classeur multi-feuilles Microsoft Excel (.xlsx) stylisé aux couleurs officielles Paositra Malagasy.
+  - Feuille 1 ('Écritures G58') : journal exhaustif des imputations (N° opération, date, sens, section, compte, libellé, montant déclaré, augmentations, diminutions, net rectifié, motif, opérateur).
+  - Feuille 2 ('Situation Comptable') : balance synthétique par section, totaux débits/crédits, reports M-1 et soldes finaux.
+  - Feuille 3 ('Encaisse et Valeurs') : suivi des flux de liquidités (entrées/sorties) et état des réserves en coffre-fort.
+  - Contrôle d'accès RBAC : `RECEVEUR` (strictement isolé à son propre bureau), `INSPECTEUR` et `ADMIN` (tous bureaux).
+- Type de réponse : binaire `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` avec en-tête `Content-Disposition: attachment; filename="Journal_G58_{ncodique}_{date_debut}.xlsx"`.
+
+### 2026-10-26 — Endpoint Bordereau Journal G58 en PDF (Section 8)
+- Endpoint ajouté : `GET /api/v1/bordereau-g58/{periode_id}/pdf/`
+- Fonctionnalités :
+  - Génération dynamique du bordereau officiel Journal G58 de Paositra Malagasy en PDF A4.
+  - Mise en page fidèle au document papier officiel : En-tête officiel, Cartouche bureau/receveur/période, Balance synthétique Débit/Crédit et reports de soldes, Tableau détaillé des opérations G58, État d'encaisse et valeurs en coffre, Cadre d'émargement légal (Receveur et Inspecteur).
+  - Contrôle d'accès RBAC : `RECEVEUR` (strictement restreint à son bureau), `INSPECTEUR` (tous bureaux), `ADMIN` (tous bureaux).
+- Type de réponse : binaire `application/pdf` avec en-tête `Content-Disposition: inline; filename="Bordereau_G58_{ncodique}_{date_debut}.pdf"`.
+
 ### 2026-10-14 — Endpoint Situation Comptable avec report automatique (Section 4)
 - Endpoint ajouté : `GET /api/v1/situation-comptable/{periode_id}/`
 - Fonctionnalités :
@@ -1049,6 +1238,21 @@ Si un changement casse la compatibilité (renommage de champ, changement de form
   - `GET /api/v1/lignes-comptables/` : recherche instantanée avec filtrage multi-critères (`search`, `section`, `sens`, `parent`, `feuille`, `actif`) et enrichissement hiérarchique (`section_code`, `sens_libelle`, `parent_detail`).
   - `GET /api/v1/sections-comptables/` : référentiel macro-comptable (sections A à E).
 - Rôles autorisés : tout utilisateur authentifié.
+### 2026-10-15 — Gestion complète du Plan Comptable (Création, Modification, RBAC)
+- Endpoints étendus en CRUD complet :
+  - `POST, PUT, PATCH, DELETE /api/v1/sections-comptables/` : création et modification des sections macro-comptables (A à E).
+  - `POST, PUT, PATCH, DELETE /api/v1/lignes-comptables/` : création et modification des rubriques et sous-comptes du plan comptable avec validation de cohérence de la section parente.
+- Sécurité :
+  - Lecture (`GET`) ouverte à tous les profils authentifiés (`RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`).
+  - Écriture (`POST`, `PUT`, `PATCH`, `DELETE`) strictement réservée aux profils `ADMIN` (conformément au CDC § 3.3).
+
+### 2026-10-15 — Rectification d'audit et détection d'écarts finalisées (Section 5)
+- Endpoints documentés et finalisés :
+  - `PATCH /api/v1/mouvements/{id}/rectifier/` : rectification d'un mouvement d'audit avec obligation de justification textuelle (`motif`), vérification de cohérence mathématique `montant_rectifie = montant + augmentation - diminution`, et journalisation immuable dans `AuditLogEntry`.
+  - `GET /api/v1/audit/ecarts/` : vue DIF complète avec KPIs et filtres multi-critères.
+  - Interface Django Admin : enregistrement d'AuditLogEntry en lecture seule stricte.
+- Sécurité : accès réservé aux inspecteurs (`INSPECTEUR`) et administrateurs (`ADMIN`).
+
 ### 2026-10-15 — Tableaux de bord et vue DIF implémentés (Module 6)
 - Endpoints ajoutés et documentés :
   - `GET /api/v1/dashboard/receveur/` : progression mensuelle G58, situation par section et encaisse/caisse actuelle

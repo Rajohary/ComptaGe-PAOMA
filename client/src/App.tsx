@@ -6,34 +6,14 @@ import AppShell from './components/layout/AppShell';
 import DashboardPage from './features/dashboard/pages/DashboardPage';
 import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
+import { HistoriquePeriodesPage } from './features/periodes-gestion/HistoriquePeriodesPage';
 import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
 import { StockValeursPage } from './features/stock/StockValeursPage';
 import { SaisieG58Page } from './features/saisie-g58/pages/SaisieG58Page';
 import { SituationComptablePage } from './features/saisie-g58/pages/SituationComptablePage';
 import { EncaissePage } from './features/encaisse/EncaissePage';
 import { HealthPage } from './features/dashboard/HealthPage';
-
-/**
- * Composant placeholder générique pour les routes non encore implémentées.
- * Affiche un état vide explicite (DESIGN.md section 4.2 : jamais de zone vide sans message).
- */
-function PlaceholderPage({ title, module }: { title: string; module: string }) {
-  return (
-    <div className="p-6 md:p-8 max-w-5xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-heading font-bold text-text-primary">{title}</h1>
-      </div>
-      <div className="bg-surface-card rounded-xl border border-border-subtle border-dashed p-8 text-center">
-        <p className="text-sm font-sans text-text-secondary">
-          Ce module n'est pas encore implémenté.
-        </p>
-        <p className="text-xs font-sans text-text-secondary/70 mt-2">
-          Voir section {module} de PROJECT_STATE.md.
-        </p>
-      </div>
-    </div>
-  );
-}
+import { AuditEcartsPage } from './features/audit/AuditEcartsPage';
 
 export default function App() {
   return (
@@ -55,11 +35,11 @@ export default function App() {
             }
           />
 
-          {/* Saisie G58 — Receveur & Agent de saisie */}
+          {/* Saisie G58 — Admin, Receveur & Agent de saisie */}
           <Route
             path="saisie"
             element={
-              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE']}>
+              <RequireAuth allowedRoles={['ADMIN', 'RECEVEUR', 'AGENT_SAISIE']}>
                 <SaisieG58Page />
               </RequireAuth>
             }
@@ -105,13 +85,21 @@ export default function App() {
 
           {/* Périodes de gestion (Référentiel) */}
           <Route path="periodes-gestion" element={<PeriodesGestionPage />} />
+          <Route
+            path="historique-periodes"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <HistoriquePeriodesPage />
+              </RequireAuth>
+            }
+          />
 
           {/* Audit — Inspecteur & Admin */}
           <Route
             path="audit"
             element={
               <RequireAuth allowedRoles={['INSPECTEUR', 'ADMIN']}>
-                <PlaceholderPage title="Audit & Écarts" module="5" />
+                <AuditEcartsPage />
               </RequireAuth>
             }
           />

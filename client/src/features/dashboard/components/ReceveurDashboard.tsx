@@ -1,7 +1,9 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useReceveurDashboard } from '../../../api/dashboard';
+import { getBureaux, getPeriodesGestion } from '../../../api/referentiel';
+import type { Bureau, PeriodeGestion } from '../../../types';
 import { formatAriary, formatDate } from '../../../lib/formatters';
 import {
   Coins,
@@ -16,19 +18,106 @@ import {
   Clock,
   Layers,
   ShieldAlert,
+  ChevronDown,
 } from 'lucide-react';
 
 interface ReceveurDashboardProps {
   bureauId?: number;
+  periodeId?: number;
+  onBureauChange?: (id: number) => void;
+  onPeriodeChange?: (id: number | undefined) => void;
 }
 
-export default function ReceveurDashboard({ bureauId }: ReceveurDashboardProps) {
-  const { user } = useAuth();
-  const effectiveBureau = bureauId ?? (user?.bureau_code ?? undefined);
+export default function ReceveurDashboard({
+  bureauId,
+  periodeId,
+  onBureauChange,
+  onPeriodeChange,
+}: ReceveurDashboardProps) {
+  const { user, role } = useAuth();
+  const [selectedBureauId, setSelectedBureauId] = useState<number | undefined>(
+    bureauId ?? (user?.bureau_code ?? undefined)
+  );
+  const [selectedPeriodeId, setSelectedPeriodeId] = useState<number | undefined>(periodeId);
+  const [bureauxList, setBureauxList] = useState<Bureau[]>([]);
+  const [loadingBureaux, setLoadingBureaux] = useState(false);
+  const [periodesList, setPeriodesList] = useState<PeriodeGestion[]>([]);
+  const [loadingPeriodes, setLoadingPeriodes] = useState(false);
+
+  // Synchroniser si les props changent
+  useEffect(() => {
+    if (bureauId !== undefined) {
+      setSelectedBureauId(bureauId);
+    }
+  }, [bureauId]);
+
+  useEffect(() => {
+    setSelectedPeriodeId(periodeId);
+  }, [periodeId]);
+
+  // Si admin ou inspecteur, charger la liste des bureaux pour permettre la sélection
+  const canSelectBureau = role === 'ADMIN' || role === 'INSPECTEUR';
+
+  useEffect(() => {
+    if (canSelectBureau) {
+      setLoadingBureaux(true);
+      getBureaux({ page: 1 })
+        .then((res) => {
+          setBureauxList(res.results || []);
+          // Si aucun bureau n'est sélectionné et que la liste a des bureaux, sélectionner le premier
+          if (selectedBureauId === undefined && res.results && res.results.length > 0) {
+            const firstId = res.results[0].id;
+            setSelectedBureauId(firstId);
+            onBureauChange?.(firstId);
+          }
+        })
+        .catch((err) => {
+          console.error('Erreur chargement bureaux dashboard:', err);
+        })
+        .finally(() => {
+          setLoadingBureaux(false);
+        });
+    }
+  }, [canSelectBureau]);
+
+  const effectiveBureau = selectedBureauId ?? (user?.bureau_code ?? undefined);
+
+  // Charger les périodes du bureau actif pour le sélecteur
+  useEffect(() => {
+    if (effectiveBureau !== undefined) {
+      setLoadingPeriodes(true);
+      getPeriodesGestion({ bureau: effectiveBureau })
+        .then((res) => {
+          setPeriodesList(res.results || []);
+        })
+        .catch((err) => {
+          console.error('Erreur chargement périodes dashboard receveur:', err);
+          setPeriodesList([]);
+        })
+        .finally(() => {
+          setLoadingPeriodes(false);
+        });
+    } else {
+      setPeriodesList([]);
+    }
+  }, [effectiveBureau]);
 
   const { data, isLoading, error, refetch, isFetching } = useReceveurDashboard({
     bureau: effectiveBureau,
+    periode: selectedPeriodeId,
   });
+
+  const handleSelectBureau = (newId: number) => {
+    setSelectedBureauId(newId);
+    setSelectedPeriodeId(undefined);
+    onBureauChange?.(newId);
+    onPeriodeChange?.(undefined);
+  };
+
+  const handleSelectPeriode = (newPeriodeId?: number) => {
+    setSelectedPeriodeId(newPeriodeId);
+    onPeriodeChange?.(newPeriodeId);
+  };
 
   if (isLoading) {
     return (
@@ -111,7 +200,70 @@ export default function ReceveurDashboard({ bureauId }: ReceveurDashboardProps) 
             </div>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto">
+          <div className="flex items-center gap-3 self-start md:self-auto flex-wrap">
+            {/* Sélecteurs de bureau et de période si Admin / Inspecteur */}
+            {canSelectBureau && (
+              <div className="flex items-center gap-2.5 flex-wrap">
+                {/* Sélecteur de Bureau */}
+                <div className="flex items-center gap-1.5">
+                  <label htmlFor="select-bureau-receveur" className="text-xs font-medium text-text-secondary whitespace-nowrap">
+                    Bureau :
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="select-bureau-receveur"
+                      data-testid="select-bureau-dashboard"
+                      value={effectiveBureau ?? ''}
+                      disabled={loadingBureaux}
+                      onChange={(e) => handleSelectBureau(Number(e.target.value))}
+                      className="appearance-none pl-3 pr-8 py-1.5 text-xs font-medium bg-surface-secondary/70 dark:bg-surface-secondary text-text-primary border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-brand cursor-pointer"
+                    >
+                      {bureauxList.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.ncodique} — {b.nom_bureau}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-text-secondary absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Sélecteur de Période */}
+                <div className="flex items-center gap-1.5">
+                  <label htmlFor="select-periode-receveur" className="text-xs font-medium text-text-secondary whitespace-nowrap">
+                    Période :
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="select-periode-receveur"
+                      data-testid="select-periode-dashboard"
+                      value={selectedPeriodeId ?? (data.periode?.id ?? '')}
+                      disabled={loadingPeriodes || periodesList.length === 0}
+                      onChange={(e) => handleSelectPeriode(e.target.value ? Number(e.target.value) : undefined)}
+                      className="appearance-none pl-3 pr-8 py-1.5 text-xs font-medium bg-surface-secondary/70 dark:bg-surface-secondary text-text-primary border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-brand cursor-pointer disabled:opacity-60 max-w-[220px] truncate"
+                    >
+                      {loadingPeriodes ? (
+                        <option value="">Chargement...</option>
+                      ) : periodesList.length === 0 ? (
+                        <option value="">Aucune période</option>
+                      ) : (
+                        periodesList.map((p) => {
+                          const statusLabel = p.cloturee ? 'Clôturée' : 'Active';
+                          const dateRange = `${formatDate(p.date_debut)} - ${formatDate(p.date_fin)}`;
+                          return (
+                            <option key={p.id} value={p.id}>
+                              {dateRange} ({statusLabel})
+                            </option>
+                          );
+                        })
+                      )}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-text-secondary absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+            )}
+
             {has_active_periode ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-status-success/15 text-status-success">
                 <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />

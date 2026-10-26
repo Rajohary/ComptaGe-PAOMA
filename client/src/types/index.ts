@@ -90,7 +90,7 @@ export interface PeriodeGestion {
   receveur?: number | null;
   nom_receveur: string;
   date_debut: string;
-  date_fin: string;
+  date_fin: string | null;
   reserve_numeraire: string;
   valeurs_postales: string;
   timbres_fiscaux: string;
@@ -102,11 +102,55 @@ export interface PeriodeGestion {
   updated_at?: string;
 }
 
+export interface HistoriquePeriodeItem {
+  id: number;
+  nom_receveur: string;
+  date_debut: string;
+  date_fin: string | null;
+  cloturee: boolean;
+  date_cloture: string | null;
+  solde_debiteur_depart: string;
+  solde_crediteur_depart: string;
+  reserve_numeraire: string;
+  valeurs_postales: string;
+  timbres_fiscaux: string;
+  total_encaisse_depart: string;
+  total_debit: string;
+  total_credit: string;
+  solde_debiteur_fin: string;
+  solde_crediteur_fin: string;
+  nb_mouvements: number;
+}
+
+export interface PeriodeEnCoursInfo {
+  id: number;
+  nom_receveur: string;
+  date_debut: string;
+  solde_debiteur_depart: string;
+  solde_crediteur_depart: string;
+  total_encaisse_depart: string;
+}
+
+export interface HistoriquePassationResponse {
+  bureau: {
+    id: number;
+    ncodique: number;
+    nom_bureau: string;
+    classe: string;
+    ccp: string;
+    province: string | null;
+  };
+  total_periodes: number;
+  periodes_cloturees: number;
+  periode_en_cours: PeriodeEnCoursInfo | null;
+  historique: HistoriquePeriodeItem[];
+}
+
 export interface PeriodeGestionFormData {
   bureau: number;
   nom_receveur: string;
   date_debut: string;
-  date_fin: string;
+  date_fin?: string | null;
   reserve_numeraire: string;
   valeurs_postales: string;
   timbres_fiscaux: string;
@@ -122,6 +166,14 @@ export interface SectionComptable {
   sens_libelle: string; // 'Débit' | 'Crédit'
   actif: boolean;
   ordre: number;
+}
+
+export interface SectionComptableFormData {
+  code: string;
+  libelle: string;
+  sens: number;
+  ordre: number;
+  actif?: boolean;
 }
 
 export interface LigneComptableParentDetail {
@@ -145,6 +197,15 @@ export interface LigneComptable {
   parent_detail: LigneComptableParentDetail | null;
   actif: boolean;
   is_leaf?: boolean;
+}
+
+export interface LigneComptableFormData {
+  section: number;
+  parent?: number | null;
+  menu_sub?: number | null;
+  compte: string;
+  libelle: string;
+  actif?: boolean;
 }
 
 export interface LigneComptableSearchParams {
@@ -306,13 +367,14 @@ export interface MouvementG58 {
   rectifie_par: number | null;
   rectifie_par_username: string | null;
   date_operation: string;
-    date_cloture: string | null;
-  } | null;
-  has_active_periode: boolean;
-  message: string;
-  progression_sections: SectionProgressionItem[];
-  totaux_mouvements: TotauxMouvementsProgression;
-  encaisse: EncaisseProgression;
+  montant: string;
+  augmentation: string;
+  diminution: string;
+  montant_rectifie: string;
+  motif_rectification: string;
+  a_ecart: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface BureauAvecEcartsItem {
@@ -362,10 +424,21 @@ export interface EcartItem {
   augmentation: string;
   diminution: string;
   montant_rectifie: string;
+  ecart: string;
   motif_rectification: string;
-  a_ecart: boolean;
+  saisi_par: string;
+  rectifie_par: string | null;
+  est_rectifie: boolean;
+  a_ecart?: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface RectificationInput {
+  motif: string;
+  augmentation?: string | number;
+  diminution?: string | number;
+  montant_rectifie?: string | number;
 }
 
 export interface MouvementG58FormData {
@@ -373,6 +446,9 @@ export interface MouvementG58FormData {
   ligne_comptable: number;
   date_operation: string;
   montant: string;
+  augmentation?: string;
+  diminution?: string;
+  motif_rectification?: string;
 }
 
 export interface MouvementSearchParams {
@@ -477,14 +553,6 @@ export interface SituationComptable {
   solde_crediteur_fin: string | number;
   totaux_sections?: Record<string, TotauxSectionItem>;
   sous_sections_b?: Record<string, SousSectionBItem>;
-}
-  ecart: string;
-  motif_rectification: string;
-  saisi_par: string;
-  rectifie_par: string | null;
-  est_rectifie: boolean;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface InspecteurDashboardData {

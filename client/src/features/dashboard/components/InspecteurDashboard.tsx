@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useInspecteurDashboard } from '../../../api/dashboard';
 import { formatAriary, formatDate } from '../../../lib/formatters';
-import type { BureauAvecEcartsItem } from '../../../types';
 import {
   ShieldAlert,
   AlertTriangle,

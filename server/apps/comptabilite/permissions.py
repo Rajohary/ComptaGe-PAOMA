@@ -1,7 +1,27 @@
 from rest_framework import permissions
 
 
+class IsAdminOrReadOnlyAuthenticated(permissions.BasePermission):
+    """
+    Permission pour le Plan Comptable (SectionsComptables et LignesComptables) :
+    - GET, HEAD, OPTIONS (lecture) : Accessible à tout utilisateur authentifié (Receveur, Agent, Inspecteur, Admin).
+    - POST, PUT, PATCH, DELETE (création, modification, suppression) : Réservé aux administrateurs (role == 'ADMIN' ou is_staff).
+    """
+
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated:
+            return False
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        user_role = getattr(user, "role", None)
+        return bool(user.is_staff or user.is_superuser or user_role == "ADMIN")
+
+
 class IsSaisieAllowed(permissions.BasePermission):
+
     """
     Permission pour les mouvements du Journal G58 :
     - GET (lecture) : Accessible à tout utilisateur authentifié.

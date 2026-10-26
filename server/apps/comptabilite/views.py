@@ -16,18 +16,19 @@ from .serializers import (
     RubriqueEncaisseSerializer,
     MouvementEncaisseSerializer,
 )
-from .permissions import IsSaisieAllowed
+from .permissions import IsSaisieAllowed, IsAdminOrReadOnlyAuthenticated
 
 
-class SectionComptableViewSet(viewsets.ReadOnlyModelViewSet):
+class SectionComptableViewSet(viewsets.ModelViewSet):
     """
-    API ReadOnly pour les sections macro-comptables (A à E).
-    - GET /api/v1/sections-comptables/ : liste des sections (filtrable par actif, sens)
-    - GET /api/v1/sections-comptables/{id}/ : détail d'une section
+    CRUD et consultation des sections macro-comptables (A à E).
+    - GET /api/v1/sections-comptables/ : liste des sections (accessible à tout utilisateur authentifié).
+    - GET /api/v1/sections-comptables/{id}/ : détail d'une section.
+    - POST / PUT / PATCH / DELETE : création, modification et suppression réservées aux Administrateurs.
     """
     queryset = SectionComptable.objects.all().order_by("ordre", "code")
     serializer_class = SectionComptableSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["code", "libelle"]
     ordering_fields = ["ordre", "code", "sens"]
@@ -48,13 +49,14 @@ class SectionComptableViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
-class LigneComptableViewSet(viewsets.ReadOnlyModelViewSet):
+class LigneComptableViewSet(viewsets.ModelViewSet):
     """
-    API ReadOnly pour la recherche instantanée et le référentiel des lignes comptables.
+    CRUD, recherche instantanée et référentiel des lignes comptables.
     Consommée par le composant d'autocomplétion / recherche instantanée qui remplace le TreeView legacy.
 
-    - GET /api/v1/lignes-comptables/ : liste paginée des lignes comptables
-    - GET /api/v1/lignes-comptables/{id}/ : détail d'une ligne comptable
+    - GET /api/v1/lignes-comptables/ : liste paginée des lignes comptables (accessible à tout utilisateur authentifié).
+    - GET /api/v1/lignes-comptables/{id}/ : détail d'une ligne comptable.
+    - POST / PUT / PATCH / DELETE : création, modification et suppression réservées aux Administrateurs (CDC RBAC).
 
     Filtres disponibles en query params :
       - search : recherche instantanée textuelle sur 'compte', 'libelle', 'section__code', 'section__libelle'
@@ -71,10 +73,12 @@ class LigneComptableViewSet(viewsets.ReadOnlyModelViewSet):
         .order_by("section__ordre", "menu_sub")
     )
     serializer_class = LigneComptableSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
+
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["compte", "libelle", "section__code", "section__libelle"]
     ordering_fields = ["menu_sub", "compte", "libelle", "section__ordre"]
+
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -364,6 +368,103 @@ class SituationComptableView(APIView):
         return Response(situation, status=status.HTTP_200_OK)
 
 
+class BordereauG58PdfView(APIView):
+    """
+    Génération et téléchargement du bordereau officiel Journal G58 au format PDF :
+    - GET /api/v1/bordereau-g58/{periode_id}/pdf/
+    - Accessible aux RECEVEUR (sur leur bureau), ADMIN et INSPECTEUR.
+    - Mise en page fidèle au formulaire officiel papier :
+        * En-tête Repoblikan'i Madagasikara & Paositra Malagasy
+        * Cartouche bureau, classe, province, receveur, période
+        * Balance récapitulative Débit / Crédit, reports et soldes
+        * Détail des opérations imputées au G58
+        * Situation de l'encaisse et valeurs en coffre
+        * Cadre d'émargement et visa légal (Receveur et Inspecteur).
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, periode_id):
+        from django.http import HttpResponse
+        from apps.referentiel.models import PeriodeGestion
+        from .pdf import generer_bordereau_g58_pdf
+
+        periode = PeriodeGestion.objects.select_related("bureau__province", "receveur").filter(id=periode_id).first()
+        if not periode:
+            return Response({"detail": "Période de gestion introuvable."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Contrôle de permission RBAC : RECEVEUR isolé à son bureau
+        user = request.user
+        if not (user.is_staff or user.is_superuser):
+            role = getattr(user, "role", None)
+            if role == "RECEVEUR":
+                bureau_code = getattr(user, "bureau_code", None)
+                if bureau_code is not None and bureau_code != periode.bureau.ncodique:
+                    return Response(
+                        {"detail": "Accès non autorisé : vous ne pouvez exporter que le bordereau de votre bureau."},
+                        status=status.HTTP_403_FORBIDDEN,
+                    )
+
+        pdf_buffer = generer_bordereau_g58_pdf(periode)
+        filename = f"Bordereau_G58_{periode.bureau.ncodique}_{periode.date_debut}.pdf"
+
+        response = HttpResponse(pdf_buffer.getvalue(), content_type="application/pdf")
+        response["Content-Disposition"] = f'inline; filename="{filename}"'
+        return response
+
+
+class ExportEcrituresExcelView(APIView):
+    """
+    Génération et téléchargement du classeur Excel (.xlsx) complet du Journal G58 :
+    - GET /api/v1/mouvements/export-excel/?periode_id={periode_id}
+    - Accessible aux RECEVEUR (sur leur bureau), ADMIN et INSPECTEUR.
+    - Contient 3 feuilles de travail formatées :
+        1. 'Écritures G58' : liste chronologique détaillée des imputations comptables avec montants, redressements et soldes.
+        2. 'Situation Comptable' : balance officielle par section, reports antérieurs et soldes de clôture.
+        3. 'Encaisse et Valeurs' : mouvements physiques d'espèces, créances et réserves du coffre-fort.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        from django.http import HttpResponse
+        from apps.referentiel.models import PeriodeGestion
+        from .excel import generer_ecritures_g58_excel
+
+        periode_id = request.query_params.get("periode_id") or request.query_params.get("periode")
+        if not periode_id or not str(periode_id).isdigit():
+            return Response(
+                {"detail": "Le paramètre 'periode_id' est obligatoire et doit être un entier valide."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        periode = PeriodeGestion.objects.select_related("bureau__province", "receveur").filter(id=int(periode_id)).first()
+        if not periode:
+            return Response({"detail": "Période de gestion introuvable."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Contrôle de permission RBAC : RECEVEUR isolé à son bureau
+        user = request.user
+        if not (user.is_staff or user.is_superuser):
+            role = getattr(user, "role", None)
+            if role == "RECEVEUR":
+                bureau_code = getattr(user, "bureau_code", None)
+                if bureau_code is not None and bureau_code != periode.bureau.ncodique:
+                    return Response(
+                        {"detail": "Accès non autorisé : vous ne pouvez exporter que les écritures de votre bureau."},
+                        status=status.HTTP_403_FORBIDDEN,
+                    )
+
+        excel_buffer = generer_ecritures_g58_excel(periode)
+        filename = f"Journal_G58_{periode.bureau.ncodique}_{periode.date_debut}.xlsx"
+
+        response = HttpResponse(
+            excel_buffer.getvalue(),
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return response
+
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 class ReceveurDashboardView(APIView):
     """
     Tableau de bord Receveur : progression de la saisie du mois en cours par section,

@@ -1,7 +1,7 @@
 {
-  "0": "StockValeurFormModal.tsx",
+  "0": "AuditEcartsPage.tsx",
   "1": "package.json",
-  "2": "App.tsx",
+  "2": "AuthContext.tsx",
   "3": "index.ts",
   "4": "Running Custom Playwright Code",
   "5": "Cookies",
@@ -15,12 +15,14 @@
   "13": "compilerOptions",
   "14": "Flat Design System Skill (Antigravity)",
   "15": "9. Journal des actions (log)",
-  "16": "apiClient",
+  "16": "Button",
   "17": "@playwright/test",
   "19": "AGENT.md — ComptaGeWeb · Frontend (client/)",
   "20": ".oxlintrc.json",
   "21": "flat/DESIGN.md",
   "22": "React + TypeScript + Vite",
   "23": "tsconfig.json",
-  "24": "postcss.config.js"
+  "24": "postcss.config.js",
+  "29": "App.tsx",
+  "30": "StockValeursPage.tsx"
 }

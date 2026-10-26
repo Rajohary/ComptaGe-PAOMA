@@ -360,4 +360,158 @@ test.describe('Module 6 — Tableau de bord Administrateur', () => {
     await expect(page.getByText('Anomalies Détectées')).toBeVisible();
     await expect(page.getByText('Bureaux avec Écarts en Attente')).toBeVisible();
   });
+
+  test('affiche et filtre le journal de traçabilité & vigilance réglementaire', async ({ page }) => {
+    await page.route('**/api/v1/auth/me/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(ADMIN_USER),
+      });
+    });
+
+    await page.route('**/api/v1/dashboard/admin/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_ADMIN_DASHBOARD),
+      });
+    });
+
+    await page.goto('/');
+    await page.evaluate(() => {
+      localStorage.setItem('access_token', 'mock_token_admin');
+    });
+    await page.goto('/');
+
+    // Vérifier le bloc de traçabilité et vigilance réglementaire
+    await expect(page.getByText('Traçabilité & Vigilance Réglementaire')).toBeVisible();
+    await expect(page.getByText('Journal Inaltérable')).toBeVisible();
+    await expect(page.getByText('185', { exact: true })).toBeVisible();
+    await expect(page.getByText('Rectification inspecteur')).toBeVisible();
+    await expect(page.getByText('Mouvement #42')).toBeVisible();
+    await expect(page.getByText('Redressement montant +5000 MGA')).toBeVisible();
+
+    // Tester la recherche en direct
+    const searchInput = page.getByPlaceholder('Rechercher par auteur, modèle, objet, détail...');
+    await expect(searchInput).toBeVisible();
+    await searchInput.fill('introuvable_xyz');
+    await expect(page.getByText('Aucun événement ne correspond à vos critères de filtrage.')).toBeVisible();
+
+    await searchInput.fill('');
+    await expect(page.getByText('Redressement montant +5000 MGA')).toBeVisible();
+  });
+
+  test('permet à l\'administrateur de sélectionner un bureau pour voir son état détaillé', async ({ page }) => {
+    await page.route('**/api/v1/auth/me/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(ADMIN_USER),
+      });
+    });
+
+    await page.route('**/api/v1/dashboard/admin/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_ADMIN_DASHBOARD),
+      });
+    });
+
+    await page.route('**/api/v1/bureaux/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          count: 2,
+          next: null,
+          previous: null,
+          results: [
+            {
+              id: 1,
+              province: 1,
+              province_detail: { id: 1, nprovince: 1, nom: 'Antananarivo' },
+              ncodique: 10101,
+              nom_bureau: 'Antaninarenina',
+              classe: 'R1',
+            },
+            {
+              id: 2,
+              province: 1,
+              province_detail: { id: 1, nprovince: 1, nom: 'Antananarivo' },
+              ncodique: 10102,
+              nom_bureau: 'Tanjombato',
+              classe: 'R2',
+            },
+          ],
+        }),
+      });
+    });
+
+    await page.route('**/api/v1/periodes-gestion/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          count: 2,
+          next: null,
+          previous: null,
+          results: [
+            {
+              id: 10,
+              bureau: 1,
+              bureau_nom: 'Antaninarenina',
+              nom_receveur: 'Jean Receveur',
+              date_debut: '2026-10-01',
+              date_fin: '2026-10-31',
+              cloturee: false,
+            },
+            {
+              id: 9,
+              bureau: 1,
+              bureau_nom: 'Antaninarenina',
+              nom_receveur: 'Paul Ancien',
+              date_debut: '2026-09-01',
+              date_fin: '2026-09-30',
+              cloturee: true,
+            },
+          ],
+        }),
+      });
+    });
+
+    await page.route('**/api/v1/dashboard/receveur/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_RECEVEUR_DASHBOARD),
+      });
+    });
+
+    await page.goto('/');
+    await page.evaluate(() => {
+      localStorage.setItem('access_token', 'mock_token_admin');
+    });
+    await page.goto('/');
+
+    // Vérifier la présence de la section de sélection de bureau et de période
+    await expect(page.getByText("Consulter l'état d'un bureau")).toBeVisible();
+    const adminSelect = page.getByTestId('admin-select-bureau');
+    await expect(adminSelect).toBeVisible();
+
+    const periodeSelect = page.getByTestId('admin-select-periode');
+    await expect(periodeSelect).toBeVisible();
+    await expect(periodeSelect).toContainText('Jean Receveur');
+
+    // Vérifier le bouton "Voir l'état"
+    const viewBtn = page.getByTestId('btn-view-bureau-dashboard');
+    await expect(viewBtn).toBeVisible();
+    await viewBtn.click();
+
+    // On bascule sur la vue bureau (receveur) avec le sélecteur actif
+    await expect(page.getByTestId('select-bureau-dashboard')).toBeVisible();
+    await expect(page.getByTestId('select-periode-dashboard')).toBeVisible();
+    await expect(page.getByText('Antaninarenina').first()).toBeVisible();
+  });
 });
