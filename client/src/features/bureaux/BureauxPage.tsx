@@ -240,7 +240,6 @@ export const BureauxPage: React.FC = () => {
                   <th className="py-3 px-4 font-semibold">Nom du bureau</th>
                   <th className="py-3 px-4 font-semibold">Classe</th>
                   <th className="py-3 px-4 font-semibold">Province</th>
-                  <th className="py-3 px-4 font-semibold">Faritany</th>
                   <th className="py-3 px-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
@@ -264,9 +263,7 @@ export const BureauxPage: React.FC = () => {
                         {bureau.classe}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-text-secondary">
-                      {bureau.province || '—'}
-                    </td>
+                    
                     <td className="py-3 px-4 text-text-secondary">
                       {bureau.faritany_detail?.nom || bureau.province_detail?.nom || '—'}
                     </td>
