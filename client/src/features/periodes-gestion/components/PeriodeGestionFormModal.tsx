@@ -8,6 +8,7 @@ import { Button } from '../../../components/ui/Button';
 import type { Bureau, PeriodeGestionFormData, ApiError } from '../../../types';
 import { Coins, Stamp, FileSpreadsheet } from 'lucide-react';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
+import { parseNumber } from '../../../lib/formatters';
 
 const basePeriodeGestionSchema = z.object({
   bureau: z.coerce.number().int().positive('Veuillez sélectionner un bureau de poste valide'),
@@ -17,35 +18,35 @@ const basePeriodeGestionSchema = z.object({
     .string()
     .min(1, 'Le montant de réserve en numéraire est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'La réserve en numéraire doit être un nombre positif ou nul'
     ),
   valeurs_postales: z
     .string()
     .min(1, 'Le montant des valeurs postales est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'Le montant des valeurs postales doit être un nombre positif ou nul'
     ),
   timbres_fiscaux: z
     .string()
     .min(1, 'Le montant des timbres fiscaux est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'Le montant des timbres fiscaux doit être un nombre positif ou nul'
     ),
   solde_debiteur_depart: z
     .string()
     .optional()
     .refine(
-      (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+      (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
       'Le solde débiteur doit être un nombre positif ou nul'
     ),
   solde_crediteur_depart: z
     .string()
     .optional()
     .refine(
-      (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+      (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
       'Le solde créditeur doit être un nombre positif ou nul'
     ),
 });
@@ -123,18 +124,18 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       nom_receveur: values.nom_receveur,
       date_debut: values.date_debut,
       date_fin: null,
-      reserve_numeraire: Number(values.reserve_numeraire).toFixed(2),
-      valeurs_postales: Number(values.valeurs_postales).toFixed(2),
-      timbres_fiscaux: Number(values.timbres_fiscaux).toFixed(2),
-      solde_debiteur_depart: Number(values.solde_debiteur_depart || 0).toFixed(2),
-      solde_crediteur_depart: Number(values.solde_crediteur_depart || 0).toFixed(2),
+      reserve_numeraire: parseNumber(values.reserve_numeraire).toFixed(2),
+      valeurs_postales: parseNumber(values.valeurs_postales).toFixed(2),
+      timbres_fiscaux: parseNumber(values.timbres_fiscaux).toFixed(2),
+      solde_debiteur_depart: parseNumber(values.solde_debiteur_depart || 0).toFixed(2),
+      solde_crediteur_depart: parseNumber(values.solde_crediteur_depart || 0).toFixed(2),
     });
   };
 
   // Calcul instantané du total de l'inventaire initial
-  const watchNumeraire = Number(watch('reserve_numeraire') || 0);
-  const watchValeurs = Number(watch('valeurs_postales') || 0);
-  const watchTimbres = Number(watch('timbres_fiscaux') || 0);
+  const watchNumeraire = parseNumber(watch('reserve_numeraire') || 0);
+  const watchValeurs = parseNumber(watch('valeurs_postales') || 0);
+  const watchTimbres = parseNumber(watch('timbres_fiscaux') || 0);
   const totalInventaireInitial = (isNaN(watchNumeraire) ? 0 : watchNumeraire) +
     (isNaN(watchValeurs) ? 0 : watchValeurs) +
     (isNaN(watchTimbres) ? 0 : watchTimbres);
@@ -206,8 +207,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Numéraire en caisse</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -222,8 +224,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Valeurs postales</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -238,8 +241,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Timbres fiscaux</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -273,8 +277,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Solde débiteur de départ"
-            type="number"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
+            formatThousands
             placeholder="0.00"
             className="tabular-nums font-mono text-right"
             error={errors.solde_debiteur_depart?.message}
@@ -283,8 +288,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
 
           <Input
             label="Solde créditeur de départ"
-            type="number"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
+            formatThousands
             placeholder="0.00"
             className="tabular-nums font-mono text-right"
             error={errors.solde_crediteur_depart?.message}

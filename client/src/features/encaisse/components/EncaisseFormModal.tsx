@@ -13,6 +13,7 @@ import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
+import { formatThousandsInput, parseNumber } from '../../../lib/formatters';
 import { DollarSign, AlertCircle, X } from 'lucide-react';
 
 const createEncaisseSchema = (periode: PeriodeGestion) =>
@@ -26,7 +27,7 @@ const createEncaisseSchema = (periode: PeriodeGestion) =>
         .string()
         .min(1, 'Le montant est obligatoire')
         .refine(
-          (val) => !isNaN(Number(val)) && Number(val) > 0,
+          (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) > 0,
           'Le montant doit être strictement supérieur à zéro'
         ),
     })
@@ -82,7 +83,7 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
       rubrique_encaisse: initialData?.rubrique_encaisse || rubriques[0]?.id || 0,
       sens: initialData?.sens || 1,
       date_operation: initialData?.date_operation || periode.date_debut || new Date().toISOString().slice(0, 10),
-      montant: initialData ? Number(initialData.montant).toString() : '',
+      montant: initialData ? formatThousandsInput(Number(initialData.montant).toString()) : '',
     },
   });
 
@@ -93,7 +94,7 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
         rubrique_encaisse: initialData?.rubrique_encaisse || rubriques[0]?.id || 0,
         sens: initialData?.sens || 1,
         date_operation: initialData?.date_operation || periode.date_debut || new Date().toISOString().slice(0, 10),
-        montant: initialData ? Number(initialData.montant).toString() : '',
+        montant: initialData ? formatThousandsInput(Number(initialData.montant).toString()) : '',
       });
     }
   }, [isOpen, periode, rubriques, initialData, reset]);
@@ -107,7 +108,7 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
         rubrique_encaisse: Number(data.rubrique_encaisse),
         sens: Number(data.sens),
         date_operation: data.date_operation,
-        montant: Number(data.montant).toFixed(2),
+        montant: parseNumber(data.montant).toFixed(2),
       });
       onSubmitSuccess();
       onClose();
@@ -221,9 +222,10 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
             </label>
             <Input
               id="encaisse-montant"
-              type="number"
-              step="any"
-              placeholder="Ex: 50000"
+              type="text"
+              inputMode="decimal"
+              formatThousands
+              placeholder="Ex: 50 000"
               {...register('montant')}
               error={errors.montant?.message}
             />

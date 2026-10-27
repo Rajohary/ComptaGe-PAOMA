@@ -14,7 +14,7 @@ import { TotauxLive } from './TotauxLive';
 import { LigneComptableSearch } from './LigneComptableSearch';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
-import { formatAriary, formatDate } from '../../../lib/formatters';
+import { formatAriary, formatDate, parseNumber } from '../../../lib/formatters';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 import {
   FileText,
@@ -40,30 +40,30 @@ const createMouvementSchema = (periode: PeriodeGestion) =>
         .string()
         .min(1, 'Le montant est obligatoire')
         .refine(
-          (val) => !isNaN(Number(val)) && Number(val) >= 0,
+          (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
           'Le montant doit être un nombre positif ou nul'
         ),
       augmentation: z
         .string()
         .optional()
         .refine(
-          (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+          (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
           'L’augmentation doit être un nombre positif ou nul'
         ),
       diminution: z
         .string()
         .optional()
         .refine(
-          (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+          (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
           'La diminution doit être un nombre positif ou nul'
         ),
       motif_rectification: z.string().max(250, 'Le motif ne peut dépasser 250 caractères').optional(),
     })
     .refine(
       (data) => {
-        const m = Number(data.montant || 0);
-        const aug = Number(data.augmentation || 0);
-        const dim = Number(data.diminution || 0);
+        const m = parseNumber(data.montant, 0);
+        const aug = parseNumber(data.augmentation, 0);
+        const dim = parseNumber(data.diminution, 0);
         return m + aug >= dim;
       },
       {
@@ -204,9 +204,9 @@ export const SectionForm: React.FC<SectionFormProps> = ({
   const watchDiminution = watch('diminution');
 
   const currentLiveRectifie = useMemo(() => {
-    const m = Number(watchMontant) || 0;
-    const aug = Number(watchAugmentation) || 0;
-    const dim = Number(watchDiminution) || 0;
+    const m = parseNumber(watchMontant, 0);
+    const aug = parseNumber(watchAugmentation, 0);
+    const dim = parseNumber(watchDiminution, 0);
     const res = m + aug - dim;
     return res > 0 ? res : 0;
   }, [watchMontant, watchAugmentation, watchDiminution]);
@@ -230,9 +230,9 @@ export const SectionForm: React.FC<SectionFormProps> = ({
         periode_gestion: Number(data.periode_gestion),
         ligne_comptable: Number(data.ligne_comptable),
         date_operation: data.date_operation,
-        montant: Number(data.montant).toFixed(2),
-        augmentation: Number(data.augmentation || 0).toFixed(2),
-        diminution: Number(data.diminution || 0).toFixed(2),
+        montant: parseNumber(data.montant).toFixed(2),
+        augmentation: parseNumber(data.augmentation || 0).toFixed(2),
+        diminution: parseNumber(data.diminution || 0).toFixed(2),
         motif_rectification: data.motif_rectification?.trim() || '',
       };
 
@@ -289,9 +289,9 @@ export const SectionForm: React.FC<SectionFormProps> = ({
     }
     setValue('ligne_comptable', m.ligne_comptable);
     setValue('date_operation', m.date_operation);
-    setValue('montant', Number(m.montant).toString());
-    setValue('augmentation', Number(m.augmentation || 0).toString());
-    setValue('diminution', Number(m.diminution || 0).toString());
+    setValue('montant', formatThousandsInput(Number(m.montant).toString()));
+    setValue('augmentation', Number(m.augmentation || 0) > 0 ? formatThousandsInput(Number(m.augmentation).toString()) : '0.00');
+    setValue('diminution', Number(m.diminution || 0) > 0 ? formatThousandsInput(Number(m.diminution).toString()) : '0.00');
     setValue('motif_rectification', m.motif_rectification || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -502,10 +502,10 @@ export const SectionForm: React.FC<SectionFormProps> = ({
               <Input
                 label="Montant initial déclaré (Ariary)"
                 id="g58-montant"
-                type="number"
-                step="0.01"
-                min="0"
-                placeholder="Ex : 25000.00"
+                type="text"
+                inputMode="decimal"
+                formatThousands
+                placeholder="Ex : 25 000.00"
                 error={errors.montant?.message}
                 {...register('montant')}
               />
@@ -529,9 +529,9 @@ export const SectionForm: React.FC<SectionFormProps> = ({
                 <Input
                   label="Augmentation (+)"
                   id="g58-augmentation"
-                  type="number"
-                  step="0.01"
-                  min="0"
+                  type="text"
+                  inputMode="decimal"
+                  formatThousands
                   placeholder="0.00"
                   error={errors.augmentation?.message}
                   {...register('augmentation')}
@@ -540,9 +540,9 @@ export const SectionForm: React.FC<SectionFormProps> = ({
                 <Input
                   label="Diminution (-)"
                   id="g58-diminution"
-                  type="number"
-                  step="0.01"
-                  min="0"
+                  type="text"
+                  inputMode="decimal"
+                  formatThousands
                   placeholder="0.00"
                   error={errors.diminution?.message}
                   {...register('diminution')}

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getEcarts, rectifierMouvement, type EcartsSearchParams } from '../../api/audit';
 import { getBureaux, getProvinces } from '../../api/referentiel';
-import { formatAriary, formatDate } from '../../lib/formatters';
+import { formatAriary, formatDate, parseNumber, formatThousandsInput } from '../../lib/formatters';
 import type { EcartItem, RectificationInput } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { RectificationModal } from './components/RectificationModal';
@@ -118,7 +118,7 @@ export const AuditEcartsPage: React.FC = () => {
     let items = ecartsData.results;
 
     if (minMontant) {
-      const min = parseFloat(minMontant);
+      const min = parseNumber(minMontant, NaN);
       if (!isNaN(min)) {
         items = items.filter(
           (item) => Math.abs(parseFloat(item.montant) || 0) >= min || Math.abs(parseFloat(item.ecart) || 0) >= min
@@ -127,7 +127,7 @@ export const AuditEcartsPage: React.FC = () => {
     }
 
     if (maxMontant) {
-      const max = parseFloat(maxMontant);
+      const max = parseNumber(maxMontant, NaN);
       if (!isNaN(max)) {
         items = items.filter(
           (item) => Math.abs(parseFloat(item.montant) || 0) <= max && Math.abs(parseFloat(item.ecart) || 0) <= max
@@ -391,11 +391,11 @@ export const AuditEcartsPage: React.FC = () => {
             </label>
             <input
               id="min-montant"
-              type="number"
-              min="0"
-              placeholder="Ex: 5000"
+              type="text"
+              inputMode="decimal"
+              placeholder="Ex: 5 000"
               value={minMontant}
-              onChange={(e) => setMinMontant(e.target.value)}
+              onChange={(e) => setMinMontant(formatThousandsInput(e.target.value))}
               className="w-full px-3 py-1.5 text-sm bg-surface-primary border border-border-subtle rounded-lg text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
@@ -406,11 +406,11 @@ export const AuditEcartsPage: React.FC = () => {
             </label>
             <input
               id="max-montant"
-              type="number"
-              min="0"
-              placeholder="Ex: 500000"
+              type="text"
+              inputMode="decimal"
+              placeholder="Ex: 500 000"
               value={maxMontant}
-              onChange={(e) => setMaxMontant(e.target.value)}
+              onChange={(e) => setMaxMontant(formatThousandsInput(e.target.value))}
               className="w-full px-3 py-1.5 text-sm bg-surface-primary border border-border-subtle rounded-lg text-text-primary placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>

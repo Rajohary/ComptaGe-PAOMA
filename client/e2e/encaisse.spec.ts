@@ -366,10 +366,10 @@ test.describe('Section 4 — Écran Détails de l’encaisse', () => {
     await expect(editBtn).toBeVisible();
     await editBtn.click();
 
-    // La modale doit s'ouvrir en mode modification avec les valeurs préremplies
+    // La modale doit s'ouvrir en mode modification avec les valeurs préremplies (formatées avec séparateur de milliers)
     await expect(page.getByRole('heading', { name: 'Modifier le mouvement d’encaisse' })).toBeVisible();
     const montantInput = page.locator('#encaisse-montant');
-    await expect(montantInput).toHaveValue('150000');
+    await expect(montantInput).toHaveValue('150 000');
 
     // Mettre à jour le montant à 180 000 Ar
     await montantInput.fill('180000');

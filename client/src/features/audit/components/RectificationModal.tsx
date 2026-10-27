@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
-import { formatAriary, formatDate } from '../../../lib/formatters';
+import { formatAriary, formatDate, parseNumber, cleanNumericString } from '../../../lib/formatters';
 import type { EcartItem, RectificationInput } from '../../../types';
 import { Calculator, AlertCircle, ArrowUpRight, ArrowDownRight, Scale } from 'lucide-react';
 
@@ -18,20 +18,20 @@ const rectificationSchema = z
     augmentation: z
       .string()
       .refine(
-        (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+        (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
         'L’augmentation doit être un nombre positif ou nul'
       ),
     diminution: z
       .string()
       .refine(
-        (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+        (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
         'La diminution doit être un nombre positif ou nul'
       ),
   })
   .refine(
     (data) => {
-      const aug = Number(data.augmentation || 0);
-      const dim = Number(data.diminution || 0);
+      const aug = parseNumber(data.augmentation, 0);
+      const dim = parseNumber(data.diminution, 0);
       return aug > 0 || dim > 0;
     },
     {
@@ -97,8 +97,8 @@ export const RectificationModal: React.FC<RectificationModalProps> = ({
   }, [ecart]);
 
   const { augmentationNum, diminutionNum, montantRectifieCalcule } = useMemo(() => {
-    const aug = parseFloat(augmentationWatch || '0') || 0;
-    const dim = parseFloat(diminutionWatch || '0') || 0;
+    const aug = parseNumber(augmentationWatch, 0);
+    const dim = parseNumber(diminutionWatch, 0);
     const rectifie = montantInitial + aug - dim;
     return {
       augmentationNum: aug,
@@ -110,8 +110,8 @@ export const RectificationModal: React.FC<RectificationModalProps> = ({
   const onFormSubmit = async (data: RectificationFormData) => {
     await onSubmit({
       motif: data.motif.trim(),
-      augmentation: data.augmentation || '0',
-      diminution: data.diminution || '0',
+      augmentation: cleanNumericString(data.augmentation) || '0',
+      diminution: cleanNumericString(data.diminution) || '0',
       montant_rectifie: montantRectifieCalcule.toFixed(2),
     });
   };
@@ -171,9 +171,9 @@ export const RectificationModal: React.FC<RectificationModalProps> = ({
               Augmentation (MGA)
             </label>
             <Input
-              type="number"
-              step="any"
-              min="0"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               placeholder="0.00"
               {...register('augmentation')}
               error={errors.augmentation?.message}
@@ -186,9 +186,9 @@ export const RectificationModal: React.FC<RectificationModalProps> = ({
               Diminution (MGA)
             </label>
             <Input
-              type="number"
-              step="any"
-              min="0"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               placeholder="0.00"
               {...register('diminution')}
               error={errors.diminution?.message}
