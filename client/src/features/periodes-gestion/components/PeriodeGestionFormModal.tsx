@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { Button } from '../../../components/ui/Button';
-import type { Bureau, PeriodeGestionFormData, ApiError } from '../../../types';
+import type { Bureau, PeriodeGestionFormData, Province, ApiError } from '../../../types';
 import { Coins, Stamp, FileSpreadsheet } from 'lucide-react';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 import { parseNumber } from '../../../lib/formatters';
@@ -61,6 +61,7 @@ interface PeriodeGestionFormModalProps {
   onClose: () => void;
   onSubmit: (data: PeriodeGestionFormData) => Promise<void>;
   bureaux: Bureau[];
+  provinces?: Province[];
   apiErrors?: ApiError;
 }
 
@@ -69,13 +70,24 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
   onClose,
   onSubmit,
   bureaux,
+  provinces = [],
   apiErrors,
 }) => {
+  const [selectedProvince, setSelectedProvince] = useState<string>('');
+
+  // Filtrer les bureaux selon la province sélectionnée
+  const filteredBureaux = useMemo(() => {
+    if (!selectedProvince) return bureaux;
+    const provId = Number(selectedProvince);
+    return bureaux.filter((b) => b.province === provId || b.province_detail?.id === provId);
+  }, [bureaux, selectedProvince]);
+
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<PeriodeGestionFormInput, unknown, PeriodeGestionFormOutput>({
@@ -94,6 +106,7 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
 
   useEffect(() => {
     if (isOpen) {
+      setSelectedProvince('');
       reset({
         bureau: bureaux[0]?.id || 1,
         nom_receveur: '',
@@ -106,6 +119,17 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       });
     }
   }, [isOpen, bureaux, reset]);
+
+  // Si la liste filtrée change et que le bureau actuellement sélectionné n'est plus dedans, sélectionner le premier
+  const currentBureau = watch('bureau');
+  useEffect(() => {
+    if (filteredBureaux.length > 0) {
+      const exists = filteredBureaux.some((b) => b.id === Number(currentBureau));
+      if (!exists) {
+        setValue('bureau', filteredBureaux[0].id);
+      }
+    }
+  }, [filteredBureaux, currentBureau, setValue]);
 
   // Associer les erreurs de validation renvoyées par le backend Django
   useEffect(() => {
@@ -140,7 +164,33 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
     (isNaN(watchValeurs) ? 0 : watchValeurs) +
     (isNaN(watchTimbres) ? 0 : watchTimbres);
 
-  const bureauOptions = bureaux.map((b) => ({
+  // Déduire les provinces des bureaux ou utiliser les provinces passées en props
+  const provinceOptions = useMemo(() => {
+    const map = new Map<number, string>();
+    if (provinces.length > 0) {
+      provinces.forEach((p) => map.set(p.id, p.nom));
+    } else {
+      bureaux.forEach((b) => {
+        if (b.province_detail) {
+          map.set(b.province_detail.id, b.province_detail.nom);
+        } else if (b.province) {
+          map.set(b.province, `Province #${b.province}`);
+        }
+      });
+    }
+
+    return [
+      { value: '', label: 'Toutes les provinces (sans filtre)' },
+      ...Array.from(map.entries())
+        .sort((a, b) => a[1].localeCompare(b[1]))
+        .map(([id, nom]) => ({
+          value: id.toString(),
+          label: nom,
+        })),
+    ];
+  }, [provinces, bureaux]);
+
+  const bureauOptions = filteredBureaux.map((b) => ({
     value: b.id,
     label: `${b.ncodique} — ${b.nom_bureau} (${b.classe})`,
   }));
@@ -159,10 +209,25 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
           1. Rattachement & Dates de gestion
         </h4>
 
+        {/* Sélection de province pour filtrer les bureaux */}
+        <Select
+          label="Province (Faritany)"
+          id="periode-province-select"
+          value={selectedProvince}
+          onChange={(e) => setSelectedProvince(e.target.value)}
+          options={provinceOptions}
+          helperText="Sélectionnez une province pour filtrer la liste des bureaux ci-dessous"
+        />
+
         <Select
           label="Bureau de poste"
+          id="periode-bureau-select"
           required
-          options={bureauOptions.length > 0 ? bureauOptions : [{ value: 1, label: 'Aucun bureau disponible' }]}
+          options={
+            bureauOptions.length > 0
+              ? bureauOptions
+              : [{ value: 0, label: 'Aucun bureau correspondant dans cette province' }]
+          }
           error={errors.bureau?.message}
           {...register('bureau')}
         />

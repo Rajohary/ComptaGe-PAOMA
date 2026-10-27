@@ -4,9 +4,10 @@ import {
   createPeriodeGestion,
   cloturerPeriodeGestion,
   getBureaux,
+  getProvinces,
 } from '../../api/referentiel';
 import { downloadBordereauG58Pdf, exportEcrituresExcel } from '../../api/comptabilite';
-import type { PeriodeGestion, PeriodeGestionFormData, Bureau, ApiError } from '../../types';
+import type { PeriodeGestion, PeriodeGestionFormData, Bureau, Province, ApiError } from '../../types';
 import { ApiClientError } from '../../api/client';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
@@ -34,6 +35,7 @@ export const PeriodesGestionPage: React.FC = () => {
   const navigate = useNavigate();
   const [periodes, setPeriodes] = useState<PeriodeGestion[]>([]);
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,10 +107,14 @@ export const PeriodesGestionPage: React.FC = () => {
 
   const loadBureaux = useCallback(async () => {
     try {
-      const res = await getBureaux();
-      setBureaux(res.results || []);
+      const [bureauxRes, provincesRes] = await Promise.all([
+        getBureaux(),
+        getProvinces().catch(() => ({ results: [] })),
+      ]);
+      setBureaux(bureauxRes.results || []);
+      setProvinces(provincesRes.results || []);
     } catch {
-      console.warn('Impossible de charger les bureaux pour le sélecteur');
+      console.warn('Impossible de charger les bureaux ou provinces pour le sélecteur');
     }
   }, []);
 
@@ -451,6 +457,7 @@ export const PeriodesGestionPage: React.FC = () => {
           onClose={() => setIsFormOpen(false)}
           onSubmit={handleSavePeriode}
           bureaux={bureaux}
+          provinces={provinces}
           apiErrors={apiErrors}
         />
       </Modal>

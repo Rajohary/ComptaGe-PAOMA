@@ -130,6 +130,12 @@ test.describe('Périodes de gestion (Référentiel)', () => {
 
     await expect(page.getByRole('heading', { name: /Ouverture d'une période de gestion/i })).toBeVisible();
 
+    // Vérifier la présence du sélecteur de province et du champ bureau
+    const provinceSelect = page.locator('#periode-province-select');
+    await expect(provinceSelect).toBeVisible();
+    const bureauSelect = page.locator('#periode-bureau-select');
+    await expect(bureauSelect).toBeVisible();
+
     // Remplir les montants de l'inventaire initial
     const numeraireInput = page.locator('input[name="reserve_numeraire"]');
     await numeraireInput.fill('100000');
