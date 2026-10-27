@@ -1,19 +1,126 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppLayout } from './components/layout/AppLayout';
+import LoginPage from './features/auth/pages/LoginPage';
+import UnauthorizedPage from './features/auth/pages/UnauthorizedPage';
+import RequireAuth from './features/auth/components/RequireAuth';
+import AppShell from './components/layout/AppShell';
+import DashboardPage from './features/dashboard/pages/DashboardPage';
 import { BureauxPage } from './features/bureaux/BureauxPage';
 import { PeriodesGestionPage } from './features/periodes-gestion/PeriodesGestionPage';
+import { HistoriquePeriodesPage } from './features/periodes-gestion/HistoriquePeriodesPage';
+import { PlanComptablePage } from './features/plan-comptable/PlanComptablePage';
+import { StockValeursPage } from './features/stock/StockValeursPage';
+import { SaisieG58Page } from './features/saisie-g58/pages/SaisieG58Page';
+import { SituationComptablePage } from './features/saisie-g58/pages/SituationComptablePage';
+import { EncaissePage } from './features/encaisse/EncaissePage';
 import { HealthPage } from './features/dashboard/HealthPage';
+import { AuditEcartsPage } from './features/audit/AuditEcartsPage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Navigate to="/bureaux" replace />} />
-          <Route path="/bureaux" element={<BureauxPage />} />
-          <Route path="/periodes-gestion" element={<PeriodesGestionPage />} />
-          <Route path="/sante" element={<HealthPage />} />
+        {/* Routes publiques */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/non-autorise" element={<UnauthorizedPage />} />
+
+        {/* Routes du shell sans bloquer les modules publics/référentiel si non connecté */}
+        <Route element={<AppShell />}>
+          {/* Dashboard (protégé) */}
+          <Route
+            index
+            element={
+              <RequireAuth>
+                <DashboardPage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Saisie G58 — Admin, Receveur & Agent de saisie */}
+          <Route
+            path="saisie"
+            element={
+              <RequireAuth allowedRoles={['ADMIN', 'RECEVEUR', 'AGENT_SAISIE']}>
+                <SaisieG58Page />
+              </RequireAuth>
+            }
+          />
+
+          {/* Détails de l'encaisse — Receveur, Agent de saisie, Inspecteur, Admin */}
+          <Route
+            path="encaisse"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <EncaissePage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Situation comptable — Receveur, Inspecteur, Admin */}
+          <Route
+            path="situation-comptable"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'INSPECTEUR', 'ADMIN']}>
+                <SituationComptablePage />
+              </RequireAuth>
+            }
+          />
+
+
+          {/* Plan comptable — Receveur, Agent de saisie, Inspecteur, Admin */}
+          <Route
+            path="plan-comptable"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <PlanComptablePage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Admin : gestion des bureaux */}
+          <Route path="admin/bureaux" element={<BureauxPage />} />
+          <Route path="admin" element={<Navigate to="/admin/bureaux" replace />} />
+
+          {/* Accès direct bureaux (Référentiel) */}
+          <Route path="bureaux" element={<BureauxPage />} />
+
+          {/* Périodes de gestion (Référentiel) */}
+          <Route path="periodes-gestion" element={<PeriodesGestionPage />} />
+          <Route
+            path="historique-periodes"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'INSPECTEUR', 'ADMIN']}>
+                <HistoriquePeriodesPage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Audit — Inspecteur & Admin */}
+          <Route
+            path="audit"
+            element={
+              <RequireAuth allowedRoles={['INSPECTEUR', 'ADMIN']}>
+                <AuditEcartsPage />
+              </RequireAuth>
+            }
+          />
+
+          {/* Stock valeurs — Receveur, Agent, Admin */}
+          <Route
+            path="stock"
+            element={
+              <RequireAuth allowedRoles={['RECEVEUR', 'AGENT_SAISIE', 'ADMIN']}>
+                <StockValeursPage />
+              </RequireAuth>
+            }
+          />
+
+
+          {/* Santé système */}
+          <Route path="sante" element={<HealthPage />} />
         </Route>
+
+        {/* Fallback — redirection vers l'accueil */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

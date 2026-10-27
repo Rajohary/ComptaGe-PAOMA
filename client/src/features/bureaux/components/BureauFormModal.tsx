@@ -176,37 +176,6 @@ export const BureauFormModal: React.FC<BureauFormModalProps> = ({
         />
       </div>
 
-      <div className="pt-2 border-t border-border-subtle grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-        <Input
-          label="N° Bur"
-          type="number"
-          placeholder="1"
-          error={errors.nbur?.message}
-          {...register('nbur')}
-        />
-        <Input
-          label="Code classe"
-          type="number"
-          placeholder="1"
-          error={errors.codeclasse?.message}
-          {...register('codeclasse')}
-        />
-        <Input
-          label="N° CF"
-          type="number"
-          placeholder="1"
-          error={errors.ncf?.message}
-          {...register('ncf')}
-        />
-        <Input
-          label="CF Codik"
-          type="number"
-          placeholder="10101"
-          error={errors.cf_codik?.message}
-          {...register('cf_codik')}
-        />
-      </div>
-
       <div className="flex justify-end gap-3 pt-4 border-t border-border-subtle">
         <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
           Annuler

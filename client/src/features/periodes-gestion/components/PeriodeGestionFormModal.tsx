@@ -1,68 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { Button } from '../../../components/ui/Button';
-import type { Bureau, PeriodeGestionFormData, ApiError } from '../../../types';
+import type { Bureau, PeriodeGestionFormData, Province, ApiError } from '../../../types';
 import { Coins, Stamp, FileSpreadsheet } from 'lucide-react';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
+import { parseNumber } from '../../../lib/formatters';
 
 const basePeriodeGestionSchema = z.object({
   bureau: z.coerce.number().int().positive('Veuillez sélectionner un bureau de poste valide'),
   nom_receveur: z.string().min(2, 'Le nom du receveur doit comporter au moins 2 caractères'),
   date_debut: z.string().min(1, 'La date de début est obligatoire'),
-  date_fin: z.string().min(1, 'La date de fin est obligatoire'),
   reserve_numeraire: z
     .string()
     .min(1, 'Le montant de réserve en numéraire est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'La réserve en numéraire doit être un nombre positif ou nul'
     ),
   valeurs_postales: z
     .string()
     .min(1, 'Le montant des valeurs postales est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'Le montant des valeurs postales doit être un nombre positif ou nul'
     ),
   timbres_fiscaux: z
     .string()
     .min(1, 'Le montant des timbres fiscaux est obligatoire')
     .refine(
-      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      (val) => !isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0,
       'Le montant des timbres fiscaux doit être un nombre positif ou nul'
     ),
   solde_debiteur_depart: z
     .string()
     .optional()
     .refine(
-      (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+      (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
       'Le solde débiteur doit être un nombre positif ou nul'
     ),
   solde_crediteur_depart: z
     .string()
     .optional()
     .refine(
-      (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+      (val) => !val || (!isNaN(parseNumber(val, NaN)) && parseNumber(val) >= 0),
       'Le solde créditeur doit être un nombre positif ou nul'
     ),
 });
 
-const periodeGestionSchema = basePeriodeGestionSchema.refine(
-  (data) => {
-    if (data.date_debut && data.date_fin) {
-      return data.date_fin >= data.date_debut;
-    }
-    return true;
-  },
-  {
-    message: 'La date de fin de gestion doit être supérieure ou égale à la date de début',
-    path: ['date_fin'],
-  }
-);
+const periodeGestionSchema = basePeriodeGestionSchema;
 
 type PeriodeGestionFormInput = z.input<typeof periodeGestionSchema>;
 type PeriodeGestionFormOutput = z.output<typeof periodeGestionSchema>;
@@ -72,6 +61,7 @@ interface PeriodeGestionFormModalProps {
   onClose: () => void;
   onSubmit: (data: PeriodeGestionFormData) => Promise<void>;
   bureaux: Bureau[];
+  provinces?: Province[];
   apiErrors?: ApiError;
 }
 
@@ -80,13 +70,24 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
   onClose,
   onSubmit,
   bureaux,
+  provinces = [],
   apiErrors,
 }) => {
+  const [selectedProvince, setSelectedProvince] = useState<string>('');
+
+  // Filtrer les bureaux selon la province sélectionnée
+  const filteredBureaux = useMemo(() => {
+    if (!selectedProvince) return bureaux;
+    const provId = Number(selectedProvince);
+    return bureaux.filter((b) => b.province === provId || b.province_detail?.id === provId);
+  }, [bureaux, selectedProvince]);
+
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<PeriodeGestionFormInput, unknown, PeriodeGestionFormOutput>({
@@ -95,7 +96,6 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       bureau: bureaux[0]?.id || 1,
       nom_receveur: '',
       date_debut: new Date().toISOString().slice(0, 7) + '-01',
-      date_fin: new Date().toISOString().slice(0, 10),
       reserve_numeraire: '0.00',
       valeurs_postales: '0.00',
       timbres_fiscaux: '0.00',
@@ -106,11 +106,11 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
 
   useEffect(() => {
     if (isOpen) {
+      setSelectedProvince('');
       reset({
         bureau: bureaux[0]?.id || 1,
         nom_receveur: '',
         date_debut: new Date().toISOString().slice(0, 7) + '-01',
-        date_fin: new Date().toISOString().slice(0, 10),
         reserve_numeraire: '0.00',
         valeurs_postales: '0.00',
         timbres_fiscaux: '0.00',
@@ -119,6 +119,17 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       });
     }
   }, [isOpen, bureaux, reset]);
+
+  // Si la liste filtrée change et que le bureau actuellement sélectionné n'est plus dedans, sélectionner le premier
+  const currentBureau = watch('bureau');
+  useEffect(() => {
+    if (filteredBureaux.length > 0) {
+      const exists = filteredBureaux.some((b) => b.id === Number(currentBureau));
+      if (!exists) {
+        setValue('bureau', filteredBureaux[0].id);
+      }
+    }
+  }, [filteredBureaux, currentBureau, setValue]);
 
   // Associer les erreurs de validation renvoyées par le backend Django
   useEffect(() => {
@@ -136,24 +147,50 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
       bureau: values.bureau,
       nom_receveur: values.nom_receveur,
       date_debut: values.date_debut,
-      date_fin: values.date_fin,
-      reserve_numeraire: Number(values.reserve_numeraire).toFixed(2),
-      valeurs_postales: Number(values.valeurs_postales).toFixed(2),
-      timbres_fiscaux: Number(values.timbres_fiscaux).toFixed(2),
-      solde_debiteur_depart: Number(values.solde_debiteur_depart || 0).toFixed(2),
-      solde_crediteur_depart: Number(values.solde_crediteur_depart || 0).toFixed(2),
+      date_fin: null,
+      reserve_numeraire: parseNumber(values.reserve_numeraire).toFixed(2),
+      valeurs_postales: parseNumber(values.valeurs_postales).toFixed(2),
+      timbres_fiscaux: parseNumber(values.timbres_fiscaux).toFixed(2),
+      solde_debiteur_depart: parseNumber(values.solde_debiteur_depart || 0).toFixed(2),
+      solde_crediteur_depart: parseNumber(values.solde_crediteur_depart || 0).toFixed(2),
     });
   };
 
   // Calcul instantané du total de l'inventaire initial
-  const watchNumeraire = Number(watch('reserve_numeraire') || 0);
-  const watchValeurs = Number(watch('valeurs_postales') || 0);
-  const watchTimbres = Number(watch('timbres_fiscaux') || 0);
+  const watchNumeraire = parseNumber(watch('reserve_numeraire') || 0);
+  const watchValeurs = parseNumber(watch('valeurs_postales') || 0);
+  const watchTimbres = parseNumber(watch('timbres_fiscaux') || 0);
   const totalInventaireInitial = (isNaN(watchNumeraire) ? 0 : watchNumeraire) +
     (isNaN(watchValeurs) ? 0 : watchValeurs) +
     (isNaN(watchTimbres) ? 0 : watchTimbres);
 
-  const bureauOptions = bureaux.map((b) => ({
+  // Déduire les provinces des bureaux ou utiliser les provinces passées en props
+  const provinceOptions = useMemo(() => {
+    const map = new Map<number, string>();
+    if (provinces.length > 0) {
+      provinces.forEach((p) => map.set(p.id, p.nom));
+    } else {
+      bureaux.forEach((b) => {
+        if (b.province_detail) {
+          map.set(b.province_detail.id, b.province_detail.nom);
+        } else if (b.province) {
+          map.set(b.province, `Province #${b.province}`);
+        }
+      });
+    }
+
+    return [
+      { value: '', label: 'Toutes les provinces (sans filtre)' },
+      ...Array.from(map.entries())
+        .sort((a, b) => a[1].localeCompare(b[1]))
+        .map(([id, nom]) => ({
+          value: id.toString(),
+          label: nom,
+        })),
+    ];
+  }, [provinces, bureaux]);
+
+  const bureauOptions = filteredBureaux.map((b) => ({
     value: b.id,
     label: `${b.ncodique} — ${b.nom_bureau} (${b.classe})`,
   }));
@@ -172,10 +209,25 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
           1. Rattachement & Dates de gestion
         </h4>
 
+        {/* Sélection de province pour filtrer les bureaux */}
+        <Select
+          label="Province (Faritany)"
+          id="periode-province-select"
+          value={selectedProvince}
+          onChange={(e) => setSelectedProvince(e.target.value)}
+          options={provinceOptions}
+          helperText="Sélectionnez une province pour filtrer la liste des bureaux ci-dessous"
+        />
+
         <Select
           label="Bureau de poste"
+          id="periode-bureau-select"
           required
-          options={bureauOptions.length > 0 ? bureauOptions : [{ value: 1, label: 'Aucun bureau disponible' }]}
+          options={
+            bureauOptions.length > 0
+              ? bureauOptions
+              : [{ value: 0, label: 'Aucun bureau correspondant dans cette province' }]
+          }
           error={errors.bureau?.message}
           {...register('bureau')}
         />
@@ -188,7 +240,7 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
           {...register('nom_receveur')}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <Input
             label="Date de début"
             required
@@ -196,13 +248,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
             error={errors.date_debut?.message}
             {...register('date_debut')}
           />
-          <Input
-            label="Date de fin"
-            required
-            type="date"
-            error={errors.date_fin?.message}
-            {...register('date_fin')}
-          />
+          <p className="text-[11px] font-sans text-text-secondary mt-1">
+            La date de fin sera automatiquement déterminée lors de la clôture officielle de cette période.
+          </p>
         </div>
       </div>
 
@@ -224,8 +272,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Numéraire en caisse</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -240,8 +289,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Valeurs postales</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -256,8 +306,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
               <span>Timbres fiscaux</span>
             </div>
             <Input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              formatThousands
               required
               placeholder="0.00"
               className="tabular-nums font-mono text-right"
@@ -291,8 +342,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Solde débiteur de départ"
-            type="number"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
+            formatThousands
             placeholder="0.00"
             className="tabular-nums font-mono text-right"
             error={errors.solde_debiteur_depart?.message}
@@ -301,8 +353,9 @@ export const PeriodeGestionFormModal: React.FC<PeriodeGestionFormModalProps> = (
 
           <Input
             label="Solde créditeur de départ"
-            type="number"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
+            formatThousands
             placeholder="0.00"
             className="tabular-nums font-mono text-right"
             error={errors.solde_crediteur_depart?.message}

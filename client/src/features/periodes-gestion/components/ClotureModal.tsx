@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../../../components/ui/Button';
+import { Input } from '../../../components/ui/Input';
 import type { PeriodeGestion } from '../../../types';
 import { AlertTriangle, Lock, Calendar, Coins, Stamp, FileSpreadsheet } from 'lucide-react';
 
 interface ClotureModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => Promise<void>;
+  onConfirm: (dateFin: string) => Promise<void>;
   periode: PeriodeGestion | null;
   isLoading: boolean;
   errorMessage?: string | null;
@@ -20,11 +21,19 @@ export const ClotureModal: React.FC<ClotureModalProps> = ({
   isLoading,
   errorMessage,
 }) => {
+  const [dateFin, setDateFin] = useState<string>(
+    new Date().toISOString().slice(0, 10)
+  );
+
   if (!isOpen || !periode) return null;
 
   const formatMoney = (val: string | number) => {
     const num = Number(val) || 0;
     return `${num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MGA`;
+  };
+
+  const handleConfirm = () => {
+    onConfirm(dateFin);
   };
 
   return (
@@ -72,8 +81,23 @@ export const ClotureModal: React.FC<ClotureModalProps> = ({
         <div className="flex items-center gap-2 text-xs font-mono text-text-secondary">
           <Calendar className="w-3.5 h-3.5 text-accent" />
           <span>
-            Exercice du {periode.date_debut} au {periode.date_fin}
+            Période débutée le {periode.date_debut} {periode.date_fin ? `(actuellement fixée au ${periode.date_fin})` : '(en cours)'}
           </span>
+        </div>
+
+        {/* Choix de la date de fin effective de gestion */}
+        <div className="pt-2 border-t border-border-subtle">
+          <Input
+            label="Date de fin de gestion (arrêt comptable)"
+            type="date"
+            required
+            min={periode.date_debut}
+            value={dateFin}
+            onChange={(e) => setDateFin(e.target.value)}
+          />
+          <p className="text-[11px] font-sans text-text-secondary mt-1">
+            Cette date scellera la période et servira de date d'arrêté pour le Journal G58 et la situation comptable.
+          </p>
         </div>
 
         {/* Rappel des montants d'ouverture */}
@@ -121,7 +145,7 @@ export const ClotureModal: React.FC<ClotureModalProps> = ({
         <Button
           type="button"
           variant="danger"
-          onClick={onConfirm}
+          onClick={handleConfirm}
           isLoading={isLoading}
         >
           <Lock className="w-4 h-4 mr-1.5" />

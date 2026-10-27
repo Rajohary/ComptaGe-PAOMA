@@ -24,11 +24,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 1. Authentification & RBAC
 
-- [ ] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
-- [ ] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
-- [ ] Classes de permission DRF par rôle (`accounts/permissions.py`)
-- [ ] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
-- [ ] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
+- [x] Modèle `User` custom Django avec champ `role` (`ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`)
+- [x] Endpoint d'inscription `User` avec hash du mot de passe via Django (`/api/v1/auth/register/`)
+- [x] Endpoints d'authentification JWT (login, refresh, logout, `/me/`)
+- [x] Classes de permission DRF par rôle (`accounts/permissions.py`)
+- [x] Documenter les 4 endpoints d'authentification dans `../API_CONTRACT.md` avec exemples de payloads
+- [x] Test unitaire : un agent de saisie ne peut pas accéder aux données d'un autre bureau
 - [ ] Test unitaire : un token expiré est bien rejeté par les endpoints protégés
 
 ---
@@ -48,52 +49,54 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 3. Plan comptable (sections A-E)
 
-- [ ] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
-- [ ] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
-- [ ] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
-- [ ] Documenter cet endpoint dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
+- [x] Modélisation `SectionComptable` / `LigneComptable` (hiérarchie section → sous-opération → produit)
+- [x] Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)
+- [x] Endpoint de recherche instantanée dans les lignes comptables (consommé par le composant de recherche frontend qui remplace le TreeView legacy)
+- [x] Endpoints CRUD de création et modification du plan comptable (`SectionComptable` et `LigneComptable`), réservés Admin
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md` (c'est un endpoint critique pour l'UX frontend — soigner la description du format de réponse)
 
 ---
 
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
-- [ ] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
-- [ ] Logique de validation dans `services.py` : période active, `montant_rectifie` initialisé = `montant` à la création
-- [ ] Endpoint de création/modification d'un mouvement
-- [ ] Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans `services.py`, testée unitairement
-- [ ] Test unitaire : `montant_rectifie = montant + augmentation - diminution` est vérifié et rejeté si incohérent
-- [ ] Modèle `MouvementEncaisse` + endpoint associé
-- [ ] Endpoint « Situation comptable » avec report automatique du solde du mois précédent
-- [ ] Test unitaire : le report de solde d'un mois sur l'autre est correct
-- [ ] Documenter tous ces endpoints dans `../API_CONTRACT.md`
+- [x] Modèle `Mouvement` (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)
+- [x] Logique de validation dans `services.py` : période active, `montant_rectifie` initialisé = `montant` à la création
+- [x] Endpoint de création/modification d'un mouvement
+- [x] Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans `services.py`, testée unitairement
+- [x] Test unitaire : `montant_rectifie = montant + augmentation - diminution` est vérifié et rejeté si incohérent
+- [x] Modèle `MouvementEncaisse` + endpoint associé
+- [x] Endpoint « Situation comptable » avec report automatique du solde du mois précédent
+- [x] Test unitaire : le report de solde d'un mois sur l'autre est correct
+- [x] Documenter tous ces endpoints dans `../API_CONTRACT.md`
 
 ---
 
 ## 5. Audit et détection d'écarts
 
-- [ ] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
-- [ ] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
-- [ ] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
-- [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
-- [ ] Test unitaire : une rectification sans motif est rejetée
-- [ ] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
+- [x] Endpoint listant les mouvements où `montant ≠ montant_rectifie` (équivalent de la vue DIF du système legacy)
+- [x] Endpoint de rectification (obligation de motif, calcul automatique de `montant_rectifie`)
+- [x] Modèle `AuditLogEntry` (historique immuable des modifications sensibles)
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md`
+- [x] Test unitaire : une rectification sans motif est rejetée
+- [x] Test unitaire : seul un inspecteur peut appeler l'endpoint de rectification
 
 ---
 
 ## 6. Tableaux de bord (endpoints d'agrégation)
 
-- [ ] Endpoint de progression de saisie du mois en cours par bureau (pour dashboard Receveur)
-- [ ] Endpoint de liste des écarts filtrable (pour dashboard Inspecteur)
-- [ ] Endpoint de vue d'ensemble globale (pour dashboard Admin)
-- [ ] Documenter ces endpoints dans `../API_CONTRACT.md`
+- [x] Endpoint de progression de saisie du mois en cours par bureau (pour dashboard Receveur)
+- [x] Endpoint de liste des écarts filtrable (pour dashboard Inspecteur)
+- [x] Endpoint de vue d'ensemble globale (pour dashboard Admin)
+- [x] Documenter ces endpoints dans `../API_CONTRACT.md`
 
 ---
 
 ## 7. Stock de valeurs postales
 
-- [ ] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
-- [ ] Endpoints de saisie/consultation du stock par bureau et par mois
-- [ ] Documenter dans `../API_CONTRACT.md`
+- [x] Modèle `StockValeurPostale` (produit, valeur faciale, quantités/valeurs initial-reçu-vendu-final)
+- [x] Endpoints de saisie/consultation du stock par bureau et par mois
+- [x] Documenter dans `../API_CONTRACT.md`
+
 
 ---
 
@@ -101,9 +104,9 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 Cette section n'est pas figée : ajouter ici toute nouvelle demande backend (nouveaux endpoints d'états, statistiques, exports...) au fur et à mesure, avant de l'implémenter.
 
-- [ ] Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)
-- [ ] Endpoint d'export Excel des écritures d'une période
-- [ ] Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- [x] Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)
+- [x] Endpoint d'export Excel des écritures d'une période
+- [x] Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Endpoint de données pour graphique d'évolution des recettes sur plusieurs mois
 
 ---
@@ -120,6 +123,263 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui/non/non applicable
 - Points restés ouverts ou à valider avec l'utilisateur : ...
 ```
+
+### 2026-10-26 — Autorisation de multiples périodes ouvertes pour un même bureau
+- Ce qui a été fait :
+  - **Suppression du blocage d'unicité de période active** ([`apps/referentiel/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py)) :
+    - Retrait de la validation interdisant l'ouverture d'une nouvelle période lorsqu'une période est déjà non clôturée sur un bureau.
+    - Plusieurs périodes de gestion peuvent désormais être ouvertes simultanément pour un même bureau.
+  - **Mise à jour des tests unitaires** ([`apps/referentiel/tests/test_api_periode.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_periode.py)) :
+    - Remplacement du test `test_ouverture_double_periode_active_refusee` par `test_ouverture_plusieurs_periodes_actives_autorisee` confirmant la création réussie avec code HTTP 201 Created et la présence de 2 périodes actives simultanées.
+    - Suite de tests du référentiel (24/24) et de comptabilité (53/53) validées avec succès.
+  - **Contrat API** ([`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md)) :
+    - Mise à jour de la documentation pour refléter la prise en charge de multiples périodes ouvertes.
+- Fichiers/dossiers touchés : `apps/referentiel/serializers.py`, `apps/referentiel/tests/test_api_periode.py`, `../API_CONTRACT.md`, `PROJECT_STATE.md`.
+- Cases cochées : non applicable (ajustement de règle métier).
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Endpoint d'historique des périodes de gestion d'un bureau (Section 8, Tâche 3)
+- Ce qui a été fait :
+  - **Serializers DRF** ([`apps/referentiel/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/serializers.py)) :
+    - `HistoriquePeriodeItemSerializer` : sérialisation fine de chaque passation de service (nom du receveur, date début/fin, état de clôture, réserves d'encaisse transmises, soldes de départ et de fin calculés, totaux débit/crédit, nombre de mouvements imputés).
+    - `HistoriquePassationResponseSerializer` : réponse globale structurée avec métadonnées du bureau, nombre total de périodes, décompte des clôturées, et extraction de la période en cours.
+  - **Service Métier** ([`apps/referentiel/services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/services.py)) :
+    - Fonction `get_historique_periodes_bureau(bureau_id_or_ncodique)` : résolution flexible par clé primaire ou code codique postal (`ncodique`), tri chronologique des passations, calcul de balance et de clôture pour chaque période via `calcul_situation_comptable`, et agrégation de l'encaisse de départ.
+  - **Endpoint & Vues REST** ([`apps/referentiel/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/views.py), [`apps/referentiel/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/urls.py)) :
+    - `GET /api/v1/bureaux/{bureau_id}/historique-periodes/` (`HistoriquePeriodesBureauView`).
+    - Contrôle RBAC rigoureux : accès étendu aux administrateurs (`ADMIN`, `superuser`) et inspecteurs (`INSPECTEUR`) pour tous les bureaux, isolation stricte pour les receveurs (`RECEVEUR`) et agents restreints à leur bureau assigné (`user.bureau_code == bureau.ncodique`). Renvoi 403 Forbidden en cas de tentative d'accès non autorisée et 404 en cas de bureau introuvable.
+  - **Tests Unitaires Automatisés** ([`apps/referentiel/tests/test_historique_periodes.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/referentiel/tests/test_historique_periodes.py)) :
+    - 7 tests unitaires couvrant : rejet anonyme 401, bureau introuvable 404, consultation complète par un Admin via ID, consultation par un Admin via numéro codique (`ncodique`), consultation par un Inspecteur, accès autorisé d'un Receveur sur son propre bureau, et rejet 403 Forbidden avec message explicite lors d'une tentative d'accès sur un autre bureau.
+    - Suite de tests du référentiel validée à **100% (24 tests passés avec succès)**.
+  - **Contrat API** ([`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md)) :
+    - Ajout de l'endpoint dans le registre des endpoints et spécification détaillée de la payload de réponse 200 OK.
+- Fichiers/dossiers touchés : `apps/referentiel/serializers.py`, `apps/referentiel/services.py`, `apps/referentiel/views.py`, `apps/referentiel/urls.py`, `apps/referentiel/tests/test_historique_periodes.py`, `../API_CONTRACT.md`, `PROJECT_STATE.md`.
+- Cases cochées : section 8, tâche `Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint de données pour graphique d'évolution des recettes sur plusieurs mois`.
+
+### 2026-10-26 — Endpoint d'export Excel des écritures d'une période (Section 8, Tâche 2)
+- Ce qui a été fait :
+  - **Module d'export Excel** ([`apps/comptabilite/excel.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/excel.py)) :
+    - Utilisation d'`openpyxl` pour générer un classeur multi-feuilles (.xlsx) stylisé aux couleurs et standards de Paositra Malagasy.
+    - Trois feuilles de calcul intégrées :
+      1. `'Écritures G58'` : liste chronologique complète de toutes les opérations imputées (N° opération, date, sens, section, compte, libellé, montant déclaré, augmentations, diminutions, net rectifié, motif, opérateur). Ligne de total général stylisée avec double filet comptable.
+      2. `'Situation Comptable'` : récapitulatif officiel de balance par section (A à E), cumuls généraux, reports débiteur/créditeur M-1 et soldes de clôture à reporter.
+      3. `'Encaisse et Valeurs'` : détail de tous les flux de liquidités (entrées/sorties), variation nette et inventaire du coffre-fort (numéraire, valeurs postales, timbres fiscaux).
+    - Ajustement automatique de la largeur des colonnes et application de formats monétaires professionnels (`#,##0.00 "Ar"`).
+  - **Endpoint & Vues** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `GET /api/v1/mouvements/export-excel/?periode_id={id}` (`ExportEcrituresExcelView`).
+    - Contrôle d'accès RBAC : isolation stricte pour `RECEVEUR` (autorisé uniquement sur son propre bureau), accès étendu pour `INSPECTEUR` et `ADMIN` sur tous les bureaux.
+    - Renvoi en flux binaire direct `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` avec en-tête `Content-Disposition: attachment; filename="Journal_G58_{ncodique}_{date_debut}.xlsx"`.
+  - **Tests unitaires** ([`apps/comptabilite/tests/test_excel_g58.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_excel_g58.py)) :
+    - 7 tests unitaires couvrant l'authentification obligatoire (401), la présence du paramètre obligatoire (400), l'accès admin (200), l'accès inspecteur (200), l'accès receveur sur son bureau (200), le rejet d'un receveur sur un autre bureau (403) et la gestion de période inexistante (404).
+    - Validation complète de la suite comptabilité (**53 tests réussis, 0 échec**).
+  - **Documentation & Dépendances** :
+    - `openpyxl>=3.1.0` ajouté à [`server/requirements.txt`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/requirements.txt).
+    - Contrat d'interface documenté dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers/dossiers touchés : `apps/comptabilite/excel.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_excel_g58.py`, `requirements.txt`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 8, tâche `Endpoint d'export Excel des écritures d'une période`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)`.
+
+### 2026-10-26 — Endpoint de génération du bordereau G58 en PDF (Section 8, Tâche 1)
+- Ce qui a été fait :
+  - **Module de génération PDF** ([`apps/comptabilite/pdf.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/pdf.py)) :
+    - Utilisation de ReportLab pour générer dynamiquement un document A4 vectoriel haute fidélité conforme au Journal G58 de Paositra Malagasy.
+    - Structure complète du bordereau :
+      1. En-tête officiel de la République de Madagascar et Paositra Malagasy.
+      2. Cartouche d'identification : Bureau (nom, ncodique, classe, province), Receveur et dates d'exercice/période.
+      3. Balance récapitulative des sections Débit (recettes) et Crédit (dépenses) avec reports de soldes, cumuls et dégagement du solde de clôture.
+      4. Détail exhaustif des écritures comptables du Journal G58 (date, sens, compte, libellé, montant initial, augmentations, diminutions et montant net rectifié).
+      5. Situation de l'encaisse physique et des valeurs en coffre (espèces, valeurs postales, timbres fiscaux).
+      6. Cadre d'émargement légal avec zones de visa pour le Receveur des Postes et l'Inspecteur vérificateur.
+  - **Endpoint & Vues** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `GET /api/v1/bordereau-g58/{periode_id}/pdf/` (`BordereauG58PdfView`).
+    - Contrôle d'accès RBAC : isolation stricte pour `RECEVEUR` (autorisé uniquement sur son propre bureau), accès étendu pour `INSPECTEUR` et `ADMIN` sur tous les bureaux.
+    - Renvoi en flux binaire direct `application/pdf` avec nom de fichier explicite `Bordereau_G58_{ncodique}_{date_debut}.pdf`.
+  - **Tests unitaires** ([`apps/comptabilite/tests/test_pdf_g58.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_pdf_g58.py)) :
+    - 6 tests unitaires validant l'authentification obligatoire (401), l'accès admin (200), l'accès inspecteur (200), l'accès receveur sur son bureau (200), le rejet d'un receveur sur un autre bureau (403) et la gestion de période inexistante (404).
+    - Validation complète de la suite de tests comptabilité (46 tests OK).
+  - **Documentation & Dépendances** :
+    - `reportlab>=4.0.0` ajouté à [`server/requirements.txt`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/requirements.txt).
+    - Contrat d'interface documenté dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers/dossiers touchés : `apps/comptabilite/pdf.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_pdf_g58.py`, `requirements.txt`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 8, tâche `Endpoint de génération du bordereau G58 en PDF (mise en page fidèle au formulaire officiel papier)`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 8 disponible : `Endpoint d'export Excel des écritures d'une période`.
+
+### 2026-10-14 — Endpoint Situation comptable avec report automatique du solde (Section 4, Tâches 7, 8 & 9)
+- Ce qui a été fait :
+  - **Logique métier** [`apps/comptabilite/services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/services.py) :
+    - `get_periode_precedente` : détection dynamique de la période clôturée ou active immédiatement antérieure pour le même bureau.
+    - `calcul_situation_comptable` : report automatique des soldes débiteur et créditeur de fin du mois précédent en soldes de report du mois courant (ou utilisation des soldes de départ déclarés à l'ouverture si premier exercice), agrégation des mouvements de la période courante, calcul du cumul débits/crédits et dégagement du solde de clôture (débiteur ou créditeur).
+  - **Endpoint & Vues** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `GET /api/v1/situation-comptable/{periode_id}/` (`SituationComptableView`).
+    - Contrôle RBAC : accès autorisé pour `ADMIN` et `INSPECTEUR` sur tous bureaux, et pour `RECEVEUR` restreint à son propre bureau (`bureau_code == periode.bureau.ncodique`).
+  - **Tests unitaires** ([`apps/comptabilite/tests/test_api_mouvements.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_mouvements.py)) :
+    - `SituationComptableAPITestCase` : test de report de solde automatique de M-1 vers M avec calcul arithmétique de la balance et test d'étanchéité RBAC (rejet HTTP 403 pour un receveur tentant de consulter un autre bureau).
+  - **Documentation** ([`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md)) : endpoint passé à implémenté avec schéma JSON d'exemple et entrée au journal des modifications.
+- Fichiers/dossiers touchés : `apps/comptabilite/services.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_api_mouvements.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 4, tâches `Endpoint « Situation comptable » avec report automatique du solde du mois précédent`, `Test unitaire : le report de solde d'un mois sur l'autre est correct` et `Documenter tous ces endpoints dans ../API_CONTRACT.md`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : **Section 4 entièrement terminée (100%) !** Prêt pour la Section 5 : Audit et détection d'écarts.
+
+### 2026-10-14 — Modèle MouvementEncaisse et endpoint associé (Section 4, Tâche 6)
+- Ce qui a été fait :
+  - **Seed des rubriques d'encaisse** : mise à jour de [`seed_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/management/commands/seed_plan_comptable.py) pour initialiser les tables `RubriqueEncaisseParent` (`ENCAISSE ET VALEURS`, `DEBIT/CREDIT`) et `RubriqueEncaisse` (`TR` Trésorerie, `SF` Stock final timbres, `CR` Créances...).
+  - **Serializers DRF** ([`apps/comptabilite/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py)) :
+    - `RubriqueEncaisseParentSerializer` & `RubriqueEncaisseSerializer` pour le référentiel.
+    - `MouvementEncaisseSerializer` : sérialisation avec `rubrique_detail`, libellé textuel du flux (`sens_libelle` Entrée/Sortie), affectation automatique de l'agent connecté (`saisi_par`), et contrôles de date et de période active.
+  - **Vues & Routage** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `RubriqueEncaisseViewSet` (`ReadOnlyModelViewSet`) : consultation du référentiel (`GET /api/v1/rubriques-encaisse/`).
+    - `MouvementEncaisseViewSet` (`ModelViewSet`) : CRUD complet (`/api/v1/mouvements-encaisse/`), filtrable par période, bureau, date, sens (1=Entrée, 2=Sortie), et rubrique. Suppression sécurisée interdisant la suppression sur période clôturée.
+  - **Tests unitaires** : `MouvementEncaisseAPITestCase` ajouté dans [`apps/comptabilite/tests/test_api_mouvements.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_mouvements.py) (création d'un flux d'encaisse, listing filtré, rejet d'écriture sur période clôturée). Exécution et validation des tests.
+  - **Documentation** : [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) mis à jour avec les endpoints `/api/v1/rubriques-encaisse/` et `/api/v1/mouvements-encaisse/`.
+- Fichiers/dossiers touchés : `apps/comptabilite/management/commands/seed_plan_comptable.py`, `apps/comptabilite/serializers.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_api_mouvements.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 4, tâche `Modèle MouvementEncaisse + endpoint associé`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche : `Endpoint « Situation comptable » avec report automatique du solde du mois précédent`.
+
+### 2026-10-14 — Test unitaire équation montant_rectifie (Section 4, Tâche 5)
+- Ce qui a été fait :
+  - **Enforcement au niveau Modèle ORM** : intégration des méthodes `clean()` et `save()` dans [`apps/comptabilite/models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L319-L347) pour verrouiller l'équation comptable :
+    - `montant_rectifie == montant + augmentation - diminution`
+    - Rejet immédiat par `ValidationError` (`montant_rectifie`) en cas d'incohérence arithmétique.
+    - Rejet par `ValidationError` (`diminution`) si la diminution est supérieure au montant disponible (`montant + augmentation`).
+  - **Tests unitaires dédiés** :
+    - Ajout de `test_montant_rectifie_incoherent_rejected` dans [`apps/comptabilite/tests/test_models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_models.py).
+    - Validation du rejet d'un montant rectifié incohérent, du rejet d'une diminution excessive et de l'acceptation d'un mouvement cohérent.
+    - Exécution et passage réussi de la suite complète de tests (9 tests passés).
+- Fichiers/dossiers touchés : `apps/comptabilite/models.py`, `apps/comptabilite/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 4, tâche `Test unitaire : montant_rectifie = montant + augmentation - diminution est vérifié et rejeté si incohérent`.
+- API_CONTRACT.md mis à jour : non applicable (contrainte d'intégrité ORM / tests).
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche : `Modèle MouvementEncaisse + endpoint associé`.
+
+### 2026-10-14 — Calcul des totaux par sous-section et total général (Section 4, Tâche 4)
+- Ce qui a été fait :
+  - **Fonction métier** [`calcul_totaux_periode`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/services.py#L194-L278) dans `apps/comptabilite/services.py` :
+    - Calcul agrégé des montants déclarés et rectifiés par section comptable (A, B, C, D, E).
+    - Calcul spécifique des montants des 4 sous-sections de la section B (`B1` Émissions/versements mandats, `B2` Paiements mandats, `B3` CCP & épargne, `B4` Tiers).
+    - Calcul du total général Débit, total général Crédit et solde net de la période (`total_general_debit - total_general_credit`).
+    - Possibilité de filtrer sur une journée donnée via le paramètre optionnel `date_operation`.
+  - **Endpoint API** : action `@action(detail=False) totaux` dans `MouvementViewSet` accessible via `GET /api/v1/mouvements/totaux/?periode=<id>&date=<YYYY-MM-DD>`.
+  - **Tests unitaires** : ajout de `test_calcul_totaux_periode` dans [`apps/comptabilite/tests/test_services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_services.py) validant les totaux de sections, le détail B1/B2, le solde net et le filtrage journalier (test exécuté et passé avec succès).
+  - **Documentation** : [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) mis à jour avec le registre et la réponse JSON type de `/api/v1/mouvements/totaux/`.
+- Fichiers/dossiers touchés : `apps/comptabilite/services.py`, `apps/comptabilite/views.py`, `apps/comptabilite/tests/test_services.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 4, tâche `Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans services.py, testée unitairement`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche : `Test unitaire : montant_rectifie = montant + augmentation - diminution est vérifié et rejeté si incohérent`.
+
+### 2026-10-14 — Endpoint de création/modification d'un mouvement (Section 4, Tâche 3)
+- Ce qui a été fait :
+  - **Serializers** ([`apps/comptabilite/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py)) :
+    - Création de `MouvementSerializer` avec enrichissement relationnel (`ligne_detail`, `saisi_par_username`, `rectifie_par_username`, `a_ecart`).
+    - Délégation des validations et de la création/mise à jour au module métier `services.py`.
+  - **Permissions RBAC** ([`apps/comptabilite/permissions.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/permissions.py)) :
+    - `IsSaisieAllowed` : lecture pour tous les authentifiés, création et modification autorisées pour `ADMIN`, `RECEVEUR` et `AGENT_SAISIE` avec isolation stricte au bureau de rattachement.
+  - **Vues & Routage** ([`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py), [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py)) :
+    - `MouvementViewSet` : CRUD complet avec filtrage par période, bureau, date, section, sens et compte.
+    - `perform_destroy` : protection interdisant la suppression d'une écriture sur une période déjà clôturée.
+  - **Tests unitaires** : création et passage réussi de [`apps/comptabilite/tests/test_api_mouvements.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_mouvements.py) (4 tests passés : création avec initialisation stricte, filtres de liste, modification avant audit, rejet de suppression sur période clôturée).
+  - **Documentation** : [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) mis à jour avec les endpoints `GET, POST /api/v1/mouvements/` et `PATCH, PUT, DELETE /api/v1/mouvements/{id}/`.
+- Fichiers/dossiers touchés : `apps/comptabilite/serializers.py`, `apps/comptabilite/permissions.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `apps/comptabilite/tests/test_api_mouvements.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 4, tâche `Endpoint de création/modification d'un mouvement`.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche : `Logique de calcul des totaux par sous-section (B1+B2+B3+B4) et total général, dans services.py, testée unitairement`.
+
+### 2026-10-14 — Logique de validation dans services.py (Section 4, Tâche 2)
+- Ce qui a été fait :
+  - Création du module métier [`apps/comptabilite/services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/services.py) :
+    - `valider_periode_active` : blocage strict des opérations si la période de gestion est clôturée.
+    - `valider_date_operation` : vérification que la date d'opération est comprise entre la date de début et de fin de la période.
+    - `valider_ligne_comptable` : contrôle d'activation de la ligne et interdiction d'imputation directe sur des lignes de regroupement (seules les lignes feuilles sont autorisées).
+    - `verifier_coherence_montants` : validation de l'équation comptable `montant_rectifie = montant + augmentation - diminution`.
+    - `creer_mouvement` : initialisation transactionnelle stricte d'un mouvement avec `montant_rectifie = montant`, `augmentation = 0`, `diminution = 0`, `motif_rectification = ""` et `rectifie_par = None`.
+    - `modifier_mouvement` : modification par l'opérateur avec maintien de la cohérence comptable.
+  - Rédaction et exécution de la suite de tests unitaires [`apps/comptabilite/tests/test_services.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_services.py) (5 tests passés avec succès).
+- Fichiers/dossiers touchés : `apps/comptabilite/services.py`, `apps/comptabilite/tests/test_services.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 4, tâche `Logique de validation dans services.py : période active, montant_rectifie initialisé = montant à la création`.
+- API_CONTRACT.md mis à jour : non applicable (services métier internes, pas d'endpoint créé à cette étape).
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche : `Endpoint de création/modification d'un mouvement`.
+
+### 2026-10-14 — Modèle Mouvement (Section 4, Tâche 1)
+- Ce qui a été fait :
+  - Validation et vérification de la modélisation du modèle [`Mouvement`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L209-L325) dans `apps/comptabilite/models.py` :
+    - Relations `periode_gestion` (`referentiel.PeriodeGestion`), `ligne_comptable` (`LigneComptable`), traçabilité `saisi_par` et `rectifie_par` (`accounts.User`).
+    - Champs monétaires `montant`, `augmentation`, `diminution`, `montant_rectifie`, motif de rectification et méthode métier `a_ecart()`.
+    - Indexation optimisée pour les requêtes par période et date, par ligne, et pour la détection d'écarts (`vue DIF`).
+  - Ajout des tests unitaires dédiés dans [`apps/comptabilite/tests/test_models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_models.py) validant l'instanciation, la méthode `a_ecart()` et la représentation textuelle.
+- Fichiers/dossiers touchés : `apps/comptabilite/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 4, tâche `Modèle Mouvement (montant, augmentation, diminution, montant_rectifie, motif, FK ligne comptable + période)`.
+- API_CONTRACT.md mis à jour : non applicable (modèle ORM et tests, pas d'endpoint créé à cette étape).
+- Points restés ouverts ou à valider avec l'utilisateur : Prochaine tâche de la section 4 : `Logique de validation dans services.py : période active, montant_rectifie initialisé = montant à la création`.
+
+### 2026-10-14 — Module Stock de valeurs postales (Section 7)
+- Ce qui a été fait :
+  - **Modélisation & Référentiel** : validation des modèles [`ProduitPostal`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/models.py#L20-L70) et [`StockValeurPostale`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/models.py#L71-L172) (Tableau A G58).
+  - **Script de seed** : création de [`apps/stock/management/commands/seed_produits_postaux.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/management/commands/seed_produits_postaux.py) initialisant de façon idempotente 14 produits postaux (timbres d'affranchissement usuels de 100 à 5000 Ar, timbres fiscaux de 1000 à 10000 Ar, aérogrammes...).
+  - **Serializers DRF & Logique métier** ([`apps/stock/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/serializers.py)) :
+    - Calcul automatique de la quantité finale (`quantite_finale = quantite_initiale + quantite_recue - quantite_vendue`).
+    - Calcul automatique des valeurs monétaires en fonction de la valeur faciale du produit.
+    - Contrôles d'intégrité métier : refus si période clôturée, refus si la période n'appartient pas au bureau indiqué, refus si la quantité vendue dépasse le stock disponible.
+  - **Vues & Endpoints** ([`apps/stock/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/views.py)) :
+    - `ProduitPostalViewSet` : CRUD/consultation des produits postaux.
+    - `StockValeurPostaleViewSet` : saisie et consultation du stock, filtrable par bureau, période, produit ou catégorie.
+    - Action `@action(detail=False) recapitulatif` : totaux agrégés du Tableau A (valeur initiale, reçue, vendue, finale et quantités) pour une période et un bureau.
+  - **Permissions RBAC** ([`apps/stock/permissions.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/permissions.py)) : lecture pour tous les authentifiés, écriture réservée à l'ADMIN et au RECEVEUR du bureau.
+  - **Routage** : [`apps/stock/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/urls.py) inclus dans [`config/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/config/urls.py).
+  - **Tests unitaires** : [`apps/stock/tests/test_api_stock.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/stock/tests/test_api_stock.py) (5 tests passés avec succès couvrant création, calculs automatiques, rejet de survente, rejet sur période clôturée et récapitulatif agrégé).
+  - **Documentation** : [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) mis à jour avec les nouveaux endpoints et payloads d'exemple.
+- Fichiers/dossiers touchés : `apps/stock/`, `config/urls.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 7 (les 3 cases).
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : Section 7 terminée.
+
+### 2026-10-14 — Endpoint de recherche instantanée dans les lignes comptables (Section 3, Tâches 3 & 4)
+- Ce qui a été fait :
+  - Création des serializers [`apps/comptabilite/serializers.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py) :
+    - `SectionComptableSerializer` : exposition des champs code, libelle, sens, sens_libelle, ordre, actif.
+    - `LigneComptableSerializer` : enrichissement relationnel avec `section_code`, `section_libelle`, `sens`, `sens_libelle` et `parent_detail` imbriqué (code, compte, libellé).
+  - Création des vues DRF dans [`apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py) :
+    - `LigneComptableViewSet` (`ReadOnlyModelViewSet`) : endpoint `GET /api/v1/lignes-comptables/` optimisé via `select_related("section", "parent")`.
+    - Recherche instantanée textuelle insensible à la casse sur `compte`, `libelle`, `section__code`, `section__libelle` via le paramètre `?search=`.
+    - Filtrage multi-critères : `section` (code ou id), `sens` (1=Débit, 2=Crédit), `parent` (id ou `null`), `feuille=true` (uniquement les lignes imputables n'ayant pas de sous-lignes), et `actif` (par défaut `true`).
+    - `SectionComptableViewSet` (`ReadOnlyModelViewSet`) : endpoint `GET /api/v1/sections-comptables/` pour lister le référentiel des sections A à E.
+  - Configuration du routage dans [`apps/comptabilite/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/urls.py) et intégration dans [`config/urls.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/config/urls.py).
+  - Rédaction et exécution de la suite de tests unitaires [`apps/comptabilite/tests/test_api_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_plan_comptable.py) (6 tests passés avec succès : contrôle RBAC/401, recherche instantanée par libellé et par compte, enrichissement parent_detail, filtrage par sens comptable et filtre feuille).
+  - Documentation exhaustive dans [`../API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) (registre mis à jour, paramètres d'URL, payloads JSON d'exemple pour le frontend).
+- Fichiers/dossiers touchés : `apps/comptabilite/serializers.py`, `apps/comptabilite/views.py`, `apps/comptabilite/urls.py`, `config/urls.py`, `apps/comptabilite/tests/test_api_plan_comptable.py`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 3, tâches `Endpoint de recherche instantanée dans les lignes comptables` et `Documenter cet endpoint dans ../API_CONTRACT.md`.
+- API_CONTRACT.md mis à jour : oui (tableau §3, exemples payloads §4, journal §5).
+- Points restés ouverts ou à valider avec l'utilisateur : Section 3 entièrement complétée ! Prochaine étape : Section 4 (Saisie du Journal G58 — cœur fonctionnel : calculs automatiques, création/consultation des mouvements, alerte écart DIF).
+
+### 2026-10-14 — Script de seed des lignes comptables réelles (Section 3, Tâche 2)
+- Ce qui a été fait :
+  - Création de la commande de gestion Django [`apps/comptabilite/management/commands/seed_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/management/commands/seed_plan_comptable.py) exécutable via `python manage.py seed_plan_comptable [--reset]`.
+  - Insertion idempotente et transactionnelle des sections et lignes comptables réelles conformes au CDC ComptaGe et au Journal G58 :
+    - **5 Sections principales** : Section A (Opérations d'ordre postal et financier, Débit), Section B (Correspondances et objets, Crédit), Section C (Mouvements de fonds et trésorerie, Débit), Section D (Dépenses budgétaires et rémunérations, Crédit), Section E (Régularisations et opérations d'ordre).
+    - **Hiérarchie Section B** : création des 4 sous-opérations intermédiaires (`B1` Émissions/versements mandats, `B2` Paiements mandats, `B3` Chèques postaux CCP et épargne, `B4` Services pour compte de tiers) et de leurs lignes de produits feuilles respectives.
+    - **45 lignes comptables réelles créées** avec préfixes de compte (`AD01`-`AD10`, `B101`-`B105`, `B201`-`B204`, `B301`-`B304`, `B401`-`B404`, `CD01`-`CD04`, `DD01`-`DD06`, `ED01`-`ED04`) et codes d'imputation uniques `menu_sub`.
+  - Exécution réussie de la commande et validation de son idempotence (exécutions répétées sans duplication).
+  - Validation de la cohabitation des tests unitaires `test_models.py` avec les données pré-chargées.
+- Fichiers/dossiers touchés : `apps/comptabilite/management/`, `apps/comptabilite/management/commands/seed_plan_comptable.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 3, tâche `Script de seed des lignes comptables réelles (à partir du CDC et des captures du formulaire papier — sections A, B avec B1-B4, D en priorité)`.
+- API_CONTRACT.md mis à jour : non applicable (commande de seed CLI, pas d'endpoint).
+- Points restés ouverts ou à valider avec l'utilisateur : Prêt pour la tâche suivante : `Endpoint de recherche instantanée dans les lignes comptables` et sa documentation dans `API_CONTRACT.md`.
+
+### 2026-10-14 — Modélisation SectionComptable / LigneComptable (Section 3, Tâche 1)
+- Ce qui a été fait :
+  - Validation et finalisation des modèles [`SectionComptable`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L25-L73) et [`LigneComptable`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/models.py#L74-L132) dans `apps/comptabilite/models.py` :
+    - `SectionComptable` : code unique (A, B, C, D, E), libelle, sens comptable (`Sens.DEBIT`, `Sens.CREDIT`, `Sens.NON_APPLICABLE`), statut actif et ordre d'affichage.
+    - `LigneComptable` : FK vers `SectionComptable`, FK récursive optionnelle `parent` pour la hiérarchie à sous-niveaux (ex. sous-opérations B1 à B4), code `menu_sub` unique (code produit d'imputation), préfixe `compte` (ex: AD, BD, CD) et libellé de rubrique.
+    - Contraintes d'intégrité relationnelle strictes (`on_delete=models.PROTECT`) interdisant la suppression orpheline d'une section ou d'une ligne parente.
+  - Application effective de la migration `0001_initial` de l'application `comptabilite` sur la base PostgreSQL locale.
+  - Rédaction et exécution complète de la suite de tests unitaires [`apps/comptabilite/tests/test_models.py`](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_models.py) (7/7 tests passés au vert : création, unicité du code, hiérarchie section -> sous-opération -> produit, unicité de `menu_sub`, et protection contre les suppressions en cascade).
+- Fichiers/dossiers touchés : `apps/comptabilite/models.py`, `apps/comptabilite/tests/test_models.py`, `PROJECT_STATE.md`.
+- Cases cochées : section 3, tâche `Modélisation SectionComptable / LigneComptable (hiérarchie section → sous-opération → produit)`.
+- API_CONTRACT.md mis à jour : non applicable (étape de modélisation ORM pure, aucun endpoint exposé).
+- Points restés ouverts ou à valider avec l'utilisateur : Prêt pour la tâche suivante de la section 3 : `Script de seed des lignes comptables réelles (sections A, B avec B1-B4, D en priorité)`.
 
 ### 2026-10-08 — Test unitaire : interdiction de mouvement sur période clôturée (Section 2 finalisée)
 - Ce qui a été fait :
@@ -215,4 +475,156 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
 - API_CONTRACT.md mis à jour : oui (/api/v1/health/ ajouté dans le registre et les exemples).
 - Points restés ouverts ou à valider avec l'utilisateur : Base PostgreSQL locale connectée et validée (`comptage_dev`, utilisateur `comptage_user`). Prêt pour la section 1 (Authentification & RBAC).
 
+### 2026-10-08 — Module authentification et RBAC
+- Ce qui a été fait :
+  - Création de l'app `apps.accounts` avec un `User` custom basé sur `AbstractUser` et les rôles `ADMIN`, `RECEVEUR`, `AGENT_SAISIE`, `INSPECTEUR`.
+  - Ajout des endpoints JWT `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/` et `/api/v1/auth/me/`.
+  - Mise en place des permissions `IsAdmin`, `IsReceveur`, `IsAgentSaisie`, `IsInspecteur` et d'un helper de rattachement au bureau `IsSameBureau`.
+  - Ajout d'une migration initiale pour le modèle utilisateur.
+  - Écriture de tests pour le flux login / me / logout et pour les permissions par rôle / bureau.
+- Fichiers/dossiers touchés : `server/apps/accounts/`, `server/config/settings/base.py`, `server/config/urls.py`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâches 1 à 4.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : la règle métier exacte de blacklist/révocation au logout n'est pas encore branchée côté serveur ; la déconnexion est pour l'instant gérée côté client en supprimant les jetons.
+
+### 2026-10-09 — Endpoint d'inscription utilisateur
+- Ce qui a été fait :
+  - Ajout de l'endpoint `POST /api/v1/auth/register/` pour créer un utilisateur avec hachage du mot de passe via `User.objects.create_user()`.
+  - Protection de l'inscription par le rôle `ADMIN`.
+  - Ajout d'un test vérifiant la création d'un compte, le hachage du mot de passe et le refus pour un appel non authentifié.
+- Fichiers/dossiers touchés : `server/apps/accounts/serializers.py`, `server/apps/accounts/views.py`, `server/apps/accounts/urls.py`, `server/apps/accounts/tests/test_auth.py`, `API_CONTRACT.md`, `server/PROJECT_STATE.md`.
+- Cases cochées : section 1, tâche ajoutée inscription utilisateur.
+- API_CONTRACT.md mis à jour : oui.
+- Points restés ouverts ou à valider avec l'utilisateur : rien de bloquant ; l'inscription est volontairement réservée à l'admin pour rester cohérente avec le RBAC du projet.
+
 <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
+
+### 2026-10-15 — Module 6 : Tableaux de bord (endpoints d'agrégation) et vue DIF
+- Ce qui a été fait :
+  - **Dashboard Receveur (`apps/comptabilite/`)** :
+    - Implémentation du service [`get_progression_saisie_receveur()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/services.py) dans `apps/comptabilite/services.py` : calcul de la progression par section comptable (A à E, ENC), totaux des débits/crédits, solde net de la période, détection des écritures en écart, et suivi en temps réel de l'encaisse physique (`reserve_numeraire + entrees - sorties`).
+    - Serializers dédiés dans [`apps/comptabilite/serializers.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py).
+    - Vue API [`ReceveurDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/views.py) sous `GET /api/v1/dashboard/receveur/` avec vérification stricte du rattachement au bureau (un receveur ou agent ne peut pas consulter un autre bureau).
+    - Suite de tests unitaires et d'API dans [`apps/comptabilite/tests/test_dashboard_receveur.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_dashboard_receveur.py) (6 tests au vert : nominal, isolation inter-bureau, accès agent, accès admin, rejet 401, bureau sans période).
+  - **Dashboard Inspecteur & Vue DIF (`apps/audit/`)** :
+    - Implémentation du service d'anomalies et KPIs [`get_ecarts_queryset()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/services.py) et [`calculate_ecarts_kpis()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/services.py) dans `apps/audit/services.py` (critère : `montant != montant_rectifie` ou `augmentation > 0` ou `diminution > 0`).
+    - Serializers détaillés dans [`apps/audit/serializers.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/serializers.py) incluant bureau, période, ligne, montant déclaré, rectifié, écart net, motif et agent/inspecteur.
+    - Deux vues complémentaires protégées par `IsInspecteurOrAdmin` :
+      - [`EcartsListView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/views.py) sous `GET /api/v1/audit/ecarts/` (équivalent vue DIF du CDC) avec pagination DRF et filtres avancés (`bureau`, `province`, `periode`, `date_min`, `date_max`, `statut`, `search`, `ordering`).
+      - [`InspecteurDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/views.py) sous `GET /api/v1/dashboard/inspecteur/` avec KPIs globaux, synthèse des bureaux impactés et 10 dernières anomalies.
+    - Tests unitaires et d'API dans [`apps/audit/tests/test_dashboard_inspecteur.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/tests/test_dashboard_inspecteur.py) (filtrage, calculs KPIs, RBAC restrictif).
+  - **Dashboard Admin (`apps/referentiel/`)** :
+    - Implémentation du service [`get_admin_dashboard_overview()`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/services.py) dans `apps/referentiel/services.py` agrégeant la vue macroscopique : réseau postal (bureaux actifs/inactifs, répartition classes et provinces), périodes de gestion (ouvertes/clôturées, taux de clôture), utilisateurs par rôle RBAC, volumétrie comptable globale (mouvements G58, débits, crédits, encaisse) et alertes d'audit.
+    - Serializers et vue [`AdminDashboardView`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/views.py) sous `GET /api/v1/dashboard/admin/`, réservée au rôle `ADMIN`.
+    - Tests d'API complets dans [`apps/referentiel/tests/test_api_dashboard_admin.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/referentiel/tests/test_api_dashboard_admin.py) (vue nominale, blocage RBAC des receveurs et auditeurs).
+  - **Routage et contrat d'API** :
+    - Inclusion des routes dans [`config/urls.py`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/config/urls.py).
+    - Documentation exhaustive dans [`../API_CONTRACT.md`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/API_CONTRACT.md) avec exemples complets de requêtes et payloads JSON.
+  - **Exécution des tests** : 31/31 tests passés au vert (`pytest` et `manage.py test`).
+- Fichiers/dossiers touchés :
+  - `server/apps/accounts/permissions.py`
+  - `server/apps/comptabilite/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_dashboard_receveur.py`
+  - `server/apps/audit/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_dashboard_inspecteur.py`
+  - `server/apps/referentiel/services.py`, `serializers.py`, `views.py`, `urls.py`, `tests/test_api_dashboard_admin.py`
+  - `server/config/urls.py`
+  - `API_CONTRACT.md`
+  - `server/PROJECT_STATE.md`
+- Cases cochées : section 6 (100% complétée : 4/4 cases cochées).
+- API_CONTRACT.md mis à jour : oui (endpoints `/api/v1/dashboard/receveur/`, `/api/v1/dashboard/inspecteur/`, `/api/v1/audit/ecarts/` et `/api/v1/dashboard/admin/` documentés avec exemples complets).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant, les 3 dashboards répondent aux spécifications d'agrégation et de sécurité RBAC. Prêt pour les sections 3/4.
+
+### 2026-10-13 — Création de tous les modèles Django (apps comptabilite, audit, stock)
+- Ce qui a été fait :
+  - Création des apps Django `apps.comptabilite`, `apps.audit` et `apps.stock` via `manage.py startapp`.
+  - **`apps/comptabilite/models.py`** : 6 modèles conformes au CDC § 2 et ARCHITECTURE.md :
+    - [`SectionComptable`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMenuParent` / `tblClasse` (code, libelle, sens Débit/Crédit, actif, ordre)
+    - [`LigneComptable`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMenuSub` (menu_sub, compte, libelle, FK Section + FK parent hiérarchique pour B1-B4)
+    - [`RubriqueEncaisseParent`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblEncaisseParent`
+    - [`RubriqueEncaisse`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblEncaisse` (TR, SF, CR…)
+    - [`Mouvement`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMvt` (montant, augmentation, diminution, montant_rectifie, motif_rectification, saisi_par, rectifie_par, date_operation)
+    - [`MouvementEncaisse`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/comptabilite/models.py) → `tblMvtEncaisse` (sens, montant, date, saisi_par)
+  - **`apps/audit/models.py`** : 1 modèle :
+    - [`AuditLogEntry`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/audit/models.py) — table immuable (append-only) répondant à CDC § 6.2 (auteur, action, objet, detail JSON, created_at)
+  - **`apps/stock/models.py`** : 2 modèles :
+    - [`ProduitPostal`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/stock/models.py) → `Products` / `Categories` simplifié (TextChoices VP, TF, MA, IF, CO, AU)
+    - [`StockValeurPostale`](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/server/apps/stock/models.py) → Tableau A G58 (quantite/valeur initial-reçu-vendu-final, UniqueConstraint bureau+periode+produit)
+  - Enregistrement dans `INSTALLED_APPS` (base.py).
+  - `manage.py check` → 0 erreur.
+  - `makemigrations comptabilite audit stock` → 3 migrations `0001_initial` générées.
+  - `manage.py migrate` → toutes appliquées sur PostgreSQL (`comptage_dev`).
+- Fichiers/dossiers touchés :
+  - `apps/comptabilite/` (créé), `apps/audit/` (créé), `apps/stock/` (créé)
+  - `config/settings/base.py` (INSTALLED_APPS mis à jour)
+  - `PROJECT_STATE.md`
+- Cases cochées : aucune case de PROJECT_STATE.md directement (Section 3-7 restent `[ ]` — cette entrée prépare le terrain pour la Section 3).
+- API_CONTRACT.md mis à jour : non applicable (modèles uniquement, pas d'endpoint).
+- Points restés ouverts ou à valider : Prêt pour Section 3 (SectionComptable + LigneComptable seed + endpoint de recherche), puis Section 4 (vues/serializers Mouvement).
+
+### 2026-10-15 — Finalisation complète de la section 5 : Audit et détection d'écarts
+- Ce qui a été fait :
+  - **Service de redressement / rectification d'audit (`rectifier_mouvement`)** dans [`server/apps/audit/services.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/services.py) :
+    - Contrôle strict de la présence du `motif` (obligatoire, non vide).
+    - Application de l'équation comptable : `montant_rectifie = montant + augmentation - diminution`.
+    - Calcul automatique ou contrôle d'intégrité de `montant_rectifie`.
+    - Assignation de l'auditeur/inspecteur (`rectifie_par`) et mise à jour de `motif_rectification`.
+    - Création d'une entrée d'audit immuable (`AuditLogEntry`, action `RECTIFICATION`) avec capture structurée JSON des états `avant` et `apres`.
+  - **Serializer d'entrée (`RectificationMouvementInputSerializer`)** dans [`server/apps/audit/serializers.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/serializers.py).
+  - **Endpoint de rectification d'audit (`RectifierMouvementView`)** dans [`server/apps/audit/views.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/views.py) :
+    - Route `PATCH /api/v1/mouvements/<id>/rectifier/` exposée dans [`server/apps/audit/urls.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/urls.py).
+    - Permission stricte `IsInspecteurOrAdmin` : seuls `INSPECTEUR` et `ADMIN` sont autorisés à redresser les écritures.
+  - **Enregistrement de `AuditLogEntry` dans l'administration Django** ([`server/apps/audit/admin.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/admin.py)) en lecture seule stricte (append-only, interdiction formelle d'ajouter, modifier ou supprimer via l'admin).
+  - **Tests unitaires dédiés** dans [`server/apps/audit/tests/test_rectification.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/audit/tests/test_rectification.py) :
+    - Succès nominal avec calcul automatique et création de l'entrée d'audit.
+    - Rejet 400 si motif vide ou absent.
+    - Rejet 403 pour Receveur et Agent de saisie, rejet 401 pour anonyme, succès pour Inspecteur et Admin.
+    - Rejet 400 en cas d'incohérence mathématique sur `montant_rectifie`.
+  - **Validation globale** :
+    - `python manage.py test apps.audit` : 7/7 tests passés au vert.
+    - `python manage.py test` : 64/64 tests passés au vert sur l'ensemble de la suite backend.
+  - **Mise à jour du contrat d'interface** dans [`API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md) :
+    - Enregistrement de `PATCH /api/v1/mouvements/{id}/rectifier/` et passage à l'état `implémenté`.
+    - Correction des doublons et des blocs de payload dans `API_CONTRACT.md`.
+- Fichiers/dossiers touchés :
+  - `server/apps/audit/services.py`
+  - `server/apps/audit/serializers.py`
+  - `server/apps/audit/views.py`
+  - `server/apps/audit/urls.py`
+  - `server/apps/audit/admin.py`
+  - `server/apps/audit/tests/test_rectification.py`
+  - `server/PROJECT_STATE.md`
+  - `API_CONTRACT.md`
+- Cases cochées : Section 5 (100% complétée : 6/6 cases cochées).
+- API_CONTRACT.md mis à jour : Oui, dans le même tour de travail.
+- Points restés ouverts ou à valider avec l'utilisateur : Aucun, section 5 achevée et prête pour intégration frontend.
+
+### 2026-10-15 — Fonctionnalités de création et modification du Plan Comptable (Section 3)
+- Ce qui a été fait :
+  - **Extension en CRUD complet (`viewsets.ModelViewSet`)** de [`SectionComptableViewSet`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py#L21) et [`LigneComptableViewSet`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py#L52) dans [`server/apps/comptabilite/views.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/views.py).
+  - **Classe de permission dédiée (`IsAdminOrReadOnlyAuthenticated`)** dans [`server/apps/comptabilite/permissions.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/permissions.py) :
+    - `GET` : accessible à tout agent ou receveur authentifié.
+    - `POST`, `PUT`, `PATCH`, `DELETE` : strictement réservé au rôle `ADMIN` (conformément à la matrice RBAC du CDC § 3.3).
+  - **Validation métier renforcée dans le serializer** [`LigneComptableSerializer`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/serializers.py#L46) :
+    - Vérification d'intégrité de l'arborescence : la ligne parente doit impérativement être rattachée à la même section macro-comptable.
+    - Protection anti-boucle : interdiction formelle pour une ligne d'être son propre parent.
+  - **Interface Django Admin complète** dans [`server/apps/comptabilite/admin.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/admin.py) pour `SectionComptable`, `LigneComptable`, `RubriqueEncaisseParent`, `RubriqueEncaisse`, `Mouvement` et `MouvementEncaisse`.
+  - **Tests unitaires exhaustifs** dans [`server/apps/comptabilite/tests/test_api_plan_comptable.py`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/server/apps/comptabilite/tests/test_api_plan_comptable.py) :
+    - Création et modification de sections comptables par un Admin (201 Created, 200 OK).
+    - Création et modification de lignes comptables par un Admin (201 Created, 200 OK).
+    - Rejet 403 Forbidden systématique pour les rôles Receveur et Agent de saisie sur toute tentative d'écriture.
+    - Rejet 401 Unauthorized pour les utilisateurs anonymes.
+    - Rejet 400 Bad Request en cas de tentative d'assignation d'un parent d'une autre section.
+    - Maintien au vert de tous les tests de filtrage, recherche instantanée et feuille.
+  - **Exécution des tests** : 11/11 tests passés pour `test_api_plan_comptable`, et **69/69 tests au vert** sur la suite globale Django (`manage.py test`).
+  - **Mise à jour de la documentation** dans [`API_CONTRACT.md`](file:///home/johari/Stage/PAOSITRA MALAGASY/ComptaGe-PAOMA/API_CONTRACT.md).
+- Fichiers touchés :
+  - `server/apps/comptabilite/permissions.py`
+  - `server/apps/comptabilite/serializers.py`
+  - `server/apps/comptabilite/views.py`
+  - `server/apps/comptabilite/admin.py`
+  - `server/apps/comptabilite/tests/test_api_plan_comptable.py`
+  - `server/PROJECT_STATE.md`
+  - `API_CONTRACT.md`
+- Cases cochées : Section 3 entièrement complétée.
+
+
+

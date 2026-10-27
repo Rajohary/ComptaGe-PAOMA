@@ -4,13 +4,16 @@ import {
   createPeriodeGestion,
   cloturerPeriodeGestion,
   getBureaux,
+  getProvinces,
 } from '../../api/referentiel';
-import type { PeriodeGestion, PeriodeGestionFormData, Bureau, ApiError } from '../../types';
+import { downloadBordereauG58Pdf, exportEcrituresExcel } from '../../api/comptabilite';
+import type { PeriodeGestion, PeriodeGestionFormData, Bureau, Province, ApiError } from '../../types';
 import { ApiClientError } from '../../api/client';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { PeriodeGestionFormModal } from './components/PeriodeGestionFormModal';
 import { ClotureModal } from './components/ClotureModal';
+import { triggerBlobDownload } from '../../lib/download';
 import {
   CalendarDays,
   Plus,
@@ -23,11 +26,16 @@ import {
   CheckCircle,
   Clock,
   Lock,
+  Download,
+  History,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const PeriodesGestionPage: React.FC = () => {
+  const navigate = useNavigate();
   const [periodes, setPeriodes] = useState<PeriodeGestion[]>([]);
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +53,51 @@ export const PeriodesGestionPage: React.FC = () => {
   const [isCloturing, setIsCloturing] = useState<boolean>(false);
   const [clotureError, setClotureError] = useState<string | null>(null);
 
+  // Téléchargement PDF et Export Excel
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const [exportingExcelId, setExportingExcelId] = useState<number | null>(null);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  const handleDownloadPdf = async (periode: PeriodeGestion) => {
+    setDownloadingId(periode.id);
+    setPdfError(null);
+    try {
+      const blob = await downloadBordereauG58Pdf(periode.id);
+      const ncodique = periode.bureau_detail?.ncodique || periode.bureau;
+      const filename = `Bordereau_G58_${ncodique}_${periode.date_debut}.pdf`;
+      triggerBlobDownload(blob, filename);
+    } catch (err: any) {
+      console.error('Erreur téléchargement PDF période', err);
+      setPdfError(
+        err?.detail ||
+          'Erreur lors du téléchargement du bordereau G58. Veuillez vérifier vos permissions.'
+      );
+      setTimeout(() => setPdfError(null), 6000);
+    } finally {
+      setDownloadingId(null);
+    }
+  };
+
+  const handleExportExcel = async (periode: PeriodeGestion) => {
+    setExportingExcelId(periode.id);
+    setPdfError(null);
+    try {
+      const blob = await exportEcrituresExcel(periode.id);
+      const ncodique = periode.bureau_detail?.ncodique || periode.bureau;
+      const filename = `Journal_G58_${ncodique}_${periode.date_debut}.xlsx`;
+      triggerBlobDownload(blob, filename);
+    } catch (err: any) {
+      console.error('Erreur export Excel période', err);
+      setPdfError(
+        err?.detail ||
+          'Erreur lors de l’export Excel des écritures G58. Veuillez vérifier vos permissions.'
+      );
+      setTimeout(() => setPdfError(null), 6000);
+    } finally {
+      setExportingExcelId(null);
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -54,10 +107,14 @@ export const PeriodesGestionPage: React.FC = () => {
 
   const loadBureaux = useCallback(async () => {
     try {
-      const res = await getBureaux();
-      setBureaux(res.results || []);
+      const [bureauxRes, provincesRes] = await Promise.all([
+        getBureaux(),
+        getProvinces().catch(() => ({ results: [] })),
+      ]);
+      setBureaux(bureauxRes.results || []);
+      setProvinces(provincesRes.results || []);
     } catch {
-      console.warn('Impossible de charger les bureaux pour le sélecteur');
+      console.warn('Impossible de charger les bureaux ou provinces pour le sélecteur');
     }
   }, []);
 
@@ -112,12 +169,12 @@ export const PeriodesGestionPage: React.FC = () => {
     setClotureError(null);
   };
 
-  const handleConfirmCloture = async () => {
+  const handleConfirmCloture = async (dateFin: string) => {
     if (!periodeToCloture) return;
     setIsCloturing(true);
     setClotureError(null);
     try {
-      await cloturerPeriodeGestion(periodeToCloture.id);
+      await cloturerPeriodeGestion(periodeToCloture.id, { date_fin: dateFin });
       setPeriodeToCloture(null);
       loadPeriodes();
     } catch (err) {
@@ -137,7 +194,7 @@ export const PeriodesGestionPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
       {/* En-tête contextuel */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-subtle pb-5">
         <div>
@@ -154,14 +211,25 @@ export const PeriodesGestionPage: React.FC = () => {
           </p>
         </div>
 
-        <Button
-          onClick={handleOpenCreate}
-          variant="primary"
-          className="self-start sm:self-center"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Ouvrir une période</span>
-        </Button>
+        <div className="flex items-center gap-2 self-start sm:self-center">
+          <Button
+            onClick={() => navigate('/historique-periodes')}
+            variant="secondary"
+            className="flex items-center gap-1.5"
+            title="Consulter l'historique et les passations par bureau"
+          >
+            <History className="w-4 h-4 text-brand" />
+            <span>Passations & Historique</span>
+          </Button>
+
+          <Button
+            onClick={handleOpenCreate}
+            variant="primary"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Ouvrir une période</span>
+          </Button>
+        </div>
       </div>
 
       {/* Barre d'outils et recherche */}
@@ -190,6 +258,27 @@ export const PeriodesGestionPage: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Message d'erreur PDF */}
+      {pdfError && (
+        <div
+          role="alert"
+          className="p-3 bg-status-alert/10 border border-status-alert/30 rounded-xl text-xs font-sans text-status-alert flex items-start justify-between gap-2"
+          data-testid="alert-pdf-error"
+        >
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{pdfError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setPdfError(null)}
+            className="text-status-alert hover:underline text-xs"
+          >
+            Fermer
+          </button>
+        </div>
+      )}
 
       {/* Tableau des périodes de gestion */}
       <div className="bg-surface-card rounded border border-border-subtle overflow-hidden shadow-sm">
@@ -262,7 +351,7 @@ export const PeriodesGestionPage: React.FC = () => {
                       {p.nom_receveur}
                     </td>
                     <td className="py-3 px-4 font-mono text-xs text-text-secondary">
-                      {p.date_debut} → {p.date_fin}
+                      {p.date_debut} → {p.date_fin ? p.date_fin : <span className="italic text-accent">en cours</span>}
                     </td>
                     <td className="py-3 px-4 font-mono text-right tabular-nums text-text-primary">
                       <div className="flex items-center justify-end gap-1.5">
@@ -296,22 +385,58 @@ export const PeriodesGestionPage: React.FC = () => {
                       )}
                     </td>
                     <td className="py-3 px-4 text-right">
-                      {!p.cloturee ? (
+                      <div className="flex items-center justify-end gap-1.5">
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleOpenCloture(p)}
-                          className="hover:text-status-alert hover:bg-status-alert/10"
-                          title="Clôturer la période"
+                          onClick={() => navigate(`/historique-periodes?bureau=${p.bureau}`)}
+                          className="hover:text-brand hover:bg-brand/10 p-1.5"
+                          title="Voir l'historique et passations de ce bureau"
+                          data-testid={`btn-historique-periode-${p.id}`}
                         >
-                          <Lock className="w-3.5 h-3.5 mr-1" />
-                          <span>Clôturer</span>
+                          <History className="w-3.5 h-3.5" />
                         </Button>
-                      ) : (
-                        <span className="text-xs text-text-secondary font-sans italic">
-                          Verrouillée
-                        </span>
-                      )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDownloadPdf(p)}
+                          isLoading={downloadingId === p.id}
+                          disabled={downloadingId === p.id}
+                          className="hover:text-brand hover:bg-brand/10 p-1.5"
+                          title="Télécharger le bordereau G58 en PDF"
+                          data-testid={`btn-pdf-periode-${p.id}`}
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleExportExcel(p)}
+                          isLoading={exportingExcelId === p.id}
+                          disabled={exportingExcelId === p.id}
+                          className="hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/10 p-1.5"
+                          title="Exporter les écritures en classeur Excel (.xlsx)"
+                          data-testid={`btn-excel-periode-${p.id}`}
+                        >
+                          <FileSpreadsheet className="w-3.5 h-3.5" />
+                        </Button>
+                        {!p.cloturee ? (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleOpenCloture(p)}
+                            className="hover:text-status-alert hover:bg-status-alert/10"
+                            title="Clôturer la période"
+                          >
+                            <Lock className="w-3.5 h-3.5 mr-1" />
+                            <span>Clôturer</span>
+                          </Button>
+                        ) : (
+                          <span className="text-xs text-text-secondary font-sans italic px-2">
+                            Verrouillée
+                          </span>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -332,6 +457,7 @@ export const PeriodesGestionPage: React.FC = () => {
           onClose={() => setIsFormOpen(false)}
           onSubmit={handleSavePeriode}
           bureaux={bureaux}
+          provinces={provinces}
           apiErrors={apiErrors}
         />
       </Modal>

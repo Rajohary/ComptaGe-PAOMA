@@ -130,6 +130,12 @@ test.describe('Périodes de gestion (Référentiel)', () => {
 
     await expect(page.getByRole('heading', { name: /Ouverture d'une période de gestion/i })).toBeVisible();
 
+    // Vérifier la présence du sélecteur de province et du champ bureau
+    const provinceSelect = page.locator('#periode-province-select');
+    await expect(provinceSelect).toBeVisible();
+    const bureauSelect = page.locator('#periode-bureau-select');
+    await expect(bureauSelect).toBeVisible();
+
     // Remplir les montants de l'inventaire initial
     const numeraireInput = page.locator('input[name="reserve_numeraire"]');
     await numeraireInput.fill('100000');
@@ -151,7 +157,7 @@ test.describe('Périodes de gestion (Référentiel)', () => {
           status: 400,
           contentType: 'application/json',
           body: JSON.stringify({
-            date_fin: ['La date de fin de gestion doit être supérieure ou égale à la date de début.'],
+            nom_receveur: ['Le nom du receveur est invalide.'],
             timbres_fiscaux: ['Le montant des timbres fiscaux doit être un montant positif ou nul.'],
           }),
         });
@@ -166,7 +172,6 @@ test.describe('Périodes de gestion (Référentiel)', () => {
 
     await page.getByLabel(/Nom du receveur gestionnaire/i).fill('Rakoto Jean');
     await page.locator('input[name="date_debut"]').fill('2026-06-01');
-    await page.locator('input[name="date_fin"]').fill('2026-06-30');
 
     await page.locator('input[name="reserve_numeraire"]').fill('500000');
     await page.locator('input[name="valeurs_postales"]').fill('250000');
@@ -175,7 +180,7 @@ test.describe('Périodes de gestion (Référentiel)', () => {
     await page.getByRole('button', { name: /Ouvrir la période de gestion/i }).click();
 
     // Vérifier que les messages d'erreurs serveur apparaissent sous les bons champs
-    await expect(page.getByText('La date de fin de gestion doit être supérieure ou égale à la date de début.')).toBeVisible();
+    await expect(page.getByText('Le nom du receveur est invalide.')).toBeVisible();
     await expect(page.getByText('Le montant des timbres fiscaux doit être un montant positif ou nul.')).toBeVisible();
 
     // La modale reste ouverte pour permettre la correction

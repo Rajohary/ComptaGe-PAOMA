@@ -43,7 +43,7 @@ class PeriodeGestionSerializer(serializers.ModelSerializer):
     Serializer pour le modèle PeriodeGestion.
     Valide obligatoirement l'inventaire initial (numéraire, valeurs postales, timbres fiscaux >= 0)
     ainsi que la cohérence des dates (date_fin >= date_debut).
-    Empêche la présence de multiples périodes ouvertes simultanées pour un même bureau.
+    Plusieurs périodes peuvent être ouvertes simultanément pour un même bureau.
     """
     bureau_detail = BureauSerializer(source="bureau", read_only=True)
 
@@ -74,7 +74,7 @@ class PeriodeGestionSerializer(serializers.ModelSerializer):
             "timbres_fiscaux": {"required": True, "allow_null": False},
             "nom_receveur": {"required": True, "allow_blank": False},
             "date_debut": {"required": True},
-            "date_fin": {"required": True},
+            "date_fin": {"required": False, "allow_null": True},
         }
 
     def validate(self, attrs):
@@ -93,13 +93,111 @@ class PeriodeGestionSerializer(serializers.ModelSerializer):
                     field_name: f"Le champ {field_name} est obligatoire et doit être un montant positif ou nul."
                 })
 
-        bureau = attrs.get("bureau")
-        # Vérification qu'il n'y a pas déjà une période ouverte pour ce bureau
-        if self.instance is None and bureau:
-            periode_active = PeriodeGestion.objects.filter(bureau=bureau, cloturee=False).exists()
-            if periode_active:
-                raise serializers.ValidationError({
-                    "bureau": f"Une période de gestion est déjà ouverte et non clôturée pour le bureau {bureau.nom_bureau}."
-                })
-
         return attrs
+
+
+# ---------------------------------------------------------------------------
+# Serializers pour le Tableau de Bord Admin (vue d'ensemble globale)
+# ---------------------------------------------------------------------------
+
+class ClasseRepartitionItemSerializer(serializers.Serializer):
+    classe = serializers.CharField()
+    nb_bureaux = serializers.IntegerField()
+
+
+class ProvinceRepartitionItemSerializer(serializers.Serializer):
+    province_id = serializers.IntegerField()
+    nprovince = serializers.IntegerField()
+    province_nom = serializers.CharField()
+    nb_bureaux = serializers.IntegerField()
+
+
+class TerritoireOverviewSerializer(serializers.Serializer):
+    total_bureaux = serializers.IntegerField()
+    total_provinces = serializers.IntegerField()
+    bureaux_actifs_count = serializers.IntegerField()
+    bureaux_sans_periode_active = serializers.IntegerField()
+    repartition_classes = ClasseRepartitionItemSerializer(many=True)
+    repartition_provinces = ProvinceRepartitionItemSerializer(many=True)
+
+
+class PeriodesOverviewSerializer(serializers.Serializer):
+    total_periodes = serializers.IntegerField()
+    periodes_en_cours = serializers.IntegerField()
+    periodes_cloturees = serializers.IntegerField()
+    taux_cloture_pourcentage = serializers.FloatField()
+
+
+class UtilisateursOverviewSerializer(serializers.Serializer):
+    total_utilisateurs = serializers.IntegerField()
+    utilisateurs_actifs = serializers.IntegerField()
+    repartition_roles = serializers.DictField(child=serializers.IntegerField())
+
+
+class ComptabiliteOverviewSerializer(serializers.Serializer):
+    total_mouvements_g58 = serializers.IntegerField()
+    total_debit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_credit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    solde_global = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_mouvements_encaisse = serializers.IntegerField()
+
+
+class AuditLogSummarySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    created_at = serializers.DateTimeField()
+    action = serializers.CharField()
+    action_label = serializers.CharField()
+    auteur = serializers.CharField()
+    model_name = serializers.CharField()
+    object_repr = serializers.CharField()
+    detail = serializers.CharField()
+
+
+class AuditOverviewSerializer(serializers.Serializer):
+    total_ecarts_detectes = serializers.IntegerField()
+    ecarts_en_attente = serializers.IntegerField()
+    total_logs_audit = serializers.IntegerField()
+    derniers_logs = AuditLogSummarySerializer(many=True)
+
+
+class AdminDashboardResponseSerializer(serializers.Serializer):
+    territoire = TerritoireOverviewSerializer()
+    periodes = PeriodesOverviewSerializer()
+    utilisateurs = UtilisateursOverviewSerializer()
+    comptabilite = ComptabiliteOverviewSerializer()
+    audit = AuditOverviewSerializer()
+
+
+# ---------------------------------------------------------------------------
+# Serializers pour l'Historique des Périodes de Gestion d'un Bureau
+# ---------------------------------------------------------------------------
+
+class HistoriquePeriodeItemSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    nom_receveur = serializers.CharField()
+    date_debut = serializers.DateField()
+    date_fin = serializers.DateField(allow_null=True)
+    cloturee = serializers.BooleanField()
+    date_cloture = serializers.DateTimeField(allow_null=True)
+    # Soldes de départ / passation
+    solde_debiteur_depart = serializers.DecimalField(max_digits=15, decimal_places=2)
+    solde_crediteur_depart = serializers.DecimalField(max_digits=15, decimal_places=2)
+    # Réserves et encaisse
+    reserve_numeraire = serializers.DecimalField(max_digits=15, decimal_places=2)
+    valeurs_postales = serializers.DecimalField(max_digits=15, decimal_places=2)
+    timbres_fiscaux = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_encaisse_depart = serializers.DecimalField(max_digits=15, decimal_places=2)
+    # Mouvements et soldes finaux
+    total_debit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_credit = serializers.DecimalField(max_digits=15, decimal_places=2)
+    solde_debiteur_fin = serializers.DecimalField(max_digits=15, decimal_places=2)
+    solde_crediteur_fin = serializers.DecimalField(max_digits=15, decimal_places=2)
+    nb_mouvements = serializers.IntegerField()
+
+
+class HistoriquePassationResponseSerializer(serializers.Serializer):
+    bureau = serializers.DictField()
+    total_periodes = serializers.IntegerField()
+    periodes_cloturees = serializers.IntegerField()
+    periode_en_cours = serializers.DictField(allow_null=True)
+    historique = HistoriquePeriodeItemSerializer(many=True)

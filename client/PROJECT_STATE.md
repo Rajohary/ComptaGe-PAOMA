@@ -24,12 +24,12 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ## 1. Authentification & RBAC
 
-- [ ] Page de connexion (formulaire, gestion des erreurs, redirection selon rôle)
-- [ ] `AuthContext` (utilisateur courant, rôle, token, déconnexion), dans `src/contexts/`
-- [ ] Hooks `src/api/auth.ts` consommant les endpoints décrits dans `../API_CONTRACT.md`
-- [ ] Navigation (sidebar) qui s'adapte dynamiquement au rôle connecté (voir `DESIGN.md` section 4 pour le comportement attendu)
-- [ ] Rafraîchissement automatique du token en cas d'expiration (401)
-- [ ] Test e2e `auth.spec.ts` : connexion réussie/échouée, redirection correcte selon rôle
+- [x] Page de connexion (formulaire, gestion des erreurs, redirection selon rôle)
+- [x] `AuthContext` (utilisateur courant, rôle, token, déconnexion), dans `src/contexts/`
+- [x] Hooks `src/api/auth.ts` consommant les endpoints décrits dans `../API_CONTRACT.md`
+- [x] Navigation (sidebar) qui s'adapte dynamiquement au rôle connecté (voir `DESIGN.md` section 4 pour le comportement attendu)
+- [x] Rafraîchissement automatique du token en cas d'expiration (401)
+- [x] Test e2e `auth.spec.ts` : connexion réussie/échouée, redirection correcte selon rôle
 
 ---
 
@@ -42,44 +42,52 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 ---
 
-## 3. Recherche dans le plan comptable (remplace le TreeView legacy)
+## 3. Recherche et gestion du plan comptable (remplace le TreeView legacy)
 
-- [ ] Composant `LigneComptableSearch` — recherche instantanée (debounce), résultats groupés par section
-- [ ] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
-- [ ] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
+- [x] Composant `LigneComptableSearch` — recherche instantanée (debounce), séparation stricte Débit / Crédit sous forme d'onglets maîtres dédiés évitant les collisions de code macro-comptable (A, B, C... sous Débit et A, B, C... sous Crédit)
+- [x] Boutons d'ajout contextuels directs au plan comptable : ajout d'une ligne directement depuis l'en-tête d'une section et ajout d'une sous-ligne rattachée directement depuis une ligne parente
+- [x] Historique des lignes récemment utilisées par le bureau (à trancher avec l'utilisateur : stockage local ou backend — voir `ARCHITECTURE.md` section 7)
+- [x] Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement — correction directe du défaut identifié dans l'application legacy (zone grise vide sans message)
+- [x] Administration du plan comptable (réservée ADMIN) : création et modification des rubriques/sous-comptes (`LigneComptableModal`) et des sections (`SectionComptableModal`) avec validation Zod et cohérence hiérarchique parente
+- [x] Contrôle d'accès RBAC : masquer les actions d'écriture aux profils non administrateurs (testé e2e)
 
 ---
 
+
 ## 4. Saisie du Journal G58 — cœur fonctionnel
 
-- [ ] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
-- [ ] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
-- [ ] Validation React Hook Form + Zod cohérente avec les contraintes backend
-- [ ] Écran « Détails de l'encaisse »
-- [ ] Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent
-- [ ] Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel
+- [x] Onglets maîtres Débit / Crédit posés au-dessus de la barre des sections avec totaux consolidés en direct, synchronisant les sections filtrées par sens actif (1 = Débit, 2 = Crédit)
+- [x] Composant `SectionForm` — formulaire de saisie d'une section (A, B, D en priorité)
+- [x] Composant `TotauxLive` — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission
+- [x] Validation React Hook Form + Zod cohérente avec les contraintes backend
+- [x] Écran « Détails de l'encaisse »
+- [x] Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent
+- [x] Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel
+
+
 
 ---
 
 ## 5. Audit et détection d'écarts
 
-- [ ] Écran Inspecteur : liste des écarts (équivalent vue DIF), filtrable par bureau/province/montant
-- [ ] Formulaire de rectification (obligation de motif, affichage du calcul automatique de `montant_rectifie`)
-- [ ] Test e2e `rbac.spec.ts` : un agent de saisie ne voit pas les actions de rectification réservées à l'inspecteur
+- [x] Écran Inspecteur : liste des écarts (équivalent vue DIF), filtrable par bureau/province/montant
+- [x] Formulaire de rectification (obligation de motif, affichage du calcul automatique de `montant_rectifie`)
+- [x] Test e2e `rbac.spec.ts` : un agent de saisie ne voit pas les actions de rectification réservées à l'inspecteur
 
 ---
 
 ## 6. Tableaux de bord
 
-- [ ] Dashboard Receveur : progression de la saisie du mois en cours par section, montant en caisse actuel
-- [ ] Dashboard Inspecteur : bureaux avec écarts en attente, triable/filtrable
-- [ ] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours)
+- [x] Dashboard Receveur : progression de la saisie du mois en cours par section, montant en caisse actuel
+- [x] Dashboard Inspecteur : bureaux avec écarts en attente, triable/filtrable
+- [x] Dashboard Admin : vue d'ensemble (nombre de bureaux actifs, périodes en cours) + Sélecteur de bureau pour voir l'état détaillé d'un bureau (données du bureau, accès direct au tableau de bord receveur et historique des périodes)
 
 ---
 
 ## 7. Stock de valeurs postales
 
-- [ ] Écran de saisie/consultation du stock par bureau et par mois
+- [x] Écran de saisie/consultation du stock par bureau et par mois
+
 
 ---
 
@@ -87,9 +95,9 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 
 Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (états, statistiques, exports...) au fur et à mesure, avant de l'implémenter.
 
-- [ ] Téléchargement du bordereau G58 en PDF depuis l'interface (dépend de l'endpoint backend correspondant)
-- [ ] Bouton d'export Excel des écritures d'une période
-- [ ] Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- [x] Téléchargement du bordereau G58 en PDF depuis l'interface (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
+- [x] Bouton d'export Excel des écritures d'une période (intégré aux écrans Saisie G58, Situation comptable et Périodes de gestion)
+- [x] Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
 - [ ] Graphique d'évolution des recettes d'un bureau sur plusieurs mois (choix de la librairie à trancher le moment venu)
 - [ ] Notifications de rappel avant date limite de clôture mensuelle
 
@@ -100,13 +108,442 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
  Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
  
  ```
- ### AAAA-MM-JJ — Titre court de la tâche
- - Ce qui a été fait : ...
- - Fichiers/dossiers touchés : ...
- - Cases cochées : section X, tâche Y
- - Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
- - Points restés ouverts ou à valider avec l'utilisateur : ...
- ```
+### AAAA-MM-JJ — Titre court de la tâche
+- Ce qui a été fait : ...
+- Fichiers/dossiers touchés : ...
+- Cases cochées : section X, tâche Y
+- Dépendance à un endpoint backend : implémenté / planifié (mocké en attendant) / non applicable
+- Points restés ouverts ou à valider avec l'utilisateur : ...
+```
+
+### 2026-10-26 — Écran d'historique des périodes de gestion d'un bureau (receveurs successifs, soldes de passation)
+- Ce qui a été fait :
+  - **Types & client API** :
+    - Déclaration des interfaces `HistoriquePeriodeItem`, `PeriodeEnCoursInfo` et `HistoriquePassationResponse` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+    - Ajout de la fonction `getHistoriquePeriodesBureau(bureauIdOrNcodique)` dans [src/api/referentiel.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/referentiel.ts) consommant l'endpoint `GET /api/v1/bureaux/{bureau_id}/historique-periodes/` conforme à `API_CONTRACT.md`.
+  - **Écran dédié `HistoriquePeriodesPage`** ([src/features/periodes-gestion/HistoriquePeriodesPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/HistoriquePeriodesPage.tsx)) :
+    - Sélecteur de bureau dynamique alimenté par le référentiel avec restriction automatique au bureau assigné pour les profils Receveurs et Agents de saisie.
+    - Bannière de synthèse du bureau (nom, code codique, classe, province, compte CCP) et indicateurs globaux (total périodes, clôturées, période active).
+    - Encadré d'alerte et de suivi de la période en cours (receveur en fonction, date de prise de service, inventaire d'ouverture).
+    - Tableau chronologique complet des passations de gestion :
+      - Dates de début et fin de gestion, statut (En cours / Clôturée).
+      - Receveur en charge avec avatar / initiales.
+      - Inventaire initial détaillé (numéraire, valeurs postales, timbres).
+      - Soldes d'ouverture (débiteur/créditeur de passation).
+      - Volumétrie des mouvements et totaux de flux (débits / crédits).
+      - Soldes de clôture calculés (report pour la passation suivante).
+      - Téléchargement direct du bordereau officiel Journal G58 en PDF et export des écritures en classeur Excel (.xlsx).
+    - Recherche instantanée locale par receveur ou période.
+  - **Intégration & Navigation** :
+    - Route protégée `/historique-periodes` ajoutée dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) pour les rôles RECEVEUR, AGENT_SAISIE, INSPECTEUR, ADMIN.
+    - Entrée « Passations & Historique » ajoutée dans la barre latérale [src/components/layout/Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+    - Bouton de raccourci d'historique intégré dans la liste des bureaux ([src/features/bureaux/BureauxPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/BureauxPage.tsx)) et dans chaque ligne des périodes de gestion ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)).
+  - **Tests et vérification** :
+    - Suite de tests e2e Playwright créée dans [e2e/historique-periodes.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/historique-periodes.spec.ts) (3 tests passés avec succès).
+    - Exécution globale des 61 tests e2e Playwright : 61/61 validés (100% au vert).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour de la base de connaissances AST (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/referentiel.ts`
+  - `src/features/periodes-gestion/HistoriquePeriodesPage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `src/features/bureaux/BureauxPage.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/App.tsx`
+  - `e2e/historique-periodes.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/bureaux/{bureau_id}/historique-periodes/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Amélioration ergonomique : Recherche rapide et assistée de période (Saisie G58)
+- Ce qui a été fait :
+  - **Composant dédié `PeriodeSearchModal`** ([src/features/saisie-g58/components/PeriodeSearchModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/PeriodeSearchModal.tsx)) :
+    - Boîte de dialogue de recherche dynamique instantanée par texte libre (dates au format ISO ou français `DD/MM/YYYY`, nom du receveur, numéro codique ou nom de bureau).
+    - Filtres rapides par statut (Toutes, En cours / Active, Clôturée).
+    - Filtre par millésime / année automatique selon les périodes disponibles.
+    - Présentation claire des dates de gestion, du receveur assigné, de l'état d'inventaire initial et du statut de clôture.
+  - **Intégration dans `SaisieG58Page`** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) :
+    - Bouton d'action « Rechercher » intégré directement dans le bloc sélecteur de période de gestion en en-tête.
+    - Sélection immédiate et synchronisation automatique de l'état `selectedPeriodeId` et des totaux consolidés associés.
+  - **Tests et validation** :
+    - Test e2e Playwright ajouté dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) (9/9 tests au vert).
+    - Build de production Vite validé (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/PeriodeSearchModal.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : non applicable (référentiel frontend existant).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Bouton d'export Excel des écritures d'une période (Journal G58)
+- Ce qui a été fait :
+  - **Connexion API & utilitaire de téléchargement** :
+    - Ajout de la fonction API `exportEcrituresExcel(periodeId)` dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) appelant l'endpoint `GET /api/v1/mouvements/export-excel/?periode_id={periodeId}`.
+    - Utilisation de `triggerBlobDownload` pour générer le téléchargement direct du classeur multi-feuilles avec nommage normalisé (`Journal_G58_{ncodique}_{date_debut}.xlsx`).
+  - **Intégration dans les écrans métier** :
+    - **Saisie du Journal G58** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) : bouton d'action dédié « Export Excel » avec gestion du spinner `isExportingExcel` et alertes d'erreur.
+    - **Situation Comptable** ([src/features/saisie-g58/pages/SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx)) : bouton d'action contextuel « Export Excel » à côté du sélecteur de période.
+    - **Périodes de Gestion** ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)) : icône d'export Excel direct sur chaque ligne de période du tableau pour consultation et archivage.
+  - **Tests et vérification** :
+    - Enrichissement des tests Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) et [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts) (tous passés avec succès).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/mouvements/export-excel/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-26 — Téléchargement du bordereau Journal G58 en PDF depuis l'interface
+- Ce qui a été fait :
+  - **Connexion API & utilitaire de téléchargement de flux Blob** :
+    - Mise à jour de [src/api/client.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/client.ts) pour supporter `responseType: 'blob'`.
+    - Ajout de la fonction API `downloadBordereauG58Pdf(periodeId)` dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) appelant l'endpoint `GET /api/v1/bordereau-g58/{periodeId}/pdf/`.
+    - Création du helper [src/lib/download.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/lib/download.ts) (`triggerBlobDownload`) pour déclencher le téléchargement du fichier PDF avec libellé officiel normalisé (`Bordereau_G58_{ncodique}_{date_debut}.pdf`).
+  - **Intégration dans les écrans métier** :
+    - **Saisie du Journal G58** ([src/features/saisie-g58/pages/SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx)) : bouton d'action dédié « Bordereau G58 (PDF) » avec gestion d'état de chargement et gestion des erreurs.
+    - **Situation Comptable** ([src/features/saisie-g58/pages/SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx)) : bouton d'action contextuel « Bordereau G58 (PDF) » à côté du sélecteur de période.
+    - **Périodes de Gestion** ([src/features/periodes-gestion/PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx)) : icône d'export PDF direct sur chaque ligne de période du tableau (pour consultation/archivage des périodes actives comme clôturées).
+  - **Tests et vérification** :
+    - Enrichissement des tests Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) et [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts).
+    - Validation du build TypeScript/Vite (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/api/client.ts`
+  - `src/api/comptabilite.ts`
+  - `src/lib/download.ts`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/features/periodes-gestion/PeriodesGestionPage.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`GET /api/v1/bordereau-g58/{periode_id}/pdf/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-25 — Ajout de raccourcis contextuels de création de ligne dans le Plan Comptable
+- Ce qui a été fait :
+  - **Bouton d'ajout contextuel depuis une Section** :
+    - Ajout dans [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) d'un bouton « Nouvelle ligne » au niveau de chaque en-tête de section macro-comptable (visible uniquement par les profils `ADMIN`).
+    - La modale s'ouvre avec la section correspondante pré-sélectionnée et verrouillée sur le bon périmètre sans parent forcé.
+  - **Bouton d'ajout contextuel depuis une Ligne (sous-compte / sous-rubrique)** :
+    - Ajout dans [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) d'un bouton d'action d'ajout `+` sur chaque ligne comptable (visible uniquement par les profils `ADMIN`).
+    - La modale de création [src/features/plan-comptable/components/LigneComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableModal.tsx) supporte le paramètre `defaultParentId` : elle pré-sélectionne la section de la ligne parente ainsi que la ligne parente elle-même dans le champ « Ligne parente (Sous-section) ».
+  - **Tests e2e & Validation** :
+    - Enrichissement de [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) avec 2 nouveaux tests vérifiant l'ouverture et le pré-remplissage automatique (11/11 tests passés avec succès).
+    - Validation du build Vite de production (`npm run build`).
+    - Mise à jour du graphe de connaissances (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableModal.tsx`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Dépendance à un endpoint backend : implémenté (`/api/v1/lignes-comptables/`).
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
+
+### 2026-10-22 — Module 3 : Gestion complète du Plan Comptable (Création, Modification, RBAC Admin)
+- Ce qui a été fait :
+  - **Typage & API CRUD Plan Comptable** :
+    - Définition de `SectionComptableFormData` et `LigneComptableFormData` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+    - Enrichissement de [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) avec les fonctions d'écriture : `createSectionComptable`, `updateSectionComptable`, `deleteSectionComptable`, `createLigneComptable`, `updateLigneComptable`, `deleteLigneComptable`.
+  - **Formulaires Modaux d'Administration (Zod + UX)** :
+    - [src/features/plan-comptable/components/LigneComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableModal.tsx) : modal de création/édition d'une rubrique comptable avec sélection de section, filtrage dynamique des lignes parentes éligibles (même section uniquement, auto-exclusion), validation Zod (`menu_sub`, `compte`, `libelle`, `actif`), et rattachement des erreurs backend DRF via `applyServerValidationErrors`.
+    - [src/features/plan-comptable/components/SectionComptableModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/SectionComptableModal.tsx) : modal de création/édition d'une section macro-comptable avec code majuscule unique, sens comptable (Débit/Crédit), ordre d'affichage et statut actif.
+  - **Enrichissement de la vue Plan Comptable & RBAC** :
+    - Mise à jour de [src/features/plan-comptable/components/LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) pour afficher les boutons d'administration (« Nouvelle ligne », « Section », « Modifier », « Supprimer ») uniquement pour les utilisateurs ayant le rôle `ADMIN`.
+    - Pour les receveurs, agents de saisie et inspecteurs, l'interface conserve un mode consultation et sélection épuré, sans aucun bouton d'action administrative.
+    - Ajout de bandeaux de confirmation et gestion explicite des erreurs (ex: protection en suppression si des écritures ou sous-lignes sont liées).
+  - **Tests automatisés & validation globale** :
+    - Enrichissement de [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) avec 3 nouveaux tests (9/9 passés au vert) validant la non-visibilité des actions pour les utilisateurs standards, la création d'une nouvelle ligne par un admin avec modale, et la modification d'une ligne existante.
+    - **51/51 tests Playwright passés au vert** sur l'ensemble de l'application frontend.
+    - Build Vite de production sans aucune erreur (`npm run build`).
+    - Graphe de connaissances synchronisé (`graphify update .`).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/plan-comptable/components/LigneComptableModal.tsx`
+  - `src/features/plan-comptable/components/SectionComptableModal.tsx`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 3 (Gestion du plan comptable et RBAC).
+- Dépendance à un endpoint backend : `/api/v1/sections-comptables/` et `/api/v1/lignes-comptables/` (`POST`, `PUT`, `PATCH`, `DELETE` implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-16 — Module 6 : Tableaux de bord (Receveur, Inspecteur, Admin)
+- Ce qui a été fait :
+  - Création de l'utilitaire de formatage monétaire et date [src/lib/formatters.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/lib/formatters.ts) (`formatAriary`, `formatDate`, `formatDateTime`, `formatPercent`) avec respect strict de `tabular-nums` et des règles typographiques institutionnelles de `DESIGN.md`.
+  - Définition complète des types TypeScript dans [src/types/index.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/types/index.ts) (`ReceveurDashboardData`, `InspecteurDashboardData`, `AdminDashboardData`, `EcartsListResponse`, `SectionProgressionItem`, `BureauAvecEcartsItem`, `EcartItem`, etc.) en conformité avec `API_CONTRACT.md`.
+  - Implémentation du client API et des hooks TanStack Query dans [src/api/dashboard.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/api/dashboard.ts) (`useReceveurDashboard`, `useInspecteurDashboard`, `useAdminDashboard`, `useEcartsList`).
+  - Implémentation du composant [ReceveurDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/ReceveurDashboard.tsx) : progression de la saisie par section (A à E, ENC), montant en caisse avec décomposition détaillée (réserve numéraire + entrées - sorties), récapitulatif des flux débit/crédit G58, alerte écarts avec lien direct vers le journal d'écritures.
+  - Implémentation du composant [InspecteurDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/InspecteurDashboard.tsx) : KPI d'audit national/régional (total écarts en attente, montant cumulé, bureaux audités), tableau interactif des bureaux avec écarts en attente (filtrable par terme de recherche, triable par bureau, montant, statut, ou date), et flux des anomalies récentes (vue DIF).
+  - Implémentation du composant [AdminDashboard.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/components/AdminDashboard.tsx) : vue d'ensemble nationale (nombre de bureaux actifs/inactifs, répartition géographique par province et classe), périodes de gestion ouvertes/clôturées, répartition des comptes utilisateurs RBAC, flux financiers globaux et journal d'audit des actions critiques.
+  - Mise à niveau de la page principale [DashboardPage.tsx](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/src/features/dashboard/pages/DashboardPage.tsx) : affichage contextuel et automatique selon le rôle de l'utilisateur connecté (`RECEVEUR`/`AGENT_SAISIE`, `INSPECTEUR`, `ADMIN`), avec onglets de supervision pour les administrateurs permettant de basculer instantanément entre les vues.
+  - Suite de tests end-to-end Playwright [e2e/dashboard.spec.ts](file:///c:/Users/Kiksa/Documents/GitHub/ComptaGe-PAOMA/client/e2e/dashboard.spec.ts) validant le rendu visuel, la décomposition de caisse, le tri/filtrage du tableau des écarts, et les vues de supervision administrative.
+- Fichiers/dossiers touchés :
+  - `src/lib/formatters.ts`
+  - `src/types/index.ts`
+  - `src/api/dashboard.ts`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/components/InspecteurDashboard.tsx`
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+- Cases cochées : Section 6 (3 cases : Dashboard Receveur, Dashboard Inspecteur, Dashboard Admin)
+- Dépendance à un endpoint backend : `/api/v1/dashboard/receveur/`, `/api/v1/dashboard/inspecteur/`, `/api/v1/audit/ecarts/`, `/api/v1/dashboard/admin/` (tous implémentés et testés dans le backend)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-21 — Module 5 : Audit et détection d'écarts (Vue DIF, Rectification UC-04, RBAC)
+- Ce qui a été fait :
+  - **Module d'API Audit dédié** ([src/api/audit.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/audit.ts)) :
+    - `getEcarts(params)` consommant `GET /api/v1/audit/ecarts/` (avec filtres bureau, province, statut, ordering, pagination et KPIs d'audit).
+    - `rectifierMouvement(id, data)` consommant `PATCH /api/v1/mouvements/{id}/rectifier/` avec motif obligatoire et équation comptable.
+  - **Écran Inspecteur : Vue DIF** ([src/features/audit/AuditEcartsPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/AuditEcartsPage.tsx)) :
+    - Cartes KPIs de synthèse en direct : Total Écarts, Écart Net Cumulé, Bureaux Impactés, Montant Rectifié Total.
+    - Barre de filtrage multi-critères : recherche libre, bureau (ncodique/nom), province, statut de régularisation (Tous, En attente, Régularisés) et plage de montants / écarts min & max.
+    - Table complète des écarts avec tri interactif par date et montant, ventilation des ajustements (+/-), badges sémantiques d'état et pagination.
+  - **Formulaire de rectification d'audit UC-04** ([src/features/audit/components/RectificationModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/components/RectificationModal.tsx)) :
+    - Modal de redressement contradictoire conforme au CDC et à DESIGN.md.
+    - Validation stricte Zod : motif textuel obligatoire, contrôle de cohérence des ajustements.
+    - Calcul automatique en temps réel de `montant_rectifie = montant + augmentation - diminution` avec affichage de l'équation de contrôle sans soumission préalable.
+  - **Intégration du routage protégé et RBAC** :
+    - Branchement de `/audit` sur [AuditEcartsPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/audit/AuditEcartsPage.tsx) avec protection `RequireAuth` réservée aux rôles `INSPECTEUR` et `ADMIN`.
+    - Sidebar mise à jour : lien masqué pour les rôles `RECEVEUR` et `AGENT_SAISIE`.
+  - **Couverture de tests Playwright e2e** ([e2e/rbac.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/rbac.spec.ts)) :
+    - Test d'affichage de la table d'audit et des cartes KPIs.
+    - Test de filtrage dynamique par bureau, province, statut et montant.
+    - Test complet de soumission de rectification avec calcul automatique en direct et contrôle du payload `PATCH`.
+    - Test RBAC d'interdiction pour l'agent de saisie (redirection `/non-autorise`, masquage du lien dans la sidebar).
+  - **Validation globale** :
+    - **48/48 tests Playwright passés au vert** (100 % de succès).
+    - `npm run build` opérationnel sans warning TypeScript.
+    - Graphe de connaissances mis à jour via `graphify update .`.
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/audit.ts`
+  - `src/features/audit/AuditEcartsPage.tsx`
+  - `src/features/audit/components/RectificationModal.tsx`
+  - `src/App.tsx`
+  - `e2e/rbac.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 5 (3 cases : Écran Inspecteur / Vue DIF, Formulaire de rectification, Test e2e `rbac.spec.ts`).
+- Dépendance à un endpoint backend : `/api/v1/audit/ecarts/`, `/api/v1/mouvements/{id}/rectifier/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant. Section 5 achevée.
+
+### 2026-10-15 — Révision et enrichissement de l'espace Encaisse (Section 4)
+- Ce qui a été fait :
+  - Enrichissement analytique : ajout du bloc de répartition des flux par rubrique d'encaisse (`TR`: Trésorerie et espèces, `SF`: Stock final, `CR`: Créances) avec calcul immédiat des totaux entrées, sorties, solde net et volume d'écritures.
+  - Ergonomie et filtrage instantané : ajout de pastilles de filtrage rapide du sens (`Tous`, `Entrées`, `Sorties`) combinées avec la barre de recherche textuelle.
+  - Mode édition en place : prise en charge complète de la modification d'un mouvement d'encaisse (`updateMouvementEncaisse` consommant `PATCH /api/v1/mouvements-encaisse/{id}/`), intégration du bouton modifier dans le tableau et préremplissage automatique dans `EncaisseFormModal`.
+  - Tests automatisés : enrichissement de [e2e/encaisse.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/encaisse.spec.ts) (6/6 tests passés couvrant affichage, cartes de synthèse, répartition analytique, modification, pastilles de sens, validation Zod).
+  - Validation globale : **41/41 tests Playwright passés au vert**, build Vite opérationnel sans erreur.
+- Fichiers/dossiers touchés :
+  - `src/api/comptabilite.ts`
+  - `src/features/encaisse/components/EncaisseFormModal.tsx`
+  - `src/features/encaisse/EncaissePage.tsx`
+  - `e2e/encaisse.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Révision et renforcement de l'espace Encaisse (Section 4).
+- Dépendance à un endpoint backend : `/api/v1/mouvements-encaisse/` (`GET`, `POST`, `PATCH`, `DELETE`) et `/api/v1/rubriques-encaisse/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-15 — Test e2e saisie complète d'une section G58 et TotauxLive (Section 4, Tâche 6)
+- Ce qui a été fait :
+  - Conception et rédaction du test end-to-end automatisé complet dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) :
+    - Navigation et bascule sur l'onglet de la section B (Crédit - Opérations mandats).
+    - Recherche et sélection dynamique d'une ligne comptable imputable via le modal `LigneComptableSearch` (`B101`).
+    - Vérification du calcul en temps réel sans soumission dans le composant `TotauxLive` lors de la saisie progressive touche par touche (`pressSequentially`).
+    - Soumission du formulaire d'imputation et vérification de la création de la ligne dans le tableau du Journal G58.
+    - Réinitialisation du champ montant et maintien de la somme consolidée enregistrée.
+  - Exécution et validation de la suite Playwright complète (6/6 tests saisie G58 passés, 39/39 tests globaux passés au vert).
+  - Validation du build de production Vite sans régression (`npm run build`).
+- Fichiers/dossiers touchés :
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 6 (« Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Toutes les tâches de la Section 4 sont désormais achevées et validées. Prêt pour la Section 5 (Audit et détection d'écarts).
+
+### 2026-10-14 — Écran Situation comptable & report automatique (Section 4, Tâche 5)
+- Ce qui a été fait :
+  - Définition du type TypeScript `SituationComptable` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) calqué sur le contrat backend.
+  - Implémentation du client d'API [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getSituationComptable(periodeId)`) consommant l'endpoint `/api/v1/situation-comptable/{id}/`.
+  - Conception et développement de la page [SituationComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SituationComptablePage.tsx) avec :
+    - Bannière de traçabilité claire indiquant l'origine du report de solde (automatique depuis la période précédente ou solde initial déclaré).
+    - Tableaux comparatifs de la balance mensuelle : Colonne des Débits (Report + Opérations mois = Cumul Débits) et Colonne des Crédits (Report + Opérations mois = Cumul Crédits).
+    - Détermination automatique du solde de clôture périodique (débiteur ou créditeur) avec mise en avant visuelle selon la balance.
+    - Sélecteurs réactifs de bureau (pour Admin/Inspecteur) et de période avec actualisation immédiate des calculs.
+  - Déclaration de la route `/situation-comptable` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx), entrée de menu dans [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx) et bouton raccourci dans l'en-tête de [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/situation-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/situation-comptable.spec.ts) (3/3 tests passés, 38/38 tests de la suite complète au vert).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/pages/SituationComptablePage.tsx`
+  - `src/App.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/situation-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 5 (« Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent »)
+- Dépendance à un endpoint backend : `/api/v1/situation-comptable/{periode_id}/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Écran Détails de l'encaisse (Section 4, Tâche 4)
+- Ce qui a été fait :
+  - Définition des types TypeScript `RubriqueEncaisse`, `MouvementEncaisse`, `MouvementEncaisseFormData`, `MouvementEncaisseSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) conformément à `API_CONTRACT.md`.
+  - Implémentation des appels d'API dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getRubriquesEncaisse`, `getMouvementsEncaisse`, `createMouvementEncaisse`, `deleteMouvementEncaisse`) pour consommer les endpoints `/api/v1/rubriques-encaisse/` et `/api/v1/mouvements-encaisse/`.
+  - Création du composant modal [EncaisseFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/encaisse/components/EncaisseFormModal.tsx) avec validation Zod (sens du flux, montant strictement positif, date confinée à la période active) et gestion des erreurs DRF 400.
+  - Implémentation de la page principale [EncaissePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/encaisse/EncaissePage.tsx) avec :
+    - 4 cartes de synthèse financière en temps réel : Réserve initiale de départ, Total Entrées, Total Sorties, et Solde théorique en caisse (`réserve + entrées - sorties`).
+    - Filtres combinés par bureau, période de gestion, sens du flux (Entrée / Sortie) et rubrique d'encaisse, complétés d'une barre de recherche instantanée.
+    - Tableau des écritures physiques avec badges directionnels, montant coloré et bouton de suppression avec confirmation sécurisée.
+    - Verrouillage automatique en lecture seule dès que la période de gestion est clôturée.
+  - Branchement de la route `/encaisse` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx), ajout dans la navigation [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx) et bouton raccourci dans le bandeau de [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/encaisse.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/encaisse.spec.ts) (4/4 tests passés, 35/35 tests sur l'ensemble de la suite Playwright).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/encaisse/components/EncaisseFormModal.tsx`
+  - `src/features/encaisse/EncaissePage.tsx`
+  - `src/App.tsx`
+  - `src/components/layout/Sidebar.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `e2e/encaisse.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 4 (« Écran « Détails de l'encaisse » »)
+- Dépendance à un endpoint backend : `/api/v1/rubriques-encaisse/` et `/api/v1/mouvements-encaisse/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Validation React Hook Form + Zod & erreurs DRF (Section 4, Tâche 3)
+- Ce qui a été fait :
+  - Définition d'un schéma de validation Zod dynamique `createMouvementSchema(periode)` dans [SectionForm.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/SectionForm.tsx) garantissant :
+    - La sélection obligatoire d'une ligne comptable imputable (`ligne_comptable` > 0).
+    - La saisie d'un montant strictement positif (`montant` > 0 et format numérique valide).
+    - La conformité stricte de la date d'opération avec l'intervalle de la période de gestion active (`date_debut <= date_operation <= date_fin`), alignée avec les contraintes métier du service Django backend.
+  - Branchement du mapping des erreurs serveur Django DRF via `applyServerValidationErrors` lors des réponses 400 (ex. tentative d'imputation sur un compte de regroupement, compte inactif, dépassement de plafonds), avec affichage immédiat sous le champ incriminé et gestion des erreurs globales de racine (`errors.root`).
+  - Ajout des cas de tests automatisés dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) couvrant la validation Zod côté client (montant négatif, date hors période) et l'association des erreurs serveur DRF 400 sur `ligne_comptable` et `montant`.
+  - Validation complète de la suite Playwright : 5/5 tests saisie G58 passés, 31/31 tests globaux passés au vert.
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 3 (« Validation React Hook Form + Zod cohérente avec les contraintes backend »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Composant TotauxLive réactif (Section 4, Tâche 2)
+- Ce qui a été fait :
+  - Conception et intégration du composant réactif [TotauxLive.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/TotauxLive.tsx) dans le flux de saisie du Journal G58.
+  - Calcul instantané des totaux cumulés pour la section active à chaque frappe dans le champ montant, sans nécessiter de soumission de formulaire (gain ergonomique majeur par rapport à l'application legacy).
+  - Prise en charge des badges contextuels Débit / Crédit selon la section macro-comptable affichée.
+  - Affichage consolidé des totaux débits, totaux crédits et solde net calculé avec mise à jour immédiate lors de l'effacement ou de la modification de montants.
+  - Test end-to-end automatisé validé dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts).
+- Fichiers/dossiers touchés :
+  - `src/features/saisie-g58/components/TotauxLive.tsx`
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 2 (« Composant TotauxLive — calcul et affichage des totaux en temps réel à chaque saisie, sans soumission »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/totaux/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Composant SectionForm du Journal G58 (Section 4, Tâche 1)
+- Ce qui a été fait :
+  - Définition des types TypeScript `MouvementG58`, `MouvementG58FormData`, `MouvementSearchParams`, `TotauxG58`, `TotauxSectionItem` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Ajout des fonctions d'API dans [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) (`getMouvements`, `createMouvement`, `updateMouvement`, `deleteMouvement`, `getTotauxG58`) pour consommer les endpoints DRF `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/`.
+  - Implémentation du composant réactif [TotauxLive.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/TotauxLive.tsx) assurant le calcul en direct à chaque frappe dans le champ montant, avec badges débits/crédits et affichage des soldes nets.
+  - Implémentation du composant [SectionForm.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/SectionForm.tsx) pour la saisie des opérations journalières par section (A, B, D en priorité) avec recherche escamotable [LigneComptableSearch](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/components/LigneComptableSearch.tsx), tableau des écritures, édition en ligne, suppression avec confirmation et verrouillage en cas de période clôturée.
+  - Implémentation de la page principale [SaisieG58Page.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/saisie-g58/pages/SaisieG58Page.tsx) avec navigation par onglets de sections et sélecteur de période de gestion, branchée sur `/saisie` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx).
+  - Rédaction et validation des tests e2e Playwright dans [e2e/saisie-g58.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/saisie-g58.spec.ts) (3/3 passés, 29/29 tests globaux passés).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/saisie-g58/components/TotauxLive.tsx`
+  - `src/features/saisie-g58/components/SectionForm.tsx`
+  - `src/features/saisie-g58/pages/SaisieG58Page.tsx`
+  - `src/App.tsx`
+  - `e2e/saisie-g58.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 4, tâche 1 (« Composant SectionForm — formulaire de saisie d'une section (A, B, D en priorité) »)
+- Dépendance à un endpoint backend : `/api/v1/mouvements/` et `/api/v1/mouvements/totaux/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Écran de suivi du stock de valeurs postales et timbres (Section 7)
+- Ce qui a été fait :
+  - Définition des types TypeScript `ProduitPostal`, `StockValeur`, `StockValeurFormData`, `StockValeurRecapitulatif`, `StockValeurSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts).
+  - Création du client API [src/api/stocks.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/stocks.ts) pour consommer `/api/v1/produits-postaux/`, `/api/v1/stocks-valeurs/` et `/api/v1/stocks-valeurs/recapitulatif/`.
+  - Implémentation du formulaire modal [StockValeurFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/stock/components/StockValeurFormModal.tsx) avec validation Zod (contrôle de cohérence stock disponible >= quantité vendue, non-négativité), calcul instantané en direct des montants en Ariary et report des erreurs serveur DRF.
+  - Implémentation de la page principale [StockValeursPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/stock/StockValeursPage.tsx) avec sélection du bureau et de la période, cartes de synthèse financière agrégée (existant, approvisionnements, ventes, solde final), table des mouvements physiques et financiers, verrouillage automatique en lecture seule si la période est clôturée, et modale de confirmation de suppression.
+  - Branchement de la page sur la route `/stock` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) et navigation correspondante dans [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+  - Rédaction et validation des tests e2e Playwright dans [e2e/stock.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/stock.spec.ts) (3/3 tests passés, 26/26 tests sur l'ensemble de la suite).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/stocks.ts`
+  - `src/features/stock/StockValeursPage.tsx`
+  - `src/features/stock/components/StockValeurFormModal.tsx`
+  - `src/App.tsx`
+  - `e2e/stock.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 7 (« Écran de saisie/consultation du stock par bureau et par mois »)
+- Dépendance à un endpoint backend : `/api/v1/produits-postaux/`, `/api/v1/stocks-valeurs/`, `/api/v1/stocks-valeurs/recapitulatif/` (implémentés).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Traitement explicite des états vide et chargement (Section 3, Tâche 3)
+- Ce qui a été fait :
+  - Consolidation et vérification de la gestion des états visuels dans [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) pour éradiquer le problème de l'application legacy (qui affichait un écran gris vide déconcertant) :
+    - État de chargement explicite : spinner animé avec message explicatif (`Recherche dans le plan comptable en cours…`) et `data-testid="plan-loading-state"`.
+    - État vide explicite : illustration avec icône livre, message contextuel indiquant les termes ou critères recherchés, proposition d'action claire avec bouton `Réinitialiser les filtres` et `data-testid="plan-empty-state"`.
+    - État d'erreur serveur : bannière d'alerte rouge avec bouton `Réessayer` (`fetchLignes`) et `data-testid="plan-error-state"`.
+  - Ajout du test e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) validant spécifiquement l'affichage du spinner de chargement lors d'un délai réseau et la transition fluide vers l'état vide.
+  - Validation de la suite Playwright complète (6/6 tests plan comptable passés, 23/23 tests globaux passés).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 3, tâche 3 (« Traitement explicite de l'état vide (aucun résultat) et de l'état de chargement »)
+- Dépendance à un endpoint backend : `GET /api/v1/lignes-comptables/` (implémenté).
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-14 — Historique des lignes récentes par bureau (Section 3, Tâche 2)
+- Ce qui a été fait :
+  - Validation avec l'utilisateur du mode de stockage retenu : persistance locale par bureau (`localStorage` sous clé partitionnée `comptage_recent_lignes_{bureauCode}`) garantissant une réactivité immédiate et une résilience complète sans dépendance réseau.
+  - Vérification et consolidation du mécanisme dans [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) : enregistrement des écritures sélectionnées, affichage des 5 dernières lignes utilisées, bouton d'effacement de l'historique et accessibilité au clavier.
+  - Enrichissement des tests e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) pour couvrir la persistance par bureau, l'ajout dynamique lors de la sélection d'une ligne et le bouton d'effacement.
+  - Validation complète de la suite e2e Playwright (5/5 tests plan comptable passés).
+- Fichiers/dossiers touchés :
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `e2e/plan-comptable.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : section 3, tâche 2 (« Historique des lignes récemment utilisées par le bureau »)
+- Dépendance à un endpoint backend : non applicable (stockage local partitionné par bureau validé).
+- Points restés ouverts ou à valider avec l'utilisateur : Aucun (choix validé et implémenté).
+
+### 2026-10-14 — Composant LigneComptableSearch (Section 3, Tâche 1)
+- Ce qui a été fait :
+  - Définition des types TypeScript `SectionComptable`, `LigneComptable`, `LigneComptableParentDetail`, `LigneComptableSearchParams` dans [src/types/index.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/types/index.ts) conformément à `API_CONTRACT.md`.
+  - Implémentation du client API [src/api/comptabilite.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/api/comptabilite.ts) avec `getSectionsComptables` et `getLignesComptables` prenant en charge la recherche textuelle instantanée, le filtrage par section, sens et pagination.
+  - Création du composant [LigneComptableSearch.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/components/LigneComptableSearch.tsx) avec saisie debouncée (300ms), sélecteur de section A-E, sélecteur de sens (Débit / Crédit), groupement visuel des résultats par section macro-comptable, et ré-export dans `src/features/saisie-g58/components/LigneComptableSearch.tsx` pour réutilisation dans le journal G58.
+  - Création de la page [PlanComptablePage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/plan-comptable/PlanComptablePage.tsx) et branchement de la route `/plan-comptable` dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) et [Sidebar.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/components/layout/Sidebar.tsx).
+  - Écriture et validation des tests e2e Playwright dans [e2e/plan-comptable.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/plan-comptable.spec.ts) (4/4 tests passés, 21/21 suite globale passée).
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`
+  - `src/api/comptabilite.ts`
+  - `src/features/plan-comptable/components/LigneComptableSearch.tsx`
+  - `src/features/plan-comptable/PlanComptablePage.tsx`
+  - `src/features/saisie-g58/components/LigneComptableSearch.tsx`
+  - `src/App.tsx`, `src/components/layout/Sidebar.tsx`
+  - `e2e/plan-comptable.spec.ts`
+- Cases cochées : section 3, tâche 1 (« Composant LigneComptableSearch — recherche instantanée (debounce), résultats groupés par section »)
+- Dépendance à un endpoint backend : `GET /api/v1/sections-comptables/` et `GET /api/v1/lignes-comptables/` (implémentés)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
 ### 2026-10-12 — Gestion des erreurs de validation renvoyées par le backend (Section 2, Tâche 4)
 - Ce qui a été fait :
@@ -199,5 +636,121 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 +- Dépendance à un endpoint backend : `/api/v1/health/` (implémenté dans `API_CONTRACT.md`)
 +- Points restés ouverts ou à valider avec l'utilisateur : Néant.
 +
+### 2026-10-12 — Correction des anomalies de build, finalisation & validation e2e Module 1 (Auth & RBAC)
+- Ce qui a été fait :
+  - Correction de l'erreur de syntaxe dans `src/features/auth/pages/LoginPage.tsx` (apostrophe non échappée dans le message de validation Zod).
+  - Correction des imports relatifs erronés dans `src/features/auth/components/RequireAuth.tsx` et `src/features/dashboard/pages/DashboardPage.tsx` (remontée à `../../../contexts/AuthContext` et `../../../types`).
+  - Téléchargement et installation des navigateurs Playwright (`npx playwright install chromium`).
+  - Amélioration de `e2e/auth.spec.ts` avec mocks réseau basés sur `API_CONTRACT.md` pour garantir des tests end-to-end fiables et indépendants du seed de données backend (10 tests au vert couvrant formulaire, validation, identifiants erronés, redirection par rôle, visibilité RBAC sidebar, garde d'accès 403 et déconnexion).
+  - Validation complète : `tsc -b` passe sans erreur, `vite build` réussit, l'ensemble des 10 tests Playwright passe avec succès.
+- Fichiers/dossiers touchés :
+  - `src/features/auth/pages/LoginPage.tsx`
+  - `src/features/auth/components/RequireAuth.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/auth.spec.ts`
+- Cases cochées : section 1 (toutes les tâches confirmées et vérifiées par build et tests)
+- Dépendance à un endpoint backend : `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/`, `/api/v1/auth/me/`
+- Points restés ouverts ou à valider avec l'utilisateur : Module 1 complètement opérationnel et validé. Prêt pour la suite (Section 2 : Référentiel - bureaux, périodes de gestion).
+
+### 2026-10-12 — Module Authentification & RBAC complet (Section 1)
+- Ce qui a été fait :
+  - Types `User`, `LoginRequest`, `LoginResponse`, `RefreshResponse` ajoutés dans `src/types/index.ts` (miroir exact de `API_CONTRACT.md`).
+  - Module API `src/api/auth.ts` : fonctions `login`, `refreshToken`, `logout`, `getMe` consommant les endpoints implémentés du backend.
+  - `AuthContext` (`src/contexts/AuthContext.tsx`) : gestion de session complète (restauration au montage via `/auth/me/`, login, logout, écoute de `auth:unauthorized`).
+  - Page de connexion (`src/features/auth/pages/LoginPage.tsx`) : formulaire React Hook Form + Zod, show/hide mot de passe, gestion des erreurs accessible (aria), redirection selon rôle.
+  - Page 403 (`src/features/auth/pages/UnauthorizedPage.tsx`) : affichée quand un rôle tente d'accéder à une route non autorisée.
+  - Composant `RequireAuth` (`src/features/auth/components/RequireAuth.tsx`) : garde de route avec chargement, redirection login, et filtre RBAC.
+  - Shell applicatif (`src/components/layout/AppShell.tsx` + `Sidebar.tsx`) : sidebar avec navigation filtrée dynamiquement par rôle, info utilisateur, toggle thème, déconnexion. Sidebar repliable.
+  - Page placeholder dashboard (`src/features/dashboard/pages/DashboardPage.tsx`) avec message contextuel par rôle.
+  - `App.tsx` réécrit comme routeur React Router avec routes protégées et RBAC par route.
+  - `main.tsx` mis à jour pour wrapper `AuthProvider`.
+  - `tsc --noEmit` passe sans erreur.
+  - Test e2e `e2e/auth.spec.ts` couvrant : affichage formulaire, validation champs vides, erreur identifiants incorrects, redirection si non authentifié, connexion réussie avec redirection par rôle, visibilité RBAC sidebar, déconnexion.
+- Fichiers/dossiers touchés :
+  - `src/types/index.ts`, `src/api/auth.ts`
+  - `src/contexts/AuthContext.tsx`
+  - `src/features/auth/pages/LoginPage.tsx`, `src/features/auth/pages/UnauthorizedPage.tsx`
+  - `src/features/auth/components/RequireAuth.tsx`
+  - `src/components/layout/AppShell.tsx`, `src/components/layout/Sidebar.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `src/App.tsx`, `src/main.tsx`
+  - `e2e/auth.spec.ts`
+- Cases cochées : section 1 (toutes les 6 tâches)
+- Dépendance à un endpoint backend : `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/`, `/api/v1/auth/me/` (tous implémentés dans `API_CONTRACT.md`)
+- Points restés ouverts ou à valider avec l'utilisateur : Les tests e2e nécessitent un backend Django fonctionnel avec des comptes utilisateurs créés (receveur1, etc.). Le rafraîchissement automatique du token 401 était déjà implémenté dans `client.ts` depuis la section 0.
+
+### 2026-10-26 — Sélecteur de période dans la vue Bureau (Receveur) pour les rôles Admin & Inspecteur (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un sélecteur de période de gestion (`select-periode-dashboard`) dans l'en-tête de `ReceveurDashboard`, directement à côté du sélecteur de bureau de poste pour les profils `ADMIN` et `INSPECTEUR`.
+  - Chargement réactif des périodes de gestion associées au bureau sélectionné via `getPeriodesGestion({ bureau: effectiveBureau })`.
+  - Affichage de la plage de dates (`formatDate(date_debut) - formatDate(date_fin)`) et du badge de statut (`Active` ou `Clôturée`).
+  - Prise en charge de la sélection d'une période spécifique dans `useReceveurDashboard({ bureau, periode })`, permettant à l'administrateur d'inspecter l'état comptable, l'encaisse et l'avancement G58 de n'importe quelle période (passée ou en cours) pour le bureau choisi.
+  - Mise à jour des tests e2e dans `e2e/dashboard.spec.ts` pour valider la visibilité et le fonctionnement des deux sélecteurs (bureau et période).
+  - Validation complète : l'ensemble des tests e2e passe avec succès, build de production Vite/TypeScript 100% propre, graphe de connaissances mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Receveur / Admin)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Sélecteur de période de gestion dans la section Bureau du Dashboard Admin (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un champ de sélection de période (`admin-select-periode`) dans `AdminDashboard` directement après le sélecteur de bureau de poste.
+  - Chargement dynamique et asynchrone des périodes de gestion du bureau sélectionné via `getPeriodesGestion({ bureau: bureauId })`.
+  - Pré-sélection intelligente de la période en cours (active / non clôturée) ou de la plus récente.
+  - Affichage détaillé de chaque période dans le menu déroulant : plage de dates (`date_debut` au `date_fin`), receveur en charge, et statut (`En cours` ou `Clôturée`).
+  - Transmission de la période sélectionnée à la vue détaillée (`ReceveurDashboard`) lors du clic sur le bouton « Voir l'état », permettant à l'administrateur de consulter précisément l'état de caisse, les flux et l'avancement G58 de la période choisie.
+  - Mise à jour du test e2e `e2e/dashboard.spec.ts` pour vérifier la présence du sélecteur de période et la sélection de la période active.
+  - Validation complète : 63 tests Playwright réussis (`63 passed`), build Vite/TypeScript propre, graphe de connaissances mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin complété)
+- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Révision de la section Traçabilité & Vigilance Réglementaire (Vue Réseau Admin)
+- Ce qui a été fait :
+  - Refonte complète de la section « Traçabilité & Vigilance Réglementaire » dans `AdminDashboard` :
+    - Badge d'intégrité CDC § 6.2 (« Journal Inaltérable » / append-only).
+    - Métriques directes de vigilance : total des logs enregistrés et nombre d'écarts en attente avec lien rapide vers l'Espace Audit (`/audit`).
+    - Barre d'outils interactive avec champ de recherche en direct (par auteur, modèle, objet ou détail) et filtre déroulant par nature d'action (Rectifications, Clôtures, Ouvertures, Créations, Modifications, Suppressions, Connexions).
+    - Badges et icônes typées par type d'événement avec mise en avant du détail de modification, du modèle cible et de l'utilisateur auteur.
+    - Horodatage certifié UTC+3 (heure locale Madagascar) et message d'état vide explicite en cas d'absence de résultat de filtre.
+  - Ajout d'un test e2e dédié dans `e2e/dashboard.spec.ts` validant l'affichage des métriques, des badges et du filtrage interactif.
+  - Validation complète : les 63 tests Playwright passent tous avec succès (`63 passed (1.1m)`), build de production Vite/TypeScript 100% propre, graphe `graphify` synchronisé.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin)
+- Dépendance à un endpoint backend : `/api/v1/dashboard/admin/`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
+### 2026-10-26 — Sélecteur de bureau sur le tableau de bord Admin et vue bureau détaillée (Section 6)
+- Ce qui a été fait :
+  - Ajout d'un sélecteur de bureau dans le composant `AdminDashboard` (`admin-select-bureau`) au sein de la section des bureaux / maillage postal, permettant de consulter instantanément les informations clés d'un bureau (classe, codique, province, compte CCP).
+  - Ajout d'un bouton d'action directe "Voir l'état" qui bascule immédiatement vers la vue opérationnelle du bureau (`ReceveurDashboard`) pour ce bureau choisi, ainsi qu'un raccourci direct vers l'écran d'historique des périodes de gestion (`/historique-periodes?bureau=...`).
+  - Ajout d'un sélecteur de bureau réactif dans le bandeau d'en-tête de `ReceveurDashboard` (`select-bureau-dashboard`) pour les rôles `ADMIN` et `INSPECTEUR`, permettant de passer d'un bureau à un autre et d'interroger dynamiquement `/api/v1/dashboard/receveur/?bureau={id}`.
+  - Mise à jour de `DashboardPage` pour relier l'action de sélection d'état bureau depuis la vue Admin vers la vue Receveur avec le bureau pré-sélectionné.
+  - Ajout du test e2e de validation dans `e2e/dashboard.spec.ts` (`permet à l'administrateur de sélectionner un bureau pour voir son état détaillé`).
+  - Validation complète : 62 tests Playwright passés avec succès, build de production Vite/TypeScript 100% propre, et graphe `graphify` mis à jour.
+- Fichiers/dossiers touchés :
+  - `src/features/dashboard/components/AdminDashboard.tsx`
+  - `src/features/dashboard/components/ReceveurDashboard.tsx`
+  - `src/features/dashboard/pages/DashboardPage.tsx`
+  - `e2e/dashboard.spec.ts`
+  - `PROJECT_STATE.md`
+- Cases cochées : Section 6 (Dashboard Admin complété avec le sélecteur de bureau)
+- Dépendance à un endpoint backend : `/api/v1/bureaux/`, `/api/v1/dashboard/receveur/?bureau={id}`
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
  <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
+
 

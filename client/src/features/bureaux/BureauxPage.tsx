@@ -20,9 +20,12 @@ import {
   AlertCircle,
   RefreshCw,
   Building,
+  History,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const BureauxPage: React.FC = () => {
+  const navigate = useNavigate();
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -135,7 +138,7 @@ export const BureauxPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
       {/* En-tête contextuel */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-subtle pb-5">
         <div>
@@ -269,6 +272,16 @@ export const BureauxPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/historique-periodes?bureau=${bureau.id}`)}
+                          className="hover:text-brand"
+                          aria-label={`Historique des périodes de ${bureau.nom_bureau}`}
+                          title="Historique des périodes et passations"
+                        >
+                          <History className="w-3.5 h-3.5" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"
