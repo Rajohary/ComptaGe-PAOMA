@@ -27,12 +27,12 @@ class BureauViewSet(viewsets.ModelViewSet):
     - PUT / PATCH /api/v1/bureaux/{id}/ : modification (réservée Admin)
     - DELETE /api/v1/bureaux/{id}/ : suppression (réservée Admin)
     """
-    queryset = Bureau.objects.select_related("province").all().order_by("ncodique")
+    queryset = Bureau.objects.select_related("province").all().order_by("nom_bureau")
     serializer_class = BureauSerializer
     permission_classes = [IsAdminUserOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ["nom_bureau", "ncodique", "classe", "ccp"]
-    ordering_fields = ["ncodique", "nom_bureau", "created_at"]
+    search_fields = ["nom_bureau", "code_postal", "ncodique", "province__nom", "faritany", "classe", "ccp"]
+    ordering_fields = ["code_postal", "ncodique", "nom_bureau", "created_at"]
 
 
 class PeriodeGestionViewSet(viewsets.ModelViewSet):

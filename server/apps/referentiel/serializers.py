@@ -13,10 +13,11 @@ class ProvinceSerializer(serializers.ModelSerializer):
 class BureauSerializer(serializers.ModelSerializer):
     """
     Serializer pour le modèle Bureau.
-    Gère la représentation imbriquée de la province en lecture,
-    et accepte l'ID de la province en écriture.
+    Gère Province (ForeignKey vers Province, alimenté par la liste des provinces),
+    Faritany (texte), Code postal, ainsi que les champs historiques.
     """
     province_detail = ProvinceSerializer(source="province", read_only=True)
+    faritany_detail = ProvinceSerializer(source="province", read_only=True)
 
     class Meta:
         model = Bureau
@@ -24,12 +25,15 @@ class BureauSerializer(serializers.ModelSerializer):
             "id",
             "province",
             "province_detail",
-            "nbur",
-            "codeclasse",
-            "ncodique",
+            "faritany",
+            "faritany_detail",
+            "code_postal",
             "nom_bureau",
             "classe",
+            "ncodique",
             "ccp",
+            "nbur",
+            "codeclasse",
             "ncf",
             "cf_codik",
             "created_at",

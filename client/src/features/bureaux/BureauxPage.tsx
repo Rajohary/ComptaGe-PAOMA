@@ -236,11 +236,11 @@ export const BureauxPage: React.FC = () => {
             <table className="w-full text-left text-sm font-sans border-collapse">
               <thead>
                 <tr className="border-b border-border-subtle bg-surface-secondary/50 text-text-secondary uppercase text-xs tracking-wider">
-                  <th className="py-3 px-4 font-semibold">N° Codique</th>
+                  <th className="py-3 px-4 font-semibold">Code Postal</th>
                   <th className="py-3 px-4 font-semibold">Nom du bureau</th>
                   <th className="py-3 px-4 font-semibold">Classe</th>
                   <th className="py-3 px-4 font-semibold">Province</th>
-                  <th className="py-3 px-4 font-semibold">CCP</th>
+                  <th className="py-3 px-4 font-semibold">Faritany</th>
                   <th className="py-3 px-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
@@ -251,7 +251,7 @@ export const BureauxPage: React.FC = () => {
                     className="hover:bg-surface-secondary/40 transition-colors"
                   >
                     <td className="py-3 px-4 font-mono font-medium text-text-primary tabular-nums">
-                      {bureau.ncodique}
+                      {bureau.code_postal || bureau.ncodique || '—'}
                     </td>
                     <td className="py-3 px-4 font-semibold text-text-primary">
                       <div className="flex items-center gap-2">
@@ -265,10 +265,10 @@ export const BureauxPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-text-secondary">
-                      {bureau.province_detail?.nom || `Province #${bureau.province}`}
+                      {bureau.province || '—'}
                     </td>
-                    <td className="py-3 px-4 font-mono text-text-secondary tabular-nums">
-                      {bureau.ccp || '—'}
+                    <td className="py-3 px-4 text-text-secondary">
+                      {bureau.faritany_detail?.nom || bureau.province_detail?.nom || '—'}
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">

@@ -217,37 +217,42 @@ Réponse 200 (liste paginée avec `province_detail` inclus) :
 Requête :
 ```json
 {
-  "province": 1,
-  "ncodique": 10101,
+  "province": "Analamanga",
+  "faritany": 1,
+  "code_postal": "101",
   "nom_bureau": "Antaninarenina",
-  "classe": "R1",
-  "ccp": "10020",
-  "nbur": 1,
-  "codeclasse": 1,
-  "ncf": 1,
-  "cf_codik": 10101
+  "classe": "R1"
 }
 ```
+*Note : Les anciens champs (`ncodique`, `ccp`, `nbur`, `codeclasse`, `ncf`, `cf_codik`) sont optionnels / nullables.*
+
 Réponse 201 :
 ```json
 {
   "id": 1,
-  "province": 1,
+  "province": "Analamanga",
+  "faritany": 1,
+  "faritany_detail": {
+    "id": 1,
+    "nprovince": 1,
+    "nom": "Antananarivo"
+  },
   "province_detail": {
     "id": 1,
     "nprovince": 1,
     "nom": "Antananarivo"
   },
-  "nbur": 1,
-  "codeclasse": 1,
-  "ncodique": 10101,
+  "code_postal": "101",
   "nom_bureau": "Antaninarenina",
   "classe": "R1",
-  "ccp": "10020",
-  "ncf": 1,
-  "cf_codik": 10101,
-  "created_at": "2026-10-08T15:55:33Z",
-  "updated_at": "2026-10-08T15:55:33Z"
+  "ncodique": 101,
+  "ccp": null,
+  "nbur": null,
+  "codeclasse": null,
+  "ncf": null,
+  "cf_codik": null,
+  "created_at": "2026-10-26T17:20:00Z",
+  "updated_at": "2026-10-26T17:20:00Z"
 }
 ```
 

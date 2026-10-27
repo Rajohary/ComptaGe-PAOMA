@@ -626,5 +626,25 @@ Ajouter une entrée ici après chaque tâche accomplie, même petite. Format :
   - `API_CONTRACT.md`
 - Cases cochées : Section 3 entièrement complétée.
 
-
+### 2026-10-26 — Harmonisation formulaire Bureau et référentiel Province/Faritany (Section 2)
+- Ce qui a été fait :
+  - **Modèle `Bureau`** :
+    - `province` rétabli comme `ForeignKey(Province, on_delete=PROTECT, related_name="bureaux", null=True, blank=True)`.
+    - `faritany` rétabli comme champ textuel `CharField(max_length=100, blank=True, default="")`.
+    - `code_postal` en `CharField(max_length=20, blank=True, default="")`.
+    - Déclaration en `null=True, blank=True` des anciens champs historiques (`nbur`, `codeclasse`, `ccp`, `ncf`, `cf_codik`, `ncodique`) afin d'autoriser la création avec uniquement les 5 champs du nouveau formulaire (`Province`, `Faritany`, `Code Postal`, `Nom bureau`, `Classe`).
+    - Méthode `save()` auto-alimente `ncodique` si un code postal numérique unique est renseigné sans `ncodique`.
+  - **Migrations** :
+    - Migration `0005_remove_bureau_idx_bureau_faritany_and_more.py` avec `SeparateDatabaseAndState` et logique compatible multi-bases (PostgreSQL et SQLite de test).
+  - **Serializers & Vues** :
+    - `BureauSerializer` et `BureauViewSet` alignés avec inclusion de `province`, `faritany`, `code_postal`, `province_detail`, `faritany_detail`.
+  - **Tests** :
+    - 24/24 tests backend unitaires de `apps.referentiel` validés avec succès (`manage.py test apps.referentiel`).
+- Fichiers touchés :
+  - `server/apps/referentiel/models.py`
+  - `server/apps/referentiel/serializers.py`
+  - `server/apps/referentiel/views.py`
+  - `server/apps/referentiel/tests/test_models.py`
+  - `server/apps/referentiel/migrations/0005_remove_bureau_idx_bureau_faritany_and_more.py`
+  - `server/PROJECT_STATE.md`
 

@@ -89,7 +89,7 @@ test.describe('Gestion des bureaux de poste (Référentiel)', () => {
           status: 400,
           contentType: 'application/json',
           body: JSON.stringify({
-            ncodique: ['Un bureau avec ce numéro codique existe déjà.'],
+            code_postal: ['Un bureau avec ce code postal existe déjà.'],
             nom_bureau: ['Ce nom de bureau est déjà utilisé dans cette province.'],
           }),
         });
@@ -103,12 +103,12 @@ test.describe('Gestion des bureaux de poste (Référentiel)', () => {
     await page.getByRole('button', { name: /Nouveau Bureau/i }).click();
 
     await page.getByLabel(/Nom du bureau/i).fill('Antaninarenina');
-    await page.getByLabel(/N° Codique/i).fill('10101');
+    await page.getByLabel(/Code Postal/i).fill('10101');
 
     await page.getByRole('button', { name: /Créer le bureau/i }).click();
 
     // Vérifier que les messages d'erreurs du serveur s'affichent sous les bons champs
-    await expect(page.getByText('Un bureau avec ce numéro codique existe déjà.')).toBeVisible();
+    await expect(page.getByText('Un bureau avec ce code postal existe déjà.')).toBeVisible();
     await expect(page.getByText('Ce nom de bureau est déjà utilisé dans cette province.')).toBeVisible();
 
     // La modale reste ouverte pour permettre la correction

@@ -38,28 +38,27 @@ class Province(models.Model):
 class Bureau(models.Model):
     """
     Référentiel des bureaux de poste de Paositra Malagasy.
-    Correspond à TblBureau avec intégrité référentielle stricte (ForeignKey).
+    Correspond à TblBureau avec intégrité référentielle stricte (ForeignKey vers Province).
     """
     province = models.ForeignKey(
         Province,
         on_delete=models.PROTECT,
         related_name="bureaux",
+        null=True,
+        blank=True,
         verbose_name="Province de rattachement"
     )
-    nbur = models.IntegerField(
+    faritany = models.CharField(
+        max_length=100,
         blank=True,
-        null=True,
-        verbose_name="Numéro d'ordre dans la province"
+        default="",
+        verbose_name="Faritany"
     )
-    codeclasse = models.IntegerField(
+    code_postal = models.CharField(
+        max_length=20,
         blank=True,
-        null=True,
-        verbose_name="Code numérique de classe"
-    )
-    ncodique = models.IntegerField(
-        unique=True,
-        verbose_name="Code codique officiel",
-        help_text="Code codique postal unique du bureau (ex: 50316, 30214)"
+        default="",
+        verbose_name="Code postal"
     )
     nom_bureau = models.CharField(
         max_length=50,
@@ -71,10 +70,29 @@ class Bureau(models.Model):
         default="",
         verbose_name="Classification hiérarchique postale (ex: R1, R2, HC)"
     )
+    # Champs historiques (rendus optionnels / nullables à la création)
+    ncodique = models.IntegerField(
+        unique=True,
+        null=True,
+        blank=True,
+        verbose_name="Code codique officiel",
+        help_text="Code codique postal unique du bureau (ex: 50316, 30214)"
+    )
+    nbur = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Numéro d'ordre dans la province"
+    )
+    codeclasse = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Code numérique de classe"
+    )
     ccp = models.CharField(
         max_length=10,
         blank=True,
-        default="",
+        null=True,
+        default=None,
         verbose_name="Numéro CCP"
     )
     ncf = models.IntegerField(
@@ -98,16 +116,45 @@ class Bureau(models.Model):
 
     class Meta:
         db_table = "referentiel_bureau"
-        ordering = ["ncodique"]
+        ordering = ["nom_bureau"]
         verbose_name = "Bureau de poste"
         verbose_name_plural = "Bureaux de poste"
         indexes = [
             models.Index(fields=["ncodique"], name="idx_bureau_ncodique"),
+            models.Index(fields=["code_postal"], name="idx_bureau_code_postal"),
             models.Index(fields=["province"], name="idx_bureau_province"),
         ]
 
+    def __init__(self, *args, **kwargs):
+        # Compatibilité si faritany=ProvinceInstance est passé
+        if "faritany" in kwargs and isinstance(kwargs["faritany"], Province):
+            kwargs["province"] = kwargs.pop("faritany")
+        super().__init__(*args, **kwargs)
+
+    @property
+    def province_detail(self):
+        return self.province
+
+    @property
+    def faritany_detail(self):
+        return self.province
+
+    @property
+    def province_nom(self):
+        if self.province:
+            return self.province.nom
+        return self.faritany or None
+
+    def save(self, *args, **kwargs):
+        if self.ncodique is None and self.code_postal and str(self.code_postal).strip().isdigit():
+            val = int(str(self.code_postal).strip())
+            if not Bureau.objects.filter(ncodique=val).exclude(pk=self.pk).exists():
+                self.ncodique = val
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.ncodique} - {self.nom_bureau}"
+        code = self.code_postal or self.ncodique or "S/C"
+        return f"{code} - {self.nom_bureau}"
 
 
 class PeriodeGestion(models.Model):

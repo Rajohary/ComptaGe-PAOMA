@@ -9,15 +9,11 @@ import type { Bureau, BureauFormData, Province, ApiError } from '../../../types'
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 
 const bureauSchema = z.object({
-  nom_bureau: z.string().min(2, 'Le nom du bureau doit contenir au moins 2 caractères'),
-  ncodique: z.coerce.number().int().positive('Le numéro codique doit être un entier positif'),
   province: z.coerce.number().int().positive('Veuillez sélectionner une province valide'),
+  faritany: z.string().optional(),
+  code_postal: z.string().min(1, 'Le code postal est obligatoire'),
+  nom_bureau: z.string().min(2, 'Le nom du bureau doit contenir au moins 2 caractères'),
   classe: z.string().min(1, 'La classe est obligatoire'),
-  ccp: z.string().optional(),
-  nbur: z.coerce.number().optional(),
-  codeclasse: z.coerce.number().optional(),
-  ncf: z.coerce.number().optional(),
-  cf_codik: z.coerce.number().optional(),
 });
 
 type BureauFormInput = z.input<typeof bureauSchema>;
@@ -49,38 +45,34 @@ export const BureauFormModal: React.FC<BureauFormModalProps> = ({
   } = useForm<BureauFormInput, unknown, BureauFormOutput>({
     resolver: zodResolver(bureauSchema),
     defaultValues: {
-      nom_bureau: '',
-      ncodique: undefined,
       province: provinces[0]?.id || 1,
+      faritany: '',
+      code_postal: '',
+      nom_bureau: '',
       classe: 'R1',
-      ccp: '',
     },
   });
 
   useEffect(() => {
     if (bureauToEdit) {
       reset({
+        province: typeof bureauToEdit.province === 'number'
+          ? bureauToEdit.province
+          : (bureauToEdit.province_detail?.id || provinces[0]?.id || 1),
+        faritany: typeof bureauToEdit.faritany === 'string'
+          ? bureauToEdit.faritany
+          : '',
+        code_postal: bureauToEdit.code_postal || (bureauToEdit.ncodique ? String(bureauToEdit.ncodique) : ''),
         nom_bureau: bureauToEdit.nom_bureau,
-        ncodique: bureauToEdit.ncodique,
-        province: bureauToEdit.province,
         classe: bureauToEdit.classe,
-        ccp: bureauToEdit.ccp || '',
-        nbur: bureauToEdit.nbur,
-        codeclasse: bureauToEdit.codeclasse,
-        ncf: bureauToEdit.ncf,
-        cf_codik: bureauToEdit.cf_codik,
       });
     } else {
       reset({
-        nom_bureau: '',
-        ncodique: undefined,
         province: provinces[0]?.id || 1,
+        faritany: '',
+        code_postal: '',
+        nom_bureau: '',
         classe: 'R1',
-        ccp: '',
-        nbur: undefined,
-        codeclasse: undefined,
-        ncf: undefined,
-        cf_codik: undefined,
       });
     }
   }, [bureauToEdit, provinces, reset, isOpen]);
@@ -98,15 +90,11 @@ export const BureauFormModal: React.FC<BureauFormModalProps> = ({
 
   const handleFormSubmit = async (values: BureauFormOutput) => {
     await onSubmit({
-      nom_bureau: values.nom_bureau,
-      ncodique: values.ncodique,
       province: values.province,
+      faritany: values.faritany || '',
+      code_postal: values.code_postal,
+      nom_bureau: values.nom_bureau,
       classe: values.classe,
-      ccp: values.ccp || '',
-      nbur: values.nbur,
-      codeclasse: values.codeclasse,
-      ncf: values.ncf,
-      cf_codik: values.cf_codik,
     });
   };
 
@@ -132,6 +120,33 @@ export const BureauFormModal: React.FC<BureauFormModalProps> = ({
         </div>
       )}
 
+      {/* 1. Province (Select option alimenté par le serveur) */}
+      <Select
+        label="Province"
+        required
+        options={provinceOptions.length > 0 ? provinceOptions : [{ value: 1, label: '1 — Antananarivo' }]}
+        error={errors.province?.message}
+        {...register('province')}
+      />
+
+      {/* 2. Faritany (Input texte) */}
+      <Input
+        label="Faritany"
+        placeholder="Ex: Antananarivo ou Faritany"
+        error={errors.faritany?.message}
+        {...register('faritany')}
+      />
+
+      {/* 3. Code Postal */}
+      <Input
+        label="Code Postal"
+        required
+        placeholder="Ex: 101 ou 10101"
+        error={errors.code_postal?.message}
+        {...register('code_postal')}
+      />
+
+      {/* 4. Nom bureau */}
       <Input
         label="Nom du bureau"
         required
@@ -140,72 +155,14 @@ export const BureauFormModal: React.FC<BureauFormModalProps> = ({
         {...register('nom_bureau')}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          label="N° Codique"
-          required
-          type="number"
-          placeholder="Ex: 10101"
-          error={errors.ncodique?.message}
-          {...register('ncodique')}
-        />
-
-        <Select
-          label="Classe"
-          required
-          options={classeOptions}
-          error={errors.classe?.message}
-          {...register('classe')}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Select
-          label="Province"
-          required
-          options={provinceOptions.length > 0 ? provinceOptions : [{ value: 1, label: 'Antananarivo' }]}
-          error={errors.province?.message}
-          {...register('province')}
-        />
-
-        <Input
-          label="Numéro de compte CCP"
-          placeholder="Ex: 10020"
-          error={errors.ccp?.message}
-          {...register('ccp')}
-        />
-      </div>
-
-      <div className="pt-2 border-t border-border-subtle grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-        <Input
-          label="N° Bur"
-          type="number"
-          placeholder="1"
-          error={errors.nbur?.message}
-          {...register('nbur')}
-        />
-        <Input
-          label="Code classe"
-          type="number"
-          placeholder="1"
-          error={errors.codeclasse?.message}
-          {...register('codeclasse')}
-        />
-        <Input
-          label="N° CF"
-          type="number"
-          placeholder="1"
-          error={errors.ncf?.message}
-          {...register('ncf')}
-        />
-        <Input
-          label="CF Codik"
-          type="number"
-          placeholder="10101"
-          error={errors.cf_codik?.message}
-          {...register('cf_codik')}
-        />
-      </div>
+      {/* 5. Classe */}
+      <Select
+        label="Classe"
+        required
+        options={classeOptions}
+        error={errors.classe?.message}
+        {...register('classe')}
+      />
 
       <div className="flex justify-end gap-3 pt-4 border-t border-border-subtle">
         <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>

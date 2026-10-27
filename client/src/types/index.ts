@@ -52,30 +52,35 @@ export interface Province {
 
 export interface Bureau {
   id: number;
-  province: number;
+  province?: string;
+  faritany?: number | null;
+  faritany_detail?: Province;
   province_detail?: Province;
-  nbur?: number;
-  codeclasse?: number;
-  ncodique: number;
+  code_postal?: string;
   nom_bureau: string;
   classe: string;
-  ccp?: string;
-  ncf?: number;
-  cf_codik?: number;
+  ncodique?: number | null;
+  ccp?: string | null;
+  nbur?: number | null;
+  codeclasse?: number | null;
+  ncf?: number | null;
+  cf_codik?: number | null;
   created_at?: string;
   updated_at?: string;
 }
 
 export interface BureauFormData {
-  province: number;
-  ncodique: number;
+  province?: string;
+  faritany?: number | null;
+  code_postal?: string;
   nom_bureau: string;
   classe: string;
-  ccp?: string;
-  nbur?: number;
-  codeclasse?: number;
-  ncf?: number;
-  cf_codik?: number;
+  ncodique?: number | null;
+  ccp?: string | null;
+  nbur?: number | null;
+  codeclasse?: number | null;
+  ncf?: number | null;
+  cf_codik?: number | null;
 }
 
 export interface PeriodeGestion {
