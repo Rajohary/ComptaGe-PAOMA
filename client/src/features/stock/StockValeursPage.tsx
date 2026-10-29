@@ -19,6 +19,7 @@ import type {
 } from '../../types';
 import { StockValeurFormModal } from './components/StockValeurFormModal';
 import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 import {
   Package,
   Plus,
@@ -48,6 +49,8 @@ export const StockValeursPage: React.FC = () => {
   const [selectedPeriodeId, setSelectedPeriodeId] = useState<number>(0);
   const [selectedCategorie, setSelectedCategorie] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Données de la table et récapitulatif
   const [stocks, setStocks] = useState<StockValeur[]>([]);
@@ -156,6 +159,17 @@ export const StockValeursPage: React.FC = () => {
         s.produit_detail?.categorie.toLowerCase().includes(term)
     );
   }, [stocks, searchFilter]);
+
+  // Réinitialiser la page lors du changement de filtre
+  useEffect(() => {
+    setPage(1);
+  }, [selectedBureauId, selectedPeriodeId, selectedCategorie, searchFilter]);
+
+  // Découpage paginé des stocks
+  const paginatedStocks = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredStocks.slice(start, start + pageSize);
+  }, [filteredStocks, page, pageSize]);
 
   // Créer ou modifier une ligne
   const handleSaveStock = async (data: StockValeurFormData) => {
@@ -495,7 +509,7 @@ export const StockValeursPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle text-xs font-sans">
-                {filteredStocks.map((stock) => {
+                {paginatedStocks.map((stock) => {
                   const produit = stock.produit_detail;
                   return (
                     <tr
@@ -601,6 +615,18 @@ export const StockValeursPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination des stocks */}
+          {!loading && filteredStocks.length > 0 && (
+            <Pagination
+              currentPage={page}
+              totalCount={filteredStocks.length}
+              pageSize={pageSize}
+              onPageChange={(newPage) => setPage(newPage)}
+              isLoading={loading}
+              itemLabel="article"
+            />
+          )}
         </div>
       )}
 

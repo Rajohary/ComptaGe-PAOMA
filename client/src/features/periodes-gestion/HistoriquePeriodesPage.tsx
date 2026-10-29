@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { ApiClientError } from '../../api/client';
 import { triggerBlobDownload } from '../../lib/download';
 import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 import {
   History,
   Building2,
@@ -42,6 +43,8 @@ export const HistoriquePeriodesPage: React.FC = () => {
 
   // Recherche textuelle pour filtrer les périodes (receveur, date, id)
   const [filterText, setFilterText] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Téléchargement / Export
   const [downloadingPdfId, setDownloadingPdfId] = useState<number | null>(null);
@@ -172,6 +175,17 @@ export const HistoriquePeriodesPage: React.FC = () => {
         p.id.toString().includes(q)
     );
   }, [data, filterText]);
+
+  // Réinitialiser la pagination lors du changement de filtre ou de bureau
+  useEffect(() => {
+    setPage(1);
+  }, [selectedBureauId, filterText]);
+
+  // Découpage paginé de l'historique
+  const paginatedHistorique = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredHistorique.slice(start, start + pageSize);
+  }, [filteredHistorique, page, pageSize]);
 
   const isReceveurRestricted = (role === 'RECEVEUR' || role === 'AGENT_SAISIE') && !!user?.bureau_code;
 
@@ -410,7 +424,8 @@ export const HistoriquePeriodesPage: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div>
+                <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-sans border-collapse">
                   <thead>
                     <tr className="border-b border-border-subtle bg-surface-secondary/40 text-text-secondary font-semibold">
@@ -424,7 +439,7 @@ export const HistoriquePeriodesPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border-subtle">
-                    {filteredHistorique.map((p) => {
+                    {paginatedHistorique.map((p) => {
                       const isEnCours = !p.cloturee;
                       const debitNum = Number(p.total_debit);
                       const creditNum = Number(p.total_credit);
@@ -594,7 +609,20 @@ export const HistoriquePeriodesPage: React.FC = () => {
                   </tbody>
                 </table>
               </div>
-            )}
+
+              {/* Pagination des périodes de l'historique */}
+              {filteredHistorique.length > 0 && (
+                <Pagination
+                  currentPage={page}
+                  totalCount={filteredHistorique.length}
+                  pageSize={pageSize}
+                  onPageChange={(newPage) => setPage(newPage)}
+                  isLoading={loading}
+                  itemLabel="période archivée"
+                />
+              )}
+            </div>
+          )}
           </div>
         </div>
       )}

@@ -20,6 +20,7 @@ import type {
 } from '../../types';
 import { EncaisseFormModal } from './components/EncaisseFormModal';
 import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 import {
   DollarSign,
   Plus,
@@ -46,6 +47,8 @@ export const EncaissePage: React.FC = () => {
   const [periodes, setPeriodes] = useState<PeriodeGestion[]>([]);
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
   const [rubriques, setRubriques] = useState<RubriqueEncaisse[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Filtres
   const [selectedBureauId, setSelectedBureauId] = useState<number>(0);
@@ -223,6 +226,17 @@ export const EncaissePage: React.FC = () => {
         m.date_operation.includes(term)
     );
   }, [mouvements, searchFilter]);
+
+  // Réinitialiser la page quand les filtres changent
+  useEffect(() => {
+    setPage(1);
+  }, [selectedPeriodeId, selectedBureauId, selectedRubriqueId, selectedSens, searchFilter]);
+
+  // Pagination des mouvements filtrés
+  const paginatedMouvements = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredMouvements.slice(start, start + pageSize);
+  }, [filteredMouvements, page, pageSize]);
 
   // Création / modification d'un mouvement
   const handleSaveMouvement = async (data: MouvementEncaisseFormData) => {
@@ -656,7 +670,7 @@ export const EncaissePage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle">
-                {filteredMouvements.map((m) => {
+                {paginatedMouvements.map((m) => {
                   const isEntree = m.sens === 1;
                   return (
                     <tr
@@ -736,6 +750,18 @@ export const EncaissePage: React.FC = () => {
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Pagination des flux d'encaisse */}
+        {!loading && filteredMouvements.length > 0 && (
+          <Pagination
+            currentPage={page}
+            totalCount={filteredMouvements.length}
+            pageSize={pageSize}
+            onPageChange={(newPage) => setPage(newPage)}
+            isLoading={loading}
+            itemLabel="opération"
+          />
         )}
       </div>
 

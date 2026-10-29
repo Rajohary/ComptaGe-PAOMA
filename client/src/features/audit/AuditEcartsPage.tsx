@@ -5,6 +5,7 @@ import { getBureaux, getProvinces } from '../../api/referentiel';
 import { formatAriary, formatDate, parseNumber, formatThousandsInput } from '../../lib/formatters';
 import type { EcartItem, RectificationInput } from '../../types';
 import { Button } from '../../components/ui/Button';
+import { Pagination } from '../../components/ui/Pagination';
 import { RectificationModal } from './components/RectificationModal';
 import {
   ShieldAlert,
@@ -15,8 +16,6 @@ import {
   Scale,
   Building2,
   ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
   SlidersHorizontal,
 } from 'lucide-react';
 
@@ -32,7 +31,7 @@ export const AuditEcartsPage: React.FC = () => {
   const [search, setSearch] = useState<string>('');
   const [ordering, setOrdering] = useState<string>('-date_operation');
   const [page, setPage] = useState<number>(1);
-  const pageSize = 15;
+  const pageSize = 10;
 
   // État de la modal de rectification
   const [selectedEcart, setSelectedEcart] = useState<EcartItem | null>(null);
@@ -140,7 +139,6 @@ export const AuditEcartsPage: React.FC = () => {
 
   const kpis = ecartsData?.kpis;
   const totalCount = ecartsData?.count || 0;
-  const totalPages = Math.ceil(totalCount / pageSize);
 
   const toggleSort = (field: string) => {
     if (ordering === `-${field}`) {
@@ -600,34 +598,14 @@ export const AuditEcartsPage: React.FC = () => {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="px-4 py-3 border-t border-border-subtle flex items-center justify-between bg-surface-secondary/30">
-            <div className="text-xs text-text-secondary">
-              Page <span className="font-semibold text-text-primary">{page}</span> sur{' '}
-              <span className="font-semibold text-text-primary">{totalPages}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                disabled={page <= 1 || isFetching}
-              >
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Précédent
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                disabled={page >= totalPages || isFetching}
-              >
-                Suivant
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-          </div>
-        )}
+        <Pagination
+          currentPage={page}
+          totalCount={totalCount}
+          pageSize={pageSize}
+          onPageChange={(newPage) => setPage(newPage)}
+          isLoading={isFetching}
+          itemLabel="écart"
+        />
       </div>
 
       {/* Modal de Rectification */}

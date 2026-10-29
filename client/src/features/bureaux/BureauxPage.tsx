@@ -10,6 +10,7 @@ import type { Bureau, BureauFormData, Province, ApiError } from '../../types';
 import { ApiClientError } from '../../api/client';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
+import { Pagination } from '../../components/ui/Pagination';
 import { BureauFormModal } from './components/BureauFormModal';
 import {
   Building2,
@@ -31,6 +32,8 @@ export const BureauxPage: React.FC = () => {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Recherche avec debounce
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -48,6 +51,7 @@ export const BureauxPage: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
+      setPage(1);
     }, 300);
     return () => clearTimeout(timer);
   }, [searchTerm]);
@@ -66,7 +70,7 @@ export const BureauxPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await getBureaux({ search: debouncedSearch });
+      const res = await getBureaux({ search: debouncedSearch, page });
       setBureaux(res.results || []);
       setTotalCount(res.count || 0);
     } catch (err) {
@@ -78,7 +82,7 @@ export const BureauxPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, page]);
 
   useEffect(() => {
     loadProvinces();
@@ -308,6 +312,18 @@ export const BureauxPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Pagination des bureaux */}
+        {!loading && bureaux.length > 0 && (
+          <Pagination
+            currentPage={page}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onPageChange={(newPage) => setPage(newPage)}
+            isLoading={loading}
+            itemLabel="bureau"
+          />
         )}
       </div>
 

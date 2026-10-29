@@ -14,6 +14,7 @@ import { TotauxLive } from './TotauxLive';
 import { LigneComptableSearch } from './LigneComptableSearch';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
+import { Pagination } from '../../../components/ui/Pagination';
 import { formatAriary, formatDate, parseNumber } from '../../../lib/formatters';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 import {
@@ -129,6 +130,8 @@ export const SectionForm: React.FC<SectionFormProps> = ({
   const [editingMouvement, setEditingMouvement] = useState<MouvementG58 | null>(null);
   const [deletingMouvement, setDeletingMouvement] = useState<MouvementG58 | null>(null);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Message de confirmation flash
   const [successFlash, setSuccessFlash] = useState<string | null>(null);
@@ -182,11 +185,12 @@ export const SectionForm: React.FC<SectionFormProps> = ({
     fetchSectionMouvements();
   }, [fetchSectionMouvements]);
 
-  // Réinitialiser le formulaire lors du changement de section ou période
+  // Réinitialiser le formulaire et la pagination lors du changement de section ou période
   useEffect(() => {
     setSelectedLigne(null);
     setEditingMouvement(null);
     setShowLigneSearch(false);
+    setPage(1);
     reset({
       periode_gestion: periode.id,
       ligne_comptable: 0,
@@ -347,6 +351,17 @@ export const SectionForm: React.FC<SectionFormProps> = ({
 
     return list;
   }, [mouvements, tableSearch, dateFilter, sortOrder]);
+
+  // Réinitialiser la page quand les filtres de recherche de tableau changent
+  useEffect(() => {
+    setPage(1);
+  }, [tableSearch, dateFilter, sortOrder]);
+
+  // Découpage paginé des mouvements affichés
+  const paginatedMouvements = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return displayedMouvements.slice(start, start + pageSize);
+  }, [displayedMouvements, page, pageSize]);
 
   return (
     <div className="space-y-6" data-testid={`section-form-${section.code}`}>
@@ -719,7 +734,7 @@ export const SectionForm: React.FC<SectionFormProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle text-xs font-sans">
-                {displayedMouvements.map((m) => (
+                {paginatedMouvements.map((m) => (
                   <tr
                     key={m.id}
                     className="hover:bg-surface-secondary/30 transition-colors"
@@ -783,6 +798,18 @@ export const SectionForm: React.FC<SectionFormProps> = ({
               </tbody>
             </table>
           </div>
+
+          {/* Pagination des écritures G58 */}
+          {!loading && displayedMouvements.length > 0 && (
+            <Pagination
+              currentPage={page}
+              totalCount={displayedMouvements.length}
+              pageSize={pageSize}
+              onPageChange={(newPage) => setPage(newPage)}
+              isLoading={loading}
+              itemLabel="écriture"
+            />
+          )}
         </div>
       )}
 

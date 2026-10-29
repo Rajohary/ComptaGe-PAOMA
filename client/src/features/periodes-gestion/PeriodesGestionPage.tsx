@@ -11,6 +11,7 @@ import type { PeriodeGestion, PeriodeGestionFormData, Bureau, Province, ApiError
 import { ApiClientError } from '../../api/client';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
+import { Pagination } from '../../components/ui/Pagination';
 import { PeriodeGestionFormModal } from './components/PeriodeGestionFormModal';
 import { ClotureModal } from './components/ClotureModal';
 import { triggerBlobDownload } from '../../lib/download';
@@ -39,6 +40,8 @@ export const PeriodesGestionPage: React.FC = () => {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
 
   // Recherche avec debounce
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -101,6 +104,7 @@ export const PeriodesGestionPage: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
+      setPage(1);
     }, 300);
     return () => clearTimeout(timer);
   }, [searchTerm]);
@@ -122,7 +126,7 @@ export const PeriodesGestionPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await getPeriodesGestion({ search: debouncedSearch });
+      const res = await getPeriodesGestion({ search: debouncedSearch, page });
       setPeriodes(res.results || []);
       setTotalCount(res.count || 0);
     } catch (err) {
@@ -134,7 +138,7 @@ export const PeriodesGestionPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, page]);
 
   useEffect(() => {
     loadBureaux();
@@ -443,6 +447,18 @@ export const PeriodesGestionPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Pagination des périodes de gestion */}
+        {!loading && periodes.length > 0 && (
+          <Pagination
+            currentPage={page}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onPageChange={(newPage) => setPage(newPage)}
+            isLoading={loading}
+            itemLabel="période"
+          />
         )}
       </div>
 
