@@ -7,6 +7,7 @@ from apps.referentiel.models import Province, Bureau, PeriodeGestion
 from apps.comptabilite.models import SectionComptable, LigneComptable, Mouvement
 from apps.comptabilite.views import MouvementViewSet
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 User = get_user_model()
 
@@ -471,3 +472,120 @@ class SituationComptableAPITestCase(unittest.TestCase):
         force_authenticate(req_insp, user=self.user_inspecteur)
         resp_insp = view(req_insp, periode_id=self.periode_juin.id)
         self.assertEqual(resp_insp.status_code, status.HTTP_200_OK)
+
+
+class RubriqueEncaisseAPITestCase(TestCase):
+    def setUp(self):
+        from apps.comptabilite.models import RubriqueEncaisseParent
+
+        self.parent = RubriqueEncaisseParent.objects.create(
+            id_encaisse=99001,
+            libelle="ENCAISSE TEST",
+        )
+        self.admin = User.objects.create_user(
+            username="admin_encaisse_test",
+            password="StrongPass123!",
+            role="ADMIN",
+        )
+
+    def test_admin_cree_sous_rubrique_liee(self):
+        from apps.comptabilite.views import RubriqueEncaisseViewSet
+
+        request = APIRequestFactory().post("/api/v1/rubriques-encaisse/", {
+            "rubrique_parent": self.parent.id,
+            "menu_sub": 99001,
+            "compte": "tr-test",
+            "libelle": "Sous-rubrique Test",
+        }, format="json")
+        force_authenticate(request, user=self.admin)
+        response = RubriqueEncaisseViewSet.as_view({"post": "create"})(request)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["rubrique_parent"], self.parent.id)
+        self.assertEqual(response.data["compte"], "TR-TEST")
+
+    def test_menu_sub_collision_alloue_un_identifiant_libre(self):
+        from apps.comptabilite.models import RubriqueEncaisse
+        from apps.comptabilite.views import RubriqueEncaisseViewSet
+
+        RubriqueEncaisse.objects.create(
+            rubrique_parent=self.parent,
+            menu_sub=99001,
+            compte="EXISTANT",
+            libelle="Rubrique existante",
+        )
+
+        request = APIRequestFactory().post("/api/v1/rubriques-encaisse/", {
+            "rubrique_parent": self.parent.id,
+            "menu_sub": 99001,
+            "compte": "nouveau",
+            "libelle": "Nouvelle sous-rubrique",
+        }, format="json")
+        force_authenticate(request, user=self.admin)
+        response = RubriqueEncaisseViewSet.as_view({"post": "create"})(request)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertNotEqual(response.data["menu_sub"], 99001)
+
+    def test_admin_cree_rubrique_parente(self):
+        from apps.comptabilite.views import RubriqueEncaisseParentViewSet
+
+        request = APIRequestFactory().post("/api/v1/rubriques-encaisse-parentes/", {
+            "libelle": "ENCAISSEMENT SPECIAL",
+        }, format="json")
+        force_authenticate(request, user=self.admin)
+        response = RubriqueEncaisseParentViewSet.as_view({"post": "create"})(request)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["libelle"], "ENCAISSEMENT SPECIAL")
+
+
+class MouvementEncaisseCreationTestCase(TestCase):
+    def setUp(self):
+        from apps.comptabilite.models import RubriqueEncaisse, RubriqueEncaisseParent
+
+        uid = uuid.uuid4().hex[:6]
+        self.province = Province.objects.create(nprovince=70, nom=f"Province Mvt {uid}")
+        self.bureau = Bureau.objects.create(
+            province=self.province,
+            ncodique=70001,
+            nom_bureau=f"Bureau Mvt {uid}",
+            classe="R1",
+        )
+        self.periode = PeriodeGestion.objects.create(
+            bureau=self.bureau,
+            nom_receveur="Receveur Test",
+            date_debut="2026-11-01",
+            date_fin="2026-11-30",
+            reserve_numeraire=100000,
+            cloturee=False,
+        )
+        self.user = User.objects.create_user(
+            username=f"receveur_enc_{uid}",
+            password="StrongPass123!",
+            role="RECEVEUR",
+            bureau_code=self.bureau.ncodique,
+        )
+        parent = RubriqueEncaisseParent.objects.create(id_encaisse=99002, libelle="ENCAISSE TEST")
+        self.rubrique = RubriqueEncaisse.objects.create(
+            rubrique_parent=parent,
+            menu_sub=99002,
+            compte="TR",
+            libelle="Trésorerie",
+        )
+
+    def test_recepteur_enregistre_mouvement_encaisse(self):
+        from apps.comptabilite.views import MouvementEncaisseViewSet
+
+        request = APIRequestFactory().post("/api/v1/mouvements-encaisse/", {
+            "periode_gestion": self.periode.id,
+            "rubrique_encaisse": self.rubrique.id,
+            "sens": 1,
+            "date_operation": "2026-11-20",
+            "montant": "50000.00",
+        }, format="json")
+        force_authenticate(request, user=self.user)
+        response = MouvementEncaisseViewSet.as_view({"post": "create"})(request)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(str(response.data["montant"]), "50000.00")

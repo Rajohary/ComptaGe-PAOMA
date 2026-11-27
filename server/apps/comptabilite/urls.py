@@ -5,6 +5,7 @@ from .views import (
     LigneComptableViewSet,
     MouvementViewSet,
     RubriqueEncaisseViewSet,
+    RubriqueEncaisseParentViewSet,
     MouvementEncaisseViewSet,
     SituationComptableView,
     BordereauG58PdfView,
@@ -18,6 +19,7 @@ router.register(r"lignes-comptables", LigneComptableViewSet, basename="ligne-com
 router.register(r"mouvements", MouvementViewSet, basename="mouvement")
 router.register(r"rubriques-encaisse", RubriqueEncaisseViewSet, basename="rubrique-encaisse")
 router.register(r"mouvements-encaisse", MouvementEncaisseViewSet, basename="mouvement-encaisse")
+router.register(r"rubriques-encaisse-parentes", RubriqueEncaisseParentViewSet, basename="rubrique-encaisse-parent")
 
 urlpatterns = [
     path("mouvements/export-excel/", ExportEcrituresExcelView.as_view(), name="mouvements-export-excel"),

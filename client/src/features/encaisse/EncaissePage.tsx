@@ -6,17 +6,23 @@ import {
 } from '../../api/referentiel';
 import {
   getRubriquesEncaisse,
+  getRubriquesEncaisseParentes,
   getMouvementsEncaisse,
   createMouvementEncaisse,
   updateMouvementEncaisse,
   deleteMouvementEncaisse,
+  createRubriqueEncaisse,
+  createRubriqueEncaisseParent,
 } from '../../api/comptabilite';
 import type {
   PeriodeGestion,
   Bureau,
   RubriqueEncaisse,
+  RubriqueEncaisseParent,
   MouvementEncaisse,
   MouvementEncaisseFormData,
+  RubriqueEncaisseFormData,
+  RubriqueEncaisseParentFormData,
 } from '../../types';
 import { EncaisseFormModal } from './components/EncaisseFormModal';
 import { Button } from '../../components/ui/Button';
@@ -47,6 +53,7 @@ export const EncaissePage: React.FC = () => {
   const [periodes, setPeriodes] = useState<PeriodeGestion[]>([]);
   const [bureaux, setBureaux] = useState<Bureau[]>([]);
   const [rubriques, setRubriques] = useState<RubriqueEncaisse[]>([]);
+  const [rubriquesParentes, setRubriquesParentes] = useState<RubriqueEncaisseParent[]>([]);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
 
@@ -73,16 +80,18 @@ export const EncaissePage: React.FC = () => {
   // Charger les données de référence (bureaux, périodes, rubriques)
   useEffect(() => {
     let mounted = true;
-    Promise.all([getBureaux(), getPeriodesGestion(), getRubriquesEncaisse()])
-      .then(([resBureaux, resPeriodes, resRubriques]) => {
+    Promise.all([getBureaux(), getPeriodesGestion(), getRubriquesEncaisse(), getRubriquesEncaisseParentes()])
+      .then(([resBureaux, resPeriodes, resRubriques, resRubriquesParentes]) => {
         if (!mounted) return;
         const listBureaux = resBureaux.results || [];
         const listPeriodes = resPeriodes.results || [];
         const listRubriques = resRubriques.results || [];
+        const listRubriquesParentes = resRubriquesParentes.results || [];
 
         setBureaux(listBureaux);
         setPeriodes(listPeriodes);
         setRubriques(listRubriques);
+        setRubriquesParentes(listRubriquesParentes);
 
         // Sélectionner par défaut le bureau du receveur/agent ou le premier bureau
         let defaultBureau = listBureaux[0]?.id || 0;
@@ -92,9 +101,10 @@ export const EncaissePage: React.FC = () => {
         }
         setSelectedBureauId(defaultBureau);
 
-        // Sélectionner la période active du bureau
-        const activePeriode = listPeriodes.find((p) => !p.cloturee);
-        const defaultPeriode = activePeriode ? activePeriode.id : listPeriodes[0]?.id || 0;
+        // Sélectionner la période active du bureau choisi
+        const bureauPeriodes = listPeriodes.filter((p) => p.bureau === defaultBureau);
+        const activePeriode = bureauPeriodes.find((p) => !p.cloturee);
+        const defaultPeriode = activePeriode ? activePeriode.id : bureauPeriodes[0]?.id || 0;
         setSelectedPeriodeId(defaultPeriode);
       })
       .catch((err) => {
@@ -273,6 +283,29 @@ export const EncaissePage: React.FC = () => {
     } finally {
       setIsDeleting(false);
     }
+  };
+
+  const handleCreateRubrique = async (data: RubriqueEncaisseFormData): Promise<RubriqueEncaisse> => {
+    const created = await createRubriqueEncaisse(data);
+    setRubriques((current) => [...current, created].sort((a, b) =>
+      a.rubrique_parent - b.rubrique_parent || a.menu_sub - b.menu_sub
+    ));
+    return created;
+  };
+
+  const handleCreateRubriqueParent = async (
+    data: RubriqueEncaisseParentFormData
+  ): Promise<RubriqueEncaisseParent> => {
+    const created = await createRubriqueEncaisseParent(data);
+    setRubriquesParentes((current) => [...current, created].sort((a, b) =>
+      a.id_encaisse - b.id_encaisse
+    ));
+    return created;
+  };
+
+  const handleAdminSelectionChange = (bureauId: number, periodeId: number) => {
+    setSelectedBureauId(bureauId);
+    setSelectedPeriodeId(periodeId);
   };
 
   return (
@@ -473,7 +506,13 @@ export const EncaissePage: React.FC = () => {
               id="filter-bureau"
               aria-label="Bureau de poste"
               value={selectedBureauId}
-              onChange={(e) => setSelectedBureauId(Number(e.target.value))}
+              onChange={(e) => {
+                const bureauId = Number(e.target.value);
+                setSelectedBureauId(bureauId);
+                const bureauPeriodes = periodes.filter((periode) => periode.bureau === bureauId);
+                const activePeriode = bureauPeriodes.find((periode) => !periode.cloturee);
+                setSelectedPeriodeId(activePeriode?.id || bureauPeriodes[0]?.id || 0);
+              }}
               disabled={role === 'RECEVEUR' || role === 'AGENT_SAISIE'}
               className="w-full text-xs font-sans bg-surface-secondary/70 dark:bg-surface-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent disabled:opacity-60 disabled:cursor-not-allowed"
             >
@@ -774,10 +813,17 @@ export const EncaissePage: React.FC = () => {
             setEditingMouvement(null);
           }}
           periode={selectedPeriode}
+          periodes={periodes}
+          bureaus={bureaux}
+          selectedBureauId={selectedBureauId}
           rubriques={rubriques}
+          rubriquesParentes={rubriquesParentes}
           initialData={editingMouvement}
           onSubmitSuccess={fetchMouvements}
           onSave={handleSaveMouvement}
+          onCreateRubrique={handleCreateRubrique}
+          onCreateRubriqueParent={handleCreateRubriqueParent}
+          onAdminSelectionChange={handleAdminSelectionChange}
         />
       )}
 

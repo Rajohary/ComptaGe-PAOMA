@@ -613,4 +613,22 @@ export interface AdminDashboardData {
   };
 }
 
+export interface RubriqueEncaisseFormData {
+  rubrique_parent: number;
+  menu_sub?: number;
+  compte: string;
+  libelle: string;
+}
+
+export interface RubriqueEncaisseParent {
+  id: number;
+  id_encaisse: number;
+  libelle: string;
+}
+
+export interface RubriqueEncaisseParentFormData {
+  id_encaisse?: number;
+  libelle: string;
+}
+
 

@@ -7,6 +7,7 @@ from .models import (
     LigneComptable,
     Mouvement,
     RubriqueEncaisse,
+    RubriqueEncaisseParent,
     MouvementEncaisse,
 )
 from .serializers import (
@@ -15,6 +16,7 @@ from .serializers import (
     MouvementSerializer,
     RubriqueEncaisseSerializer,
     MouvementEncaisseSerializer,
+    RubriqueEncaisseParentSerializer,
 )
 from .permissions import IsSaisieAllowed, IsAdminOrReadOnlyAuthenticated
 
@@ -126,8 +128,7 @@ class MouvementViewSet(viewsets.ModelViewSet):
     CRUD des mouvements comptables du Journal G58.
     - GET /api/v1/mouvements/ : consultation filtrable par période, bureau, date, section, sens, etc.
     - POST /api/v1/mouvements/ : saisie d'un nouveau mouvement (init: montant_rectifie=montant, aug=dim=0).
-    - GET /api/v1/mouvements/{id}/ : détail d'un mouvement.
-    - PUT / PATCH /api/v1/mouvements/{id}/ : modification par l'opérateur avant audit.
+    - GET /api/v1/mouvements/{id}/ :
     - DELETE /api/v1/mouvements/{id}/ : suppression (période active requise).
     """
     queryset = (
@@ -244,15 +245,18 @@ class MouvementViewSet(viewsets.ModelViewSet):
         return Response(res, status=200)
 
 
-class RubriqueEncaisseViewSet(viewsets.ReadOnlyModelViewSet):
+class RubriqueEncaisseViewSet(viewsets.ModelViewSet):
     """
     Référentiel des rubriques d'encaisse et de coffre (TR, SF, CR...).
+    - Lecture : tous les utilisateurs authentifiés.
+    - Écritures : Administrateurs uniquement.
     """
-    queryset = RubriqueEncaisse.objects.select_related("rubrique_parent").all().order_by("menu_sub")
+    queryset = RubriqueEncaisse.objects.select_related("rubrique_parent").all().order_by("rubrique_parent", "menu_sub")
     serializer_class = RubriqueEncaisseSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["compte", "libelle", "rubrique_parent__libelle"]
+    ordering_fields = ["menu_sub", "compte", "libelle", "rubrique_parent"]
 
 
 class MouvementEncaisseViewSet(viewsets.ModelViewSet):
@@ -569,4 +573,14 @@ class ReceveurDashboardView(APIView):
 
         data = get_progression_saisie_receveur(target_periode)
         return Response(data, status=status.HTTP_200_OK)
+
+
+class RubriqueEncaisseParentViewSet(viewsets.ModelViewSet):
+    """CRUD des groupes principaux d'encaisse, réservé aux Administrateurs en écriture."""
+    queryset = RubriqueEncaisseParent.objects.all().order_by("id_encaisse")
+    serializer_class = RubriqueEncaisseParentSerializer
+    permission_classes = [IsAdminOrReadOnlyAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["libelle"]
+    ordering_fields = ["id_encaisse", "libelle"]
 

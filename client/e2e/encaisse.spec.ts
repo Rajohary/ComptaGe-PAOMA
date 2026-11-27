@@ -404,4 +404,60 @@ test.describe('Section 4 — Écran Détails de l’encaisse', () => {
     await expect(page.getByTestId('encaisse-row-1')).toBeVisible();
     await expect(page.getByTestId('encaisse-row-2')).toBeVisible();
   });
+
+  test('permet à un Administrateur de créer rapidement une sous-rubrique liée', async ({ page }) => {
+    await page.route('**/api/v1/auth/me/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ id: 99, username: 'admin', role: 'ADMIN', bureau_code: null }),
+      });
+    });
+
+    await page.route('**/api/v1/rubriques-encaisse/', async (route) => {
+      if (route.request().method() === 'POST') {
+        await route.fulfill({
+          status: 201,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: 4,
+            rubrique_parent: 1,
+            parent_libelle: 'ENCAISSE ET VALEURS',
+            menu_sub: 4,
+            compte: 'TR2',
+            libelle: 'Réserve secondaire',
+          }),
+        });
+        return;
+      }
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(MOCK_RUBRIQUES) });
+    });
+
+    await page.goto('/encaisse');
+    await page.getByRole('button', { name: 'Nouvelle opération' }).click();
+    await page.getByRole('button', { name: 'Créer une sous-rubrique pour cette rubrique d’encaisse' }).click();
+    await page.locator('#quick-rubrique-compte').fill('TR2');
+    await page.locator('#quick-rubrique-libelle').fill('Réserve secondaire');
+    await page.getByRole('button', { name: 'Créer la sous-rubrique' }).click();
+    await expect(page.locator('#encaisse-rubrique')).toContainText('TR2 — Réserve secondaire');
+  });
+
+  test('affiche le sélecteur de bureau uniquement pour un Administrateur dans la modale', async ({ page }) => {
+    await page.goto('/encaisse');
+    await page.getByTestId('open-encaisse-modal-btn').click();
+    await expect(page.locator('#encaisse-bureau')).toHaveCount(0);
+
+    await page.route('**/api/v1/auth/me/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ id: 99, username: 'admin', role: 'ADMIN', bureau_code: null }),
+      });
+    });
+
+    await page.reload();
+    await page.getByTestId('open-encaisse-modal-btn').click();
+    await expect(page.locator('#encaisse-bureau')).toBeVisible();
+    await expect(page.locator('#encaisse-periode')).toBeVisible();
+  });
 });

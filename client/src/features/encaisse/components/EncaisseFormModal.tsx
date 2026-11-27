@@ -1,26 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type {
   PeriodeGestion,
+  Bureau,
   RubriqueEncaisse,
   MouvementEncaisse,
   MouvementEncaisseFormData,
+  RubriqueEncaisseFormData,
   ApiError,
+  RubriqueEncaisseParent,
+  RubriqueEncaisseParentFormData,
 } from '../../../types';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 import { formatThousandsInput, parseNumber } from '../../../lib/formatters';
-import { DollarSign, AlertCircle, X } from 'lucide-react';
+import { DollarSign, AlertCircle, X, Plus } from 'lucide-react';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const createEncaisseSchema = (periode: PeriodeGestion) =>
   z
     .object({
       periode_gestion: z.coerce.number().int().positive('Période invalide'),
-      rubrique_encaisse: z.coerce.number().int().positive('Veuillez sélectionner une rubrique d’encaisse'),
+      rubrique_parent: z.coerce.number().int().positive('Veuillez sélectionner une rubrique d’encaisse'),
+      rubrique_encaisse: z.coerce.number().int().positive('Veuillez sélectionner une sous-rubrique'),
       sens: z.coerce.number().refine((val) => val === 1 || val === 2, 'Sens d’opération invalide'),
       date_operation: z.string().min(10, 'La date de l’opération est obligatoire'),
       montant: z
@@ -53,34 +59,68 @@ interface EncaisseFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   periode: PeriodeGestion;
+  periodes: PeriodeGestion[];
+  bureaus: Bureau[];
+  selectedBureauId: number;
   rubriques: RubriqueEncaisse[];
+  rubriquesParentes: RubriqueEncaisseParent[];
   initialData?: MouvementEncaisse | null;
   onSubmitSuccess: () => void;
   onSave: (data: MouvementEncaisseFormData) => Promise<void>;
+  onCreateRubrique: (data: RubriqueEncaisseFormData) => Promise<RubriqueEncaisse>;
+  onCreateRubriqueParent: (data: RubriqueEncaisseParentFormData) => Promise<RubriqueEncaisseParent>;
+  onAdminSelectionChange?: (bureauId: number, periodeId: number) => void;
 }
 
 export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
   isOpen,
   onClose,
   periode,
+  periodes,
+  bureaus,
+  selectedBureauId,
   rubriques,
+  rubriquesParentes,
   initialData,
   onSubmitSuccess,
   onSave,
+  onCreateRubrique,
+  onCreateRubriqueParent,
+  onAdminSelectionChange,
 }) => {
-  const schema = React.useMemo(() => createEncaisseSchema(periode), [periode]);
+  const { role } = useAuth();
+  const [modalBureauId, setModalBureauId] = useState(selectedBureauId);
+  const [modalPeriodeId, setModalPeriodeId] = useState(periode.id);
+  const effectivePeriode = periodes.find((item) => item.id === modalPeriodeId) || periode;
+  const schema = React.useMemo(() => createEncaisseSchema(effectivePeriode), [effectivePeriode]);
+  const initialParent = initialData?.rubrique_detail?.rubrique_parent || rubriques[0]?.rubrique_parent || 0;
+  const initialRubrique = initialData?.rubrique_encaisse
+    || rubriques.find((rub) => rub.rubrique_parent === initialParent)?.id
+    || 0;
+  const [isCreateRubriqueOpen, setIsCreateRubriqueOpen] = useState(false);
+  const [quickCompte, setQuickCompte] = useState('');
+  const [quickLibelle, setQuickLibelle] = useState('');
+  const [quickError, setQuickError] = useState<string | null>(null);
+  const [isCreatingRubrique, setIsCreatingRubrique] = useState(false);
+  const [isCreateParentOpen, setIsCreateParentOpen] = useState(false);
+  const [quickParentLibelle, setQuickParentLibelle] = useState('');
+  const [quickParentError, setQuickParentError] = useState<string | null>(null);
+  const [isCreatingParent, setIsCreatingParent] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<EncaisseFormInput, unknown, EncaisseFormOutput>({
     resolver: zodResolver(schema),
     defaultValues: {
       periode_gestion: periode.id,
-      rubrique_encaisse: initialData?.rubrique_encaisse || rubriques[0]?.id || 0,
+      rubrique_parent: initialParent,
+      rubrique_encaisse: initialRubrique,
       sens: initialData?.sens || 1,
       date_operation: initialData?.date_operation || periode.date_debut || new Date().toISOString().slice(0, 10),
       montant: initialData ? formatThousandsInput(Number(initialData.montant).toString()) : '',
@@ -89,15 +129,117 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
+      setModalBureauId(selectedBureauId);
+      setModalPeriodeId(periode.id);
       reset({
         periode_gestion: periode.id,
-        rubrique_encaisse: initialData?.rubrique_encaisse || rubriques[0]?.id || 0,
+        rubrique_parent: initialParent,
+        rubrique_encaisse: initialRubrique,
         sens: initialData?.sens || 1,
         date_operation: initialData?.date_operation || periode.date_debut || new Date().toISOString().slice(0, 10),
         montant: initialData ? formatThousandsInput(Number(initialData.montant).toString()) : '',
       });
     }
-  }, [isOpen, periode, rubriques, initialData, reset]);
+  }, [isOpen, periode, selectedBureauId, rubriques, initialData, reset]);
+
+  const selectedParent = Number(watch('rubrique_parent') || 0);
+  const parentOptions = rubriquesParentes.length > 0
+    ? rubriquesParentes.map((parent) => ({ value: parent.id, label: parent.libelle }))
+    : Array.from(
+        new Map(rubriques.map((rub) => [rub.rubrique_parent, {
+          value: rub.rubrique_parent,
+          label: rub.parent_libelle,
+        }])).values()
+      );
+  const sousRubriques = rubriques.filter((rub) => rub.rubrique_parent === selectedParent);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const firstSousRubrique = sousRubriques[0]?.id || 0;
+    const currentSousRubrique = Number(watch('rubrique_encaisse') || 0);
+    const stillValid = sousRubriques.some((rub) => rub.id === currentSousRubrique);
+    if (!stillValid) setValue('rubrique_encaisse', firstSousRubrique);
+  }, [selectedParent, isOpen, rubriques, setValue, watch]);
+
+  const bureauPeriodes = periodes.filter((item) => item.bureau === modalBureauId);
+  const bureauPeriodeOptions = bureauPeriodes.map((item) => ({
+    value: item.id,
+    label: `${item.date_debut} au ${item.date_fin || 'en cours'}${item.cloturee ? ' (Clôturée)' : ' (En cours)'}`,
+  }));
+
+  const handleBureauChange = (bureauId: number) => {
+    setModalBureauId(bureauId);
+    const nextPeriodes = periodes.filter((item) => item.bureau === bureauId);
+    const nextPeriode = nextPeriodes.find((item) => !item.cloturee) || nextPeriodes[0] || null;
+    if (nextPeriode) {
+      setModalPeriodeId(nextPeriode.id);
+      setValue('periode_gestion', nextPeriode.id);
+      setValue('date_operation', nextPeriode.date_debut || new Date().toISOString().slice(0, 10));
+      onAdminSelectionChange?.(bureauId, nextPeriode.id);
+    } else {
+      setModalPeriodeId(0);
+      setValue('periode_gestion', 0);
+      onAdminSelectionChange?.(bureauId, 0);
+    }
+  };
+
+  const handlePeriodeChange = (periodeId: number) => {
+    const nextPeriode = periodes.find((item) => item.id === periodeId);
+    if (!nextPeriode) return;
+    setModalPeriodeId(nextPeriode.id);
+    setValue('periode_gestion', nextPeriode.id);
+    setValue('date_operation', nextPeriode.date_debut || new Date().toISOString().slice(0, 10));
+    onAdminSelectionChange?.(modalBureauId, nextPeriode.id);
+  };
+
+  const handleQuickCreateRubrique = async () => {
+    setQuickError(null);
+    if (!selectedParent) {
+      setQuickError('Sélectionnez d’abord une rubrique d’encaisse.');
+      return;
+    }
+    if (!quickCompte.trim() || !quickLibelle.trim()) {
+      setQuickError('Le code et le libellé sont obligatoires.');
+      return;
+    }
+    setIsCreatingRubrique(true);
+    try {
+      const created = await onCreateRubrique({
+        rubrique_parent: selectedParent,
+        compte: quickCompte.trim(),
+        libelle: quickLibelle.trim(),
+      });
+      setValue('rubrique_encaisse', created.id);
+      setQuickCompte('');
+      setQuickLibelle('');
+      setIsCreateRubriqueOpen(false);
+    } catch (err: unknown) {
+      const apiError = (err as any)?.data || (err as ApiError);
+      setQuickError(apiError?.detail || apiError?.libelle?.[0] || apiError?.menu_sub?.[0] || 'Impossible de créer la sous-rubrique.');
+    } finally {
+      setIsCreatingRubrique(false);
+    }
+  };
+
+  const handleQuickCreateParent = async () => {
+    setQuickParentError(null);
+    if (!quickParentLibelle.trim()) {
+      setQuickParentError('Le libellé de la rubrique d’encaisse est obligatoire.');
+      return;
+    }
+    setIsCreatingParent(true);
+    try {
+      const created = await onCreateRubriqueParent({ libelle: quickParentLibelle.trim() });
+      setValue('rubrique_parent', created.id);
+      setQuickParentLibelle('');
+      setIsCreateParentOpen(false);
+    } catch (err: unknown) {
+      const apiError = (err as any)?.data || (err as ApiError);
+      setQuickParentError(apiError?.detail || apiError?.libelle?.[0] || 'Impossible de créer la rubrique d’encaisse.');
+    } finally {
+      setIsCreatingParent(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -117,7 +259,7 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
       applyServerValidationErrors(
         apiError,
         setError,
-        ['periode_gestion', 'rubrique_encaisse', 'sens', 'date_operation', 'montant']
+        ['periode_gestion', 'rubrique_parent', 'rubrique_encaisse', 'sens', 'date_operation', 'montant']
       );
       if (apiError?.detail) {
         setError('root', { type: 'server', message: apiError.detail });
@@ -168,51 +310,172 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
             </div>
           )}
 
+          {role === 'ADMIN' && !initialData && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-testid="encaisse-admin-context">
+              <Select
+                label="Bureau de poste"
+                id="encaisse-bureau"
+                options={bureaus.map((bureau) => ({ value: bureau.id, label: `${bureau.ncodique} — ${bureau.nom_bureau}` }))}
+                value={modalBureauId}
+                onChange={(event) => handleBureauChange(Number(event.target.value))}
+                required
+              />
+              <Select
+                label="Période de gestion"
+                id="encaisse-periode"
+                options={bureauPeriodeOptions}
+                value={modalPeriodeId || ''}
+                onChange={(event) => handlePeriodeChange(Number(event.target.value))}
+                required
+              />
+            </div>
+          )}
+
           {/* Rubrique d'encaisse */}
           <div>
-            <label htmlFor="encaisse-rubrique" className="block text-xs font-sans font-medium text-text-primary mb-1">
+            <label htmlFor="encaisse-rubrique-parent" className="block text-xs font-sans font-medium text-text-primary mb-1">
               Rubrique d’encaisse <span className="text-status-alert">*</span>
             </label>
+            <div className="flex items-center gap-2">
+              <Select
+                id="encaisse-rubrique-parent"
+                options={parentOptions}
+                {...register('rubrique_parent')}
+                error={errors.rubrique_parent?.message}
+              />
+              {role === 'ADMIN' && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="h-10 px-3"
+                  onClick={() => setIsCreateParentOpen((open) => !open)}
+                  aria-label="Créer une rubrique d’encaisse"
+                  title="Créer une rubrique d’encaisse"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {isCreateParentOpen && role === 'ADMIN' && (
+            <div className="rounded-xl border border-border-subtle bg-surface-secondary p-3 space-y-3">
+              <p className="text-xs font-sans font-medium text-text-primary">
+                Nouvelle rubrique d’encaisse
+              </p>
+              <Input
+                id="quick-parent-libelle"
+                label="Libellé"
+                value={quickParentLibelle}
+                onChange={(event) => setQuickParentLibelle(event.target.value)}
+                placeholder="Ex: ENCAISSEMENT SPÉCIAL"
+              />
+              {quickParentError && (
+                <p role="alert" className="text-xs text-status-alert">{quickParentError}</p>
+              )}
+              <div className="flex justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={() => setIsCreateParentOpen(false)}>
+                  Annuler
+                </Button>
+                <Button type="button" variant="primary" isLoading={isCreatingParent} onClick={handleQuickCreateParent}>
+                  Créer la rubrique
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Sous-rubrique */}
+          <div>
+            <label htmlFor="encaisse-rubrique" className="block text-xs font-sans font-medium text-text-primary mb-1">
+              Sous-rubrique <span className="text-status-alert">*</span>
+            </label>
+            <div className="flex items-center gap-2">
+              <Select
+                id="encaisse-rubrique"
+                options={sousRubriques.map((rub) => ({
+                  value: rub.id,
+                  label: `${rub.compte || '—'} — ${rub.libelle}`,
+                }))}
+                {...register('rubrique_encaisse')}
+                error={errors.rubrique_encaisse?.message}
+              />
+              {role === 'ADMIN' && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="h-10 px-3"
+                  onClick={() => setIsCreateRubriqueOpen((open) => !open)}
+                  aria-label="Créer une sous-rubrique pour cette rubrique d’encaisse"
+                  title="Créer une sous-rubrique"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {isCreateRubriqueOpen && role === 'ADMIN' && (
+            <div className="rounded-xl border border-border-subtle bg-surface-secondary p-3 space-y-3">
+              <p className="text-xs font-sans font-medium text-text-primary">
+                Nouvelle sous-rubrique pour {parentOptions.find((parent) => parent.value === selectedParent)?.label || 'la rubrique sélectionnée'}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Input
+                  id="quick-rubrique-compte"
+                  label="Code"
+                  value={quickCompte}
+                  onChange={(event) => setQuickCompte(event.target.value)}
+                  placeholder="Ex: TR2"
+                />
+                <Input
+                  id="quick-rubrique-libelle"
+                  label="Libellé"
+                  value={quickLibelle}
+                  onChange={(event) => setQuickLibelle(event.target.value)}
+                  placeholder="Ex: Réserve secondaire"
+                />
+              </div>
+              {quickError && (
+                <p role="alert" className="text-xs text-status-alert">{quickError}</p>
+              )}
+              <div className="flex justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={() => setIsCreateRubriqueOpen(false)}>
+                  Annuler
+                </Button>
+                <Button type="button" variant="primary" isLoading={isCreatingRubrique} onClick={handleQuickCreateRubrique}>
+                  Créer la sous-rubrique
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Sens du flux */}
+          <div>
+            <label htmlFor="encaisse-sens" className="block text-xs font-sans font-medium text-text-primary mb-1">
+              Sens du flux <span className="text-status-alert">*</span>
+            </label>
             <Select
-              id="encaisse-rubrique"
-              options={rubriques.map((rub) => ({
-                value: rub.id,
-                label: `${rub.compte} — ${rub.libelle}`,
-              }))}
-              {...register('rubrique_encaisse')}
-              error={errors.rubrique_encaisse?.message}
+              id="encaisse-sens"
+              options={[
+                { value: 1, label: 'Entrée (Caisse / Coffre)' },
+                { value: 2, label: 'Sortie (Décaissement)' },
+              ]}
+              {...register('sens')}
+              error={errors.sens?.message}
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Sens du flux */}
-            <div>
-              <label htmlFor="encaisse-sens" className="block text-xs font-sans font-medium text-text-primary mb-1">
-                Sens du flux <span className="text-status-alert">*</span>
-              </label>
-              <Select
-                id="encaisse-sens"
-                options={[
-                  { value: 1, label: 'Entrée (Caisse / Coffre)' },
-                  { value: 2, label: 'Sortie (Décaissement)' },
-                ]}
-                {...register('sens')}
-                error={errors.sens?.message}
-              />
-            </div>
-
-            {/* Date d'opération */}
-            <div>
-              <label htmlFor="encaisse-date" className="block text-xs font-sans font-medium text-text-primary mb-1">
-                Date d’opération <span className="text-status-alert">*</span>
-              </label>
-              <Input
-                id="encaisse-date"
-                type="date"
-                {...register('date_operation')}
-                error={errors.date_operation?.message}
-              />
-            </div>
+          {/* Date d'opération */}
+          <div>
+            <label htmlFor="encaisse-date" className="block text-xs font-sans font-medium text-text-primary mb-1">
+              Date d’opération <span className="text-status-alert">*</span>
+            </label>
+            <Input
+              id="encaisse-date"
+              type="date"
+              {...register('date_operation')}
+              error={errors.date_operation?.message}
+            />
           </div>
 
           {/* Montant en Ariary */}
@@ -237,7 +500,7 @@ export const EncaisseFormModal: React.FC<EncaisseFormModalProps> = ({
               Annuler
             </Button>
             <Button type="submit" variant="primary" isLoading={isSubmitting} data-testid="submit-encaisse-btn">
-              Enregistrer l’opération
+              {initialData ? 'Mettre à jour' : 'Enregistrer'} le mouvement
             </Button>
           </div>
         </form>

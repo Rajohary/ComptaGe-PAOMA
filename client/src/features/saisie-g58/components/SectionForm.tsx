@@ -15,7 +15,7 @@ import { LigneComptableSearch } from './LigneComptableSearch';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Pagination } from '../../../components/ui/Pagination';
-import { formatAriary, formatDate, parseNumber } from '../../../lib/formatters';
+import { formatAriary, formatDate, parseNumber, formatThousandsInput } from '../../../lib/formatters';
 import { applyServerValidationErrors } from '../../../lib/formErrors';
 import {
   FileText,

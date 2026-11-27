@@ -317,4 +317,41 @@ export const exportEcrituresExcel = async (periodeId: number): Promise<Blob> => 
   });
 };
 
+/**
+ * Création d'une sous-rubrique d'encaisse (réservé ADMIN)
+ */
+export const createRubriqueEncaisse = async (
+  data: import('../types').RubriqueEncaisseFormData
+): Promise<import('../types').RubriqueEncaisse> => {
+  return apiClient<import('../types').RubriqueEncaisse>('/api/v1/rubriques-encaisse/', {
+    method: 'POST',
+    data,
+    requiresAuth: true,
+  });
+};
+
+/**
+ * Récupère la liste des rubriques d'encaisse parentes.
+ */
+export const getRubriquesEncaisseParentes = async (): Promise<
+  import('../types').PaginatedResponse<import('../types').RubriqueEncaisseParent>
+> => {
+  return apiClient<import('../types').PaginatedResponse<import('../types').RubriqueEncaisseParent>>(
+    '/api/v1/rubriques-encaisse-parentes/',
+    { method: 'GET', requiresAuth: true }
+  );
+};
+
+/**
+ * Création d'une rubrique d'encaisse parente (réservé ADMIN)
+ */
+export const createRubriqueEncaisseParent = async (
+  data: import('../types').RubriqueEncaisseParentFormData
+): Promise<import('../types').RubriqueEncaisseParent> => {
+  return apiClient<import('../types').RubriqueEncaisseParent>(
+    '/api/v1/rubriques-encaisse-parentes/',
+    { method: 'POST', data, requiresAuth: true }
+  );
+};
+
 

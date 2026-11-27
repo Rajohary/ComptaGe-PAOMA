@@ -221,13 +221,34 @@ class MouvementSerializer(serializers.ModelSerializer):
 
 
 class RubriqueEncaisseParentSerializer(serializers.ModelSerializer):
+    id_encaisse = serializers.IntegerField(required=False, min_value=1)
+
     class Meta:
         model = RubriqueEncaisseParent
         fields = ["id", "id_encaisse", "libelle"]
 
+    def validate_libelle(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Le libellé de la rubrique d’encaisse est obligatoire.")
+        return value
+
+    def create(self, validated_data):
+        from django.db.models import Max
+
+        requested = validated_data.get("id_encaisse")
+        if requested is None or RubriqueEncaisseParent.objects.filter(id_encaisse=requested).exists():
+            max_id = RubriqueEncaisseParent.objects.aggregate(max_value=Max("id_encaisse"))["max_value"] or 0
+            requested = max_id + 1
+            while RubriqueEncaisseParent.objects.filter(id_encaisse=requested).exists():
+                requested += 1
+        validated_data["id_encaisse"] = requested
+        return super().create(validated_data)
+
 
 class RubriqueEncaisseSerializer(serializers.ModelSerializer):
     parent_libelle = serializers.CharField(source="rubrique_parent.libelle", read_only=True)
+    menu_sub = serializers.IntegerField(required=False, min_value=1)
 
     class Meta:
         model = RubriqueEncaisse
@@ -239,6 +260,38 @@ class RubriqueEncaisseSerializer(serializers.ModelSerializer):
             "compte",
             "libelle",
         ]
+
+    def validate_menu_sub(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Le numéro d’ordre doit être strictement positif.")
+        return value
+
+    def validate_libelle(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Le libellé de la sous-rubrique est obligatoire.")
+        return value
+
+    def validate_compte(self, value):
+        return value.strip().upper()
+
+    def create(self, validated_data):
+        from django.db.models import Max
+
+        requested = validated_data.get("menu_sub")
+        if requested is None or RubriqueEncaisse.objects.filter(menu_sub=requested).exists():
+            max_menu_sub = RubriqueEncaisse.objects.aggregate(max_value=Max("menu_sub"))["max_value"] or 0
+            requested = max_menu_sub + 1
+            while RubriqueEncaisse.objects.filter(menu_sub=requested).exists():
+                requested += 1
+        validated_data["menu_sub"] = requested
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        requested = validated_data.get("menu_sub")
+        if requested is not None and RubriqueEncaisse.objects.filter(menu_sub=requested).exclude(pk=instance.pk).exists():
+            raise serializers.ValidationError({"menu_sub": "Ce numéro d’ordre est déjà utilisé."})
+        return super().update(instance, validated_data)
 
 
 class MouvementEncaisseSerializer(serializers.ModelSerializer):

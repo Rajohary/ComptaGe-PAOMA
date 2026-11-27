@@ -56,7 +56,8 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/mouvements/{id}/` | GET, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Détail / modification avant audit / suppression d'un mouvement |
 | `/api/v1/mouvements/export-excel/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Export du classeur Excel (.xlsx) complet du Journal G58 (3 feuilles) |
 | `/api/v1/mouvements/totaux/` | GET | Authentifié | implémenté (voir §4) | Totaux par section (A-E), sous-sections B1-B4, débits, crédits, solde |
-| `/api/v1/rubriques-encaisse/` | GET | Authentifié | implémenté (voir §4) | Référentiel des rubriques d'encaisse (TR, SF, CR...) |
+| `/api/v1/rubriques-encaisse/` | GET, POST | Admin (POST), Authentifié (GET) | implémenté (voir §4) | Référentiel des rubriques d'encaisse, sous-rubriques liées à une rubrique parente (lecture) et création Administrateur |
+| `/api/v1/rubriques-encaisse/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, modification ou suppression d'une sous-rubrique d'encaisse |
 | `/api/v1/mouvements-encaisse/` | GET, POST, PUT, PATCH, DELETE | Selon RBAC (Agent du bureau, Receveur, Admin) | implémenté (voir §4) | Suivi des mouvements de caisse et de coffre (entrées/sorties) |
 | `/api/v1/mouvements/{id}/rectifier/` | PATCH | Inspecteur, Admin | implémenté (voir §4) | Rectification d'un mouvement d'audit (obligation motif, équation de contrôle, trace immuable) |
 | `/api/v1/situation-comptable/{periode_id}/` | GET | Receveur (son bureau), Admin, Inspecteur | implémenté (voir §4) | Situation comptable mensuelle avec report automatique de solde |
@@ -66,6 +67,8 @@ Ce tableau est à compléter au fil de l'implémentation. Tant qu'un endpoint n'
 | `/api/v1/dashboard/inspecteur/` | GET | Inspecteur, Admin | implémenté (voir §4) | Vue synthétique des écarts de caisse et bureaux impactés |
 | `/api/v1/audit/ecarts/` | GET | Inspecteur, Admin | implémenté (voir §4) | Liste filtrable et paginée des mouvements en anomalie (vue DIF) |
 | `/api/v1/dashboard/admin/` | GET | Admin | implémenté (voir §4) | Vue d'ensemble globale du système (territoire, périodes, RBAC, flux, audit) |
+| `/api/v1/rubriques-encaisse-parentes/` | GET, POST | Admin (POST), Authentifié (GET) | implémenté (voir §4) | Référentiel et création des rubriques principales d'encaisse |
+| `/api/v1/rubriques-encaisse-parentes/{id}/` | GET, PUT, PATCH, DELETE | Admin (écritures), Authentifié (GET) | implémenté (voir §4) | Détail, modification ou suppression d'une rubrique principale d'encaisse |
 
 **Note pour les deux agents :** quand un endpoint passe de `planifié` à `implémenté`, préciser dans la colonne État la forme exacte de la réponse (ou lier vers un exemple de payload en bas de ce fichier, section 4) — pas juste changer le mot.
 
@@ -533,24 +536,6 @@ Suppression d'une ligne comptable.
 - **Accès :** Réservé aux profils `ADMIN`.
 - **Règles :** Protection stricte (`ProtectedError` / code 400 ou 500) si des écritures du Journal G58 (`Mouvement`) ou des sous-lignes utilisent cette ligne. La désactivation (`actif: false`) est préconisée.
 
-      "section": 2,
-      "section_code": "B",
-      "section_libelle": "Opérations relatives aux correspondances et objets",
-      "sens": 2,
-      "sens_libelle": "Crédit",
-      "parent": 22,
-      "parent_detail": {
-        "id": 22,
-        "menu_sub": 200,
-        "compte": "B1",
-        "libelle": "Sous-section B1 — Émissions et versements mandats"
-      },
-      "actif": true
-    }
-  ]
-}
-```
-
 ### GET /api/v1/produits-postaux/
 Réponse 200 (liste paginée des produits postaux) :
 ```json
@@ -961,7 +946,6 @@ Réponse 200 :
   "updated_at": "2026-06-16T14:20:00Z"
 }
 ```
-```
 
 ### GET /api/v1/dashboard/admin/ (Tableau de bord Administrateur)
 *Règles d'accès : réservé aux profils `ADMIN` (et superutilisateurs).*
@@ -1015,6 +999,31 @@ Réponse 200 :
 }
 ```
 
+### POST /api/v1/rubriques-encaisse/
+Réservé aux Administrateurs. La sous-rubrique doit être liée à une rubrique parente existante.
+
+Requête :
+```json
+{
+  "rubrique_parent": 1,
+  "menu_sub": 6,
+  "compte": "TR2",
+  "libelle": "Réserve secondaire"
+}
+```
+
+Réponse 201 :
+```json
+{
+  "id": 6,
+  "rubrique_parent": 1,
+  "parent_libelle": "ENCAISSE ET VALEURS",
+  "menu_sub": 6,
+  "compte": "TR2",
+  "libelle": "Réserve secondaire"
+}
+```
+
 ### GET /api/v1/rubriques-encaisse/
 Réponse 200 (liste des rubriques d'encaisse et de coffre) :
 ```json
@@ -1043,41 +1052,6 @@ Réponse 200 (liste des rubriques d'encaisse et de coffre) :
 }
 ```
 
-### GET /api/v1/mouvements-encaisse/
-Filtres disponibles : `periode_gestion` ou `periode` (id), `bureau` (id ou ncodique), `date_operation` ou `date` (YYYY-MM-DD), `sens` (1=Entrée, 2=Sortie), `rubrique_encaisse` (id), `compte` (TR, SF, CR...).
-
-Réponse 200 :
-```json
-{
-  "count": 1,
-  "next": null,
-  "previous": null,
-  "results": [
-    {
-      "id": 1,
-      "periode_gestion": 1,
-      "rubrique_encaisse": 1,
-      "rubrique_detail": {
-        "id": 1,
-        "rubrique_parent": 1,
-        "parent_libelle": "ENCAISSE ET VALEURS",
-        "menu_sub": 1,
-        "compte": "TR",
-        "libelle": "Trésorerie et espèces physiques (billets et pièces)"
-      },
-      "sens": 1,
-      "sens_libelle": "Entrée",
-      "date_operation": "2026-06-05",
-      "montant": "150000.00",
-      "saisi_par": 2,
-      "saisi_par_username": "receveur1",
-      "created_at": "2026-10-14T15:35:00Z",
-      "updated_at": "2026-10-14T15:35:00Z"
-    }
-  ]
-}
-```
-
 ### POST /api/v1/mouvements-encaisse/
 Enregistrement d'un flux physique de trésorerie ou de coffre.
 - **Accès :** `AGENT_SAISIE` (sur son bureau), `RECEVEUR` (sur son bureau), `ADMIN`.
@@ -1092,6 +1066,7 @@ Requête :
   "date_operation": "2026-06-05",
   "montant": "150000.00"
 }
+```
 ### GET /api/v1/situation-comptable/{periode_id}/
 Calcul et consultation de la Situation Comptable mensuelle d'un bureau pour une période donnée.
 - **Accès :** `RECEVEUR` (limité à son propre bureau), `INSPECTEUR` (tous bureaux), `ADMIN` (tous bureaux).

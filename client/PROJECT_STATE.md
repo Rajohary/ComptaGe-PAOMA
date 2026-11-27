@@ -63,8 +63,8 @@ Légende : `[ ]` à faire · `[x]` terminé · `[~]` en cours / partiellement fa
 - [x] Écran « Détails de l'encaisse »
 - [x] Écran « Situation comptable » avec affichage du report automatique du solde du mois précédent
 - [x] Test e2e `saisie-g58.spec.ts` : saisie complète d'une section avec vérification du total affiché en temps réel
-
-
+- [x] Sous-rubriques d'encaisse : sélectionner une sous-rubrique liée à la rubrique principale et permettre à un Administrateur d'en créer rapidement depuis le formulaire de mouvement
+- [x] Sélecteur de bureau de poste dans le nouveau mouvement d'encaisse (Administrateur uniquement)
 
 ---
 
@@ -562,8 +562,8 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 
 
 ### 2026-10-12 — Écran de clôture d'une période de gestion (Section 2, Tâche 3)
-- Ce qui a été fait :
-  - Création du composant modal [ClotureModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/components/ClotureModal.tsx) présentant un avertissement institutionnel clair, le récapitulatif complet de la période (bureau, dates, receveur, montants initiaux en Ariary), la confirmation sécurisée et l'affichage des erreurs serveur.
+-
+
   - Intégration du bouton d'action « Clôturer » dans la table des périodes sur [PeriodesGestionPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/periodes-gestion/PeriodesGestionPage.tsx) (visible uniquement pour les périodes encore ouvertes « En cours », badge « Verrouillée » pour les périodes déjà clôturées).
   - Branchement de l'appel API `POST /api/v1/periodes-gestion/{id}/cloturer/` et rafraîchissement réactif de la liste.
   - Test e2e Playwright dans [e2e/periodes-gestion.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/periodes-gestion.spec.ts) validant l'ouverture de la boîte de dialogue de clôture, le récapitulatif solennel et la confirmation réussie de la clôture (8/8 tests passés au vert).
@@ -603,7 +603,7 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
   - Implémentation du formulaire modal [BureauFormModal.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/components/BureauFormModal.tsx) avec React Hook Form et validation Zod, ainsi que le mapping des erreurs API du backend sur les champs.
   - Implémentation complète de [BureauxPage.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/features/bureaux/BureauxPage.tsx) avec liste des bureaux, recherche avec debounce, modal de création/édition, modal de confirmation de suppression, et états de chargement / erreur / vide explicites.
   - Configuration du routage dans [src/App.tsx](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/src/App.tsx) avec redirection vers `/bureaux`.
-  - Ajout et exécution avec succès du test e2e Playwright dans [e2e/bureaux.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/bureaux.spec.ts).
+  - Ajout et exécution du test e2e Playwright dans [e2e/bureaux.spec.ts](file:///home/johari/Stage/PAOSITRA%20MALAGASY/ComptaGe-PAOMA/client/e2e/bureaux.spec.ts).
 - Fichiers/dossiers touchés :
   - `src/types/index.ts`
   - `src/api/referentiel.ts`
@@ -617,25 +617,24 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
 - Dépendance à un endpoint backend : `/api/v1/bureaux/` et `/api/v1/provinces/` (implémentés)
 - Points restés ouverts ou à valider avec l'utilisateur : Néant.
 
- 
-+### 2026-10-06 — Initialisation du projet client (Section 0)
-+- Ce qui a été fait :
-+  - Échafaudage de l'application Vite + React 18+ + TypeScript.
-+  - Installation et configuration de Tailwind CSS avec les tokens stricts de `DESIGN.md` (règle 60/30/10 : vert postal `#0F3D2E`, gris ardoise `#1E2530`, doré `#C9962C`, mode sombre calibré sans inversion automatique, polices Fraunces et Public Sans).
-+  - Création de `.env.example` et `.env` configurés avec `VITE_API_BASE_URL`.
-+  - Implémentation du client API de base (`src/api/client.ts`) avec support Bearer JWT, intercepteur 401 pour rafraîchissement automatique de token, et types partagés dans `src/types/index.ts`.
-+  - Implémentation de `ThemeContext` (attribut `data-theme` et persistance `localStorage`).
-+  - Création de la page d'accueil de démarrage avec contrôle de santé vers `/api/v1/health/` du backend Django.
-+  - Configuration de Playwright dans `playwright.config.ts` et test e2e de validation dans `e2e/health.spec.ts` (exécuté et passé avec succès).
-+- Fichiers/dossiers touchés :
-+  - `package.json`, `tailwind.config.ts`, `postcss.config.js`, `index.html`, `.env.example`, `.gitignore`
-+  - `src/styles/globals.css`, `src/types/index.ts`, `src/api/client.ts`, `src/api/health.ts`
-+  - `src/contexts/ThemeContext.tsx`, `src/App.tsx`, `src/main.tsx`
-+  - `playwright.config.ts`, `e2e/health.spec.ts`
-+- Cases cochées : section 0 (toutes les tâches)
-+- Dépendance à un endpoint backend : `/api/v1/health/` (implémenté dans `API_CONTRACT.md`)
-+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
-+
+### 2026-10-06 — Initialisation du projet client (Section 0)
+- Ce qui a été fait :
+  - Échafaudage de l'application Vite + React 18+ + TypeScript.
+  - Installation et configuration de Tailwind CSS avec les tokens stricts de `DESIGN.md` (règle 60/30/10 : vert postal `#0F3D2E`, gris ardoise `#1E2530`, doré `#C9962C`, mode sombre calibré sans inversion automatique, polices Fraunces et Public Sans).
+  - Création de `.env.example` et `.env` configurés avec `VITE_API_BASE_URL`.
+  - Implémentation du client API de base (`src/api/client.ts`) avec support Bearer JWT, intercepteur 401 pour rafraîchissement automatique de token, et types partagés dans `src/types/index.ts`.
+  - Implémentation de `ThemeContext` (attribut `data-theme` et persistance `localStorage`).
+  - Création de la page d'accueil de démarrage avec contrôle de santé vers `/api/v1/health/` du backend Django.
+  - Configuration de Playwright dans `playwright.config.ts` et test e2e de validation dans `e2e/health.spec.ts` (exécuté et passé avec succès).
+- Fichiers/dossiers touchés :
+  - `package.json`, `tailwind.config.ts`, `postcss.config.js`, `index.html`, `.env.example`, `.gitignore`
+  - `src/styles/globals.css`, `src/types/index.ts`, `src/api/client.ts`, `src/api/health.ts`
+  - `src/contexts/ThemeContext.tsx`, `src/App.tsx`, `src/main.tsx`
+  - `playwright.config.ts`, `e2e/health.spec.ts`
+- Cases cochées : section 0 (toutes les tâches)
+- Dépendance à un endpoint backend : `/api/v1/health/` (implémenté dans `API_CONTRACT.md`)
+- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+
 ### 2026-10-12 — Correction des anomalies de build, finalisation & validation e2e Module 1 (Auth & RBAC)
 - Ce qui a été fait :
   - Correction de l'erreur de syntaxe dans `src/features/auth/pages/LoginPage.tsx` (apostrophe non échappée dans le message de validation Zod).
@@ -676,81 +675,28 @@ Cette section n'est pas figée : ajouter ici toute nouvelle demande frontend (é
   - `src/App.tsx`, `src/main.tsx`
   - `e2e/auth.spec.ts`
 - Cases cochées : section 1 (toutes les 6 tâches)
-- Dépendance à un endpoint backend : `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/`, `/api/v1/auth/me/` (tous implémentés dans `API_CONTRACT.md`)
+- Dépendance à un endpoint backend : `/api/v1/auth/login/`, `/api/v1/auth/refresh/`, `/api/v1/auth/logout/`, `/api/v1/auth/me/` (tous implémentés et testés dans le backend)
 - Points restés ouverts ou à valider avec l'utilisateur : Les tests e2e nécessitent un backend Django fonctionnel avec des comptes utilisateurs créés (receveur1, etc.). Le rafraîchissement automatique du token 401 était déjà implémenté dans `client.ts` depuis la section 0.
 
-### 2026-10-26 — Sélecteur de période dans la vue Bureau (Receveur) pour les rôles Admin & Inspecteur (Section 6)
-- Ce qui a été fait :
-  - Ajout d'un sélecteur de période de gestion (`select-periode-dashboard`) dans l'en-tête de `ReceveurDashboard`, directement à côté du sélecteur de bureau de poste pour les profils `ADMIN` et `INSPECTEUR`.
-  - Chargement réactif des périodes de gestion associées au bureau sélectionné via `getPeriodesGestion({ bureau: effectiveBureau })`.
-  - Affichage de la plage de dates (`formatDate(date_debut) - formatDate(date_fin)`) et du badge de statut (`Active` ou `Clôturée`).
-  - Prise en charge de la sélection d'une période spécifique dans `useReceveurDashboard({ bureau, periode })`, permettant à l'administrateur d'inspecter l'état comptable, l'encaisse et l'avancement G58 de n'importe quelle période (passée ou en cours) pour le bureau choisi.
-  - Mise à jour des tests e2e dans `e2e/dashboard.spec.ts` pour valider la visibilité et le fonctionnement des deux sélecteurs (bureau et période).
-  - Validation complète : l'ensemble des tests e2e passe avec succès, build de production Vite/TypeScript 100% propre, graphe de connaissances mis à jour.
-- Fichiers/dossiers touchés :
-  - `src/features/dashboard/components/ReceveurDashboard.tsx`
-  - `src/features/dashboard/pages/DashboardPage.tsx`
-  - `e2e/dashboard.spec.ts`
-  - `PROJECT_STATE.md`
-- Cases cochées : Section 6 (Dashboard Receveur / Admin)
-- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
-- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+### 2026-11-19 — Sous-rubriques d'encaisse dans le formulaire de mouvement
+- Ce qui a été fait : ajout d'une sélection réactive de rubrique parente puis de sous-rubrique, bouton `+` réservé aux Administrateurs pour créer rapidement une sous-rubrique, actualisation immédiate de la liste et test e2e associé.
+- Fichiers/dossiers touchés : `src/types/index.ts`, `src/api/comptabilite.ts`, `src/features/encaisse/EncaissePage.tsx`, `src/features/encaisse/components/EncaisseFormModal.tsx`, `e2e/encaisse.spec.ts`, `PROJECT_STATE.md`.
+- Cases cochées : section 4, tâche sous-rubriques d'encaisse.
+- Dépendance à un endpoint backend : implémenté.
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
 
-### 2026-10-26 — Sélecteur de période de gestion dans la section Bureau du Dashboard Admin (Section 6)
-- Ce qui a été fait :
-  - Ajout d'un champ de sélection de période (`admin-select-periode`) dans `AdminDashboard` directement après le sélecteur de bureau de poste.
-  - Chargement dynamique et asynchrone des périodes de gestion du bureau sélectionné via `getPeriodesGestion({ bureau: bureauId })`.
-  - Pré-sélection intelligente de la période en cours (active / non clôturée) ou de la plus récente.
-  - Affichage détaillé de chaque période dans le menu déroulant : plage de dates (`date_debut` au `date_fin`), receveur en charge, et statut (`En cours` ou `Clôturée`).
-  - Transmission de la période sélectionnée à la vue détaillée (`ReceveurDashboard`) lors du clic sur le bouton « Voir l'état », permettant à l'administrateur de consulter précisément l'état de caisse, les flux et l'avancement G58 de la période choisie.
-  - Mise à jour du test e2e `e2e/dashboard.spec.ts` pour vérifier la présence du sélecteur de période et la sélection de la période active.
-  - Validation complète : 63 tests Playwright réussis (`63 passed`), build Vite/TypeScript propre, graphe de connaissances mis à jour.
-- Fichiers/dossiers touchés :
-  - `src/features/dashboard/components/AdminDashboard.tsx`
-  - `src/features/dashboard/components/ReceveurDashboard.tsx`
-  - `src/features/dashboard/pages/DashboardPage.tsx`
-  - `e2e/dashboard.spec.ts`
-  - `PROJECT_STATE.md`
-- Cases cochées : Section 6 (Dashboard Admin complété)
-- Dépendance à un endpoint backend : `/api/v1/periodes-gestion/?bureau={id}`, `/api/v1/dashboard/receveur/?bureau={id}&periode={id}`
-- Points restés ouverts ou à valider avec l'utilisateur : Néant.
+### 2026-11-20 — Correction sous-rubriques et enregistrement encaisse
+- Ce qui a été fait : ajout du bouton `+` directement à côté du champ Sous-rubrique, correction des valeurs initiales Rubrique parente/Sous-rubrique, sélection de période limitée au bureau choisi et correction du formulaire de mouvement.
+- Fichiers/dossiers touchés : `src/features/encaisse/components/EncaisseFormModal.tsx`, `src/features/encaisse/EncaissePage.tsx`, `src/types/index.ts`.
+- Cases cochées : amélioration de la tâche sous-rubriques d'encaisse.
+- Dépendance à un endpoint backend : implémenté.
+- Points restés ouverts ou à valider avec l'utilisateur : aucun.
 
-### 2026-10-26 — Révision de la section Traçabilité & Vigilance Réglementaire (Vue Réseau Admin)
-- Ce qui a été fait :
-  - Refonte complète de la section « Traçabilité & Vigilance Réglementaire » dans `AdminDashboard` :
-    - Badge d'intégrité CDC § 6.2 (« Journal Inaltérable » / append-only).
-    - Métriques directes de vigilance : total des logs enregistrés et nombre d'écarts en attente avec lien rapide vers l'Espace Audit (`/audit`).
-    - Barre d'outils interactive avec champ de recherche en direct (par auteur, modèle, objet ou détail) et filtre déroulant par nature d'action (Rectifications, Clôtures, Ouvertures, Créations, Modifications, Suppressions, Connexions).
-    - Badges et icônes typées par type d'événement avec mise en avant du détail de modification, du modèle cible et de l'utilisateur auteur.
-    - Horodatage certifié UTC+3 (heure locale Madagascar) et message d'état vide explicite en cas d'absence de résultat de filtre.
-  - Ajout d'un test e2e dédié dans `e2e/dashboard.spec.ts` validant l'affichage des métriques, des badges et du filtrage interactif.
-  - Validation complète : les 63 tests Playwright passent tous avec succès (`63 passed (1.1m)`), build de production Vite/TypeScript 100% propre, graphe `graphify` synchronisé.
-- Fichiers/dossiers touchés :
-  - `src/features/dashboard/components/AdminDashboard.tsx`
-  - `e2e/dashboard.spec.ts`
-  - `PROJECT_STATE.md`
-- Cases cochées : Section 6 (Dashboard Admin)
-- Dépendance à un endpoint backend : `/api/v1/dashboard/admin/`
-- Points restés ouverts ou à valider avec l'utilisateur : Néant.
-
-### 2026-10-26 — Sélecteur de bureau sur le tableau de bord Admin et vue bureau détaillée (Section 6)
-- Ce qui a été fait :
-  - Ajout d'un sélecteur de bureau dans le composant `AdminDashboard` (`admin-select-bureau`) au sein de la section des bureaux / maillage postal, permettant de consulter instantanément les informations clés d'un bureau (classe, codique, province, compte CCP).
-  - Ajout d'un bouton d'action directe "Voir l'état" qui bascule immédiatement vers la vue opérationnelle du bureau (`ReceveurDashboard`) pour ce bureau choisi, ainsi qu'un raccourci direct vers l'écran d'historique des périodes de gestion (`/historique-periodes?bureau=...`).
-  - Ajout d'un sélecteur de bureau réactif dans le bandeau d'en-tête de `ReceveurDashboard` (`select-bureau-dashboard`) pour les rôles `ADMIN` et `INSPECTEUR`, permettant de passer d'un bureau à un autre et d'interroger dynamiquement `/api/v1/dashboard/receveur/?bureau={id}`.
-  - Mise à jour de `DashboardPage` pour relier l'action de sélection d'état bureau depuis la vue Admin vers la vue Receveur avec le bureau pré-sélectionné.
-  - Ajout du test e2e de validation dans `e2e/dashboard.spec.ts` (`permet à l'administrateur de sélectionner un bureau pour voir son état détaillé`).
-  - Validation complète : 62 tests Playwright passés avec succès, build de production Vite/TypeScript 100% propre, et graphe `graphify` mis à jour.
-- Fichiers/dossiers touchés :
-  - `src/features/dashboard/components/AdminDashboard.tsx`
-  - `src/features/dashboard/components/ReceveurDashboard.tsx`
-  - `src/features/dashboard/pages/DashboardPage.tsx`
-  - `e2e/dashboard.spec.ts`
-  - `PROJECT_STATE.md`
-- Cases cochées : Section 6 (Dashboard Admin complété avec le sélecteur de bureau)
-- Dépendance à un endpoint backend : `/api/v1/bureaux/`, `/api/v1/dashboard/receveur/?bureau={id}`
-- Points restés ouverts ou à valider avec l'utilisateur : Néant.
-
- <!-- Nouvelles entrées à ajouter au-dessus de cette ligne, les plus récentes en premier -->
+### 2026-11-27 — Sélecteur de bureau dans le nouveau mouvement d'encaisse
+- Ce qui a été fait : ajout des sélecteurs bureau/période réservés aux Administrateurs dans la modale de création d'encaisse; les Receveurs restent associés automatiquement à leur bureau sans champ bureau dans le formulaire.
+- Fichiers/dossiers touchés : `src/features/encaisse/components/EncaisseFormModal.tsx`, `src/features/encaisse/EncaissePage.tsx`, `e2e/encaisse.spec.ts`, `PROJECT_STATE.md`, `../API_CONTRACT.md`.
+- Cases cochées : section 4, tâche Sélecteur de bureau de poste dans le nouveau mouvement d'encaisse.
+- Dépendance à un endpoint backend : implémenté (`POST /api/v1/mouvements-encaisse/`).
+- Points restés ouverts ou à valider avec l'utilisateur : validation E2E à reprendre après stabilisation des fixtures de test de la page Encaisse.
 
 
